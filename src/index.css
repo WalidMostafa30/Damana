@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+@theme {
+  --color-base-white: #fafafa;
+  --color-base-black: #0a0a0b;
+  --color-primary: #07124a;
+  --color-secondary: #0e7ac0;
+  --color-neutrals-500: #898384;
+  --color-neutrals-800: #433e3f;
+  --color-success-100: #a4f4e7;
+  --color-success-200: #15b097;
+  --color-warning-100: #f4c790;
+  --color-warning-200: #eda145;
+  --color-error-100: #e4626f;
+  --color-error-200: #c03744;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 60px;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+/* fix hover in mobile */
+@custom-variant hover (&:hover);
+
+/* remove number input arrows */
+@layer utilities {
+  input[type="number"]::-webkit-inner-spin-button,
+  input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+}
+
+@layer {
+  body {
+    @apply bg-base-white text-neutrals-800 font-['cairo'];
+  }
+
+  .sectionPadding {
+    @apply py-6 lg:py-10;
+  }
+
+  .mainBtn {
+    @apply w-full bg-primary text-white text-lg font-semibold py-3 rounded-lg border-2 border-primary cursor-pointer duration-300;
+
+    &:hover {
+      @apply bg-secondary border-secondary;
+    }
+
+    &:disabled {
+      @apply bg-neutral-500 cursor-not-allowed;
+    }
+
+    &.light {
+      @apply bg-transparent text-primary;
+
+      &:hover {
+        @apply bg-primary border-primary text-white;
+      }
+    }
+  }
+
+  .navLink {
+    @apply text-lg duration-300;
+
+    &.active,
+    &:hover {
+      @apply text-white;
+    }
+  }
+}
