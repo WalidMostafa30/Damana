@@ -4,6 +4,7 @@
   --color-base-white: #fafafa;
   --color-base-black: #0a0a0b;
   --color-primary: #07124a;
+  --color-primary-light: #bcbedd;
   --color-secondary: #0e7ac0;
   --color-neutrals-500: #898384;
   --color-neutrals-800: #433e3f;
@@ -50,7 +51,7 @@ html {
     @apply w-full bg-primary text-white text-lg font-semibold py-3 rounded-lg border-2 border-primary cursor-pointer duration-300;
 
     &:hover {
-      @apply bg-secondary border-secondary;
+      @apply bg-primary-light border-primary-light;
     }
 
     &:disabled {

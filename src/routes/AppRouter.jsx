@@ -11,8 +11,15 @@ const LoginPage = React.lazy(() =>
 const ForgotPassword = React.lazy(() =>
   import("../pages/AuthPages/ForgotPassword/ForgotPassword")
 );
-import ResetPassword from "../pages/AuthPages/ForgotPassword/ResetPassword";
-import CreateNewPassword from "../pages/AuthPages/ForgotPassword/CreateNewPassword";
+const ResetPassword = React.lazy(() =>
+  import("../pages/AuthPages/ForgotPassword/ResetPassword")
+);
+const CreateNewPassword = React.lazy(() =>
+  import("../pages/AuthPages/ForgotPassword/CreateNewPassword")
+);
+const RegisterPerson = React.lazy(() =>
+  import("../pages/AuthPages/Register/RegisterPerson")
+);
 
 const router = createBrowserRouter([
   {
@@ -28,6 +35,7 @@ const router = createBrowserRouter([
       { path: "forgot-password", element: <ForgotPassword /> },
       { path: "reset-password", element: <ResetPassword /> },
       { path: "create-new-password", element: <CreateNewPassword /> },
+      { path: "register-person", element: <RegisterPerson /> },
     ],
   },
 ]);

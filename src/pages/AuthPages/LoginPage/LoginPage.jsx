@@ -51,6 +51,7 @@ const LoginPage = () => {
           icon={<Phone />}
           {...register("phoneNumber")}
           error={errors.phoneNumber?.message}
+
         />
 
         <MainInput
@@ -85,11 +86,17 @@ const LoginPage = () => {
         <div className="text-center font-semibold">
           <p>
             ليس لديك حساب؟{" "}
-            <Link className="text-secondary hover:brightness-50 transition-colors">
+            <Link
+              to="/auth/register-person"
+              className="text-secondary hover:brightness-50 transition-colors"
+            >
               إنشئ حساب فرديا
             </Link>{" "}
             أو قدم{" "}
-            <Link className="text-secondary hover:brightness-50 transition-colors">
+            <Link
+              to="/auth/register-company"
+              className="text-secondary hover:brightness-50 transition-colors"
+            >
               طلب انضمام
             </Link>{" "}
             ان كنت تمثل شركة
