@@ -1,36 +1,34 @@
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import { Lock, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
 import MainInput from "../../../components/form/MainInput";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 
-const loginSchema = z.object({
-  phoneNumber: z
-    .string()
-    .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل"),
-  password: z.string().min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل"),
-  rememberMe: z.boolean().optional(),
+const loginSchema = Yup.object({
+  phoneNumber: Yup.string()
+    .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
+    .required("رقم الهاتف مطلوب"),
+  password: Yup.string()
+    .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
+    .required("كلمة المرور مطلوبة"),
+  rememberMe: Yup.boolean(),
 });
 
 const LoginPage = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(loginSchema),
-    defaultValues: {
+  const formik = useFormik({
+    initialValues: {
       phoneNumber: "",
       password: "",
       rememberMe: false,
     },
+    validationSchema: loginSchema,
+    onSubmit: (values) => {
+      console.log("Login data:", values);
+    },
   });
 
-  const onSubmit = (data) => {
-    console.log("Login data:", data);
-  };
+  const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
     <>
@@ -42,33 +40,40 @@ const LoginPage = () => {
         />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput
           type="number"
           id="phone"
+          name="phoneNumber"
           placeholder="96269077885+"
           label="رقم الهاتف"
           icon={<Phone />}
-          {...register("phoneNumber")}
-          error={errors.phoneNumber?.message}
-
+          value={formik.values.phoneNumber}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={getError("phoneNumber")}
         />
 
         <MainInput
           type="password"
           id="password"
+          name="password"
           placeholder="••••••••••"
           label="كلمة المرور"
           icon={<Lock />}
-          {...register("password")}
-          error={errors.password?.message}
+          value={formik.values.password}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={getError("password")}
         />
 
         <div className="flex items-center justify-between text-neutral-500 font-semibold">
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              {...register("rememberMe")}
+              name="rememberMe"
+              checked={formik.values.rememberMe}
+              onChange={formik.handleChange}
               className="w-4 h-4 rounded"
             />
             <span>تذكرني</span>
@@ -81,7 +86,9 @@ const LoginPage = () => {
           </Link>
         </div>
 
-        <button className="mainBtn">تسجيل الدخول</button>
+        <button className="mainBtn" type="submit">
+          تسجيل الدخول
+        </button>
 
         <div className="text-center font-semibold">
           <p>

@@ -51,7 +51,7 @@ html {
     @apply w-full bg-primary text-white text-lg font-semibold py-3 rounded-lg border-2 border-primary cursor-pointer duration-300;
 
     &:hover {
-      @apply bg-primary-light border-primary-light;
+      @apply bg-secondary border-secondary;
     }
 
     &:disabled {

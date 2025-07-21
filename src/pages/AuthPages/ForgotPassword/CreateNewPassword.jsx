@@ -1,18 +1,12 @@
 import { Link } from "react-router-dom";
 import { Lock, StickyNote } from "lucide-react";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 
 const CreateNewPassword = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-  } = useForm();
-
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
 
@@ -38,24 +32,36 @@ const CreateNewPassword = () => {
     return "transparent";
   };
 
-  const onSubmit = (data) => {
-    const strength = calculatePasswordStrength(data.password);
-    if (strength <= 1) {
-      setError("password", {
-        type: "manual",
-        message: "كلمة المرور ضعيفة جدًا، الرجاء اختيار كلمة أقوى.",
-      });
-      return;
-    }
+  const formik = useFormik({
+    initialValues: {
+      password: "",
+    },
+    validationSchema: Yup.object({
+      password: Yup.string()
+        .required("كلمة المرور مطلوبة")
+        .min(8, "كلمة المرور يجب أن لا تقل عن 8 حروف")
+        .matches(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
+        .matches(/\d/, "يجب أن تحتوي على رقم واحد على الأقل")
+        .matches(/[\W_]/, "يجب أن تحتوي على رمز خاص واحد على الأقل"),
+    }),
+    onSubmit: (values) => {
+      const strength = calculatePasswordStrength(values.password);
+      if (strength <= 1) {
+        formik.setFieldError(
+          "password",
+          "كلمة المرور ضعيفة جدًا، الرجاء اختيار كلمة أقوى."
+        );
+        return;
+      }
 
-    console.log("New Password Submitted:", data);
-  };
+      console.log("New Password Submitted:", values);
+    },
+  });
 
   return (
     <>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-4">انشاء كلمة مرور جديدة</h2>
-
         <Breadcrumbs
           items={[
             { label: "ضمانة", path: "/" },
@@ -65,20 +71,22 @@ const CreateNewPassword = () => {
         />
       </div>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput
           type="password"
           id="password"
+          name="password"
           placeholder="••••••••••"
           label="كلمة المرور"
           icon={<Lock />}
-          {...register("password", { required: "كلمة المرور مطلوبة" })}
+          value={formik.values.password}
           onChange={(e) => {
-            const val = e.target.value;
-            setPasswordValue(val);
-            setPasswordStrength(calculatePasswordStrength(val));
+            formik.handleChange(e);
+            setPasswordValue(e.target.value);
+            setPasswordStrength(calculatePasswordStrength(e.target.value));
           }}
-          error={errors.password?.message}
+          onBlur={formik.handleBlur}
+          error={formik.touched.password && formik.errors.password}
         />
 
         <p className="flex items-center gap-2 text-neutral-500">
@@ -106,7 +114,9 @@ const CreateNewPassword = () => {
           )}
         </div>
 
-        <button className="mainBtn">تأكيد</button>
+        <button className="mainBtn" type="submit">
+          تأكيد
+        </button>
       </form>
     </>
   );

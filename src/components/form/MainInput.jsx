@@ -1,107 +1,94 @@
 import React, { useState } from "react";
 import { CircleAlert, Eye, EyeOff } from "lucide-react";
 
-const MainInput = React.forwardRef(
-  (
-    {
-      type = "text",
-      value,
-      onChange,
-      placeholder,
-      label,
-      id,
-      icon,
-      error,
-      ...rest
-    },
-    ref
-  ) => {
-    const [showPassword, setShowPassword] = useState(false);
-    const isPassword = type === "password";
-    const inputType = isPassword ? (showPassword ? "text" : "password") : type;
+const MainInput = ({
+  label,
+  icon,
+  type = "text",
+  options = [],
+  error,
+  ...props
+}) => {
+  const [showPassword, setShowPassword] = useState(false);
+  const isPassword = type === "password";
+  const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-    if (type === "select") {
-      return (
-        <div>
-          {label && (
-            <label htmlFor={id} className="block w-fit font-semibold mb-2">
-              {label}
-            </label>
-          )}
+  const commonInputClasses = `relative w-full text-lg outline-none border-none py-4 ${
+    isPassword ? "px-9" : type === "date" ? "px-2" : "ps-9 pe-2"
+  } rounded-lg ring-2 ${
+    error ? "ring-error-100" : "ring-neutral-300 focus-within:ring-secondary"
+  } transition-all`;
 
-          <div
-            className={`flex items-center gap-2 p-4 rounded-lg ring-2 ${
-              error
-                ? "ring-error-100"
-                : "ring-neutral-300 focus-within:ring-secondary"
-            } transition-all`}
-          >
-            {icon && <span className="text-neutral-500">{icon}</span>}
+  const commonLabel = label && (
+    <label
+      htmlFor={props.id || props.name}
+      className="block w-fit font-semibold mb-2"
+    >
+      {label}
+    </label>
+  );
 
-            <select
-              id={id}
-              value={value}
-              onChange={onChange}
-              className="flex-1 text-lg outline-none border-none"
-              {...rest}
-            >
-              {rest.options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-      );
-    }
+  const commonError = error && (
+    <p className="mt-2 flex items-center gap-1 text-sm">
+      <CircleAlert className="text-error-100" size={18} /> {error}
+    </p>
+  );
 
+  if (type === "select") {
     return (
       <div>
-        {label && (
-          <label htmlFor={id} className="block w-fit font-semibold mb-2">
-            {label}
-          </label>
-        )}
-
-        <div
-          className={`flex items-center gap-2 p-4 rounded-lg ring-2 ${
-            error
-              ? "ring-error-100"
-              : "ring-neutral-300 focus-within:ring-secondary"
-          } transition-all`}
-        >
-          {icon && <span className="text-neutral-500">{icon}</span>}
-
-          <input
-            type={inputType}
-            id={id}
-            value={value}
-            onChange={onChange}
-            ref={ref}
-            className="flex-1 text-lg outline-none border-none"
-            placeholder={placeholder}
-            {...rest}
-          />
-
-          {isPassword && (
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="text-neutral-500 cursor-pointer"
-            >
-              {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+        {commonLabel}
+        <div className="relative">
+          {icon && (
+            <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2">
+              {icon}
             </span>
           )}
+          <select {...props} className={commonInputClasses}>
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
         </div>
-
-        {error && (
-          <p className="mt-2 flex items-center gap-2">
-            <CircleAlert className="text-error-100" /> {error}
-          </p>
-        )}
+        {commonError}
       </div>
     );
   }
-);
+
+  if (type === "date") {
+    return (
+      <div>
+        {commonLabel}
+        <input {...props} type="date" className={commonInputClasses} />
+        {commonError}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      {commonLabel}
+      <div className="relative">
+        {icon && (
+          <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2">
+            {icon}
+          </span>
+        )}
+        <input {...props} type={inputType} className={commonInputClasses} />
+        {isPassword && (
+          <span
+            onClick={() => setShowPassword(!showPassword)}
+            className="text-neutral-500 cursor-pointer absolute top-1/2 -translate-y-1/2 end-2"
+          >
+            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+          </span>
+        )}
+      </div>
+      {commonError}
+    </div>
+  );
+};
 
 export default MainInput;

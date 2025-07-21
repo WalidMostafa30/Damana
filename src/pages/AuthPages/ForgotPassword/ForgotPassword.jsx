@@ -1,39 +1,42 @@
 import { useState } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput";
 import { Link, useNavigate } from "react-router-dom";
 import { Phone } from "lucide-react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 
-const phoneSchema = z.object({
-  phoneNumber: z
-    .string()
-    .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل"),
-});
-
-const emailSchema = z.object({
-  email: z.email("البريد الإلكتروني غير صالح"),
-});
-
 const ForgotPassword = () => {
   const [method, setMethod] = useState("phone");
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
-    resolver: zodResolver(method === "phone" ? phoneSchema : emailSchema),
-  });
-
   const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    console.log("بيانات الاستعادة:", data);
-    navigate("/auth/reset-password");
-  };
+  const validationSchema = Yup.object(
+    method === "phone"
+      ? {
+          phoneNumber: Yup.string()
+            .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
+            .required("رقم الهاتف مطلوب"),
+        }
+      : {
+          email: Yup.string()
+            .email("البريد الإلكتروني غير صالح")
+            .required("البريد الإلكتروني مطلوب"),
+        }
+  );
+
+  const formik = useFormik({
+    initialValues: {
+      phoneNumber: "",
+      email: "",
+    },
+    validationSchema,
+    onSubmit: (values) => {
+      console.log("بيانات الاستعادة:", values);
+      navigate("/auth/reset-password");
+    },
+    enableReinitialize: true,
+  });
 
   const toggleMethod = () =>
     setMethod((prev) => (prev === "phone" ? "email" : "phone"));
@@ -56,25 +59,31 @@ const ForgotPassword = () => {
         الطريقتين التاليتين؛ باستخدام رقم الهاتف أو عبر البريد الإلكتروني
       </p>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         {method === "phone" ? (
           <MainInput
             type="number"
-            id="phone"
+            id="phoneNumber"
+            name="phoneNumber"
             placeholder="96269077885+"
             label="رقم الهاتف"
             icon={<Phone />}
-            {...register("phoneNumber")}
-            error={errors.phoneNumber?.message}
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
         ) : (
           <MainInput
-            {...register("email")}
             id="email"
+            name="email"
             type="text"
             placeholder="أدخل بريدك الإلكتروني"
             label="البريد الإلكتروني"
-            error={errors.email?.message}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && formik.errors.email}
           />
         )}
 

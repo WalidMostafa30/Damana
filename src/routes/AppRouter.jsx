@@ -18,7 +18,7 @@ const CreateNewPassword = React.lazy(() =>
   import("../pages/AuthPages/ForgotPassword/CreateNewPassword")
 );
 const RegisterPerson = React.lazy(() =>
-  import("../pages/AuthPages/Register/RegisterPerson")
+  import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
 );
 
 const router = createBrowserRouter([

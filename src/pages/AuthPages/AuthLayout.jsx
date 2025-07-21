@@ -6,7 +6,7 @@ import favLogo from "../../assets/images/fav-logo.png";
 const AuthLayout = () => {
   return (
     <section className="min-h-screen flex justify-between">
-      <div className="flex-1">
+      <div className="flex-1 pb-8">
         <img src={favLogo} alt="logo" loading="lazy" className="mb-8" />
 
         <div className="w-full max-w-2xl mx-auto px-4">
