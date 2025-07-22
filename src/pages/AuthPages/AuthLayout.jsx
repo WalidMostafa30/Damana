@@ -7,9 +7,9 @@ const AuthLayout = () => {
   return (
     <section className="min-h-screen flex justify-between">
       <div className="flex-1 pb-8">
-        <img src={favLogo} alt="logo" loading="lazy" className="mb-8" />
+        <img src={favLogo} alt="logo" loading="lazy" className="mb-4 lg:mb-8" />
 
-        <div className="w-full max-w-2xl mx-auto px-4">
+        <div className="w-full max-w-2xl mx-auto px-4 xl:ps-8">
           <Outlet />
         </div>
       </div>

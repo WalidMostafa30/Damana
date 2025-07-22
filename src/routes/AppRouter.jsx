@@ -20,6 +20,7 @@ const CreateNewPassword = React.lazy(() =>
 const RegisterPerson = React.lazy(() =>
   import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
 );
+import RegisterCompany from "../pages/AuthPages/Register/RegisterCompany/RegisterCompany";
 
 const router = createBrowserRouter([
   {
@@ -36,6 +37,7 @@ const router = createBrowserRouter([
       { path: "reset-password", element: <ResetPassword /> },
       { path: "create-new-password", element: <CreateNewPassword /> },
       { path: "register-person", element: <RegisterPerson /> },
+      { path: "register-company", element: <RegisterCompany /> },
     ],
   },
 ]);
