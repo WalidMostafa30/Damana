@@ -13,7 +13,7 @@ const MainInput = ({
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-  const commonInputClasses = `relative w-full text-lg outline-none border-none py-4 ${
+  const commonInputClasses = `w-full text-lg outline-none border-none py-4 ${
     isPassword ? "px-9" : type === "date" ? "px-2" : "ps-9 pe-2"
   } rounded-lg ring-2 ${
     error ? "ring-error-100" : "ring-neutral-300 focus-within:ring-secondary"
@@ -34,13 +34,23 @@ const MainInput = ({
     </p>
   );
 
+  if (type === "textarea") {
+    return (
+      <div>
+        {commonLabel}
+        <textarea {...props} className={`${commonInputClasses} h-32 resize-none ps-2!`} />
+        {commonError}
+      </div>
+    );
+  }
+
   if (type === "select") {
     return (
       <div>
         {commonLabel}
         <div className="relative">
           {icon && (
-            <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2">
+            <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none">
               {icon}
             </span>
           )}
@@ -72,7 +82,7 @@ const MainInput = ({
       {commonLabel}
       <div className="relative">
         {icon && (
-          <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2">
+          <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none">
             {icon}
           </span>
         )}

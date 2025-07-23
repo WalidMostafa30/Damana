@@ -1,72 +1,163 @@
-import { Backpack, Building, Building2, Code, Landmark } from "lucide-react";
+import {
+  Building2,
+  Landmark,
+  User,
+  KeyRound,
+  Phone,
+  MailOpen,
+  BadgeDollarSign,
+  CalendarCheck2,
+} from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput";
 
-const Step2 = ({ formik, getError }) => {
+const Step2Company = ({ formik, getError }) => {
   return (
     <>
-      <h3 className="text-xl font-bold mb-4">البيانات البنكية</h3>
+      <MainInput
+        label="نص التفويض كما هو في السجل التجاري"
+        id="authorizationText"
+        name="authorizationText"
+        type="textarea"
+        value={formik.values.authorizationText}
+        onChange={formik.handleChange}
+        error={getError("authorizationText")}
+      />
+
+      <p className="text-primary text-lg font-bold">بيانات المفوض الأول</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
-          label="اسم البنك"
-          id="bankName"
-          name="bankName"
-          placeholder="بنك الاتحاد"
-          value={formik.values.bankName}
+          label="الاسم الرباعي"
+          id="fullName2"
+          name="fullName2"
+          placeholder="مثال: أحمد حسن محمود علي"
+          value={formik.values.fullName2}
           onChange={formik.handleChange}
-          error={getError("bankName")}
-          icon={<Landmark />}
-        />
-        <MainInput
-          label="الفرع"
-          id="branch"
-          name="branch"
-          placeholder="ادخار"
-          value={formik.values.branch}
-          onChange={formik.handleChange}
-          error={getError("branch")}
-          icon={<Building />}
-        />
-        <MainInput
-          label="رمز سويفت"
-          id="swiftCode"
-          name="swiftCode"
-          placeholder="AAA564"
-          value={formik.values.swiftCode}
-          onChange={formik.handleChange}
-          error={getError("swiftCode")}
-          icon={<Code />}
-        />
-      </div>
-
-      <h3 className="text-2xl font-bold mb-4">بيانات الحساب</h3>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput
-          label="رقم الحساب"
-          id="accountNumber"
-          name="accountNumber"
-          placeholder="55890064"
-          type="number"
-          value={formik.values.accountNumber}
-          onChange={formik.handleChange}
-          error={getError("accountNumber")}
+          error={getError("fullName2")}
           icon={<Building2 />}
         />
+
         <MainInput
-          label="الايبان البنكي (الحساب الدولي)"
-          id="iban"
-          name="iban"
-          placeholder="PS33PALS004612813490013100000"
-          type="number"
-          value={formik.values.iban}
+          label="الجنسية"
+          id="nationality2"
+          name="nationality2"
+          placeholder="مثال: سعودي"
+          value={formik.values.nationality2}
           onChange={formik.handleChange}
-          error={getError("iban")}
-          icon={<Backpack />}
+          error={getError("nationality2")}
+          icon={<Landmark />}
+        />
+
+        <MainInput
+          label="الرقم الوطني / رقم جواز السفر"
+          id="nationalIdOrPassport2"
+          name="nationalIdOrPassport2"
+          placeholder="مثال: B987654321"
+          value={formik.values.nationalIdOrPassport2}
+          onChange={formik.handleChange}
+          error={getError("nationalIdOrPassport2")}
+          icon={<Building2 />}
+        />
+
+        <MainInput
+          label="الوظيفة"
+          id="jobTitle2"
+          name="jobTitle2"
+          placeholder="مثال: مدير مالي"
+          value={formik.values.jobTitle2}
+          onChange={formik.handleChange}
+          error={getError("jobTitle2")}
+          icon={<User />}
+        />
+
+        <MainInput
+          label="العنوان"
+          id="address3"
+          name="address3"
+          placeholder="مثال: شارع الهرم، الجيزة"
+          value={formik.values.address3}
+          onChange={formik.handleChange}
+          error={getError("address3")}
+          icon={<Landmark />}
+        />
+
+        <MainInput
+          label="نوع التفويض"
+          type="select"
+          id="authorizationType"
+          name="authorizationType"
+          options={[
+            { value: "شامل", label: "شامل" },
+            { value: "جزئي", label: "جزئي" },
+          ]}
+          value={formik.values.authorizationType}
+          onChange={formik.handleChange}
+          error={getError("authorizationType")}
+          icon={<KeyRound />}
+        />
+
+        <MainInput
+          label="سقف التفويض"
+          id="authorizationLimit"
+          name="authorizationLimit"
+          placeholder="مثال: 100000"
+          value={formik.values.authorizationLimit}
+          onChange={formik.handleChange}
+          error={getError("authorizationLimit")}
+          icon={<BadgeDollarSign />}
+        />
+
+        <MainInput
+          label="صلاحية التفويض"
+          type="select"
+          id="authorizationValidity"
+          name="authorizationValidity"
+          options={[
+            { value: "6 شهور", label: "6 شهور" },
+            { value: "12 شهر", label: "12 شهر" },
+            { value: "غير محدد", label: "غير محدد" },
+          ]}
+          value={formik.values.authorizationValidity}
+          onChange={formik.handleChange}
+          error={getError("authorizationValidity")}
+          icon={<CalendarCheck2 />}
+        />
+
+        <MainInput
+          label="رقم الهاتف"
+          id="phone3"
+          name="phone3"
+          placeholder="مثال: 0551234567"
+          value={formik.values.phone3}
+          onChange={formik.handleChange}
+          error={getError("phone3")}
+          icon={<Phone />}
+        />
+
+        <MainInput
+          label="البريد الإلكتروني"
+          id="email3"
+          name="email3"
+          placeholder="مثال: delegate@example.com"
+          value={formik.values.email3}
+          onChange={formik.handleChange}
+          error={getError("email3")}
+          icon={<MailOpen />}
         />
       </div>
+
+      <label className="flex items-center gap-2 cursor-pointer text-primary font-bold mt-4">
+        <input
+          type="checkbox"
+          name="isPrimaryContact"
+          checked={formik.values.isPrimaryContact}
+          onChange={formik.handleChange}
+          className="w-4 h-4 accent-primary"
+        />
+        <span>اجعل هذا المفوض هو نقطة التواصل الرئيسية لمنصة ضمانة</span>
+      </label>
     </>
   );
 };
 
-export default Step2;
+export default Step2Company;

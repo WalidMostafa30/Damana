@@ -8,13 +8,9 @@ import {
 } from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput";
 
-const Step0Company = ({ formik, getError, title }) => {
+const Step0Company = ({ formik, getError }) => {
   return (
     <>
-      <h3 className="text-lg text-white font-bold bg-primary p-4 rounded-e-2xl w-fit">
-        {title}
-      </h3>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="اسم الشركة باللغة العربية"
