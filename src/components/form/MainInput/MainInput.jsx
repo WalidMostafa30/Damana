@@ -1,5 +1,9 @@
-import React, { useState } from "react";
-import { CircleAlert, Eye, EyeOff } from "lucide-react";
+import { useState } from "react";
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/lib/style.css";
+import "./MainInput.css";
+import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
+import { PiWarningCircleBold } from "react-icons/pi";
 
 const MainInput = ({
   label,
@@ -30,7 +34,8 @@ const MainInput = ({
 
   const commonError = error && (
     <p className="mt-2 flex items-center gap-1 text-sm">
-      <CircleAlert className="text-error-100" size={18} /> {error}
+      <PiWarningCircleBold className="text-error-100 text-2xl" />
+      {error}
     </p>
   );
 
@@ -38,7 +43,10 @@ const MainInput = ({
     return (
       <div>
         {commonLabel}
-        <textarea {...props} className={`${commonInputClasses} h-32 resize-none ps-2!`} />
+        <textarea
+          {...props}
+          className={`${commonInputClasses} h-32 resize-none ps-2!`}
+        />
         {commonError}
       </div>
     );
@@ -50,7 +58,7 @@ const MainInput = ({
         {commonLabel}
         <div className="relative">
           {icon && (
-            <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none">
+            <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none text-2xl">
               {icon}
             </span>
           )}
@@ -77,22 +85,40 @@ const MainInput = ({
     );
   }
 
+  // ------ Phone Input (type = tel) ------
+  if (type === "tel") {
+    return (
+      <div dir="ltr">
+        {commonLabel}
+        <PhoneInput
+          country={"jo"}
+          inputClass="!w-full !h-auto !p-4 !ps-12 !text-lg !rounded-lg !border-none !outline-none !ring-2 !ring-neutral-300 focus:!ring-secondary transition-all overflow-hidden"
+          dropdownClass="!text-lg !bg-white !shadow-lg"
+          {...props}
+        />
+        {commonError}
+      </div>
+    );
+  }
+
   return (
     <div>
       {commonLabel}
       <div className="relative">
         {icon && (
-          <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none">
+          <span className="text-neutral-500 absolute top-1/2 -translate-y-1/2 start-2 pointer-events-none text-2xl">
             {icon}
           </span>
         )}
+
         <input {...props} type={inputType} className={commonInputClasses} />
+
         {isPassword && (
           <span
             onClick={() => setShowPassword(!showPassword)}
-            className="text-neutral-500 cursor-pointer absolute top-1/2 -translate-y-1/2 end-2"
+            className="text-neutral-500 cursor-pointer absolute top-1/2 -translate-y-1/2 end-2 text-2xl"
           >
-            {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+            {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>
         )}
       </div>

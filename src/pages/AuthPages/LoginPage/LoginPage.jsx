@@ -1,9 +1,9 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Lock, Phone } from "lucide-react";
 import { Link } from "react-router-dom";
-import MainInput from "../../../components/form/MainInput";
+import MainInput from "../../../components/form/MainInput/MainInput";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import { GoLock } from "react-icons/go";
 
 const loginSchema = Yup.object({
   phoneNumber: Yup.string()
@@ -42,12 +42,11 @@ const LoginPage = () => {
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput
-          type="number"
+          type="tel"
           id="phone"
           name="phoneNumber"
           placeholder="96269077885+"
           label="رقم الهاتف"
-          icon={<Phone />}
           value={formik.values.phoneNumber}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
@@ -60,7 +59,7 @@ const LoginPage = () => {
           name="password"
           placeholder="••••••••••"
           label="كلمة المرور"
-          icon={<Lock />}
+          icon={<GoLock />}
           value={formik.values.password}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}

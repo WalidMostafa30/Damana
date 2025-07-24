@@ -8,7 +8,7 @@ import {
   BadgeDollarSign,
   CalendarCheck2,
 } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput";
+import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step2Company = ({ formik, getError }) => {
   return (

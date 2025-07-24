@@ -95,7 +95,7 @@ const stepSchemas = [
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(0);
 
   const formik = useFormik({
     initialValues: {

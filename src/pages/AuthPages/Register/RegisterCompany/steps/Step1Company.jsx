@@ -1,5 +1,5 @@
 import { Building2, CirclePlus, Landmark, MailOpen, Phone } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput";
+import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step1Company = ({ formik, getError }) => {
   return (

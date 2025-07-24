@@ -6,7 +6,7 @@ import {
   Landmark,
   MailOpen,
 } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput";
+import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step0Company = ({ formik, getError }) => {
   return (

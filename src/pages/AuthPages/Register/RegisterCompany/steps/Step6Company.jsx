@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Plus } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput";
+import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const groupOptions = [
   "مجموعة شركات إيصال",

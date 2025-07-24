@@ -40,15 +40,16 @@ html {
 
 @layer {
   body {
-    @apply bg-base-white text-neutrals-800 font-['cairo'];
+    @apply bg-white text-neutrals-800 font-['cairo'];
   }
 
-  .sectionPadding {
-    @apply py-6 lg:py-10;
+  .pageContainer {
+    @apply container py-6 lg:py-10 min-h-[calc(100vh-220px)];
   }
 
   .mainBtn {
-    @apply w-full bg-primary text-white text-lg font-semibold py-3 rounded-lg border-2 border-primary cursor-pointer duration-300;
+    @apply w-full bg-primary text-white text-lg font-semibold py-3 rounded-lg border-2 border-primary
+      flex items-center justify-center gap-2 cursor-pointer duration-300;
 
     &:hover {
       @apply bg-secondary border-secondary;
@@ -68,11 +69,21 @@ html {
   }
 
   .navLink {
-    @apply text-lg duration-300;
+    @apply text-lg text-gray-300 duration-300;
 
     &.active,
     &:hover {
-      @apply text-white;
+      @apply text-white font-bold;
+    }
+  }
+
+  .homeLink {
+    @apply text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl flex-1 text-center 
+    cursor-pointer duration-200 flex items-center justify-center gap-2;
+
+    &:hover,
+    &.active {
+      @apply text-white bg-success-200 border-success-200;
     }
   }
 }

@@ -1,10 +1,10 @@
-import { Link } from "react-router-dom";
-import { Lock, StickyNote } from "lucide-react";
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import MainInput from "../../../components/form/MainInput";
+import MainInput from "../../../components/form/MainInput/MainInput";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import { GoLock } from "react-icons/go";
+import { FaRegStickyNote } from "react-icons/fa";
 
 const CreateNewPassword = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
@@ -78,7 +78,7 @@ const CreateNewPassword = () => {
           name="password"
           placeholder="••••••••••"
           label="كلمة المرور"
-          icon={<Lock />}
+          icon={<GoLock />}
           value={formik.values.password}
           onChange={(e) => {
             formik.handleChange(e);
@@ -90,7 +90,7 @@ const CreateNewPassword = () => {
         />
 
         <p className="flex items-center gap-2 text-neutral-500">
-          <StickyNote />
+          <FaRegStickyNote className="text-2xl" />
           يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف
         </p>
 

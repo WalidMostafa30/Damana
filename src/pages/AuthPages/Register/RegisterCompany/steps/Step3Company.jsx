@@ -7,7 +7,7 @@ import {
   Building2,
   User,
 } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput";
+import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step3Company = ({ formik, getError }) => {
   return (

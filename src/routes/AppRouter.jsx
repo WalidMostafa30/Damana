@@ -5,6 +5,7 @@ import AuthLayout from "../pages/AuthPages/AuthLayout";
 import Loading from "../components/layout/Loading/Loading";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
+const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
 const LoginPage = React.lazy(() =>
   import("../pages/AuthPages/LoginPage/LoginPage")
 );
@@ -26,7 +27,10 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <App />,
-    children: [{ index: true, element: <Home /> }],
+    children: [
+      { index: true, element: <Home /> },
+      { path: "add-damana", element: <AddDamana /> },
+    ],
   },
   {
     path: "/auth",

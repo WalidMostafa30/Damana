@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import MainInput from "../../../components/form/MainInput";
-import { Link, useNavigate } from "react-router-dom";
-import { Phone } from "lucide-react";
+import MainInput from "../../../components/form/MainInput/MainInput";
+import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import { CiMail } from "react-icons/ci";
 
 const ForgotPassword = () => {
   const [method, setMethod] = useState("phone");
@@ -62,12 +62,11 @@ const ForgotPassword = () => {
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         {method === "phone" ? (
           <MainInput
-            type="number"
+            type="tel"
             id="phoneNumber"
             name="phoneNumber"
             placeholder="96269077885+"
             label="رقم الهاتف"
-            icon={<Phone />}
             value={formik.values.phoneNumber}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -79,6 +78,7 @@ const ForgotPassword = () => {
             name="email"
             type="text"
             placeholder="أدخل بريدك الإلكتروني"
+            icon={<CiMail />}
             label="البريد الإلكتروني"
             value={formik.values.email}
             onChange={formik.handleChange}
