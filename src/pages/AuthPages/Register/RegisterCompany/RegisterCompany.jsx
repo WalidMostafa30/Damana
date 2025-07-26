@@ -12,6 +12,8 @@ import Step4Company from "./steps/Step4Company";
 import Step5Company from "./steps/Step5Company";
 import Step6Company from "./steps/Step6Company";
 import { ImArrowRight } from "react-icons/im";
+import AuthLayout from "../../../../components/layout/AuthLayout";
+import get from "lodash.get";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -23,74 +25,145 @@ const steps = [
   "الخطوة الأخيرة: تحديد المجموعة",
 ];
 
+const FILE_SUPPORTED_FORMATS = [
+  "image/jpeg",
+  "image/png",
+  "image/gif",
+  "application/pdf",
+];
+
+const partnerYup = Yup.object({
+  full_name: Yup.string().required("الحقل مطلوب"),
+  nationality: Yup.string().required("الحقل مطلوب"),
+  national_passport_number: Yup.string().required("الحقل مطلوب"),
+  address: Yup.string().required("الحقل مطلوب"),
+  phone: Yup.string().required("الحقل مطلوب"),
+  email: Yup.string().email("بريد غير صحيح").required("الحقل مطلوب"),
+});
+
 const stepSchemas = [
+  // Step 1
   Yup.object({
-    companyNameAr: Yup.string().required("مطلوب"),
-    companyNameEn: Yup.string().required("مطلوب"),
-    tradeNameAr: Yup.string().required("مطلوب"),
-    tradeNameEn: Yup.string().required("مطلوب"),
-    registrationType: Yup.string().required("مطلوب"),
-    country: Yup.string().required("مطلوب"),
-    registrationAuthority: Yup.string().required("مطلوب"),
-    registrationNumber: Yup.number().required("مطلوب"),
-    registrationDate: Yup.date().required("مطلوب"),
-    nationalCompanyId: Yup.number().required("مطلوب"),
-    website: Yup.string().required("مطلوب").url("رابط غير صحيح"),
-    licenseNumber: Yup.number().required("مطلوب"),
-    address: Yup.string().required("مطلوب"),
-    email: Yup.string().required("مطلوب").email("بريد غير صحيح"),
-    phone: Yup.number().required("مطلوب"),
-    taxNumber: Yup.number().required("مطلوب"),
-    capital: Yup.number().typeError("رقم فقط").required("مطلوب"),
-    currency: Yup.string().required("مطلوب"),
+    ar_name: Yup.string().required("الحقل مطلوب"),
+    en_name: Yup.string().required("الحقل مطلوب"),
+    commercial_ar_name: Yup.string().required("الحقل مطلوب"),
+    commercial_en_name: Yup.string().required("الحقل مطلوب"),
+    registration_type_legal_form: Yup.string().required("الحقل مطلوب"),
+    country_registration: Yup.string().required("الحقل مطلوب"),
+    registration_authority: Yup.string().required("الحقل مطلوب"), // أضف هذا
+    commercial_registration_number: Yup.string().required("الحقل مطلوب"),
+    registration_date: Yup.string().required("الحقل مطلوب"),
+    national_number: Yup.string().required("الحقل مطلوب"),
+    website_url: Yup.string()
+      .required("الحقل مطلوب")
+      .url("عنوان موقع غير صالح"),
+    license_number: Yup.string().required("الحقل مطلوب"),
+    address: Yup.string().required("الحقل مطلوب"),
+    email: Yup.string().email("بريد غير صحيح").required("الحقل مطلوب"),
+    phone: Yup.string().required("الحقل مطلوب"),
+    tax_number: Yup.string().required("الحقل مطلوب"),
+    capital_equity: Yup.string().required("الحقل مطلوب"),
+    signed_name: Yup.string().required("الحقل مطلوب"),
   }),
+
+  // Step 2
   Yup.object({
-    fullName: Yup.string().required("مطلوب"),
-    nationality: Yup.string().required("مطلوب"),
-    nationalIdOrPassport: Yup.string().required("مطلوب"),
-    address2: Yup.string().required("مطلوب"),
-    phone2: Yup.string().required("مطلوب"),
-    email2: Yup.string().email("بريد غير صحيح").required("مطلوب"),
+    partners: Yup.array()
+      .of(partnerYup)
+      .min(1, "يجب إضافة شريك واحد على الأقل"),
   }),
+
+  // Step 3
   Yup.object({
-    authorizationText: Yup.string().required("مطلوب"),
-    fullName2: Yup.string().required("مطلوب"),
-    nationality2: Yup.string().required("مطلوب"),
-    nationalIdOrPassport2: Yup.string().required("مطلوب"),
-    jobTitle2: Yup.string().required("مطلوب"),
-    address3: Yup.string().required("مطلوب"),
-    authorizationType: Yup.string().required("مطلوب"),
-    authorizationLimit: Yup.number().typeError("رقم فقط").required("مطلوب"),
-    authorizationValidity: Yup.string().required("مطلوب"),
-    phone3: Yup.string().required("مطلوب"),
-    email3: Yup.string().email("بريد غير صحيح").required("مطلوب"),
-    isPrimaryContact: Yup.boolean(),
+    commissioners_text: Yup.string().required("الحقل مطلوب"),
+    commissioners: Yup.array().of(
+      Yup.object({
+        full_name: Yup.string().required("الحقل مطلوب"),
+        nationality: Yup.string().required("الحقل مطلوب"),
+        national_passport_number: Yup.string().required("الحقل مطلوب"),
+        job: Yup.string().required("الحقل مطلوب"),
+        address: Yup.string().required("الحقل مطلوب"),
+        type: Yup.string().required("الحقل مطلوب"),
+        top_commissioner: Yup.string().required("الحقل مطلوب"),
+        commissioner_permissions: Yup.string().required("الحقل مطلوب"),
+        phone: Yup.string().required("الحقل مطلوب"),
+        email: Yup.string().email("بريد غير صحيح").required("الحقل مطلوب"),
+        delegation_permissions: Yup.string().required("الحقل مطلوب"),
+      })
+    ),
+    managementCommissioners: Yup.object().shape({
+      full_name: Yup.string().required("الحقل مطلوب"),
+      nationality: Yup.string().required("الحقل مطلوب"),
+      national_passport_number: Yup.string().required("الحقل مطلوب"),
+      address: Yup.string().required("الحقل مطلوب"),
+      type: Yup.string().required("الحقل مطلوب"),
+      top_commissioner: Yup.string().required("الحقل مطلوب"),
+      commissioner_permissions: Yup.string().required("الحقل مطلوب"),
+      phone: Yup.string().required("الحقل مطلوب"),
+      email: Yup.string().email("بريد غير صحيح").required("الحقل مطلوب"),
+      delegation_permissions: Yup.string().required("الحقل مطلوب"),
+    }),
   }),
+
+  // Step 4
   Yup.object({
-    bankName: Yup.string().required("مطلوب"),
-    accountNumber: Yup.string().required("مطلوب"),
-    iban: Yup.string().required("مطلوب"),
-    swiftCode: Yup.string().required("مطلوب"),
-    currencyBank: Yup.string().required("مطلوب"),
-    branch: Yup.string().required("مطلوب"),
-    cliqUser: Yup.string().required("مطلوب"),
+    bank_name: Yup.string().required("اسم البنك مطلوب"),
+    account_number: Yup.string().required("رقم الحساب مطلوب"),
+    iban: Yup.string().required("رقم الايبان مطلوب"),
+    branch: Yup.string().required("اسم الفرع مطلوب"),
+    swift_code: Yup.string().required("رمز السويفت مطلوب"),
+    currency: Yup.string().required("العملة مطلوبة"),
+    clik_name: Yup.string().required("العملة مطلوبة"),
+    info_name: Yup.string().required("اسم المصرح بالبيانات مطلوب"),
   }),
+
+  // Step 5
   Yup.object({
-    commercialReg: Yup.mixed().required("هذا الحقل مطلوب"),
-    establishmentContract: Yup.mixed().required("هذا الحقل مطلوب"),
-    addressLicense: Yup.mixed().required("هذا الحقل مطلوب"),
-    delegateID: Yup.mixed().required("هذا الحقل مطلوب"),
+    file_commercial_register: Yup.mixed()
+      .required("ملف السجل التجاري مطلوب")
+      .test(
+        "fileFormat",
+        "صيغة ملف غير مدعومة. فقط صور و PDF مسموح بها.",
+        (value) => value && FILE_SUPPORTED_FORMATS.includes(value.type)
+      ),
+    file_memorandum_association: Yup.mixed()
+      .required("ملف عقد التأسيس مطلوب")
+      .test(
+        "fileFormat",
+        "صيغة ملف غير مدعومة. فقط صور و PDF مسموح بها.",
+        (value) => value && FILE_SUPPORTED_FORMATS.includes(value.type)
+      ),
+    file_Professional_License_lease_contract: Yup.mixed()
+      .required("ملف الترخيص أو عقد الإيجار مطلوب")
+      .test(
+        "fileFormat",
+        "صيغة ملف غير مدعومة. فقط صور و PDF مسموح بها.",
+        (value) => value && FILE_SUPPORTED_FORMATS.includes(value.type)
+      ),
+    file_identity_document_signatories: Yup.mixed()
+      .required("ملف الهوية للموقعين مطلوب")
+      .test(
+        "fileFormat",
+        "صيغة ملف غير مدعومة. فقط صور و PDF مسموح بها.",
+        (value) => value && FILE_SUPPORTED_FORMATS.includes(value.type)
+      ),
   }),
+
+  // Step 6
   Yup.object({
-    approval: Yup.boolean()
-      .oneOf([true], "يجب الموافقة على الإقرار والتعهد")
-      .required("هذا الحقل مطلوب"),
+    acknowledgement: Yup.string().oneOf(
+      ["yes"],
+      "يجب الموافقة على الإقرار قبل المتابعة"
+    ),
   }),
+
+  // Step 7
   Yup.object({
-    group: Yup.string().required("هذا الحقل مطلوب"),
-    approval: Yup.boolean()
-      .oneOf([true], "يجب الموافقة على الإقرار والتعهد")
-      .required("هذا الحقل مطلوب"),
+    group_id: Yup.object(),
+    accept_policy_terms: Yup.string().oneOf(
+      ["yes"],
+      "يجب الموافقة على الإقرار قبل المتابعة"
+    ),
   }),
 ];
 
@@ -99,67 +172,95 @@ const RegisterCompany = () => {
 
   const formik = useFormik({
     initialValues: {
-      // Step 0 values
-      companyNameAr: "",
-      companyNameEn: "",
-      tradeNameAr: "",
-      tradeNameEn: "",
-      registrationType: "",
-      country: "",
-      registrationAuthority: "",
-      registrationNumber: "",
-      registrationDate: "",
-      nationalCompanyId: "",
-      website: "",
-      licenseNumber: "",
+      // Step 0 (Step 1 في الـ Schema)
+      ar_name: "",
+      en_name: "",
+      commercial_ar_name: "",
+      commercial_en_name: "",
+      registration_type_legal_form: "",
+      country_registration: "",
+      registration_authority: "",
+      commercial_registration_number: "",
+      registration_date: "",
+      national_number: "",
+      website_url: "",
+      license_number: "",
       address: "",
       email: "",
       phone: "",
-      taxNumber: "",
-      capital: "",
-      currency: "",
-      // Step 1 values
-      fullName: "",
-      nationality: "",
-      nationalIdOrPassport: "",
-      address2: "",
-      phone2: "",
-      email2: "",
-      // Step 2 values (delegates)
-      authorizationText: "",
-      fullName2: "",
-      nationality2: "",
-      nationalIdOrPassport2: "",
-      jobTitle2: "",
-      address3: "",
-      authorizationType: "",
-      authorizationLimit: "",
-      authorizationValidity: "",
-      phone3: "",
-      email3: "",
-      isPrimaryContact: false,
-      // Step 3 values
-      bankName: "",
-      accountNumber: "",
+      tax_number: "",
+      capital_equity: "",
+      signed_name: "",
+
+      // Step 1 (Step 2 في الـ Schema)
+      partners: [
+        {
+          full_name: "",
+          nationality: "",
+          national_passport_number: "",
+          address: "",
+          phone: "",
+          email: "",
+        },
+      ],
+
+      // Step 2 (Step 3 في الـ Schema)
+      commissioners_text: "",
+      commissioners: [
+        {
+          full_name: "",
+          nationality: "",
+          national_passport_number: "",
+          job: "",
+          address: "",
+          type: "",
+          top_commissioner: "",
+          commissioner_permissions: "",
+          phone: "",
+          email: "",
+          delegation_permissions: "",
+        },
+      ],
+      managementCommissioners: {
+        full_name: "",
+        nationality: "",
+        national_passport_number: "",
+        address: "",
+        type: "",
+        top_commissioner: "",
+        commissioner_permissions: "",
+        phone: "",
+        email: "",
+        delegation_permissions: "",
+      },
+
+      // Step 3 (Step 4 في الـ Schema)
+      bank_name: "",
+      account_number: "",
       iban: "",
-      swiftCode: "",
-      currencyBank: "",
       branch: "",
-      cliqUser: "",
-      // Step 4 values
-      commercialReg: null,
-      establishmentContract: null,
-      addressLicense: null,
-      delegateID: null,
-      // Step 5 values
-      approval: false,
-      // Step 6 values
-      group: "",
+      swift_code: "",
+      currency: "",
+      clik_name: "",
+      info_name: "",
+
+      // Step 4 (Step 5 في الـ Schema)
+      file_commercial_register: null,
+      file_memorandum_association: null,
+      file_Professional_License_lease_contract: null,
+      file_identity_document_signatories: null,
+
+      // Step 5 (Step 6 في الـ Schema)
+      acknowledgement: "",
+
+      // Step 6 (Step 7 في الـ Schema)
+      group_id: {},
+      accept_policy_terms: "",
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
     onSubmit: (values) => {
-      if (step < steps.length - 1) {
+      if (step < stepSchemas.length - 1) {
         setStep((prev) => prev + 1);
         formik.setTouched({});
       } else {
@@ -168,8 +269,14 @@ const RegisterCompany = () => {
     },
   });
 
-  const getError = (name) =>
-    formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+  // const getError = (name) =>
+  //   formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+
+  const getError = (name) => {
+    const touched = get(formik.touched, name);
+    const error = get(formik.errors, name);
+    return touched && error ? error : "";
+  };
 
   const renderStep = () => {
     switch (step) {
@@ -192,13 +299,7 @@ const RegisterCompany = () => {
         return <Step5Company formik={formik} getError={getError} />;
 
       case 6:
-        return (
-          <Step6Company
-            formik={formik}
-            getError={getError}
-            title={steps[step]}
-          />
-        );
+        return <Step6Company formik={formik} getError={getError} />;
 
       default:
         return null;
@@ -206,7 +307,7 @@ const RegisterCompany = () => {
   };
 
   return (
-    <>
+    <AuthLayout>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-8">أهلاً في ضمانة!</h2>
         <Breadcrumbs
@@ -243,7 +344,7 @@ const RegisterCompany = () => {
           </button>
         )}
       </form>
-    </>
+    </AuthLayout>
   );
 };
 

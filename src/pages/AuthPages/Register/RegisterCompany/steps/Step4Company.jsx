@@ -18,7 +18,6 @@ const FileInput = ({ label, name, formik, error }) => {
         />
         <label htmlFor={name} className="cursor-pointer">
           <MdCloudUpload className="mx-auto text-gray-400 text-5xl" />
-
           <p className="text-sm text-gray-500 mt-2">
             اسحب الملف هنا أو اضغط لاختياره
           </p>
@@ -35,30 +34,30 @@ const Step4Company = ({ formik, getError }) => {
       <div className="grid grid-cols-1 gap-4 mt-4">
         <FileInput
           label="نسخة حديثة من السجل التجاري"
-          name="commercialReg"
+          name="file_commercial_register"
           formik={formik}
-          error={getError("commercialReg")}
+          error={getError("file_commercial_register")}
         />
 
         <FileInput
           label="نسخة من عقد التأسيس"
-          name="establishmentContract"
+          name="file_memorandum_association"
           formik={formik}
-          error={getError("establishmentContract")}
+          error={getError("file_memorandum_association")}
         />
 
         <FileInput
           label="نسخة عن رخصة المزاولة و/أو نسخة عن عقد إيجار مصدق"
-          name="addressLicense"
+          name="file_Professional_License_lease_contract"
           formik={formik}
-          error={getError("addressLicense")}
+          error={getError("file_Professional_License_lease_contract")}
         />
 
         <FileInput
           label="إثبات الشخصية للمفوضين بالتوقيع"
-          name="delegateID"
+          name="file_identity_document_signatories"
           formik={formik}
-          error={getError("delegateID")}
+          error={getError("file_identity_document_signatories")}
         />
       </div>
     </>

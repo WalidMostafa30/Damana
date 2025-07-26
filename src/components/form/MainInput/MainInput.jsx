@@ -1,7 +1,7 @@
 import { useState } from "react";
 import PhoneInput from "react-phone-input-2";
-import "react-phone-input-2/lib/style.css";
 import "./MainInput.css";
+import "react-phone-input-2/lib/style.css";
 import { FaRegEye, FaRegEyeSlash } from "react-icons/fa";
 import { PiWarningCircleBold } from "react-icons/pi";
 
@@ -11,23 +11,24 @@ const MainInput = ({
   type = "text",
   options = [],
   error,
-  ...props
+  id,
+  value,
+  onChange,
+  onBlur,
+  placeholder,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-  const commonInputClasses = `w-full text-lg outline-none border-none py-4 ${
+  const commonInputClasses = `w-full text-lg bg-white outline-none border-none py-4 ${
     isPassword ? "px-9" : type === "date" ? "px-2" : "ps-9 pe-2"
   } rounded-lg ring-2 ${
     error ? "ring-error-100" : "ring-neutral-300 focus-within:ring-secondary"
   } transition-all`;
 
   const commonLabel = label && (
-    <label
-      htmlFor={props.id || props.name}
-      className="block w-fit font-semibold mb-2"
-    >
+    <label htmlFor={id} className="block w-fit font-semibold mb-2">
       {label}
     </label>
   );
@@ -44,7 +45,11 @@ const MainInput = ({
       <div>
         {commonLabel}
         <textarea
-          {...props}
+          id={id}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
           className={`${commonInputClasses} h-32 resize-none ps-2!`}
         />
         {commonError}
@@ -62,7 +67,13 @@ const MainInput = ({
               {icon}
             </span>
           )}
-          <select {...props} className={commonInputClasses}>
+          <select
+            id={id}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+            className={commonInputClasses}
+          >
             {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
@@ -79,23 +90,40 @@ const MainInput = ({
     return (
       <div>
         {commonLabel}
-        <input {...props} type="date" className={commonInputClasses} />
+        <input
+          id={id}
+          type="date"
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          className={commonInputClasses}
+        />
         {commonError}
       </div>
     );
   }
 
-  // ------ Phone Input (type = tel) ------
   if (type === "tel") {
     return (
-      <div dir="ltr">
+      <div>
         {commonLabel}
-        <PhoneInput
-          country={"jo"}
-          inputClass="!w-full !h-auto !p-4 !ps-12 !text-lg !rounded-lg !border-none !outline-none !ring-2 !ring-neutral-300 focus:!ring-secondary transition-all overflow-hidden"
-          dropdownClass="!text-lg !bg-white !shadow-lg"
-          {...props}
-        />
+        <div dir="ltr">
+          <PhoneInput
+            id={id}
+            country={"jo"}
+            value={value}
+            onChange={(phone) => onChange(phone)}
+            inputClass={`form-control !w-full !h-auto !p-4 !ps-14 !text-lg !rounded-lg !border-none !outline-none !ring-2 
+            !ring-neutral-300 focus:!ring-secondary transition-all ${
+              error
+                ? "!ring-error-100"
+                : "!ring-neutral-300 focus-within:!ring-secondary"
+            }`}
+            dropdownClass="!text-lg !bg-white !shadow-lg"
+            buttonClass="!text-lg !bg-gray-100 !border-none !rounded-s-lg"
+          />
+        </div>
         {commonError}
       </div>
     );
@@ -111,7 +139,15 @@ const MainInput = ({
           </span>
         )}
 
-        <input {...props} type={inputType} className={commonInputClasses} />
+        <input
+          id={id}
+          type={inputType}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+          placeholder={placeholder}
+          className={commonInputClasses}
+        />
 
         {isPassword && (
           <span

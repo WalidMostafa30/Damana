@@ -14,7 +14,7 @@ const Step6Company = ({ formik, getError }) => {
 
   const handleAddGroup = () => {
     if (customGroupName.trim()) {
-      formik.setFieldValue("group", customGroupName);
+      formik.setFieldValue("group_id", { name: customGroupName });
       setCustomGroupName("");
       setShowAddGroupInput(false);
     }
@@ -24,12 +24,14 @@ const Step6Company = ({ formik, getError }) => {
     <>
       <MainInput
         label="هل تنتمي شركتك إلى مجموعة شركات؟"
-        id="group"
+        id="group_id"
         type="select"
-        name="group"
-        value={formik.values.group || ""}
-        onChange={formik.handleChange}
-        error={getError("group")}
+        name="group_id"
+        value={formik.values.group_id?.name || ""}
+        onChange={(e) =>
+          formik.setFieldValue("group_id", { name: e.target.value })
+        }
+        error={getError("group_id")}
         options={[
           { label: "اختر مجموعة", value: "" },
           ...groupOptions.map((group) => ({ label: group, value: group })),
@@ -42,7 +44,7 @@ const Step6Company = ({ formik, getError }) => {
         onClick={() => setShowAddGroupInput(!showAddGroupInput)}
       >
         <FaCirclePlus className="text-2xl" />
-        إضافة مفوض جديد على مستوى المجموعة
+        إضافة مجموعة جديدة
       </button>
 
       {showAddGroupInput && (
@@ -67,9 +69,14 @@ const Step6Company = ({ formik, getError }) => {
       <label className="flex items-center gap-2 mt-6">
         <input
           type="checkbox"
-          name="approval"
-          checked={formik.values.approval}
-          onChange={(e) => formik.setFieldValue("approval", e.target.checked)}
+          name="accept_policy_terms"
+          checked={formik.values.accept_policy_terms === "yes"}
+          onChange={(e) =>
+            formik.setFieldValue(
+              "accept_policy_terms",
+              e.target.checked ? "yes" : ""
+            )
+          }
           className="h-5 w-5 accent-primary focus:ring-primary"
         />
         <span>

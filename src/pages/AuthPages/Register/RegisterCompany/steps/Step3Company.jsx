@@ -8,22 +8,22 @@ const Step3Company = ({ formik, getError }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="اسم البنك"
-          id="bankName"
-          name="bankName"
+          id="bank_name"
+          name="bank_name"
           placeholder="مثال: البنك الأهلي"
-          value={formik.values.bankName}
+          value={formik.values.bank_name}
           onChange={formik.handleChange}
-          error={getError("bankName")}
+          error={getError("bank_name")}
         />
 
         <MainInput
           label="رقم الحساب"
-          id="accountNumber"
-          name="accountNumber"
+          id="account_number"
+          name="account_number"
           placeholder="مثال: 1234567890"
-          value={formik.values.accountNumber}
+          value={formik.values.account_number}
           onChange={formik.handleChange}
-          error={getError("accountNumber")}
+          error={getError("account_number")}
         />
 
         <MainInput
@@ -38,22 +38,22 @@ const Step3Company = ({ formik, getError }) => {
 
         <MainInput
           label="رقم السويفت (SWIFT Code)"
-          id="swiftCode"
-          name="swiftCode"
+          id="swift_code"
+          name="swift_code"
           placeholder="مثال: NBEGEGCXXXX"
-          value={formik.values.swiftCode}
+          value={formik.values.swift_code}
           onChange={formik.handleChange}
-          error={getError("swiftCode")}
+          error={getError("swift_code")}
         />
 
         <MainInput
           label="العملة"
-          id="currencyBank"
-          name="currencyBank"
+          id="currency"
+          name="currency"
           placeholder="مثال: ريال سعودي"
-          value={formik.values.currencyBank}
+          value={formik.values.currency}
           onChange={formik.handleChange}
-          error={getError("currencyBank")}
+          error={getError("currency")}
         />
 
         <MainInput
@@ -68,12 +68,22 @@ const Step3Company = ({ formik, getError }) => {
 
         <MainInput
           label="اسم المستخدم (CLIQ)"
-          id="cliqUser"
-          name="cliqUser"
+          id="clik_name"
+          name="clik_name"
           placeholder="مثال: user@bank.com"
-          value={formik.values.cliqUser}
+          value={formik.values.clik_name}
           onChange={formik.handleChange}
-          error={getError("cliqUser")}
+          error={getError("clik_name")}
+        />
+
+        <MainInput
+          label="اسم المصرح بالبيانات"
+          id="info_name"
+          name="info_name"
+          placeholder="مثال: أحمد علي"
+          value={formik.values.info_name}
+          onChange={formik.handleChange}
+          error={getError("info_name")}
         />
       </div>
     </>

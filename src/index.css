@@ -60,7 +60,7 @@ html {
     }
 
     &.light {
-      @apply bg-transparent text-primary;
+      @apply bg-white text-primary;
 
       &:hover {
         @apply bg-primary border-primary text-white;

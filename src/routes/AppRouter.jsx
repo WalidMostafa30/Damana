@@ -5,7 +5,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import App from "../App";
-import AuthLayout from "../pages/AuthPages/AuthLayout";
 import Loading from "../components/layout/Loading/Loading";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
@@ -53,18 +52,13 @@ const router = createBrowserRouter([
       { path: "damana", element: <DamanaDetails /> },
     ],
   },
-  {
-    path: "/auth",
-    element: <AuthLayout />,
-    children: [
-      { path: "login", element: <LoginPage /> },
-      { path: "forgot-password", element: <ForgotPassword /> },
-      { path: "reset-password", element: <ResetPassword /> },
-      { path: "create-new-password", element: <CreateNewPassword /> },
-      { path: "register-person", element: <RegisterPerson /> },
-      { path: "register-company", element: <RegisterCompany /> },
-    ],
-  },
+
+  { path: "login", element: <LoginPage /> },
+  { path: "forgot-password", element: <ForgotPassword /> },
+  { path: "reset-password", element: <ResetPassword /> },
+  { path: "create-new-password", element: <CreateNewPassword /> },
+  { path: "register-person", element: <RegisterPerson /> },
+  { path: "register-company", element: <RegisterCompany /> },
 ]);
 
 const AppRouter = () => {

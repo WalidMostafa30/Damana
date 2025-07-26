@@ -1,0 +1,10 @@
+.react-tel-input .selected-flag {
+  width: 50px !important;
+  background: #d8d8d8;
+  border-radius: 0.5rem 0 0 0.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid #ccc;
+  padding-left: 0!important;
+}

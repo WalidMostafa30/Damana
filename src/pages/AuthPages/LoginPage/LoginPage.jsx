@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { GoLock } from "react-icons/go";
+import AuthLayout from "../../../components/layout/AuthLayout";
 
 const loginSchema = Yup.object({
   phoneNumber: Yup.string()
@@ -31,7 +32,7 @@ const LoginPage = () => {
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
-    <>
+    <AuthLayout>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-4">أهلاً في ضمانة!</h2>
 
@@ -48,7 +49,7 @@ const LoginPage = () => {
           placeholder="96269077885+"
           label="رقم الهاتف"
           value={formik.values.phoneNumber}
-          onChange={formik.handleChange}
+          onChange={(phone) => formik.setFieldValue("phoneNumber", phone)}
           onBlur={formik.handleBlur}
           error={getError("phoneNumber")}
         />
@@ -77,10 +78,7 @@ const LoginPage = () => {
             />
             <span>تذكرني</span>
           </label>
-          <Link
-            to="/auth/forgot-password"
-            className="hover:text-primary transition"
-          >
+          <Link to="/forgot-password" className="hover:text-primary transition">
             نسيت كلمة المرور؟
           </Link>
         </div>
@@ -93,14 +91,14 @@ const LoginPage = () => {
           <p>
             ليس لديك حساب؟{" "}
             <Link
-              to="/auth/register-person"
+              to="/register-person"
               className="text-secondary hover:brightness-50 transition-colors"
             >
               إنشئ حساب فرديا
             </Link>{" "}
             أو قدم{" "}
             <Link
-              to="/auth/register-company"
+              to="/register-company"
               className="text-secondary hover:brightness-50 transition-colors"
             >
               طلب انضمام
@@ -109,7 +107,7 @@ const LoginPage = () => {
           </p>
         </div>
       </form>
-    </>
+    </AuthLayout>
   );
 };
 

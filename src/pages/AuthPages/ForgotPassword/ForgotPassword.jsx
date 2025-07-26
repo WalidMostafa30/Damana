@@ -5,6 +5,7 @@ import MainInput from "../../../components/form/MainInput/MainInput";
 import { useNavigate } from "react-router-dom";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
 import { CiMail } from "react-icons/ci";
+import AuthLayout from "../../../components/layout/AuthLayout";
 
 const ForgotPassword = () => {
   const [method, setMethod] = useState("phone");
@@ -33,7 +34,7 @@ const ForgotPassword = () => {
     validationSchema,
     onSubmit: (values) => {
       console.log("بيانات الاستعادة:", values);
-      navigate("/auth/reset-password");
+      navigate("/reset-password");
     },
     enableReinitialize: true,
   });
@@ -42,7 +43,7 @@ const ForgotPassword = () => {
     setMethod((prev) => (prev === "phone" ? "email" : "phone"));
 
   return (
-    <>
+    <AuthLayout>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-4">هل نسيت كلمة المرور ؟</h2>
 
@@ -68,7 +69,7 @@ const ForgotPassword = () => {
             placeholder="96269077885+"
             label="رقم الهاتف"
             value={formik.values.phoneNumber}
-            onChange={formik.handleChange}
+            onChange={(phone) => formik.setFieldValue("phoneNumber", phone)}
             onBlur={formik.handleBlur}
             error={formik.touched.phoneNumber && formik.errors.phoneNumber}
           />
@@ -101,7 +102,7 @@ const ForgotPassword = () => {
           ? "استخدام البريد الإلكتروني؟"
           : "استخدام رقم الهاتف؟"}
       </button>
-    </>
+    </AuthLayout>
   );
 };
 

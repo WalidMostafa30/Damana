@@ -1,3 +1,4 @@
+import { CgMailOpen } from "react-icons/cg";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step0Company = ({ formik, getError }) => {
@@ -6,49 +7,49 @@ const Step0Company = ({ formik, getError }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="اسم الشركة باللغة العربية"
-          id="companyNameAr"
-          name="companyNameAr"
+          id="ar_name"
+          name="ar_name"
           placeholder="مثال: الشركة العربية"
-          value={formik.values.companyNameAr}
+          value={formik.values.ar_name}
           onChange={formik.handleChange}
-          error={getError("companyNameAr")}
+          error={getError("ar_name")}
         />
 
         <MainInput
           label="اسم الشركة باللغة الإنجليزية"
-          id="companyNameEn"
-          name="companyNameEn"
+          id="en_name"
+          name="en_name"
           placeholder="Example: Arab Company"
-          value={formik.values.companyNameEn}
+          value={formik.values.en_name}
           onChange={formik.handleChange}
-          error={getError("companyNameEn")}
+          error={getError("en_name")}
         />
 
         <MainInput
           label="الاسم التجاري باللغة العربية"
-          id="tradeNameAr"
-          name="tradeNameAr"
+          id="commercial_ar_name"
+          name="commercial_ar_name"
           placeholder="مثال: المتجر الذهبي"
-          value={formik.values.tradeNameAr}
+          value={formik.values.commercial_ar_name}
           onChange={formik.handleChange}
-          error={getError("tradeNameAr")}
+          error={getError("commercial_ar_name")}
         />
 
         <MainInput
           label="الاسم التجاري باللغة الإنجليزية"
-          id="tradeNameEn"
-          name="tradeNameEn"
+          id="commercial_en_name"
+          name="commercial_en_name"
           placeholder="Example: Golden Store"
-          value={formik.values.tradeNameEn}
+          value={formik.values.commercial_en_name}
           onChange={formik.handleChange}
-          error={getError("tradeNameEn")}
+          error={getError("commercial_en_name")}
         />
 
         <MainInput
           label="نوع التسجيل / الشكل القانوني"
           type="select"
-          id="registrationType"
-          name="registrationType"
+          id="registration_type_legal_form"
+          name="registration_type_legal_form"
           options={[
             { value: "مؤسسة", label: "مؤسسة" },
             { value: "شركة مساهمة", label: "شركة مساهمة" },
@@ -57,87 +58,87 @@ const Step0Company = ({ formik, getError }) => {
               label: "شركة ذات مسؤولية محدودة",
             },
           ]}
-          value={formik.values.registrationType}
+          value={formik.values.registration_type_legal_form}
           onChange={formik.handleChange}
-          error={getError("registrationType")}
+          error={getError("registration_type_legal_form")}
         />
 
         <MainInput
           label="بلد التسجيل / جنسية الشركة"
           type="select"
-          id="country"
-          name="country"
+          id="country_registration"
+          name="country_registration"
           options={[
             { value: "مصر", label: "مصر" },
             { value: "السعودية", label: "السعودية" },
             { value: "الإمارات", label: "الإمارات" },
           ]}
-          value={formik.values.country}
+          value={formik.values.country_registration}
           onChange={formik.handleChange}
-          error={getError("country")}
+          error={getError("country_registration")}
         />
 
         <MainInput
           label="جهة التسجيل"
-          id="registrationAuthority"
-          name="registrationAuthority"
+          id="registration_authority"
+          name="registration_authority"
           placeholder="وزارة الصناعة"
-          value={formik.values.registrationAuthority}
+          value={formik.values.registration_authority}
           onChange={formik.handleChange}
-          error={getError("registrationAuthority")}
+          error={getError("registration_authority")}
         />
 
         <MainInput
           label="رقم التسجيل"
-          id="registrationNumber"
-          name="registrationNumber"
+          id="commercial_registration_number"
+          name="commercial_registration_number"
           placeholder="123456"
           type="number"
-          value={formik.values.registrationNumber}
+          value={formik.values.commercial_registration_number}
           onChange={formik.handleChange}
-          error={getError("registrationNumber")}
+          error={getError("commercial_registration_number")}
         />
 
         <MainInput
           label="تاريخ التسجيل"
-          id="registrationDate"
-          name="registrationDate"
+          id="registration_date"
+          name="registration_date"
           type="date"
-          value={formik.values.registrationDate}
+          value={formik.values.registration_date}
           onChange={formik.handleChange}
-          error={getError("registrationDate")}
+          error={getError("registration_date")}
         />
 
         <MainInput
           label="الرقم الوطني للمنشأة"
-          id="nationalCompanyId"
-          name="nationalCompanyId"
+          id="national_number"
+          name="national_number"
           placeholder="0987654321"
           type="number"
-          value={formik.values.nationalCompanyId}
+          value={formik.values.national_number}
           onChange={formik.handleChange}
-          error={getError("nationalCompanyId")}
+          error={getError("national_number")}
         />
 
         <MainInput
           label="الموقع الإلكتروني"
-          id="website"
-          name="website"
+          id="website_url"
+          name="website_url"
           placeholder="www.example.com"
-          value={formik.values.website}
+          value={formik.values.website_url}
           onChange={formik.handleChange}
-          error={getError("website")}
+          error={getError("website_url")}
         />
 
         <MainInput
           label="رقم رخصة المهن"
-          id="licenseNumber"
-          name="licenseNumber"
+          id="license_number"
+          name="license_number"
           placeholder="555555"
           type="number"
-          value={formik.values.licenseNumber}
+          value={formik.values.license_number}
           onChange={formik.handleChange}
-          error={getError("licenseNumber")}
+          error={getError("license_number")}
         />
 
         <MainInput
@@ -168,51 +169,46 @@ const Step0Company = ({ formik, getError }) => {
           placeholder="0501234567"
           type="tel"
           value={formik.values.phone}
-          onChange={formik.handleChange}
+          onChange={(phone) => formik.setFieldValue("phone", phone)}
           error={getError("phone")}
         />
 
         <MainInput
           label="الرقم الضريبي"
-          id="taxNumber"
-          name="taxNumber"
+          id="tax_number"
+          name="tax_number"
           placeholder="123456789"
           type="number"
-          value={formik.values.taxNumber}
+          value={formik.values.tax_number}
           onChange={formik.handleChange}
-          error={getError("taxNumber")}
+          error={getError("tax_number")}
         />
 
         <MainInput
           label="رأس المال"
-          id="capital"
-          name="capital"
+          id="capital_equity"
+          name="capital_equity"
           placeholder="100000"
           type="number"
-          value={formik.values.capital}
+          value={formik.values.capital_equity}
           onChange={formik.handleChange}
-          error={getError("capital")}
+          error={getError("capital_equity")}
         />
 
         <MainInput
-          label="العملة"
-          type="select"
-          id="currency"
-          name="currency"
-          options={[
-            { value: "جنيه", label: "جنيه" },
-            { value: "ريال", label: "ريال" },
-            { value: "دولار", label: "دولار" },
-          ]}
-          value={formik.values.currency}
+          label="اسم الموقع الرسمي"
+          id="signed_name"
+          name="signed_name"
+          placeholder="اسم الموقع"
+          value={formik.values.signed_name}
           onChange={formik.handleChange}
-          error={getError("currency")}
+          error={getError("signed_name")}
         />
       </div>
 
-      <p className="text-neutral-500 flex items-center gap-1">
-        <MailOpen />
-        الفان وخمس وعشرون دينار اردنى
+      <p className="text-neutral-500 flex items-center gap-1 mt-3">
+        <CgMailOpen className="text-2xl" />
+        الفان وخمس وعشرون دينار اردني
       </p>
     </>
   );

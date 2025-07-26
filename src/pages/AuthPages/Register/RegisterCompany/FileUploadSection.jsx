@@ -35,7 +35,7 @@ const FileUploadSection = () => {
       >
         تحميل الملف وتعبئته ثم رفعه (Excel أو CSV)
         <IoIosArrowDown
-          className={`${isOpen ? "rotate-180" : ""} duration-300`}
+          className={`${isOpen ? "rotate-180" : ""} duration-300 text-2xl`}
         />
       </button>
 
@@ -57,7 +57,7 @@ const FileUploadSection = () => {
           </p>
 
           <div className="flex items-center gap-2 text-secondary">
-            <MdCloudDownload />
+            <MdCloudDownload className="text-5xl"/>
 
             <div className="flex-1 border border-dashed border-neutral-300 font-medium p-4 rounded-lg cursor-pointer">
               <p>تحميل قالب البيانات</p>
@@ -92,7 +92,7 @@ const FileUploadSection = () => {
           </p>
 
           <div className={`flex items-center gap-2 text-success-200`}>
-            <MdCloudUpload />
+            <MdCloudUpload className="text-5xl"/>
 
             <div
               className={`flex-1 border border-dashed border-neutral-300 font-medium p-4 rounded-lg cursor-pointer transition-colors duration-200 ${

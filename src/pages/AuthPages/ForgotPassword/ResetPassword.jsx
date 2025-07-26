@@ -1,6 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AuthLayout from "../../../components/layout/AuthLayout";
 
 const ResetPassword = () => {
   const inputsRef = useRef([]);
@@ -69,7 +70,7 @@ const ResetPassword = () => {
     }
 
     console.log("OTP submitted:", fullCode);
-    navigate("/auth/create-new-password");
+    navigate("/create-new-password");
   };
 
   const formatTime = (seconds) => {
@@ -81,14 +82,14 @@ const ResetPassword = () => {
   };
 
   return (
-    <>
+    <AuthLayout>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-4">هل نسيت كلمة المرور ؟</h2>
 
         <Breadcrumbs
           items={[
             { label: "ضمانة", path: "/" },
-            { label: "نسيان كلمة المرور", path: "/auth/forgot-password" },
+            { label: "نسيان كلمة المرور", path: "/forgot-password" },
             { label: "ادخال كود التحقق" },
           ]}
         />
@@ -111,7 +112,7 @@ const ResetPassword = () => {
               value={value}
               onChange={(e) => handleChange(e, index)}
               onKeyDown={(e) => handleKeyDown(e, index)}
-              className={`w-12 h-12 text-center text-xl font-bold rounded-md outline-none ring-2 ${
+              className={`w-12 h-12 bg-white text-center text-xl font-bold rounded-md outline-none ring-2 ${
                 isError
                   ? "ring-error-100 focus:ring-error-100"
                   : "ring-neutral-300 focus:ring-secondary"
@@ -151,7 +152,7 @@ const ResetPassword = () => {
       <button onClick={handleSubmit} className="mainBtn">
         تأكيد الكود
       </button>
-    </>
+    </AuthLayout>
   );
 };
 

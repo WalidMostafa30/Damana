@@ -1,141 +1,198 @@
+import { CiCirclePlus } from "react-icons/ci";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step2Company = ({ formik, getError }) => {
+  const commissioners = formik.values.commissioners;
+
+  const addCommissioner = () => {
+    const newCommissioner = {
+      full_name: "",
+      nationality: "",
+      national_passport_number: "",
+      job: "",
+      address: "",
+      type: "",
+      top_commissioner: "",
+      commissioner_permissions: "",
+      phone: "",
+      email: "",
+      delegation_permissions: "",
+    };
+    formik.setFieldValue("commissioners", [...commissioners, newCommissioner]);
+  };
+
+  const removeCommissioner = (index) => {
+    const updated = commissioners.filter((_, i) => i !== index);
+    formik.setFieldValue("commissioners", updated);
+  };
+
   return (
     <>
+      {/* نص التفويض */}
       <MainInput
         label="نص التفويض كما هو في السجل التجاري"
-        id="authorizationText"
-        name="authorizationText"
+        id="commissioners_text"
+        name="commissioners_text"
         type="textarea"
-        value={formik.values.authorizationText}
+        value={formik.values.commissioners_text}
         onChange={formik.handleChange}
-        error={getError("authorizationText")}
+        error={getError("commissioners_text")}
       />
 
-      <p className="text-primary text-lg font-bold">بيانات المفوض الأول</p>
+      {/* بيانات المفوضين */}
+      {commissioners.map((comm, index) => (
+        <div
+          key={index}
+          className="mb-6 p-4 rounded-lg border border-neutral-300"
+        >
+          <p className="text-primary text-lg font-bold mb-4">
+            بيانات المفوض {index + 1}
+          </p>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput
-          label="الاسم الرباعي"
-          id="fullName2"
-          name="fullName2"
-          placeholder="مثال: أحمد حسن محمود علي"
-          value={formik.values.fullName2}
-          onChange={formik.handleChange}
-          error={getError("fullName2")}
-        />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MainInput
+              label="الاسم الرباعي"
+              id={`commissioners.${index}.full_name`}
+              name={`commissioners.${index}.full_name`}
+              value={comm.full_name}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.full_name`)}
+            />
 
-        <MainInput
-          label="الجنسية"
-          id="nationality2"
-          name="nationality2"
-          placeholder="مثال: سعودي"
-          value={formik.values.nationality2}
-          onChange={formik.handleChange}
-          error={getError("nationality2")}
-        />
+            <MainInput
+              label="الجنسية"
+              id={`commissioners.${index}.nationality`}
+              name={`commissioners.${index}.nationality`}
+              value={comm.nationality}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.nationality`)}
+            />
 
-        <MainInput
-          label="الرقم الوطني / رقم جواز السفر"
-          id="nationalIdOrPassport2"
-          name="nationalIdOrPassport2"
-          placeholder="مثال: B987654321"
-          value={formik.values.nationalIdOrPassport2}
-          onChange={formik.handleChange}
-          error={getError("nationalIdOrPassport2")}
-        />
+            <MainInput
+              label="رقم الهوية / جواز السفر"
+              id={`commissioners.${index}.national_passport_number`}
+              name={`commissioners.${index}.national_passport_number`}
+              value={comm.national_passport_number}
+              onChange={formik.handleChange}
+              error={getError(
+                `commissioners.${index}.national_passport_number`
+              )}
+            />
 
-        <MainInput
-          label="الوظيفة"
-          id="jobTitle2"
-          name="jobTitle2"
-          placeholder="مثال: مدير مالي"
-          value={formik.values.jobTitle2}
-          onChange={formik.handleChange}
-          error={getError("jobTitle2")}
-        />
+            <MainInput
+              label="الوظيفة"
+              id={`commissioners.${index}.job`}
+              name={`commissioners.${index}.job`}
+              value={comm.job}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.job`)}
+            />
 
-        <MainInput
-          label="العنوان"
-          id="address3"
-          name="address3"
-          placeholder="مثال: شارع الهرم، الجيزة"
-          value={formik.values.address3}
-          onChange={formik.handleChange}
-          error={getError("address3")}
-        />
+            <MainInput
+              label="العنوان"
+              id={`commissioners.${index}.address`}
+              name={`commissioners.${index}.address`}
+              value={comm.address}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.address`)}
+            />
 
-        <MainInput
-          label="نوع التفويض"
-          type="select"
-          id="authorizationType"
-          name="authorizationType"
-          options={[
-            { value: "شامل", label: "شامل" },
-            { value: "جزئي", label: "جزئي" },
-          ]}
-          value={formik.values.authorizationType}
-          onChange={formik.handleChange}
-          error={getError("authorizationType")}
-        />
+            <MainInput
+              label="نوع التفويض"
+              id={`commissioners.${index}.type`}
+              name={`commissioners.${index}.type`}
+              value={comm.type}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.type`)}
+            />
 
-        <MainInput
-          label="سقف التفويض"
-          id="authorizationLimit"
-          name="authorizationLimit"
-          placeholder="مثال: 100000"
-          value={formik.values.authorizationLimit}
-          onChange={formik.handleChange}
-          error={getError("authorizationLimit")}
-        />
+            <MainInput
+              label="أعلى مفوض"
+              id={`commissioners.${index}.top_commissioner`}
+              name={`commissioners.${index}.top_commissioner`}
+              value={comm.top_commissioner}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.top_commissioner`)}
+            />
 
-        <MainInput
-          label="صلاحية التفويض"
-          type="select"
-          id="authorizationValidity"
-          name="authorizationValidity"
-          options={[
-            { value: "6 شهور", label: "6 شهور" },
-            { value: "12 شهر", label: "12 شهر" },
-            { value: "غير محدد", label: "غير محدد" },
-          ]}
-          value={formik.values.authorizationValidity}
-          onChange={formik.handleChange}
-          error={getError("authorizationValidity")}
-        />
+            <MainInput
+              label="صلاحيات المفوض"
+              id={`commissioners.${index}.commissioner_permissions`}
+              name={`commissioners.${index}.commissioner_permissions`}
+              value={comm.commissioner_permissions}
+              onChange={formik.handleChange}
+              error={getError(
+                `commissioners.${index}.commissioner_permissions`
+              )}
+            />
 
-        <MainInput
-          label="رقم الهاتف"
-          id="phone3"
-          name="phone3"
-          placeholder="مثال: 0551234567"
-          value={formik.values.phone3}
-          onChange={formik.handleChange}
-          error={getError("phone3")}
-        />
+            <MainInput
+              label="رقم الهاتف"
+              id={`commissioners.${index}.phone`}
+              name={`commissioners.${index}.phone`}
+              value={comm.phone}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.phone`)}
+            />
 
-        <MainInput
-          label="البريد الإلكتروني"
-          id="email3"
-          name="email3"
-          placeholder="مثال: delegate@example.com"
-          value={formik.values.email3}
-          onChange={formik.handleChange}
-          error={getError("email3")}
-        />
+            <MainInput
+              label="البريد الإلكتروني"
+              id={`commissioners.${index}.email`}
+              name={`commissioners.${index}.email`}
+              type="email"
+              value={comm.email}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.email`)}
+            />
+
+            <MainInput
+              label="صلاحيات التفويض"
+              id={`commissioners.${index}.delegation_permissions`}
+              name={`commissioners.${index}.delegation_permissions`}
+              value={comm.delegation_permissions}
+              onChange={formik.handleChange}
+              error={getError(`commissioners.${index}.delegation_permissions`)}
+            />
+          </div>
+
+          {commissioners.length > 1 && (
+            <button
+              type="button"
+              onClick={() => removeCommissioner(index)}
+              className="text-red-500 mt-2 text-sm"
+            >
+              حذف المفوض
+            </button>
+          )}
+        </div>
+      ))}
+
+      {/* زر إضافة مفوض */}
+      <p
+        className="text-secondary text-lg font-bold flex items-center gap-2 hover:brightness-75 cursor-pointer"
+        onClick={addCommissioner}
+      >
+        <CiCirclePlus className="text-2xl" />
+        إضافة مفوض جديد
+      </p>
+
+      {/* مفوضي الإدارة (managementCommissioners) */}
+      <div className="mt-8 p-4 rounded-lg border border-neutral-300">
+        <p className="text-primary text-lg font-bold mb-4">مفوضي الإدارة</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {Object.keys(formik.values.managementCommissioners).map((key) => (
+            <MainInput
+              key={key}
+              label={key}
+              id={`managementCommissioners.${key}`}
+              name={`managementCommissioners.${key}`}
+              value={formik.values.managementCommissioners[key]}
+              onChange={formik.handleChange}
+              error={getError(`managementCommissioners.${key}`)}
+            />
+          ))}
+        </div>
       </div>
-
-      <label className="flex items-center gap-2 cursor-pointer text-primary font-bold mt-4">
-        <input
-          type="checkbox"
-          name="isPrimaryContact"
-          checked={formik.values.isPrimaryContact}
-          onChange={formik.handleChange}
-          className="w-4 h-4 accent-primary"
-        />
-        <span>اجعل هذا المفوض هو نقطة التواصل الرئيسية لمنصة ضمانة</span>
-      </label>
     </>
   );
 };

@@ -8,6 +8,7 @@ import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import StepProgress from "../../../../components/common/StepProgress/StepProgress";
 import { ImArrowRight } from "react-icons/im";
+import AuthLayout from "../../../../components/layout/AuthLayout";
 
 const steps = ["معلومات الحساب", "معلومات إضافية", "التحقق"];
 
@@ -106,7 +107,7 @@ const RegisterPerson = () => {
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
   return (
-    <>
+    <AuthLayout>
       <div className="mb-8">
         <h2 className="text-3xl font-bold mb-8">أهلاً في ضمانة!</h2>
         <Breadcrumbs
@@ -136,7 +137,7 @@ const RegisterPerson = () => {
         <p className="text-center">
           هل تمتلك حساب؟{" "}
           <Link
-            to="/auth/login"
+            to="/login"
             className="text-secondary hover:brightness-50 transition-colors"
           >
             تسجيل الدخول
@@ -154,7 +155,7 @@ const RegisterPerson = () => {
           </button>
         )}
       </form>
-    </>
+    </AuthLayout>
   );
 };
 
