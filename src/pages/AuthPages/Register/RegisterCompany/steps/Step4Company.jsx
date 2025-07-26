@@ -1,4 +1,4 @@
-import { UploadCloud } from "lucide-react";
+import { MdCloudUpload } from "react-icons/md";
 
 const FileInput = ({ label, name, formik, error }) => {
   return (
@@ -17,7 +17,8 @@ const FileInput = ({ label, name, formik, error }) => {
           className="hidden"
         />
         <label htmlFor={name} className="cursor-pointer">
-          <UploadCloud className="mx-auto text-gray-400" size={32} />
+          <MdCloudUpload className="mx-auto text-gray-400 text-5xl" />
+
           <p className="text-sm text-gray-500 mt-2">
             اسحب الملف هنا أو اضغط لاختياره
           </p>

@@ -1,71 +1,72 @@
-import { Backpack, Building, Building2, Code, Landmark } from "lucide-react";
-import MainInput from "../../../../../components/form/MainInput/MainInput";
+import MainInput from "../../../components/form/MainInput/MainInput";
 
-const Step2 = ({ formik, getError }) => {
+const Step2 = () => {
+  const rightColumnData = [
+    { label: "رقم التسجيل", value: "45665790" },
+    { label: "رقم اللوحة والرمز", value: "10558777" },
+    { label: "نوع المركبة", value: "مارسيدس - بنز" },
+    { label: "الصنف", value: "E - 200" },
+    { label: "لون المركبة", value: "اسود" },
+    { label: "رقم الشاصي", value: "57765875432" },
+    { label: "رقم التسجيل", value: "1 3012758754" },
+    { label: "تاريخ انتهاء الرخصة", value: "20/02/2027" },
+    { label: "نوع التأمين", value: "شامل" },
+  ];
   return (
-    <>
-      <h3 className="text-xl font-bold mb-4">البيانات البنكية</h3>
+    <div className="space-y-4">
+      <h3 className="text-2xl font-bold text-primary">بيانات الضمانة</h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput
-          label="اسم البنك"
-          id="bankName"
-          name="bankName"
-          placeholder="بنك الاتحاد"
-          value={formik.values.bankName}
-          onChange={formik.handleChange}
-          error={getError("bankName")}
-          icon={<Landmark />}
-        />
-        <MainInput
-          label="الفرع"
-          id="branch"
-          name="branch"
-          placeholder="ادخار"
-          value={formik.values.branch}
-          onChange={formik.handleChange}
-          error={getError("branch")}
-          icon={<Building />}
-        />
-        <MainInput
-          label="رمز سويفت"
-          id="swiftCode"
-          name="swiftCode"
-          placeholder="AAA564"
-          value={formik.values.swiftCode}
-          onChange={formik.handleChange}
-          error={getError("swiftCode")}
-          icon={<Code />}
-        />
+        <MainInput label="قيمة المركبه" type="number" />
+        <MainInput label="عمولة البائع" type="number" />
+        <MainInput label="عموله ضمانه" type="number" />
+        <MainInput label="قيمة الدفعه" type="number" />
       </div>
 
-      <h3 className="text-2xl font-bold mb-4">بيانات الحساب</h3>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput
-          label="رقم الحساب"
-          id="accountNumber"
-          name="accountNumber"
-          placeholder="55890064"
-          type="number"
-          value={formik.values.accountNumber}
-          onChange={formik.handleChange}
-          error={getError("accountNumber")}
-          icon={<Building2 />}
-        />
-        <MainInput
-          label="الايبان البنكي (الحساب الدولي)"
-          id="iban"
-          name="iban"
-          placeholder="PS33PALS004612813490013100000"
-          type="number"
-          value={formik.values.iban}
-          onChange={formik.handleChange}
-          error={getError("iban")}
-          icon={<Backpack />}
-        />
+      <div>
+        <p className="text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
+        <div className="lg:w-1/2">
+          <MainInput label="كود الخصم" type="number" />
+        </div>
       </div>
-    </>
+
+      <h3 className="text-2xl font-bold text-primary">صرف ضمانه</h3>
+      <p className="text-lg font-bold mb-2">
+        خلي ضمانك يوصلك أسرع! كيف تحب يتم التحويل بعد التنازل؟
+      </p>
+      <div className="space-y-2">
+        <label className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="owner"
+            value="yes"
+            className="w-5 h-5 accent-primary cursor-pointer"
+          />
+          فورًا – بأسرع وقت ممكن (تُضاف 4 دنانير)
+        </label>
+        <label className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="owner"
+            value="no"
+            className="w-5 h-5 accent-primary cursor-pointer"
+          />
+          بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
+        </label>
+      </div>
+
+      <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
+        {/* العمود الأيمن */}
+        <div className="p-4 space-y-2 text-primary font-medium">
+          {rightColumnData.map((item, index) => (
+            <div key={index} className="flex justify-between items-center py-2">
+              <p>{item.label}</p>
+              <p>{item.value}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 };
 

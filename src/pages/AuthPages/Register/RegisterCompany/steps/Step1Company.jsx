@@ -1,4 +1,3 @@
-import { Building2, CirclePlus, Landmark, MailOpen, Phone } from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step1Company = ({ formik, getError }) => {
@@ -15,7 +14,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.fullName}
           onChange={formik.handleChange}
           error={getError("fullName")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -26,7 +24,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.nationality}
           onChange={formik.handleChange}
           error={getError("nationality")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -37,7 +34,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.nationalIdOrPassport}
           onChange={formik.handleChange}
           error={getError("nationalIdOrPassport")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -48,7 +44,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.address2}
           onChange={formik.handleChange}
           error={getError("address2")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -59,7 +54,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.phone2}
           onChange={formik.handleChange}
           error={getError("phone2")}
-          icon={<Phone />}
         />
 
         <MainInput
@@ -70,7 +64,6 @@ const Step1Company = ({ formik, getError }) => {
           value={formik.values.email2}
           onChange={formik.handleChange}
           error={getError("email2")}
-          icon={<MailOpen />}
         />
       </div>
 

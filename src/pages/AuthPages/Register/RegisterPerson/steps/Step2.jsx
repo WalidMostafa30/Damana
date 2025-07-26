@@ -1,4 +1,3 @@
-import { Backpack, Building, Building2, Code, Landmark } from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step2 = ({ formik, getError }) => {
@@ -15,7 +14,6 @@ const Step2 = ({ formik, getError }) => {
           value={formik.values.bankName}
           onChange={formik.handleChange}
           error={getError("bankName")}
-          icon={<Landmark />}
         />
         <MainInput
           label="الفرع"
@@ -25,7 +23,6 @@ const Step2 = ({ formik, getError }) => {
           value={formik.values.branch}
           onChange={formik.handleChange}
           error={getError("branch")}
-          icon={<Building />}
         />
         <MainInput
           label="رمز سويفت"
@@ -35,7 +32,6 @@ const Step2 = ({ formik, getError }) => {
           value={formik.values.swiftCode}
           onChange={formik.handleChange}
           error={getError("swiftCode")}
-          icon={<Code />}
         />
       </div>
 
@@ -51,7 +47,6 @@ const Step2 = ({ formik, getError }) => {
           value={formik.values.accountNumber}
           onChange={formik.handleChange}
           error={getError("accountNumber")}
-          icon={<Building2 />}
         />
         <MainInput
           label="الايبان البنكي (الحساب الدولي)"
@@ -62,7 +57,6 @@ const Step2 = ({ formik, getError }) => {
           value={formik.values.iban}
           onChange={formik.handleChange}
           error={getError("iban")}
-          icon={<Backpack />}
         />
       </div>
     </>

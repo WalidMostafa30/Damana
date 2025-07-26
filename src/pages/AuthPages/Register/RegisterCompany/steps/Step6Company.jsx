@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { Plus } from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
+import { FaCirclePlus } from "react-icons/fa6";
 
 const groupOptions = [
   "مجموعة شركات إيصال",
@@ -38,10 +38,10 @@ const Step6Company = ({ formik, getError }) => {
 
       <button
         type="button"
-        className="mt-4 flex items-center text-sm text-primary"
+        className="mt-4 flex items-center gap-1 text-sm text-primary"
         onClick={() => setShowAddGroupInput(!showAddGroupInput)}
       >
-        <Plus className="ml-1 w-4 h-4" />
+        <FaCirclePlus className="text-2xl" />
         إضافة مفوض جديد على مستوى المجموعة
       </button>
 

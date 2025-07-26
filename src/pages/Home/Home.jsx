@@ -1,8 +1,7 @@
 import { BsCalendar2Date } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
-import noDataImg from "../../assets/images/No data-pana 1.png";
 import homeBanner from "../../assets/images/home-banner.png";
-import { Link } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useState } from "react";
 
@@ -16,6 +15,7 @@ const faqs = [
 
 const Home = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const { pathname } = useLocation();
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
@@ -29,34 +29,37 @@ const Home = () => {
           هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.
         </p>
 
-        <section className="bg-base-white p-4 rounded-lg shadow-md">
-          <ul className="flex items-center flex-wrap gap-4">
-            <li className="homeLink">ضمانات البيع</li>
-            <li className="homeLink">ضمانات الشراء</li>
-            <li className="homeLink">
-              حالة الضمانة <IoIosArrowDown className="text-2xl" />
-            </li>
-            <li className="homeLink">
-              تاريخ الضمانة <BsCalendar2Date className="text-2xl" />
-            </li>
-          </ul>
+        <section className="bg-base-white p-4 rounded-xl shadow-md space-y-4">
+          <div className="grid xl:grid-cols-2 gap-4">
+            <ul className="flex items-center gap-4">
+              <Link
+                to={"/sale"}
+                className={`homeLink ${
+                  pathname.includes("/sale") ? "active-sale" : ""
+                }`}
+              >
+                ضمانات البيع
+              </Link>
+              <Link
+                to={"/purchase"}
+                className={`homeLink ${
+                  pathname.includes("/purchase") ? "active-purchase" : ""
+                }`}
+              >
+                ضمانات الشراء
+              </Link>
+            </ul>
+            <ul className="flex items-center gap-4">
+              <li className="homeLink">
+                حالة الضمانة <IoIosArrowDown className="text-2xl" />
+              </li>
+              <li className="homeLink">
+                تاريخ الضمانة <BsCalendar2Date className="text-2xl" />
+              </li>
+            </ul>
+          </div>
 
-          <article>
-            <div className="flex items-center justify-center flex-col gap-4 mt-8">
-              <img
-                src={noDataImg}
-                alt="no data"
-                loading="lazy"
-                className="w-96"
-              />
-              <p className="text-lg">
-                لا توجد ضمانات حالية بعد. يمكنك البدء الآن من هنا:{" "}
-                <Link to="/add-damana" className="text-primary font-bold">
-                  طلب ضمانة جديدة
-                </Link>
-              </p>
-            </div>
-          </article>
+          <Outlet />
         </section>
       </div>
 

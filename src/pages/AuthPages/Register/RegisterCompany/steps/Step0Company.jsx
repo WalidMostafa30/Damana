@@ -1,11 +1,3 @@
-import {
-  Backpack,
-  Building,
-  Building2,
-  Code,
-  Landmark,
-  MailOpen,
-} from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step0Company = ({ formik, getError }) => {
@@ -20,7 +12,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.companyNameAr}
           onChange={formik.handleChange}
           error={getError("companyNameAr")}
-          icon={<Building />}
         />
 
         <MainInput
@@ -31,7 +22,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.companyNameEn}
           onChange={formik.handleChange}
           error={getError("companyNameEn")}
-          icon={<Building />}
         />
 
         <MainInput
@@ -42,7 +32,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.tradeNameAr}
           onChange={formik.handleChange}
           error={getError("tradeNameAr")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -53,7 +42,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.tradeNameEn}
           onChange={formik.handleChange}
           error={getError("tradeNameEn")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -72,7 +60,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registrationType}
           onChange={formik.handleChange}
           error={getError("registrationType")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -88,7 +75,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.country}
           onChange={formik.handleChange}
           error={getError("country")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -99,7 +85,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registrationAuthority}
           onChange={formik.handleChange}
           error={getError("registrationAuthority")}
-          icon={<Building />}
         />
 
         <MainInput
@@ -111,7 +96,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registrationNumber}
           onChange={formik.handleChange}
           error={getError("registrationNumber")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -122,7 +106,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registrationDate}
           onChange={formik.handleChange}
           error={getError("registrationDate")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -134,7 +117,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.nationalCompanyId}
           onChange={formik.handleChange}
           error={getError("nationalCompanyId")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -145,7 +127,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.website}
           onChange={formik.handleChange}
           error={getError("website")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -157,7 +138,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.licenseNumber}
           onChange={formik.handleChange}
           error={getError("licenseNumber")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -168,7 +148,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.address}
           onChange={formik.handleChange}
           error={getError("address")}
-          icon={<Building />}
         />
 
         <MainInput
@@ -180,7 +159,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.email}
           onChange={formik.handleChange}
           error={getError("email")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -192,7 +170,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.phone}
           onChange={formik.handleChange}
           error={getError("phone")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -204,7 +181,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.taxNumber}
           onChange={formik.handleChange}
           error={getError("taxNumber")}
-          icon={<Code />}
         />
 
         <MainInput
@@ -216,7 +192,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.capital}
           onChange={formik.handleChange}
           error={getError("capital")}
-          icon={<Building />}
         />
 
         <MainInput
@@ -232,7 +207,6 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.currency}
           onChange={formik.handleChange}
           error={getError("currency")}
-          icon={<Backpack />}
         />
       </div>
 

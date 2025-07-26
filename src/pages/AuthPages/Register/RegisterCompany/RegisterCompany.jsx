@@ -3,7 +3,6 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import Breadcrumbs from "../../../../components/common/Breadcrumbs";
 import StepProgress from "../../../../components/common/StepProgress/StepProgress";
-import { ArrowBigRight } from "lucide-react";
 import Step0Company from "./steps/Step0Company";
 import FileUploadSection from "./FileUploadSection";
 import Step1Company from "./steps/Step1Company";
@@ -12,6 +11,7 @@ import Step3Company from "./steps/Step3Company";
 import Step4Company from "./steps/Step4Company";
 import Step5Company from "./steps/Step5Company";
 import Step6Company from "./steps/Step6Company";
+import { ImArrowRight } from "react-icons/im";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -238,7 +238,7 @@ const RegisterCompany = () => {
             className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
             onClick={() => setStep(step - 1)}
           >
-            <ArrowBigRight />
+            <ImArrowRight />
             الرجوع للخلف
           </button>
         )}

@@ -1,5 +1,6 @@
 import { useRef, useState } from "react";
-import { ChevronDown, CloudDownload, CloudUpload } from "lucide-react";
+import { IoIosArrowDown } from "react-icons/io";
+import { MdCloudDownload, MdCloudUpload } from "react-icons/md";
 
 const FileUploadSection = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,7 +34,9 @@ const FileUploadSection = () => {
         className="w-full flex items-center justify-between p-4 font-bold text-secondary cursor-pointer hover:brightness-75 transition"
       >
         تحميل الملف وتعبئته ثم رفعه (Excel أو CSV)
-        <ChevronDown className={`${isOpen ? "rotate-180" : ""} duration-300`} />
+        <IoIosArrowDown
+          className={`${isOpen ? "rotate-180" : ""} duration-300`}
+        />
       </button>
 
       <div
@@ -54,7 +57,8 @@ const FileUploadSection = () => {
           </p>
 
           <div className="flex items-center gap-2 text-secondary">
-            <CloudDownload size={40} />
+            <MdCloudDownload />
+
             <div className="flex-1 border border-dashed border-neutral-300 font-medium p-4 rounded-lg cursor-pointer">
               <p>تحميل قالب البيانات</p>
               <input
@@ -88,7 +92,8 @@ const FileUploadSection = () => {
           </p>
 
           <div className={`flex items-center gap-2 text-success-200`}>
-            <CloudUpload size={40} />
+            <MdCloudUpload />
+
             <div
               className={`flex-1 border border-dashed border-neutral-300 font-medium p-4 rounded-lg cursor-pointer transition-colors duration-200 ${
                 dragActive ? "bg-success-100 border-blue-400" : "bg-white"

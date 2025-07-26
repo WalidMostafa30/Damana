@@ -3,11 +3,11 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import Breadcrumbs from "../../../../components/common/Breadcrumbs";
-import { ArrowBigRight } from "lucide-react";
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import StepProgress from "../../../../components/common/StepProgress/StepProgress";
+import { ImArrowRight } from "react-icons/im";
 
 const steps = ["معلومات الحساب", "معلومات إضافية", "التحقق"];
 
@@ -149,7 +149,7 @@ const RegisterPerson = () => {
             className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
             onClick={() => setStep(step - 1)}
           >
-            <ArrowBigRight />
+            <ImArrowRight />
             الرجوع للخلف
           </button>
         )}

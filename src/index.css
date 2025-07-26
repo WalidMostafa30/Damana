@@ -69,7 +69,7 @@ html {
   }
 
   .navLink {
-    @apply text-lg text-gray-300 duration-300;
+    @apply text-lg text-gray-300 duration-300 not-last:pb-2 not-last:border-b lg:not-last:pb-0 lg:not-last:border-0;
 
     &.active,
     &:hover {
@@ -81,9 +81,12 @@ html {
     @apply text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl flex-1 text-center 
     cursor-pointer duration-200 flex items-center justify-center gap-2;
 
-    &:hover,
-    &.active {
-      @apply text-white bg-success-200 border-success-200;
+    &.active-sale {
+      @apply bg-success-200 border-success-200 text-white;
+    }
+
+    &.active-purchase {
+      @apply bg-secondary border-secondary text-white;
     }
   }
 }

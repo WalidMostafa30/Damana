@@ -1,13 +1,3 @@
-import {
-  Building2,
-  Landmark,
-  User,
-  KeyRound,
-  Phone,
-  MailOpen,
-  BadgeDollarSign,
-  CalendarCheck2,
-} from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step2Company = ({ formik, getError }) => {
@@ -34,7 +24,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.fullName2}
           onChange={formik.handleChange}
           error={getError("fullName2")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -45,7 +34,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.nationality2}
           onChange={formik.handleChange}
           error={getError("nationality2")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -56,7 +44,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.nationalIdOrPassport2}
           onChange={formik.handleChange}
           error={getError("nationalIdOrPassport2")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -67,7 +54,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.jobTitle2}
           onChange={formik.handleChange}
           error={getError("jobTitle2")}
-          icon={<User />}
         />
 
         <MainInput
@@ -78,7 +64,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.address3}
           onChange={formik.handleChange}
           error={getError("address3")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -93,7 +78,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.authorizationType}
           onChange={formik.handleChange}
           error={getError("authorizationType")}
-          icon={<KeyRound />}
         />
 
         <MainInput
@@ -104,7 +88,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.authorizationLimit}
           onChange={formik.handleChange}
           error={getError("authorizationLimit")}
-          icon={<BadgeDollarSign />}
         />
 
         <MainInput
@@ -120,7 +103,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.authorizationValidity}
           onChange={formik.handleChange}
           error={getError("authorizationValidity")}
-          icon={<CalendarCheck2 />}
         />
 
         <MainInput
@@ -131,7 +113,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.phone3}
           onChange={formik.handleChange}
           error={getError("phone3")}
-          icon={<Phone />}
         />
 
         <MainInput
@@ -142,7 +123,6 @@ const Step2Company = ({ formik, getError }) => {
           value={formik.values.email3}
           onChange={formik.handleChange}
           error={getError("email3")}
-          icon={<MailOpen />}
         />
       </div>
 

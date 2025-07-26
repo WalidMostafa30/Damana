@@ -1,12 +1,3 @@
-import {
-  Landmark,
-  CreditCard,
-  Globe,
-  ShieldCheck,
-  BadgeDollarSign,
-  Building2,
-  User,
-} from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step3Company = ({ formik, getError }) => {
@@ -23,7 +14,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.bankName}
           onChange={formik.handleChange}
           error={getError("bankName")}
-          icon={<Landmark />}
         />
 
         <MainInput
@@ -34,7 +24,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.accountNumber}
           onChange={formik.handleChange}
           error={getError("accountNumber")}
-          icon={<CreditCard />}
         />
 
         <MainInput
@@ -45,7 +34,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.iban}
           onChange={formik.handleChange}
           error={getError("iban")}
-          icon={<Globe />}
         />
 
         <MainInput
@@ -56,7 +44,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.swiftCode}
           onChange={formik.handleChange}
           error={getError("swiftCode")}
-          icon={<ShieldCheck />}
         />
 
         <MainInput
@@ -67,7 +54,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.currencyBank}
           onChange={formik.handleChange}
           error={getError("currencyBank")}
-          icon={<BadgeDollarSign />}
         />
 
         <MainInput
@@ -78,7 +64,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.branch}
           onChange={formik.handleChange}
           error={getError("branch")}
-          icon={<Building2 />}
         />
 
         <MainInput
@@ -89,7 +74,6 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.cliqUser}
           onChange={formik.handleChange}
           error={getError("cliqUser")}
-          icon={<User />}
         />
       </div>
     </>

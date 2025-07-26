@@ -1,12 +1,3 @@
-import {
-  Earth,
-  FileDigit,
-  MapPinHouse,
-  Mars,
-  Newspaper,
-  User,
-  UserRoundPen,
-} from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step0 = ({ formik, getError }) => {
@@ -28,7 +19,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.userType}
           onChange={formik.handleChange}
           error={getError("userType")}
-          icon={<UserRoundPen />}
         />
         <MainInput
           label="الاسم رباعي باللغة العربية"
@@ -38,7 +28,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.fullNameAr}
           onChange={formik.handleChange}
           error={getError("fullNameAr")}
-          icon={<User />}
         />
         <MainInput
           label="الاسم رباعي باللغة الإنجليزية"
@@ -48,7 +37,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.fullNameEn}
           onChange={formik.handleChange}
           error={getError("fullNameEn")}
-          icon={<User />}
         />
         <MainInput
           label="الجنسية"
@@ -58,7 +46,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.nationality}
           onChange={formik.handleChange}
           error={getError("nationality")}
-          icon={<Earth />}
         />
         <MainInput
           label="نوع الوثيقة"
@@ -73,7 +60,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.documentType}
           onChange={formik.handleChange}
           error={getError("documentType")}
-          icon={<Newspaper />}
         />
         <MainInput
           label="رقم الوثيقة"
@@ -84,7 +70,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.documentNumber}
           onChange={formik.handleChange}
           error={getError("documentNumber")}
-          icon={<FileDigit />}
         />
         <MainInput
           label="بلد الاصدار"
@@ -94,7 +79,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.issueCountry}
           onChange={formik.handleChange}
           error={getError("issueCountry")}
-          icon={<Earth />}
         />
         <MainInput
           label="تاريخ الاصدار"
@@ -122,7 +106,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.birthPlace}
           onChange={formik.handleChange}
           error={getError("birthPlace")}
-          icon={<MapPinHouse />}
         />
         <MainInput
           label="الجنس"
@@ -137,7 +120,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.gender}
           onChange={formik.handleChange}
           error={getError("gender")}
-          icon={<Mars />}
         />
         <MainInput
           label="اسم الأم"
@@ -147,7 +129,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.motherName}
           onChange={formik.handleChange}
           error={getError("motherName")}
-          icon={<User />}
         />
         <MainInput
           label="بلد الاقامه"
@@ -157,7 +138,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.birthCountry}
           onChange={formik.handleChange}
           error={getError("birthCountry")}
-          icon={<Earth />}
         />
         <MainInput
           label="مدينة الولادة"
@@ -167,7 +147,6 @@ const Step0 = ({ formik, getError }) => {
           value={formik.values.birthCity}
           onChange={formik.handleChange}
           error={getError("birthCity")}
-          icon={<MapPinHouse />}
         />
       </div>
     </>

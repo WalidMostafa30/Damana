@@ -1,11 +1,20 @@
 import React, { Suspense } from "react";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  Navigate,
+} from "react-router-dom";
 import App from "../App";
 import AuthLayout from "../pages/AuthPages/AuthLayout";
 import Loading from "../components/layout/Loading/Loading";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
+const Purchase = React.lazy(() => import("../pages/Home/Purchase"));
+const Sale = React.lazy(() => import("../pages/Home/Sale"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
+const DamanaDetails = React.lazy(() =>
+  import("../pages/DamanaDetails/DamanaDetails")
+);
 const LoginPage = React.lazy(() =>
   import("../pages/AuthPages/LoginPage/LoginPage")
 );
@@ -28,8 +37,20 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />,
     children: [
-      { index: true, element: <Home /> },
+      {
+        index: true,
+        element: <Navigate to="sale" replace />, // <-- هنا التحويل
+      },
+      {
+        path: "",
+        element: <Home />,
+        children: [
+          { path: "sale", element: <Sale /> }, // الصفحة الأساسية
+          { path: "purchase", element: <Purchase /> }, // التانية
+        ],
+      },
       { path: "add-damana", element: <AddDamana /> },
+      { path: "damana", element: <DamanaDetails /> },
     ],
   },
   {

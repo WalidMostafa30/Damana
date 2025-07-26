@@ -1,4 +1,3 @@
-import { Earth, House, Mail, MapPinned, Phone, Rows3 } from "lucide-react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
 const Step1 = ({ formik, getError }) => {
@@ -16,7 +15,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.buildingNumber}
           onChange={formik.handleChange}
           error={getError("buildingNumber")}
-          icon={<House />}
         />
         <MainInput
           label="اسم الشارع"
@@ -26,7 +24,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.streetName}
           onChange={formik.handleChange}
           error={getError("streetName")}
-          icon={<Rows3 />}
         />
         <MainInput
           label="البلد"
@@ -36,7 +33,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.country}
           onChange={formik.handleChange}
           error={getError("country")}
-          icon={<Earth />}
         />
         <MainInput
           label="المدينة"
@@ -46,7 +42,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.city}
           onChange={formik.handleChange}
           error={getError("city")}
-          icon={<MapPinned />}
         />
         <MainInput
           label="البريد الإلكتروني"
@@ -56,7 +51,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.email}
           onChange={formik.handleChange}
           error={getError("email")}
-          icon={<Mail />}
         />
         <MainInput
           label="رقم الهاتف"
@@ -67,7 +61,6 @@ const Step1 = ({ formik, getError }) => {
           value={formik.values.phone}
           onChange={formik.handleChange}
           error={getError("phone")}
-          icon={<Phone />}
         />
       </div>
     </>
