@@ -1,5 +1,9 @@
 import { CgMailOpen } from "react-icons/cg";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
+import { BsBank, BsBuildings, BsCalendar2Date } from "react-icons/bs";
+import { FaRegFileAlt } from "react-icons/fa";
+import { IoLocationOutline } from "react-icons/io5";
+import { LuFileDigit } from "react-icons/lu";
 
 const Step0Company = ({ formik, getError }) => {
   return (
@@ -9,10 +13,11 @@ const Step0Company = ({ formik, getError }) => {
           label="اسم الشركة باللغة العربية"
           id="ar_name"
           name="ar_name"
-          placeholder="مثال: الشركة العربية"
+          placeholder=" الشركة العربية"
           value={formik.values.ar_name}
           onChange={formik.handleChange}
           error={getError("ar_name")}
+          icon={<BsBuildings />}
         />
 
         <MainInput
@@ -23,6 +28,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.en_name}
           onChange={formik.handleChange}
           error={getError("en_name")}
+          icon={<BsBuildings />}
         />
 
         <MainInput
@@ -33,6 +39,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.commercial_ar_name}
           onChange={formik.handleChange}
           error={getError("commercial_ar_name")}
+          icon={<BsBuildings />}
         />
 
         <MainInput
@@ -43,6 +50,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.commercial_en_name}
           onChange={formik.handleChange}
           error={getError("commercial_en_name")}
+          icon={<BsBuildings />}
         />
 
         <MainInput
@@ -61,6 +69,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registration_type_legal_form}
           onChange={formik.handleChange}
           error={getError("registration_type_legal_form")}
+          icon={<FaRegFileAlt />}
         />
 
         <MainInput
@@ -76,6 +85,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.country_registration}
           onChange={formik.handleChange}
           error={getError("country_registration")}
+          icon={<IoLocationOutline />}
         />
 
         <MainInput
@@ -86,6 +96,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registration_authority}
           onChange={formik.handleChange}
           error={getError("registration_authority")}
+          icon={<BsBank />}
         />
 
         <MainInput
@@ -97,6 +108,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.commercial_registration_number}
           onChange={formik.handleChange}
           error={getError("commercial_registration_number")}
+          icon={<LuFileDigit />}
         />
 
         <MainInput
@@ -107,6 +119,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.registration_date}
           onChange={formik.handleChange}
           error={getError("registration_date")}
+          icon={<BsCalendar2Date />}
         />
 
         <MainInput
@@ -118,6 +131,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.national_number}
           onChange={formik.handleChange}
           error={getError("national_number")}
+          icon={<LuFileDigit />}
         />
 
         <MainInput

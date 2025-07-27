@@ -13,7 +13,7 @@ const loginSchema = Yup.object({
   password: Yup.string()
     .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
     .required("كلمة المرور مطلوبة"),
-  rememberMe: Yup.boolean(),
+  remember: Yup.boolean(),
 });
 
 const LoginPage = () => {
@@ -21,7 +21,7 @@ const LoginPage = () => {
     initialValues: {
       phoneNumber: "",
       password: "",
-      rememberMe: false,
+      remember: false,
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
@@ -71,8 +71,8 @@ const LoginPage = () => {
           <label className="flex items-center gap-2 cursor-pointer">
             <input
               type="checkbox"
-              name="rememberMe"
-              checked={formik.values.rememberMe}
+              name="remember"
+              checked={formik.values.remember}
               onChange={formik.handleChange}
               className="w-4 h-4 rounded"
             />

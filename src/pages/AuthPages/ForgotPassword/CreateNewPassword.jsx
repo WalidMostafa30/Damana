@@ -35,10 +35,10 @@ const CreateNewPassword = () => {
 
   const formik = useFormik({
     initialValues: {
-      password: "",
+      new_password: "",
     },
     validationSchema: Yup.object({
-      password: Yup.string()
+      new_password: Yup.string()
         .required("كلمة المرور مطلوبة")
         .min(8, "كلمة المرور يجب أن لا تقل عن 8 حروف")
         .matches(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
@@ -46,10 +46,10 @@ const CreateNewPassword = () => {
         .matches(/[\W_]/, "يجب أن تحتوي على رمز خاص واحد على الأقل"),
     }),
     onSubmit: (values) => {
-      const strength = calculatePasswordStrength(values.password);
+      const strength = calculatePasswordStrength(values.new_password);
       if (strength <= 1) {
         formik.setFieldError(
-          "password",
+          "new_password",
           "كلمة المرور ضعيفة جدًا، الرجاء اختيار كلمة أقوى."
         );
         return;
@@ -74,13 +74,13 @@ const CreateNewPassword = () => {
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput
-          type="password"
-          id="password"
-          name="password"
+          type="new_password"
+          id="new_password"
+          name="new_password"
           placeholder="••••••••••"
           label="كلمة المرور"
           icon={<GoLock />}
-          value={formik.values.password}
+          value={formik.values.new_password}
           onChange={(e) => {
             formik.handleChange(e);
             setPasswordValue(e.target.value);
