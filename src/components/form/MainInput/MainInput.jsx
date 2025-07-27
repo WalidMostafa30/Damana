@@ -16,6 +16,7 @@ const MainInput = ({
   onChange,
   onBlur,
   placeholder,
+  disabled = false, // أضفنا الـ disabled هنا
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
@@ -25,7 +26,9 @@ const MainInput = ({
     isPassword ? "px-9" : type === "date" ? "px-2" : "ps-9 pe-2"
   } rounded-lg ring-2 ${
     error ? "ring-error-100" : "ring-neutral-300 focus-within:ring-secondary"
-  } transition-all`;
+  } transition-all ${
+    disabled ? "opacity-60 cursor-not-allowed bg-gray-100" : ""
+  }`;
 
   const commonLabel = label && (
     <label htmlFor={id} className="block w-fit font-semibold mb-2">
@@ -50,6 +53,7 @@ const MainInput = ({
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
+          disabled={disabled}
           className={`${commonInputClasses} h-32 resize-none ps-2!`}
         />
         {commonError}
@@ -72,6 +76,7 @@ const MainInput = ({
             value={value}
             onChange={onChange}
             onBlur={onBlur}
+            disabled={disabled}
             className={commonInputClasses}
           >
             {options.map((option) => (
@@ -97,6 +102,7 @@ const MainInput = ({
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
+          disabled={disabled}
           className={commonInputClasses}
         />
         {commonError}
@@ -119,9 +125,12 @@ const MainInput = ({
               error
                 ? "!ring-error-100"
                 : "!ring-neutral-300 focus-within:!ring-secondary"
+            } ${
+              disabled ? "!bg-gray-100 !opacity-60 !cursor-not-allowed" : ""
             }`}
             dropdownClass="!text-lg !bg-white !shadow-lg"
             buttonClass="!text-lg !bg-gray-100 !border-none !rounded-s-lg"
+            disabled={disabled}
           />
         </div>
         {commonError}
@@ -146,13 +155,16 @@ const MainInput = ({
           onChange={onChange}
           onBlur={onBlur}
           placeholder={placeholder}
+          disabled={disabled}
           className={commonInputClasses}
         />
 
         {isPassword && (
           <span
-            onClick={() => setShowPassword(!showPassword)}
-            className="text-neutral-500 cursor-pointer absolute top-1/2 -translate-y-1/2 end-2 text-2xl"
+            onClick={() => !disabled && setShowPassword(!showPassword)}
+            className={`text-neutral-500 cursor-pointer absolute top-1/2 -translate-y-1/2 end-2 text-2xl ${
+              disabled ? "opacity-40 cursor-not-allowed" : ""
+            }`}
           >
             {showPassword ? <FaRegEyeSlash /> : <FaRegEye />}
           </span>

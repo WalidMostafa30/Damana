@@ -5,6 +5,7 @@ import StepProgressCol from "../../components/common/StepProgress/StepProgressCo
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
+import PageTitle from "../../components/common/PageTitle";
 
 const steps = [
   "المعلومات الأساسية",
@@ -58,10 +59,10 @@ const AddDamana = () => {
 
   return (
     <section className="pageContainer space-y-4">
-      <h2 className="text-3xl font-bold">طلب ضمانة جديدة</h2>
-      <p className="text-lg text-neutral-500">
-        ابدأ بإنشاء ضمانة جديدة للمركبة التي تود ببيعها
-      </p>
+      <PageTitle
+        title="طلب ضمانة جديدة"
+        subtitle="ابداء بإنشاء ضمانة جديدة للمركبة التي تود ببيعها"
+      />
 
       <section className="p-4 rounded-lg border border-neutral-300 grid grid-cols-1 lg:grid-cols-4 gap-4">
         <aside>

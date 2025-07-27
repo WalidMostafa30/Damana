@@ -1,11 +1,13 @@
 import { useState, useRef } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import logo from "../../../assets/images/header-logo.png";
 import { SlBell } from "react-icons/sl";
 import { IoIosArrowDown } from "react-icons/io";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import DropDown from "../../common/DropDown";
+import { FaUserAlt } from "react-icons/fa";
+import { RiLogoutBoxRFill } from "react-icons/ri";
 
 const Header = () => {
   const [openNav, setOpenNav] = useState(false);
@@ -19,7 +21,7 @@ const Header = () => {
     <header className="bg-primary text-white relative">
       <div className="container py-4 flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <img src={logo} alt="logo" loading="lazy" className="w-40" />
+          <img src={logo} alt="logo" loading="lazy" className="w-32 lg:w-40" />
         </div>
 
         <nav
@@ -35,7 +37,7 @@ const Header = () => {
           <NavLink to="/add-damana" className="navLink">
             بدء ضمانة
           </NavLink>
-          <NavLink to="/payment" className="navLink">
+          <NavLink to="/payment-options" className="navLink">
             خيارات الدفع
           </NavLink>
           <NavLink to="/contact-us" className="navLink">
@@ -46,7 +48,7 @@ const Header = () => {
         <div className="flex items-center gap-4">
           <div className="relative" ref={notificationBtnRef}>
             <SlBell
-              className="text-2xl cursor-pointer"
+              className="text-xl lg:text-2xl cursor-pointer"
               onClick={() => setOpenNotification((prev) => !prev)}
             />
             <span className="absolute -top-1 -left-1 w-3 h-3 bg-error-200 rounded-full" />
@@ -76,6 +78,14 @@ const Header = () => {
                     <span className="font-bold text-primary">#123</span>
                   </p>
                 </div>
+                <Link
+                  onClick={() => setOpenNotification(false)}
+                  to="/notifications"
+                  className="text-primary font-bold p-4 flex items-center gap-1 cursor-pointer"
+                >
+                  <SlBell className="text-2xl" />
+                  رؤيه كل الاشعارات
+                </Link>
               </div>
             </DropDown>
           </div>
@@ -87,7 +97,7 @@ const Header = () => {
           >
             <div
               dir="ltr"
-              className="w-12 h-12 text-2xl font-bold bg-white rounded-full flex items-center justify-center"
+              className="w-8 h-8 lg:w-12 lg:h-12 text-lg lg:text-2xl font-bold bg-white rounded-full flex items-center justify-center"
             >
               <span className="text-primary">Y</span>
               <span className="text-secondary">M</span>
@@ -100,9 +110,20 @@ const Header = () => {
               buttonRef={profileBtnRef}
             >
               <div className="bg-white w-80">
-                <div className="flex gap-4 p-4 bg-secondary/20 cursor-pointer">
+                <Link
+                  to="/profile"
+                  className="flex items-center gap-2 font-bold p-4 text-lg not-last:border-b border-neutral-200 text-secondary cursor-pointer"
+                >
+                  <FaUserAlt className="text-2xl" />
+                  Profile
+                </Link>
+                <Link
+                  to="/login"
+                  className="flex items-center gap-2 font-bold p-4 text-lg not-last:border-b border-neutral-200 text-error-200 cursor-pointer"
+                >
+                  <RiLogoutBoxRFill className="text-2xl" />
                   Log Out
-                </div>
+                </Link>
               </div>
             </DropDown>
           </div>

@@ -7,7 +7,7 @@ const StepProgress = ({ steps, currentStep }) => {
     >
       {steps.map((label, i) => (
         <span
-          key={label}
+          key={i}
           className={`w-8 h-8 lg:w-10 lg:h-10 rounded-full flex items-center justify-center lg:text-lg font-bold border transition-all relative z-10 ${
             i === currentStep
               ? "bg-primary-light border-primary-light drop-shadow-[2px_4px_4px_rgba(0,0,0,0.50)] text-white"

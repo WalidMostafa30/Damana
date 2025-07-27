@@ -4,6 +4,7 @@ import homeBanner from "../../assets/images/home-banner.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useState } from "react";
+import PageTitle from "../../components/common/PageTitle";
 
 const faqs = [
   "كيف تعمل ضمانة ؟",
@@ -24,10 +25,10 @@ const Home = () => {
   return (
     <section className="pageContainer grid grid-cols-1 lg:grid-cols-3 gap-8">
       <div className="col-span-1 lg:col-span-2 space-y-4">
-        <h2 className="text-3xl font-bold">ضماناتي</h2>
-        <p className="text-lg text-neutral-500">
-          هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.
-        </p>
+        <PageTitle
+          title="ضماناتى"
+          subtitle="هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها."
+        />
 
         <section className="bg-base-white p-4 rounded-xl shadow-md space-y-4">
           <div className="grid xl:grid-cols-2 gap-4">

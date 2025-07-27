@@ -14,6 +14,12 @@ const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
 const DamanaDetails = React.lazy(() =>
   import("../pages/DamanaDetails/DamanaDetails")
 );
+const PaymentOptions = React.lazy(() =>
+  import("../pages/PaymentOptions/PaymentOptions")
+);
+const Notification = React.lazy(() =>
+  import("../pages/Notification/Notification")
+);
 const LoginPage = React.lazy(() =>
   import("../pages/AuthPages/LoginPage/LoginPage")
 );
@@ -29,7 +35,18 @@ const CreateNewPassword = React.lazy(() =>
 const RegisterPerson = React.lazy(() =>
   import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
 );
-import RegisterCompany from "../pages/AuthPages/Register/RegisterCompany/RegisterCompany";
+const RegisterCompany = React.lazy(() =>
+  import("../pages/AuthPages/Register/RegisterCompany/RegisterCompany")
+);
+const Profile = React.lazy(() => import("../pages/Profile/Profile"));
+const MyProfile = React.lazy(() => import("../pages/Profile/MyProfile"));
+const BankInfo = React.lazy(() => import("../pages/Profile/BankInfo"));
+const Address = React.lazy(() => import("../pages/Profile/Address"));
+const Support = React.lazy(() => import("../pages/Profile/Support"));
+const Password = React.lazy(() => import("../pages/Profile/Password"));
+const RemoveDamana = React.lazy(() => import("../pages/Profile/RemoveDamana"));
+const Terms = React.lazy(() => import("../pages/Profile/Terms"));
+
 
 const router = createBrowserRouter([
   {
@@ -38,18 +55,33 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="sale" replace />, // <-- هنا التحويل
+        element: <Navigate to="sale" replace />,
       },
       {
         path: "",
         element: <Home />,
         children: [
-          { path: "sale", element: <Sale /> }, // الصفحة الأساسية
-          { path: "purchase", element: <Purchase /> }, // التانية
+          { path: "sale", element: <Sale /> },
+          { path: "purchase", element: <Purchase /> },
         ],
       },
       { path: "add-damana", element: <AddDamana /> },
       { path: "damana", element: <DamanaDetails /> },
+      { path: "payment-options", element: <PaymentOptions /> },
+      { path: "notifications", element: <Notification /> },
+      {
+        path: "profile",
+        element: <Profile />,
+        children: [
+          { index: true, element: <MyProfile /> },
+          { path: "bank-info", element: <BankInfo /> },
+          { path: "address", element: <Address /> },
+          { path: "support", element: <Support /> },
+          { path: "password", element: <Password /> },
+          { path: "remove-damana", element: <RemoveDamana /> },
+          { path: "terms", element: <Terms /> },
+        ],
+      },
     ],
   },
 

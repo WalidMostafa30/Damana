@@ -3,10 +3,23 @@ import { PiCertificate } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Timer from "./Timer";
 
-const DamanaCard = ({ hours, number, plate, seller, buyer, date }) => {
+const DamanaCard = ({
+  hours,
+  number,
+  plate,
+  seller,
+  buyer,
+  date,
+  selectable = false,
+  selected = false,
+  onSelect = () => {},
+}) => {
   return (
-    <div className="rounded-2xl shadow-lg bg-white">
-      <h3 className="text-2xl font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">
+    <div
+      onClick={selectable ? onSelect : undefined}
+      className="rounded-2xl shadow-lg bg-white cursor-pointer transition-all hover:shadow-xl"
+    >
+      <h3 className="text-lg lg:text-xl font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">
         بانتظار موافقه المشتري
       </h3>
 
@@ -43,9 +56,19 @@ const DamanaCard = ({ hours, number, plate, seller, buyer, date }) => {
 
         <div className="flex flex-col items-center gap-2">
           <Timer hours={hours} />
-          <Link to="/damana" className="mainBtn w-full">
-            عرض
-          </Link>
+          {selectable ? (
+            <span
+              className="w-10 h-10 rounded-full border-2 border-primary p-1 flex items-center justify-center"
+            >
+              {selected && (
+                <span className="w-full h-full bg-primary rounded-full"></span>
+              )}
+            </span>
+          ) : (
+            <Link to="/damana" className="mainBtn w-full">
+              عرض
+            </Link>
+          )}
         </div>
       </div>
     </div>
