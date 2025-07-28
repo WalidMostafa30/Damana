@@ -31,33 +31,35 @@ const Home = () => {
         />
 
         <section className="bg-base-white p-4 rounded-xl shadow-md space-y-4">
-          <div className="grid xl:grid-cols-2 gap-4">
-            <ul className="flex items-center gap-4">
-              <Link
-                to={"/sale"}
-                className={`homeLink ${
-                  pathname.includes("/sale") ? "active-sale" : ""
-                }`}
-              >
-                ضمانات البيع
-              </Link>
-              <Link
-                to={"/purchase"}
-                className={`homeLink ${
-                  pathname.includes("/purchase") ? "active-purchase" : ""
-                }`}
-              >
-                ضمانات الشراء
-              </Link>
-            </ul>
-            <ul className="flex items-center gap-4">
-              <li className="homeLink">
-                حالة الضمانة <IoIosArrowDown className="text-2xl" />
-              </li>
-              <li className="homeLink">
-                تاريخ الضمانة <BsCalendar2Date className="text-2xl" />
-              </li>
-            </ul>
+          <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 lg:gap-4">
+            <Link
+              to={"/sale"}
+              className={`homeLink ${
+                pathname.includes("/sale") ? "active-sale" : ""
+              }`}
+            >
+              ضمانات البيع
+            </Link>
+            <Link
+              to={"/purchase"}
+              className={`homeLink ${
+                pathname.includes("/purchase") ? "active-purchase" : ""
+              }`}
+            >
+              ضمانات الشراء
+            </Link>
+
+            <select id="" className="bg-transparent outline-none homeLink">
+              <option value="">حاله الضمانة</option>
+              <option value="جديدة">جديدة</option>
+              <option value="جارية">جارية</option>
+              <option value="منتهية">منتهية</option>
+            </select>
+
+            <input
+              type="date"
+              className="bg-transparent cursor-pointer outline-none homeLink"
+            />
           </div>
 
           <Outlet />
@@ -102,10 +104,7 @@ const Home = () => {
                     openIndex === index ? "max-h-40" : "max-h-0"
                   }`}
                 >
-                  <p className="p-4 text-neutral-600">
-                    هذا مثال للإجابة على السؤال "{question}". يمكنك تغيير النص
-                    هنا.
-                  </p>
+                  <p className="p-4 text-neutral-600">{question}</p>
                 </div>
               </li>
             ))}

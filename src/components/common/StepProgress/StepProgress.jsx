@@ -1,7 +1,7 @@
 const StepProgress = ({ steps, currentStep }) => {
   return (
     <div
-      className="flex justify-between gap-4 mb-10 relative 
+      className="flex justify-between gap-4 mb-4 lg:mb-8 relative 
       before:absolute before:top-1/2 before:left-0 before:w-full
       before:h-[2px] before:bg-neutral-300"
     >

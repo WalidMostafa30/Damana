@@ -2,6 +2,7 @@ import payment1 from "../../assets/images/payment1.png";
 import payment2 from "../../assets/images/payment2.png";
 import payment3 from "../../assets/images/payment3.png";
 import payment4 from "../../assets/images/payment4.png";
+import PageTitle from "../../components/common/PageTitle";
 
 const PaymentOptions = () => {
   const paymentMethods = [

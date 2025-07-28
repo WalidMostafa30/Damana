@@ -1,4 +1,5 @@
 import { IoMdTime } from "react-icons/io";
+import PageTitle from "../../components/common/PageTitle";
 
 const Notification = () => {
   const notifications = [

@@ -23,7 +23,7 @@ const Support = () => {
     <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md space-y-4">
       <h3 className="text-lg lg:text-2xl text-primary font-bold">الدعم</h3>
 
-      <p className="text-neutral-500 text-lg">
+      <p className="text-neutral-500 lg:text-lg">
         يمكنك محادثة الدعم واخبارهم باي مشكلة تواجهك من خلال شرحها في الصندوق
         وارسالها وسيتم الرد عليك باقرب وقت
       </p>

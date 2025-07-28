@@ -46,7 +46,7 @@ const BankInfo = () => {
 
         <button
           onClick={() => setIsEditing((prev) => !prev)}
-          className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 text-lg cursor-pointer ${
+          className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 lg:text-lg cursor-pointer ${
             isEditing ? "bg-secondary/30 border-secondary/30" : ""
           }`}
         >

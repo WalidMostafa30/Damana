@@ -16,13 +16,13 @@ const MainInput = ({
   onChange,
   onBlur,
   placeholder,
-  disabled = false, // أضفنا الـ disabled هنا
+  disabled = false,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
   const isPassword = type === "password";
   const inputType = isPassword ? (showPassword ? "text" : "password") : type;
 
-  const commonInputClasses = `w-full text-lg bg-white outline-none border-none py-4 ${
+  const commonInputClasses = `w-full text-lg bg-white outline-none border-none py-3 ${
     isPassword ? "px-9" : type === "date" ? "px-2" : "ps-9 pe-2"
   } rounded-lg ring-2 ${
     error ? "ring-error-100" : "ring-neutral-300 focus-within:ring-secondary"
@@ -31,7 +31,7 @@ const MainInput = ({
   }`;
 
   const commonLabel = label && (
-    <label htmlFor={id} className="block w-fit font-semibold mb-2">
+    <label htmlFor={id} className="block w-fit font-semibold mb-2 text-sm lg:text-base">
       {label}
     </label>
   );
@@ -120,7 +120,7 @@ const MainInput = ({
             country={"jo"}
             value={value}
             onChange={(phone) => onChange(phone)}
-            inputClass={`form-control !w-full !h-auto !p-4 !ps-14 !text-lg !rounded-lg !border-none !outline-none !ring-2 
+            inputClass={`form-control !w-full !h-auto !p-3 lg:p-4 !ps-14 !text-lg !rounded-lg !border-none !outline-none !ring-2 
             !ring-neutral-300 focus:!ring-secondary transition-all ${
               error
                 ? "!ring-error-100"

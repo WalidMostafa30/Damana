@@ -31,16 +31,28 @@ const Header = () => {
             openNav ? "max-h-[500px]" : "max-h-0 py-0"
           }`}
         >
-          <NavLink to="/" className="navLink">
+          <NavLink onClick={() => setOpenNav(false)} to="/" className="navLink">
             ضماناتي
           </NavLink>
-          <NavLink to="/add-damana" className="navLink">
+          <NavLink
+            onClick={() => setOpenNav(false)}
+            to="/add-damana"
+            className="navLink"
+          >
             بدء ضمانة
           </NavLink>
-          <NavLink to="/payment-options" className="navLink">
+          <NavLink
+            onClick={() => setOpenNav(false)}
+            to="/payment-options"
+            className="navLink"
+          >
             خيارات الدفع
           </NavLink>
-          <NavLink to="/contact-us" className="navLink">
+          <NavLink
+            onClick={() => setOpenNav(false)}
+            to="/contact-us"
+            className="navLink"
+          >
             اتصل بنا
           </NavLink>
         </nav>
@@ -57,11 +69,11 @@ const Header = () => {
               onClose={() => setOpenNotification(false)}
               buttonRef={notificationBtnRef}
             >
-              <div className="bg-white w-80">
-                <h3 className="text-lg text-neutral-800 font-bold p-4">
+              <div className="bg-white w-70 lg:w-96">
+                <h3 className="lg:text-lg text-neutral-800 font-bold p-4">
                   الاشعارات
                 </h3>
-                <div className="flex gap-4 p-4 bg-secondary/20 cursor-pointer">
+                <div className="flex gap-2 lg:gap-4 p-4 bg-secondary/20 cursor-pointer">
                   <div
                     dir="ltr"
                     className="w-12 h-12 text-2xl font-bold bg-white rounded-full flex items-center justify-center"
@@ -69,7 +81,7 @@ const Header = () => {
                     <span className="text-primary">R</span>
                     <span className="text-secondary">A</span>
                   </div>
-                  <p className="text-sm text-neutral-800 flex-1">
+                  <p className="text-sm text-neutral-800 line-clamp-3 flex-1">
                     <span className="font-bold text-primary">
                       شركه مرسيدس للسيارات
                     </span>{" "}
@@ -81,7 +93,7 @@ const Header = () => {
                 <Link
                   onClick={() => setOpenNotification(false)}
                   to="/notifications"
-                  className="text-primary font-bold p-4 flex items-center gap-1 cursor-pointer"
+                  className="text-primary text-sm font-bold p-4 flex items-center gap-1 cursor-pointer"
                 >
                   <SlBell className="text-2xl" />
                   رؤيه كل الاشعارات
@@ -103,26 +115,26 @@ const Header = () => {
               <span className="text-secondary">M</span>
             </div>
             <p className="text-lg hidden lg:block">ياسمين محمد</p>
-            <IoIosArrowDown className="text-2xl" />
+            <IoIosArrowDown className="text-2xl hidden lg:block" />
             <DropDown
               isOpen={openProfileMenu}
               onClose={() => setOpenProfileMenu(false)}
               buttonRef={profileBtnRef}
             >
-              <div className="bg-white w-80">
+              <div className="bg-white w-60">
                 <Link
                   to="/profile"
-                  className="flex items-center gap-2 font-bold p-4 text-lg not-last:border-b border-neutral-200 text-secondary cursor-pointer"
+                  className="flex items-center gap-2 font-bold p-4 lg:text-lg not-last:border-b border-neutral-200 text-secondary cursor-pointer"
                 >
                   <FaUserAlt className="text-2xl" />
-                  Profile
+                  الملف الشخصي
                 </Link>
                 <Link
                   to="/login"
-                  className="flex items-center gap-2 font-bold p-4 text-lg not-last:border-b border-neutral-200 text-error-200 cursor-pointer"
+                  className="flex items-center gap-2 font-bold p-4 lg:text-lg not-last:border-b border-neutral-200 text-error-200 cursor-pointer"
                 >
                   <RiLogoutBoxRFill className="text-2xl" />
-                  Log Out
+                  تسجيل الخروج
                 </Link>
               </div>
             </DropDown>

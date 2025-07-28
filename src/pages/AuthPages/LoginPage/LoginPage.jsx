@@ -2,7 +2,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
 import MainInput from "../../../components/form/MainInput/MainInput";
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { GoLock } from "react-icons/go";
 import AuthLayout from "../../../components/layout/AuthLayout";
 
@@ -33,13 +33,10 @@ const LoginPage = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-4">أهلاً في ضمانة!</h2>
-
-        <Breadcrumbs
-          items={[{ label: "ضمانة", path: "/" }, { label: "تسجيل الدخول" }]}
-        />
-      </div>
+      <AuthBreadcrumbs
+        title="أهلاً في ضمانة!"
+        items={[{ label: "ضمانة", path: "/" }, { label: "تسجيل الدخول" }]}
+      />
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput

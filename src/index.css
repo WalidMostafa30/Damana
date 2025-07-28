@@ -86,7 +86,7 @@ html {
   }
 
   .profileLink {
-    @apply lg:text-lg flex-1 font-bold text-center xl:text-start py-2 lg:py-4 px-4 
+    @apply text-sm lg:text-lg flex-1 font-bold text-center xl:text-start py-2 lg:py-4 px-4 border border-neutral-300 xl:border-0
     rounded-br-xl rounded-bl-xl xl:rounded-br-none xl:rounded-tl-xl duration-200;
 
     &.active,
@@ -96,7 +96,7 @@ html {
   }
 
   .homeLink {
-    @apply text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl flex-1 text-center 
+    @apply lg:text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl flex-1 text-center 
     cursor-pointer duration-200 flex items-center justify-center gap-2;
 
     &.active-sale {

@@ -1,7 +1,8 @@
+import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 
 const Step2 = () => {
-  const rightColumnData = [
+  const data = [
     { label: "رقم التسجيل", value: "45665790" },
     { label: "رقم اللوحة والرمز", value: "10558777" },
     { label: "نوع المركبة", value: "مارسيدس - بنز" },
@@ -14,7 +15,9 @@ const Step2 = () => {
   ];
   return (
     <div className="space-y-4">
-      <h3 className="text-2xl font-bold text-primary">بيانات الضمانة</h3>
+      <h3 className="text-xl lg:text-2xl font-bold text-primary">
+        بيانات الضمانة
+      </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput label="قيمة المركبه" type="number" />
@@ -24,18 +27,18 @@ const Step2 = () => {
       </div>
 
       <div>
-        <p className="text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
+        <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
         <div className="lg:w-1/2">
           <MainInput label="كود الخصم" type="number" />
         </div>
       </div>
 
-      <h3 className="text-2xl font-bold text-primary">صرف ضمانه</h3>
-      <p className="text-lg font-bold mb-2">
+      <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانه</h3>
+      <p className="lg:text-lg font-bold mb-4">
         خلي ضمانك يوصلك أسرع! كيف تحب يتم التحويل بعد التنازل؟
       </p>
       <div className="space-y-2">
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-sm lg:text-base">
           <input
             type="radio"
             name="owner"
@@ -44,7 +47,7 @@ const Step2 = () => {
           />
           فورًا – بأسرع وقت ممكن (تُضاف 4 دنانير)
         </label>
-        <label className="flex items-center gap-2">
+        <label className="flex items-center gap-2 text-sm lg:text-base">
           <input
             type="radio"
             name="owner"
@@ -55,17 +58,7 @@ const Step2 = () => {
         </label>
       </div>
 
-      <div className="bg-white rounded-2xl shadow-sm border border-gray-200">
-        {/* العمود الأيمن */}
-        <div className="p-4 space-y-2 text-primary font-medium">
-          {rightColumnData.map((item, index) => (
-            <div key={index} className="flex justify-between items-center py-2">
-              <p>{item.label}</p>
-              <p>{item.value}</p>
-            </div>
-          ))}
-        </div>
-      </div>
+      <DetailsCard data={data} />
     </div>
   );
 };

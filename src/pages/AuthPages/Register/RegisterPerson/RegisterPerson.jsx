@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link } from "react-router-dom";
-import Breadcrumbs from "../../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
@@ -14,81 +14,85 @@ const steps = ["معلومات الحساب", "معلومات إضافية", "ا
 
 const stepSchemas = [
   Yup.object({
-    userType: Yup.string().required("نوع المستخدم مطلوب"),
-    fullNameAr: Yup.string()
+    account_type: Yup.string().required("نوع المستخدم مطلوب"),
+    full_name_ar: Yup.string()
       .required("الاسم بالعربية مطلوب")
       .min(3, "الاسم بالعربية يجب أن لا يقل عن 3 حروف"),
-    fullNameEn: Yup.string()
+    full_name_en: Yup.string()
       .required("الاسم بالإنجليزية مطلوب")
       .min(3, "الاسم بالإنجليزية يجب أن لا يقل عن 3 حروف"),
     nationality: Yup.string().required("الجنسية مطلوبة"),
-    documentType: Yup.string().required("نوع الوثيقة مطلوب"),
-    documentNumber: Yup.number()
+    document_type: Yup.string().required("نوع الوثيقة مطلوب"),
+    document_id: Yup.string()
       .required("رقم الوثيقة مطلوب")
       .min(3, "رقم الوثيقة يجب أن لا يقل عن 3 أرقام"),
-    issueDate: Yup.string().required("تاريخ الاصدار مطلوب"),
-    expiryDate: Yup.string().required("تاريخ الانتهاء مطلوب"),
-    issueCountry: Yup.string().required("بلد الاصدار مطلوب"),
-    birthPlace: Yup.string().required("مكان الميلاد مطلوب"),
-    birthCountry: Yup.string().required("بلد الميلاد مطلوب"),
-    birthCity: Yup.string().required("مدينة الميلاد مطلوبة"),
-    motherName: Yup.string().required("اسم الأم مطلوب"),
+    issuance_date: Yup.string().required("تاريخ الاصدار مطلوب"),
+    expiry_date: Yup.string().required("تاريخ الانتهاء مطلوب"),
+    country_of_issuance: Yup.string().required("بلد الاصدار مطلوب"),
+    birth_place: Yup.string().required("مكان الميلاد مطلوب"),
+    country_of_residency: Yup.string().required("بلد الإقامة مطلوب"),
+    city_of_birth: Yup.string().required("مدينة الميلاد مطلوبة"),
+    mother_name: Yup.string().required("اسم الأم مطلوب"),
     gender: Yup.string().required("الجنس مطلوب"),
   }),
   Yup.object({
-    buildingNumber: Yup.number().required("رقم البناية مطلوب"),
-    streetName: Yup.string().required("اسم الشارع مطلوب"),
-    city: Yup.string().required("المدينة مطلوبة"),
-    country: Yup.string().required("البلد مطلوب"),
-    phone: Yup.number()
-      .required("رقم الهاتف مطلوب")
-      .min(9, "رقم الهاتف غير صالح"),
+    address_building_number: Yup.string().required("رقم البناية مطلوب"),
+    address_street_name: Yup.string().required("اسم الشارع مطلوب"),
+    address_city_town: Yup.string().required("المدينة مطلوبة"),
+    address_country: Yup.string().required("البلد مطلوب"),
+    full_mobile: Yup.string().required("رقم الهاتف مطلوب"),
+    country_code: Yup.string().required("مفتاح الدولة مطلوب"),
+    mobile: Yup.string().required("رقم الهاتف مطلوب"),
     email: Yup.string()
       .required("البريد الإلكتروني مطلوب")
       .email("البريد الإلكتروني غير صالح"),
   }),
   Yup.object({
-    bankName: Yup.string().required("اسم البنك مطلوب"),
-    branch: Yup.string().required("الفرع مطلوب"),
-    swiftCode: Yup.string()
-      .required("رمز سويفت مطلوب")
-      .min(3, "رمز سويفت مطلوب"),
-    accountNumber: Yup.number().required("رقم الحساب مطلوب"),
-    iban: Yup.number()
-      .required("الايبان البنكي مطلوب")
-      .min(16, "الايبان البنكي مطلوب"),
+    bank_name: Yup.string().required("اسم البنك مطلوب"),
+    branch: Yup.string().required("اسم الفرع مطلوب"),
+    swift_code: Yup.string()
+      .required("رمز السويفت مطلوب")
+      .min(3, "رمز السويفت مطلوب"),
+    account_number: Yup.string().required("رقم الحساب مطلوب"),
+    iban: Yup.string()
+      .required("رقم الايبان مطلوب")
+      .min(16, "رقم الايبان غير صالح"),
   }),
 ];
 
 const RegisterPerson = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
 
   const formik = useFormik({
     initialValues: {
-      userType: "",
-      fullNameAr: "",
-      fullNameEn: "",
+      account_type: "",
+      full_name_ar: "",
+      full_name_en: "",
       nationality: "",
-      documentType: "",
-      documentNumber: "",
-      issueDate: "",
-      expiryDate: "",
-      issueCountry: "",
-      birthPlace: "",
-      birthCountry: "",
-      birthCity: "",
-      motherName: "",
+      document_type: "",
+      document_id: "",
+      issuance_date: "",
+      expiry_date: "",
+      country_of_issuance: "",
+      birth_place: "",
+      country_of_residency: "",
+      city_of_birth: "",
+      mother_name: "",
       gender: "",
-      buildingNumber: "",
-      streetName: "",
-      city: "",
-      country: "",
-      phone: "",
+
+      address_building_number: "",
+      address_street_name: "",
+      address_city_town: "",
+      address_country: "",
+      full_mobile: "",
+      country_code: "",
+      mobile: "",
       email: "",
-      bankName: "",
+
+      bank_name: "",
       branch: "",
-      swiftCode: "",
-      accountNumber: "",
+      swift_code: "",
+      account_number: "",
       iban: "",
     },
     validationSchema: stepSchemas[step],
@@ -108,18 +112,16 @@ const RegisterPerson = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-8">أهلاً في ضمانة!</h2>
-        <Breadcrumbs
-          items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
-        />
-      </div>
+      <AuthBreadcrumbs
+        title="أهلاً في ضمانة!"
+        items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
+      />
 
       <StepProgress steps={steps} currentStep={step} />
 
       <div className="mb-8">
-        <h3 className="text-2xl font-bold mb-4">اكد هويتك الشخصية</h3>
-        <p className="text-neutral-500">
+        <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">اكد هويتك الشخصية</h3>
+        <p className="text-sm lg:text-base text-neutral-500">
           حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد هويتك
           وبيانات البنك الخاص بك
         </p>

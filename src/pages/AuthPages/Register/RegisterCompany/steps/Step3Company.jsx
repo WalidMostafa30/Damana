@@ -1,4 +1,10 @@
+import { BsBank } from "react-icons/bs";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
+import { IoIdCardSharp } from "react-icons/io5";
+import { GoFileBinary } from "react-icons/go";
+import { IoMdCode } from "react-icons/io";
+import { SiBitcoin } from "react-icons/si";
+import { FaEarthAsia } from "react-icons/fa6";
 
 const Step3Company = ({ formik, getError }) => {
   return (
@@ -14,6 +20,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.bank_name}
           onChange={formik.handleChange}
           error={getError("bank_name")}
+          icon={<BsBank />}
         />
 
         <MainInput
@@ -24,6 +31,8 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.account_number}
           onChange={formik.handleChange}
           error={getError("account_number")}
+          icon={<IoIdCardSharp />}
+          type="number"
         />
 
         <MainInput
@@ -34,6 +43,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.iban}
           onChange={formik.handleChange}
           error={getError("iban")}
+          icon={<GoFileBinary />}
         />
 
         <MainInput
@@ -44,6 +54,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.swift_code}
           onChange={formik.handleChange}
           error={getError("swift_code")}
+          icon={<IoMdCode />}
         />
 
         <MainInput
@@ -54,6 +65,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.currency}
           onChange={formik.handleChange}
           error={getError("currency")}
+          icon={<SiBitcoin />}
         />
 
         <MainInput
@@ -64,6 +76,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.branch}
           onChange={formik.handleChange}
           error={getError("branch")}
+          icon={<FaEarthAsia />}
         />
 
         <MainInput
@@ -74,6 +87,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.clik_name}
           onChange={formik.handleChange}
           error={getError("clik_name")}
+          icon={<IoIdCardSharp />}
         />
 
         <MainInput
@@ -84,6 +98,7 @@ const Step3Company = ({ formik, getError }) => {
           value={formik.values.info_name}
           onChange={formik.handleChange}
           error={getError("info_name")}
+          icon={<IoIdCardSharp />}
         />
       </div>
     </>

@@ -13,7 +13,7 @@ const AuthLayout = ({ children }) => {
             src={favLogo}
             alt="logo"
             loading="lazy"
-            className="mb-4 xl:mb-8"
+            className="mb-4 xl:mb-8 w-20 lg:w-32"
           />
           {children}
         </div>

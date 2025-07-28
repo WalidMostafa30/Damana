@@ -74,7 +74,7 @@ const RemoveDamana = () => {
         {steps[step].title}
       </h3>
 
-      <p className="text-neutral-500 text-lg">{steps[step].description}</p>
+      <p className="text-neutral-500 lg:text-lg">{steps[step].description}</p>
 
       <StepProgress steps={steps} currentStep={step} />
 

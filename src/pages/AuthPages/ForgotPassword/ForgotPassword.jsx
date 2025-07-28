@@ -3,7 +3,7 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import { useNavigate } from "react-router-dom";
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { CiMail } from "react-icons/ci";
 import AuthLayout from "../../../components/layout/AuthLayout";
 
@@ -44,16 +44,13 @@ const ForgotPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-4">هل نسيت كلمة المرور ؟</h2>
-
-        <Breadcrumbs
+        <AuthBreadcrumbs
+          title="هل نسيت كلمة المرور ؟"
           items={[
             { label: "ضمانة", path: "/" },
             { label: "نسيان كلمة المرور" },
           ]}
         />
-      </div>
 
       <p className="text-neutral-500 mb-4">
         يمكنك اعاده تعين كلمة المرور الخاصه بك فى حال نسيانها من خلال احدى

@@ -1,5 +1,9 @@
 import { CiCirclePlus } from "react-icons/ci";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
+import { LuFileDigit } from "react-icons/lu";
+import { FaEarthAsia } from "react-icons/fa6";
+import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import { BsBuildings } from "react-icons/bs";
 
 const Step1Company = ({ formik, getError }) => {
   const partners = formik.values.partners;
@@ -38,6 +42,7 @@ const Step1Company = ({ formik, getError }) => {
               value={partner.full_name}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.full_name`)}
+              icon={<BsBuildings />}
             />
 
             <MainInput
@@ -48,6 +53,7 @@ const Step1Company = ({ formik, getError }) => {
               value={partner.nationality}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.nationality`)}
+              icon={<FaEarthAsia />}
             />
 
             <MainInput
@@ -58,6 +64,8 @@ const Step1Company = ({ formik, getError }) => {
               value={partner.national_passport_number}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.national_passport_number`)}
+              icon={<LuFileDigit />}
+              type="number"
             />
 
             <MainInput
@@ -68,15 +76,19 @@ const Step1Company = ({ formik, getError }) => {
               value={partner.address}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.address`)}
+              icon={<FaEarthAsia />}
             />
 
             <MainInput
               label="رقم الهاتف"
+              type="tel"
               id={`partners.${index}.phone`}
               name={`partners.${index}.phone`}
               placeholder="مثال: 01012345678"
               value={partner.phone}
-              onChange={formik.handleChange}
+              onChange={(phone) =>
+                formik.setFieldValue(`partners.${index}.phone`, phone)
+              }
               error={getError(`partners.${index}.phone`)}
             />
 
@@ -88,6 +100,7 @@ const Step1Company = ({ formik, getError }) => {
               value={partner.email}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.email`)}
+              icon={<MdOutlineMarkEmailUnread />}
             />
           </div>
 

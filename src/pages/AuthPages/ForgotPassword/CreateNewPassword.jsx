@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput/MainInput";
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { GoLock } from "react-icons/go";
 import { FaRegStickyNote } from "react-icons/fa";
 import AuthLayout from "../../../components/layout/AuthLayout";
@@ -61,16 +61,14 @@ const CreateNewPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-4">انشاء كلمة مرور جديدة</h2>
-        <Breadcrumbs
-          items={[
-            { label: "ضمانة", path: "/" },
-            { label: "نسيان كلمة المرور", path: "/forgot-password" },
-            { label: "انشاء كلمة مرور جديدة" },
-          ]}
-        />
-      </div>
+      <AuthBreadcrumbs
+        title="انشاء كلمة مرور جديدة"
+        items={[
+          { label: "ضمانة", path: "/" },
+          { label: "نسيان كلمة المرور", path: "/forgot-password" },
+          { label: "انشاء كلمة مرور جديدة" },
+        ]}
+      />
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
         <MainInput

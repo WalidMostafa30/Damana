@@ -4,6 +4,10 @@ import { BsBank, BsBuildings, BsCalendar2Date } from "react-icons/bs";
 import { FaRegFileAlt } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { LuFileDigit } from "react-icons/lu";
+import { TbWorldWww } from "react-icons/tb";
+import { FaEarthAsia, FaMoneyBill1Wave } from "react-icons/fa6";
+import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import { GiReceiveMoney } from "react-icons/gi";
 
 const Step0Company = ({ formik, getError }) => {
   return (
@@ -142,6 +146,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.website_url}
           onChange={formik.handleChange}
           error={getError("website_url")}
+          icon={<TbWorldWww />}
         />
 
         <MainInput
@@ -153,6 +158,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.license_number}
           onChange={formik.handleChange}
           error={getError("license_number")}
+          icon={<LuFileDigit />}
         />
 
         <MainInput
@@ -163,6 +169,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.address}
           onChange={formik.handleChange}
           error={getError("address")}
+          icon={<FaEarthAsia />}
         />
 
         <MainInput
@@ -174,6 +181,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.email}
           onChange={formik.handleChange}
           error={getError("email")}
+          icon={<MdOutlineMarkEmailUnread />}
         />
 
         <MainInput
@@ -196,6 +204,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.tax_number}
           onChange={formik.handleChange}
           error={getError("tax_number")}
+          icon={<LuFileDigit />}
         />
 
         <MainInput
@@ -207,6 +216,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.capital_equity}
           onChange={formik.handleChange}
           error={getError("capital_equity")}
+          icon={<GiReceiveMoney />}
         />
 
         <MainInput
@@ -217,6 +227,7 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.signed_name}
           onChange={formik.handleChange}
           error={getError("signed_name")}
+          icon={<FaMoneyBill1Wave />}
         />
       </div>
 

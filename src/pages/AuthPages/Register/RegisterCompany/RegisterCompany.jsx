@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import Breadcrumbs from "../../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import StepProgress from "../../../../components/common/StepProgress/StepProgress";
-import Step0Company from "./steps/Step0Company";
 import FileUploadSection from "./FileUploadSection";
+import Step0Company from "./steps/Step0Company";
 import Step1Company from "./steps/Step1Company";
 import Step2Company from "./steps/Step2Company";
 import Step3Company from "./steps/Step3Company";
@@ -269,9 +269,6 @@ const RegisterCompany = () => {
     },
   });
 
-  // const getError = (name) =>
-  //   formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
-
   const getError = (name) => {
     const touched = get(formik.touched, name);
     const error = get(formik.errors, name);
@@ -308,12 +305,10 @@ const RegisterCompany = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-8">أهلاً في ضمانة!</h2>
-        <Breadcrumbs
-          items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
-        />
-      </div>
+      <AuthBreadcrumbs
+        title="أهلاً في ضمانة!"
+        items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
+      />
 
       {step === 0 && <FileUploadSection />}
 

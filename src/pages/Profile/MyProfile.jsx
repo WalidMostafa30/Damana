@@ -37,13 +37,13 @@ const MyProfile = () => {
         <div className="flex gap-2">
           <div
             dir="ltr"
-            className="w-16 h-16 text-3xl font-bold bg-white rounded-full flex items-center justify-center border border-neutral-300"
+            className="w-12 h-12 lg:w-16 lg:h-16 text-2xl lg:text-3xl font-bold bg-white rounded-full flex items-center justify-center border border-neutral-300"
           >
             <span className="text-primary">Y</span>
             <span className="text-secondary">M</span>
           </div>
           <div>
-            <h3 className="text-lg lg:text-2xl text-primary mb-2">
+            <h3 className="text-lg lg:text-2xl font-medium text-primary mb-2">
               ياسمين حسن احمد المقداد
             </h3>
             <p>+765656756856</p>
@@ -52,7 +52,7 @@ const MyProfile = () => {
 
         <button
           onClick={() => setIsEditing((prev) => !prev)}
-          className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 text-lg cursor-pointer ${
+          className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 lg:text-lg cursor-pointer ${
             isEditing ? "bg-secondary/30 border-secondary/30" : ""
           }`}
         >

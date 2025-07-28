@@ -1,6 +1,6 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import Breadcrumbs from "../../../components/common/Breadcrumbs";
+import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../components/layout/AuthLayout";
 
 const ResetPassword = () => {
@@ -83,17 +83,14 @@ const ResetPassword = () => {
 
   return (
     <AuthLayout>
-      <div className="mb-8">
-        <h2 className="text-3xl font-bold mb-4">هل نسيت كلمة المرور ؟</h2>
-
-        <Breadcrumbs
-          items={[
-            { label: "ضمانة", path: "/" },
-            { label: "نسيان كلمة المرور", path: "/forgot-password" },
-            { label: "ادخال كود التحقق" },
-          ]}
-        />
-      </div>
+      <AuthBreadcrumbs
+        title="هل نسيت كلمة المرور ؟"
+        items={[
+          { label: "ضمانة", path: "/" },
+          { label: "نسيان كلمة المرور", path: "/forgot-password" },
+          { label: "ادخال كود التحقق" },
+        ]}
+      />
 
       <p className="text-neutral-500 mb-4">
         قم بإضافه الكود المكون من 5 أرقام لاسترجاع كلمة المرور
