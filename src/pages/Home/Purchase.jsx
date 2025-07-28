@@ -4,7 +4,7 @@ import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const allDamanat = Array.from({ length: 30 }, (_, i) => ({
+const allDamanat = Array.from({ length: 15 }, (_, i) => ({
   id: i + 1,
   hours: 3,
   number: `13212312213-${i + 1}`,
@@ -15,7 +15,7 @@ const allDamanat = Array.from({ length: 30 }, (_, i) => ({
 }));
 
 const Purchase = () => {
-  const [items, setItems] = useState(allDamanat.slice(0, 10)); // نبدأ بـ 10 عناصر
+  const [items, setItems] = useState(allDamanat.slice(0, 5)); 
   const [hasMore, setHasMore] = useState(true);
 
   // دالة تحميل بيانات إضافية
@@ -29,7 +29,7 @@ const Purchase = () => {
     setTimeout(() => {
       setItems((prev) => [
         ...prev,
-        ...allDamanat.slice(prev.length, prev.length + 10),
+        ...allDamanat.slice(prev.length, prev.length + 5),
       ]);
     }, 1000);
   };

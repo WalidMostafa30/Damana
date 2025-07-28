@@ -45,7 +45,14 @@ const Step0 = ({ formik, getError }) => {
           name="ownerNationalId"
           type="number"
         />
-        <MainInput label="رقم الهاتف للمالك" name="ownerPhone" type="tel" />
+        <MainInput
+          label="رقم الهاتف للمالك"
+          name="ownerPhone"
+          type="tel"
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={getError("ownerPhone")}
+        />
         <MainInput
           label="رقم تسجيل المركبه"
           name="vehicleRegistrationNumber"

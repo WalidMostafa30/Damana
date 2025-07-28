@@ -32,7 +32,7 @@ const validationSchemas = [
 ];
 
 const AddDamana = () => {
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(0);
 
   const formik = useFormik({
     initialValues: {

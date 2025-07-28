@@ -62,10 +62,10 @@ const PaymentOptions = () => {
             <img src={method.logo} alt={method.name} loading="lazy" />
 
             <div>
-              <h3 className="text-lg font-semibold text-gray-800 mb-3">
+              <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 يمكنك الدفع باستخدام الرقم المرجعي للحركة من خلال:
               </h3>
-              <ul className="space-y-2 text-neutral-500">
+              <ul className="lg:space-y-2 text-neutral-500">
                 {method.options.map((option, index) => (
                   <li
                     key={index}

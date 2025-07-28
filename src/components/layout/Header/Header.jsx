@@ -50,7 +50,7 @@ const Header = () => {
           </NavLink>
           <NavLink
             onClick={() => setOpenNav(false)}
-            to="/contact-us"
+            to="/payment-options"
             className="navLink"
           >
             اتصل بنا
