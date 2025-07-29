@@ -5,7 +5,7 @@ const DetailsCard = ({ data = [], blur = false, col = 1 }) => {
     return <img src={blurImg} loading="lazy" alt="blur" className="w-full" />;
 
   return (
-    <div className="bg-white rounded-2xl shadow-sm">
+    <div className="whiteContainer">
       <div
         className={`text-primary text-sm lg:text-base font-medium py-2 ${
           col === 2 && "grid grid-cols-1 lg:grid-cols-2"

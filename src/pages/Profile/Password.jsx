@@ -23,7 +23,7 @@ const Password = () => {
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
-    <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md space-y-4">
+    <>
       <h3 className="text-lg lg:text-2xl text-primary font-bold">
         تعديل كلمة المرور
       </h3>
@@ -59,7 +59,7 @@ const Password = () => {
           حفظ
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

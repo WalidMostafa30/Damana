@@ -38,6 +38,40 @@ html {
   }
 }
 
+.htmlContent {
+  overflow-wrap: break-word;
+  overflow-x: auto;
+
+  iframe {
+    max-width: 100%;
+    margin-inline: auto;
+  }
+
+  h2 {
+    font-size: 2rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+  }
+
+  ul {
+    list-style: disc;
+
+    li {
+      margin-inline-start: 1.25rem;
+    }
+  }
+
+  ol {
+    list-style: decimal;
+
+    li {
+      margin-inline-start: 1rem;
+    }
+  }
+}
+
 @layer {
   body {
     @apply bg-white text-neutrals-800 font-['cairo'];
@@ -45,6 +79,14 @@ html {
 
   .pageContainer {
     @apply container py-6 lg:py-10 min-h-[calc(100vh-220px)];
+  }
+
+  .whiteContainer {
+    @apply p-4 lg:p-6 rounded-2xl shadow-xl border border-neutral-300 bg-white;
+  }
+
+  .baseWhiteContainer {
+    @apply p-4 lg:p-6 rounded-2xl shadow-xl border border-neutral-300 bg-base-white;
   }
 
   .mainBtn {

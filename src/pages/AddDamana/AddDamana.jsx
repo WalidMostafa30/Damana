@@ -32,7 +32,7 @@ const validationSchemas = [
 ];
 
 const AddDamana = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
 
   const formik = useFormik({
     initialValues: {
@@ -64,12 +64,12 @@ const AddDamana = () => {
         subtitle="ابداء بإنشاء ضمانة جديدة للمركبة التي تود ببيعها"
       />
 
-      <section className="p-4 rounded-lg border border-neutral-300 grid grid-cols-1 lg:grid-cols-4 gap-4">
+      <section className="whiteContainer grid grid-cols-1 lg:grid-cols-4 gap-4">
         <aside>
           <StepProgressCol steps={steps} currentStep={step} />
         </aside>
 
-        <div className="col-span-1 lg:col-span-3 space-y-4 p-4 bg-base-white rounded-lg shadow-lg">
+        <div className="col-span-1 lg:col-span-3 space-y-4 baseWhiteContainer">
           <form onSubmit={formik.handleSubmit} className="space-y-4">
             {/* --- Step 0 --- */}
             {step === 0 && <Step0 formik={formik} getError={getError} />}

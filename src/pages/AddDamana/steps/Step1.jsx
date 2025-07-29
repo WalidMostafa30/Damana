@@ -1,3 +1,4 @@
+import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 
@@ -29,27 +30,49 @@ const Step1 = () => {
 
   return (
     <div className="space-y-4">
-      <h3 className="text-xl lg:text-2xl font-bold text-primary">بيانات اطراف الضمانه</h3>
+      <h3 className="text-xl lg:text-2xl font-bold text-primary">
+        بيانات اطراف الضمانه
+      </h3>
 
       <div>
         {pageTitle("المالك")}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MainInput label="الرقم الوطني" name="nationalId" />
-          <MainInput label="رقم الهاتف" name="phone" type="tel" />
+          <MainInput
+            label="الرقم الوطني"
+            placeholder={"ادخل رقم الوطني"}
+            name="nationalId"
+            icon={<LuCircleUserRound />}
+          />
+          <MainInput
+            label="رقم الهاتف"
+            placeholder={"ادخل رقم الهاتف"}
+            name="phone"
+            type="tel"
+          />
         </div>
       </div>
 
       <div>
         {pageTitle("المشترى")}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MainInput label="الرقم الوطني" name="nationalId" />
-          <MainInput label="رقم الهاتف" name="phone" type="tel" />
+          <MainInput
+            label="الرقم الوطني"
+            placeholder={"ادخل رقم الوطني"}
+            name="nationalId"
+            icon={<LuCircleUserRound />}
+          />
+          <MainInput
+            label="رقم الهاتف"
+            placeholder={"ادخل رقم الهاتف"}
+            name="phone"
+            type="tel"
+          />
         </div>
       </div>
 
       <div>
         {pageTitle("بيانات المركبه")}
-        <DetailsCard data={data} col={2} />
+        <DetailsCard data={data} col={2} blur />
       </div>
     </div>
   );

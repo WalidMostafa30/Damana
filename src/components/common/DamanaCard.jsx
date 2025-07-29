@@ -17,14 +17,14 @@ const DamanaCard = ({
   return (
     <div
       onClick={selectable ? onSelect : undefined}
-      className="rounded-2xl shadow-lg bg-white transition-all hover:shadow-xl"
+      className="whiteContainer !p-0"
       style={{ cursor: selectable ? "pointer" : "default" }}
     >
       <h3 className="lg:text-lg font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">
         بانتظار موافقه المشتري
       </h3>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
         <div className="grid xl:grid-cols-2 gap-2">
           <p className="lg:text-lg text-primary font-bold xl:col-span-2">
             رقم الضمانة: <span className="font-bold">{number}</span>

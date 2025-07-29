@@ -1,3 +1,4 @@
+import { LuCircleUserRound, LuFileDigit } from "react-icons/lu";
 import MainInput from "../../../components/form/MainInput/MainInput";
 
 const Step0 = ({ formik, getError }) => {
@@ -42,11 +43,14 @@ const Step0 = ({ formik, getError }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="الرقم الوطنى للمالك"
+          placeholder={"ادخل رقم الوطنى"}
           name="ownerNationalId"
           type="number"
+          icon={<LuCircleUserRound />}
         />
         <MainInput
           label="رقم الهاتف للمالك"
+          placeholder={"ادخل رقم الهاتف"}
           name="ownerPhone"
           type="tel"
           onChange={formik.handleChange}
@@ -55,8 +59,10 @@ const Step0 = ({ formik, getError }) => {
         />
         <MainInput
           label="رقم تسجيل المركبه"
+          placeholder={"ادخل رقم تسجيل المركبه"}
           name="vehicleRegistrationNumber"
           type="number"
+          icon={<LuFileDigit />}
         />
       </div>
 

@@ -38,7 +38,7 @@ const BankInfo = () => {
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
-    <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md space-y-4">
+    <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h3 className="text-lg lg:text-2xl text-primary font-bold">
           البيانات البنكية
@@ -123,7 +123,7 @@ const BankInfo = () => {
           </button>
         )}
       </form>
-    </div>
+    </>
   );
 };
 

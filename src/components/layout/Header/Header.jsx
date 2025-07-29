@@ -31,7 +31,11 @@ const Header = () => {
             openNav ? "max-h-[500px]" : "max-h-0 py-0"
           }`}
         >
-          <NavLink onClick={() => setOpenNav(false)} to="/" className="navLink">
+          <NavLink
+            onClick={() => setOpenNav(false)}
+            to="/damanaty"
+            className="navLink"
+          >
             ضماناتي
           </NavLink>
           <NavLink

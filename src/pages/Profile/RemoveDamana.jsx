@@ -69,7 +69,7 @@ const RemoveDamana = () => {
   };
 
   return (
-    <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md space-y-4">
+    <>
       <h3 className="text-lg lg:text-2xl text-primary font-bold">
         {steps[step].title}
       </h3>
@@ -146,7 +146,7 @@ const RemoveDamana = () => {
           </button>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

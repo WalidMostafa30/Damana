@@ -9,7 +9,7 @@ const Profile = () => {
         subtitle="هنا يمكنك الاطلاع على بيانات ملفك الشخصي وتعديل البيانات التي تريدها"
       />
 
-      <section className="bg-base-white p-4 rounded-xl shadow-md grid grid-cols-1 xl:grid-cols-4 gap-4">
+      <section className="baseWhiteContainer grid grid-cols-1 xl:grid-cols-4 gap-4">
         <div>
           <nav className="grid gap-2 lg:gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-1">
             <NavLink to="/profile" end className="profileLink">
@@ -36,7 +36,7 @@ const Profile = () => {
           </nav>
         </div>
 
-        <section className="xl:col-span-3">
+        <section className="xl:col-span-3 space-y-4 whiteContainer">
           <Outlet />
         </section>
       </section>

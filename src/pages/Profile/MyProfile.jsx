@@ -25,15 +25,15 @@ const MyProfile = () => {
     validationSchema: profileSchema,
     onSubmit: (values) => {
       console.log("Login data:", values);
-      setIsEditing(false); 
+      setIsEditing(false);
     },
   });
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
-    <div className="space-y-4 lg:space-y-8">
-      <div className="flex flex-wrap items-center justify-between gap-4 bg-white p-4 lg:p-8 rounded-lg shadow-md">
+    <>
+      <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
         <div className="flex gap-2">
           <div
             dir="ltr"
@@ -43,7 +43,7 @@ const MyProfile = () => {
             <span className="text-secondary">M</span>
           </div>
           <div>
-            <h3 className="text-lg lg:text-2xl font-medium text-primary mb-2">
+            <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
               ياسمين حسن احمد المقداد
             </h3>
             <p>+765656756856</p>
@@ -61,8 +61,8 @@ const MyProfile = () => {
         </button>
       </div>
 
-      <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md">
-        <h3 className="text-lg lg:text-2xl text-primary mb-2">
+      <div>
+        <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
           البريد الالكتروني ورقم الهاتف
         </h3>
 
@@ -102,7 +102,7 @@ const MyProfile = () => {
           )}
         </form>
       </div>
-    </div>
+    </>
   );
 };
 

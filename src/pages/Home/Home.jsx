@@ -1,10 +1,9 @@
-import { BsCalendar2Date } from "react-icons/bs";
 import { IoIosArrowDown } from "react-icons/io";
-import homeBanner from "../../assets/images/home-banner.png";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useState } from "react";
 import PageTitle from "../../components/common/PageTitle";
+import HomeSlider from "./HomeSlider/HomeSlider";
 
 const faqs = [
   "كيف تعمل ضمانة ؟",
@@ -30,10 +29,10 @@ const Home = () => {
           subtitle="هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها."
         />
 
-        <section className="bg-base-white p-4 rounded-xl shadow-md space-y-4">
+        <section className="baseWhiteContainer !border-neutral-100 space-y-4">
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 lg:gap-4">
             <Link
-              to={"/sale"}
+              to={"/damanaty/sale"}
               className={`homeLink ${
                 pathname.includes("/sale") ? "active-sale" : ""
               }`}
@@ -41,7 +40,7 @@ const Home = () => {
               ضمانات البيع
             </Link>
             <Link
-              to={"/purchase"}
+              to={"/damanaty/purchase"}
               className={`homeLink ${
                 pathname.includes("/purchase") ? "active-purchase" : ""
               }`}
@@ -67,7 +66,7 @@ const Home = () => {
       </div>
 
       <aside className="space-y-8">
-        <div className="text-center p-8 rounded-2xl shadow-lg">
+        <div className="whiteContainer !border-neutral-100 text-center !p-8">
           <h3 className="text-2xl font-bold mb-4">مرحبًا بك في ضمانة!</h3>
           <p className="text-lg text-neutral-500 mb-4">
             يمكنك بدء ضمانة جديدة بالضغط على الزر أدناه
@@ -78,9 +77,9 @@ const Home = () => {
           </Link>
         </div>
 
-        <img src={homeBanner} alt="banner" loading="lazy" className="w-full" />
+        <HomeSlider />
 
-        <div className="rounded-2xl shadow-lg">
+        <div className="whiteContainer !border-neutral-100 !p-0">
           <h3 className="text-2xl font-bold text-center p-4 text-primary border-b border-neutral-200">
             الأسئلة الشائعة
           </h3>

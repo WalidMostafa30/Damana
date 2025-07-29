@@ -1,5 +1,8 @@
+import { LuHandCoins } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
+import { CiDiscount1 } from "react-icons/ci";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 const Step2 = () => {
   const data = [
@@ -20,16 +23,40 @@ const Step2 = () => {
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput label="قيمة المركبه" type="number" />
-        <MainInput label="عمولة البائع" type="number" />
-        <MainInput label="عموله ضمانه" type="number" />
-        <MainInput label="قيمة الدفعه" type="number" />
+        <MainInput
+          label="قيمة المركبه"
+          placeholder={"ادخل قيمة المركبه"}
+          type="number"
+          icon={<FaMoneyBillWave />}
+        />
+        <MainInput
+          label="عمولة البائع"
+          placeholder={"ادخل عمولة البائع"}
+          type="number"
+          icon={<LuHandCoins />}
+        />
+        <MainInput
+          label="عموله ضمانه"
+          type="select"
+          options={[
+            { value: "none", label: "ادخل عموله ضمانه" },
+            { value: "yes", label: "نعم" },
+            { value: "no", label: "لا" },
+          ]}
+          icon={<LuHandCoins />}
+        />
+        <MainInput
+          label="قيمة الدفعه"
+          placeholder={"ادخل قيمة الدفعه"}
+          type="number"
+          icon={<LuHandCoins />}
+        />
       </div>
 
       <div>
         <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
         <div className="lg:w-1/2">
-          <MainInput label="كود الخصم" type="number" />
+          <MainInput label="كود الخصم" type="number" placeholder={"ادخل كود الخصم"} icon={<CiDiscount1 />} />
         </div>
       </div>
 

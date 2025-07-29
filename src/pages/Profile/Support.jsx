@@ -20,7 +20,7 @@ const Support = () => {
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
   return (
-    <div className="bg-white p-4 lg:p-8 rounded-lg shadow-md space-y-4">
+    <>
       <h3 className="text-lg lg:text-2xl text-primary font-bold">الدعم</h3>
 
       <p className="text-neutral-500 lg:text-lg">
@@ -40,7 +40,7 @@ const Support = () => {
           ارسال
         </button>
       </form>
-    </div>
+    </>
   );
 };
 

@@ -53,11 +53,11 @@ const PaymentOptions = () => {
         subtitle="هنا لديك طرق الدفع المتاحة ، يمكنك اختيارالطريقة التي تناسبك"
       />
 
-      <div className="space-y-4 p-4 rounded-2xl bg-base-white">
+      <div className="space-y-4 baseWhiteContainer !border-neutral-100">
         {paymentMethods.map((method) => (
           <div
             key={method.id}
-            className="bg-white p-4 rounded-xl border border-gray-200 flex flex-col lg:flex-row items-center gap-4"
+            className="whiteContainer flex flex-col lg:flex-row items-center gap-4"
           >
             <img src={method.logo} alt={method.name} loading="lazy" />
 

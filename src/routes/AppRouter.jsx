@@ -55,12 +55,16 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Navigate to="sale" replace />,
+        element: <Navigate to="damanaty/sale" replace />,
       },
       {
-        path: "",
+        path: "/damanaty",
         element: <Home />,
         children: [
+          {
+            index: true,
+            element: <Navigate to="sale" replace />,
+          },
           { path: "sale", element: <Sale /> },
           { path: "purchase", element: <Purchase /> },
         ],
