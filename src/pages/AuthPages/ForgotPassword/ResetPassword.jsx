@@ -10,6 +10,7 @@ const ResetPassword = () => {
   const [canResend, setCanResend] = useState(false);
   const correctCode = "00000";
   const [errorMessage, setErrorMessage] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -146,9 +147,9 @@ const ResetPassword = () => {
         </button>
       </div>
 
-      <button onClick={handleSubmit} className="mainBtn">
-        تأكيد الكود
-      </button>
+      <FormError errorMsg={errorMsg} />
+
+      <FormBtn onClick={handleSubmit} title="تأكيد الكود" />
     </AuthLayout>
   );
 };

@@ -5,7 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import App from "../App";
-import Loading from "../components/layout/Loading/Loading";
+import LoadingPage from "../components/layout/Loading/LoadingPage";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const Purchase = React.lazy(() => import("../pages/Home/Purchase"));
@@ -46,7 +46,6 @@ const Support = React.lazy(() => import("../pages/Profile/Support"));
 const Password = React.lazy(() => import("../pages/Profile/Password"));
 const RemoveDamana = React.lazy(() => import("../pages/Profile/RemoveDamana"));
 const Terms = React.lazy(() => import("../pages/Profile/Terms"));
-
 
 const router = createBrowserRouter([
   {
@@ -99,7 +98,7 @@ const router = createBrowserRouter([
 
 const AppRouter = () => {
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<LoadingPage />}>
       <RouterProvider router={router} />
     </Suspense>
   );

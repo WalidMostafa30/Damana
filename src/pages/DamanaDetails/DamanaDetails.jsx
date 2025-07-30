@@ -29,8 +29,8 @@ const DamanaDetails = () => {
   return (
     <article className="pageContainer">
       {pageTitle("بانتظار موافقة المشتري", true, "secondary")}
-      <section className="bg-base-white p-4 rounded-2xl space-y-4">
-        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-4 bg-white p-4 rounded-xl">
+      <section className="baseWhiteContainer space-y-4">
+        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-4 whiteContainer">
           <div className="flex items-center gap-2">
             <p className="font-medium">رقم الضمانة:</p>
             <p className="text-primary font-bold">123456789</p>
@@ -43,7 +43,7 @@ const DamanaDetails = () => {
             <CiCalendarDate className="text-2xl" />
             <p className="text-primary font-bold">01/01/2023</p>
           </div>
-          <Timer hours={24} minutes={0} />
+          <Timer hours={24} />
         </div>
 
         <div>

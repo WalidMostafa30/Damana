@@ -14,6 +14,10 @@ import Step6Company from "./steps/Step6Company";
 import { ImArrowRight } from "react-icons/im";
 import AuthLayout from "../../../../components/layout/AuthLayout";
 import get from "lodash.get";
+import FormError from "../../../../components/form/FormError";
+import FormBtn from "../../../../components/form/FormBtn";
+import { useNavigate } from "react-router-dom";
+import ActionModal from "../../../../components/modals/ActionModal";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -169,6 +173,8 @@ const stepSchemas = [
 
 const RegisterCompany = () => {
   const [step, setStep] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -265,6 +271,7 @@ const RegisterCompany = () => {
         formik.setTouched({});
       } else {
         console.log("بيانات الشركة:", values);
+        setOpenModal(true);
       }
     },
   });
@@ -303,43 +310,54 @@ const RegisterCompany = () => {
     }
   };
 
+  const navigate = useNavigate();
+
   return (
-    <AuthLayout>
-      <AuthBreadcrumbs
-        title="أهلاً في ضمانة!"
-        items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
+    <>
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        msg="تم تأكيد الهوية وبياناتك البنكيه تسطتيع انشاء ضمانتك"
+        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
       />
 
-      {step === 0 && <FileUploadSection />}
+      <AuthLayout>
+        <AuthBreadcrumbs
+          title="أهلاً في ضمانة!"
+          items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
+        />
 
-      <StepProgress steps={steps} currentStep={step} />
+        {step === 0 && <FileUploadSection />}
 
-      <form
-        onSubmit={formik.handleSubmit}
-        className="space-y-4 bg-white p-6 rounded-lg shadow-md"
-      >
-        <h3 className="text-lg text-white font-bold bg-primary p-4 rounded-e-2xl w-fit">
-          {steps[step]}
-        </h3>
+        <StepProgress steps={steps} currentStep={step} />
 
-        {renderStep()}
+        <form
+          onSubmit={formik.handleSubmit}
+          className="space-y-4 bg-white p-6 rounded-lg shadow-md"
+        >
+          <h3 className="text-lg text-white font-bold bg-primary p-4 rounded-e-2xl w-fit">
+            {steps[step]}
+          </h3>
 
-        <button type="submit" className="mainBtn w-full">
-          {step < steps.length - 1 ? "التالي" : "إنهاء"}
-        </button>
+          {renderStep()}
 
-        {step > 0 && (
-          <button
-            type="button"
-            className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-            onClick={() => setStep(step - 1)}
-          >
-            <ImArrowRight />
-            الرجوع للخلف
-          </button>
-        )}
-      </form>
-    </AuthLayout>
+          <FormError errorMsg={errorMsg} />
+
+          <FormBtn title={step < steps.length - 1 ? "التالي" : "إنهاء"} />
+
+          {step > 0 && (
+            <button
+              type="button"
+              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
+              onClick={() => setStep(step - 1)}
+            >
+              <ImArrowRight />
+              الرجوع للخلف
+            </button>
+          )}
+        </form>
+      </AuthLayout>
+    </>
   );
 };
 

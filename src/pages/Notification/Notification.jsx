@@ -45,14 +45,14 @@ const Notification = () => {
             </div>
 
             <div className="space-y-2 flex-1">
-              <p className="text-neutral-800 flex-1 text-xl">
+              <p className="text-neutral-800 flex-1 lg:text-xl">
                 <span className="font-bold text-primary">{n.company}</span>{" "}
                 ارسلت اليك طلب ضمانه لمتابعه عمليه البيع وعمليه نقل الملكيه
                 لضمانه رقمها{" "}
                 <span className="font-bold text-primary">{n.number}</span>
               </p>
 
-              <p className="text-neutral-500 text-lg flex items-center gap-1">
+              <p className="text-neutral-500 lg:text-lg flex items-center gap-1">
                 <IoMdTime />
                 {n.time}
               </p>

@@ -2,11 +2,7 @@ import { useState } from "react";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import { FaCirclePlus } from "react-icons/fa6";
 
-const groupOptions = [
-  "مجموعة شركات إيصال",
-  "مجموعة شركات هومى",
-  "مجموعة شركات إيصال",
-];
+const groupOptions = ["مجموعة شركات إيصال", "مجموعة شركات هومى"];
 
 const Step6Company = ({ formik, getError }) => {
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);

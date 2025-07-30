@@ -7,6 +7,8 @@ import { GoLock } from "react-icons/go";
 import AuthLayout from "../../../components/layout/AuthLayout";
 import { useState } from "react";
 import ActionModal from "../../../components/modals/ActionModal";
+import FormBtn from "../../../components/form/FormBtn";
+import FormError from "../../../components/form/FormError";
 
 const loginSchema = Yup.object({
   phoneNumber: Yup.string()
@@ -20,6 +22,7 @@ const loginSchema = Yup.object({
 
 const LoginPage = () => {
   const [openModal, setOpenModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -41,7 +44,7 @@ const LoginPage = () => {
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        msg="تم تسجيل الدخول بنجاح"
+        msg={"تم تسجيل الدخول بنجاح"}
         icon="error"
         primaryBtn={{ text: "موافق", action: () => {} }}
         dangerBtn={{ text: "اغلاق", action: () => setOpenModal(false) }}
@@ -86,7 +89,7 @@ const LoginPage = () => {
                 name="remember"
                 checked={formik.values.remember}
                 onChange={formik.handleChange}
-                className="w-4 h-4 rounded"
+                className="w-4 h-4 rounded accent-primary"
               />
               <span>تذكرني</span>
             </label>
@@ -98,11 +101,11 @@ const LoginPage = () => {
             </Link>
           </div>
 
-          <button className="mainBtn" type="submit">
-            تسجيل الدخول
-          </button>
+          <FormError errorMsg={errorMsg} />
 
-          <div className="text-center font-semibold">
+          <FormBtn title="تسجيل الدخول" />
+
+          <div className="text-center font-semibold text-sm lg:text-base">
             <p>
               ليس لديك حساب؟{" "}
               <Link

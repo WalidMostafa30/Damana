@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { CiMail } from "react-icons/ci";
 import AuthLayout from "../../../components/layout/AuthLayout";
+import FormError from "../../../components/form/FormError";
+import FormBtn from "../../../components/form/FormBtn";
 
 const ForgotPassword = () => {
   const [method, setMethod] = useState("phone");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const navigate = useNavigate();
 
@@ -44,13 +47,10 @@ const ForgotPassword = () => {
 
   return (
     <AuthLayout>
-        <AuthBreadcrumbs
-          title="هل نسيت كلمة المرور ؟"
-          items={[
-            { label: "ضمانة", path: "/" },
-            { label: "نسيان كلمة المرور" },
-          ]}
-        />
+      <AuthBreadcrumbs
+        title="هل نسيت كلمة المرور ؟"
+        items={[{ label: "ضمانة", path: "/" }, { label: "نسيان كلمة المرور" }]}
+      />
 
       <p className="text-neutral-500 mb-4">
         يمكنك اعاده تعين كلمة المرور الخاصه بك فى حال نسيانها من خلال احدى
@@ -85,9 +85,9 @@ const ForgotPassword = () => {
           />
         )}
 
-        <button type="submit" className="mainBtn mt-4">
-          ارسال كود التحقق
-        </button>
+        <FormError errorMsg={errorMsg} />
+
+        <FormBtn title="ارسال كود التحقق" />
       </form>
 
       <button

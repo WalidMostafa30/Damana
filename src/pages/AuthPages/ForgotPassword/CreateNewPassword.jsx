@@ -6,10 +6,13 @@ import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { GoLock } from "react-icons/go";
 import { FaRegStickyNote } from "react-icons/fa";
 import AuthLayout from "../../../components/layout/AuthLayout";
+import FormError from "../../../components/form/FormError";
+import FormBtn from "../../../components/form/FormBtn";
 
 const CreateNewPassword = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
+  const [errorMsg, setErrorMsg] = useState("");
 
   const calculatePasswordStrength = (password) => {
     let strength = 0;
@@ -113,9 +116,9 @@ const CreateNewPassword = () => {
           )}
         </div>
 
-        <button className="mainBtn" type="submit">
-          تأكيد
-        </button>
+        <FormError errorMsg={errorMsg} />
+
+        <FormBtn title="تأكيد" />
       </form>
     </AuthLayout>
   );

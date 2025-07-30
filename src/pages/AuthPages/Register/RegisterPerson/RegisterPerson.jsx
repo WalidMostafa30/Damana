@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
@@ -9,6 +9,9 @@ import Step2 from "./steps/Step2";
 import StepProgress from "../../../../components/common/StepProgress/StepProgress";
 import { ImArrowRight } from "react-icons/im";
 import AuthLayout from "../../../../components/layout/AuthLayout";
+import FormError from "../../../../components/form/FormError";
+import FormBtn from "../../../../components/form/FormBtn";
+import ActionModal from "../../../../components/modals/ActionModal";
 
 const steps = ["معلومات الحساب", "معلومات إضافية", "التحقق"];
 
@@ -61,7 +64,9 @@ const stepSchemas = [
 ];
 
 const RegisterPerson = () => {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   const formik = useFormik({
     initialValues: {
@@ -103,6 +108,7 @@ const RegisterPerson = () => {
         formik.setTouched({});
       } else {
         console.log("البيانات كاملة:", values);
+        setOpenModal(true);
       }
     },
   });
@@ -110,54 +116,67 @@ const RegisterPerson = () => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
+  const navigate = useNavigate();
+
   return (
-    <AuthLayout>
-      <AuthBreadcrumbs
-        title="أهلاً في ضمانة!"
-        items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
+    <>
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        msg="تم تأكيد الهوية وبياناتك البنكيه تسطتيع انشاء ضمانتك"
+        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
       />
 
-      <StepProgress steps={steps} currentStep={step} />
+      <AuthLayout>
+        <AuthBreadcrumbs
+          title="أهلاً في ضمانة!"
+          items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
+        />
 
-      <div className="mb-8">
-        <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">اكد هويتك الشخصية</h3>
-        <p className="text-sm lg:text-base text-neutral-500">
-          حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد هويتك
-          وبيانات البنك الخاص بك
-        </p>
-      </div>
+        <StepProgress steps={steps} currentStep={step} />
 
-      <form onSubmit={formik.handleSubmit} className="space-y-4">
-        {step === 0 && <Step0 formik={formik} getError={getError} />}
-        {step === 1 && <Step1 formik={formik} getError={getError} />}
-        {step === 2 && <Step2 formik={formik} getError={getError} />}
+        <div className="mb-8">
+          <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">
+            اكد هويتك الشخصية
+          </h3>
+          <p className="text-sm lg:text-base text-neutral-500">
+            حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد
+            هويتك وبيانات البنك الخاص بك
+          </p>
+        </div>
 
-        <button type="submit" className="mainBtn w-full">
-          {step < 2 ? "التالي" : "إنهاء"}
-        </button>
+        <form onSubmit={formik.handleSubmit} className="space-y-4">
+          {step === 0 && <Step0 formik={formik} getError={getError} />}
+          {step === 1 && <Step1 formik={formik} getError={getError} />}
+          {step === 2 && <Step2 formik={formik} getError={getError} />}
 
-        <p className="text-center">
-          هل تمتلك حساب؟{" "}
-          <Link
-            to="/login"
-            className="text-secondary hover:brightness-50 transition-colors"
-          >
-            تسجيل الدخول
-          </Link>
-        </p>
+          <FormError errorMsg={errorMsg} />
 
-        {step > 0 && (
-          <button
-            type="button"
-            className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-            onClick={() => setStep(step - 1)}
-          >
-            <ImArrowRight />
-            الرجوع للخلف
-          </button>
-        )}
-      </form>
-    </AuthLayout>
+          <FormBtn title={step < 2 ? "التالي" : "إنهاء"} />
+
+          <p className="text-center">
+            هل تمتلك حساب؟{" "}
+            <Link
+              to="/login"
+              className="text-secondary hover:brightness-50 transition-colors"
+            >
+              تسجيل الدخول
+            </Link>
+          </p>
+
+          {step > 0 && (
+            <button
+              type="button"
+              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
+              onClick={() => setStep(step - 1)}
+            >
+              <ImArrowRight />
+              الرجوع للخلف
+            </button>
+          )}
+        </form>
+      </AuthLayout>
+    </>
   );
 };
 
