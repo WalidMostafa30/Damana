@@ -9,27 +9,43 @@ import PageTitle from "../../components/common/PageTitle";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 
-const steps = [
-  "المعلومات الأساسية",
-  "بيانات الأطراف",
-  "بيانات الضمانة",
-  "تأكيد الإرسال",
-];
+const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 const validationSchemas = [
-  Yup.object({
+  // Step One
+  Yup.object().shape({
     owner: Yup.string().required("اختيار المالك مطلوب"),
-    regNumber: Yup.string().required("رقم التسجيل مطلوب"),
+    // لو المالك مش انت يبقى الحقول دي مطلوبة
+    ownerNationalId: Yup.string().when("owner", {
+      is: "no",
+      then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    ownerPhone: Yup.string().when("owner", {
+      is: "no",
+      then: (schema) => schema.required("رقم هاتف المالك مطلوب"),
+      otherwise: (schema) => schema.notRequired(),
+    }),
+    vehicleRegistrationNumber: Yup.string().required("رقم تسجيل المركبة مطلوب"),
+    agreement: Yup.boolean().oneOf([true], "يجب الموافقة على الشروط"),
   }),
+
+  // Step Two
+  Yup.object({}),
+
+  // Step Three
   Yup.object({
-    nationalId: Yup.string().required("الرقم الوطني مطلوب"),
-    phone: Yup.string().required("رقم الهاتف مطلوب"),
-  }),
-  Yup.object({
-    guaranteeAmount: Yup.number()
-      .required("قيمة الضمانة مطلوبة")
-      .positive("يجب إدخال قيمة موجبة"),
-    code: Yup.string().required("الكود مطلوب"),
+    buyer_national_number: Yup.string()
+      .length(10, "يرجى ادخال الرقم الوطني صحيح مكون من 10 خانات")
+      .required("يرجى ادخال الرقم الوطني صحيح مكون من 10 خانات"),
+    buyer_name: Yup.string().required("يرجى ادخال الاسم الرباعي"),
+    buyer_full_mobile: Yup.string().required("يرجى ادخال رقم الهاتف"),
+    buyer_email: Yup.string().required("يرجى ادخال البريد الالكتروني"),
+    buyer_country_code: Yup.string().required("رقم الهاتف مطلوب"),
+    buyer_mobile: Yup.string().required("رقم الهاتف مطلوب"),
+    vehicle_price: Yup.string().required("يرجى ادخال قيمه المركبه"),
+    commission_on: Yup.object().required("يجب اختيار العموله"),
+    code: Yup.string().max(10, "يرجى ادخال كود صحيح"),
   }),
 ];
 
@@ -39,11 +55,22 @@ const AddDamana = () => {
 
   const formik = useFormik({
     initialValues: {
-      owner: "",
-      regNumber: "",
-      nationalId: "",
-      phone: "",
-      guaranteeAmount: "",
+      // Step One
+      owner: "yes",
+      ownerNationalId: "",
+      ownerPhone: "",
+      vehicleRegistrationNumber: "",
+      agreement: false,
+
+      // Step Three
+      buyer_national_number: "",
+      buyer_name: "",
+      buyer_full_mobile: "",
+      buyer_email: "",
+      buyer_country_code: "",
+      buyer_mobile: "",
+      vehicle_price: "",
+      commission_on: "",
       code: "",
     },
     validationSchema: validationSchemas[step],
