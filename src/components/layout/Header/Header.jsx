@@ -20,7 +20,13 @@ const Header = () => {
   return (
     <header className="bg-primary text-white relative">
       <div className="container py-4 flex items-center justify-between">
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
+          <span
+            onClick={() => setOpenNav((prev) => !prev)}
+            className="text-3xl cursor-pointer block lg:hidden"
+          >
+            {openNav ? <IoClose /> : <HiMenuAlt2 />}
+          </span>
           <img src={logo} alt="logo" loading="lazy" className="w-32 lg:w-40" />
         </div>
 
@@ -65,7 +71,11 @@ const Header = () => {
           <div className="relative" ref={notificationBtnRef}>
             <SlBell
               className="text-xl lg:text-2xl cursor-pointer"
-              onClick={() => setOpenNotification((prev) => !prev)}
+              onClick={() => {
+                setOpenNotification((prev) => !prev);
+                setOpenProfileMenu(false);
+                setOpenNav(false);
+              }}
             />
             <span className="absolute -top-1 -left-1 w-3 h-3 bg-error-200 rounded-full" />
             <DropDown
@@ -73,7 +83,7 @@ const Header = () => {
               onClose={() => setOpenNotification(false)}
               buttonRef={notificationBtnRef}
             >
-              <div className="bg-white w-70 lg:w-96">
+              <div className="bg-white w-80 lg:w-96">
                 <h3 className="lg:text-lg text-neutral-800 font-bold p-4">
                   الاشعارات
                 </h3>
@@ -108,7 +118,11 @@ const Header = () => {
 
           <div
             ref={profileBtnRef}
-            onClick={() => setOpenProfileMenu((prev) => !prev)}
+            onClick={() => {
+              setOpenProfileMenu((prev) => !prev);
+              setOpenNotification(false);
+              setOpenNav(false);
+            }}
             className="flex items-center gap-2 cursor-pointer relative"
           >
             <div
@@ -125,31 +139,24 @@ const Header = () => {
               onClose={() => setOpenProfileMenu(false)}
               buttonRef={profileBtnRef}
             >
-              <div className="bg-white w-60">
+              <div className="bg-white w-48 lg:w-60 space-y-2 p-2">
                 <Link
                   to="/profile"
-                  className="flex items-center gap-2 font-bold p-4 lg:text-lg not-last:border-b border-neutral-200 text-secondary cursor-pointer"
+                  className="flex items-center gap-2 font-bold p-2 lg:p-4 lg:text-lg border border-primary bg-primary/10 text-primary rounded-lg cursor-pointer"
                 >
-                  <FaUserAlt className="text-2xl" />
+                  <FaUserAlt className="text-lg lg:text-2xl" />
                   الملف الشخصي
                 </Link>
                 <Link
                   to="/login"
-                  className="flex items-center gap-2 font-bold p-4 lg:text-lg not-last:border-b border-neutral-200 text-error-200 cursor-pointer"
+                  className="flex items-center gap-2 font-bold p-2 lg:p-4 lg:text-lg border border-error-200 bg-error-200/10 text-error-200 rounded-lg cursor-pointer"
                 >
-                  <RiLogoutBoxRFill className="text-2xl" />
+                  <RiLogoutBoxRFill className="text-lg lg:text-2xl" />
                   تسجيل الخروج
                 </Link>
               </div>
             </DropDown>
           </div>
-
-          <span
-            onClick={() => setOpenNav((prev) => !prev)}
-            className="text-3xl cursor-pointer block lg:hidden"
-          >
-            {openNav ? <IoClose /> : <HiMenuAlt2 />}
-          </span>
         </div>
       </div>
     </header>

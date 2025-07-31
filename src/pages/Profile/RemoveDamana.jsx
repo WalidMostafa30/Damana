@@ -5,8 +5,8 @@ import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
 
 const RemoveDamana = () => {
-  const [step, setStep] = useState(0); // 0 -> اختيار الضمانة، 1 -> السبب، 2 -> تمت العملية
-  const [selectedDamana, setSelectedDamana] = useState(null);
+  const [step, setStep] = useState(0);
+  const [selectedDamanat, setSelectedDamanat] = useState([]); // مصفوفة للاختيارات
   const [selectError, setSelectError] = useState("");
 
   const [reason, setReason] = useState("");
@@ -40,9 +40,17 @@ const RemoveDamana = () => {
     date: "1/2/2023",
   }));
 
+  const toggleSelect = (id) => {
+    if (selectedDamanat.includes(id)) {
+      setSelectedDamanat(selectedDamanat.filter((item) => item !== id));
+    } else {
+      setSelectedDamanat([...selectedDamanat, id]);
+    }
+  };
+
   const handleNextFromSelect = () => {
-    if (!selectedDamana) {
-      setSelectError("من فضلك اختر الضمانة أولاً");
+    if (selectedDamanat.length === 0) {
+      setSelectError("من فضلك اختر ضمانة واحدة على الأقل");
       return;
     }
     setSelectError("");
@@ -55,14 +63,17 @@ const RemoveDamana = () => {
       return;
     }
     setReasonError("");
-    window.alert("تم إرسال طلب الإلغاء بنجاح ✅");
+    window.alert(
+      `تم إرسال طلب الإلغاء بنجاح ✅ \n الضمانات المختارة: ${selectedDamanat.join(
+        ", "
+      )}`
+    );
     setStep(2);
   };
 
   const resetAndBack = () => {
-    // لو حبيت ترجع لبداية الفلو
     setStep(0);
-    setSelectedDamana(null);
+    setSelectedDamanat([]);
     setReason("");
     setReasonError("");
     setSelectError("");
@@ -86,8 +97,8 @@ const RemoveDamana = () => {
               key={d.id}
               {...d}
               selectable
-              selected={selectedDamana === d.id}
-              onSelect={() => setSelectedDamana(d.id)}
+              selected={selectedDamanat.includes(d.id)}
+              onSelect={() => toggleSelect(d.id)}
             />
           ))}
           {selectError && (
@@ -113,7 +124,7 @@ const RemoveDamana = () => {
         </div>
       )}
 
-      {/* الخطوة 3: رسالة نجاح بسيطة */}
+      {/* الخطوة 3: رسالة نجاح */}
       {step === 2 && (
         <div className="text-center space-y-4">
           <h4 className="text-xl font-semibold text-primary">

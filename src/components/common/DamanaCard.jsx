@@ -17,7 +17,9 @@ const DamanaCard = ({
   return (
     <div
       onClick={selectable ? onSelect : undefined}
-      className="whiteContainer !p-0"
+      className={`whiteContainer !p-0 ${
+        selectable && selected ? "border-2 border-primary" : ""
+      }`}
       style={{ cursor: selectable ? "pointer" : "default" }}
     >
       <h3 className="lg:text-lg font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">

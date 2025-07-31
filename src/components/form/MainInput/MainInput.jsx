@@ -124,8 +124,13 @@ const MainInput = ({
             value={value}
             onChange={(phone) => onChange(phone)}
             inputClass={`form-control !w-full !h-auto !p-3 lg:p-4 !ps-14 !text-lg !rounded-lg !border-none !outline-none !transition-all
-            !ring-2 ${error ? "!ring-error-100" : "!ring-neutral-300 focus:!ring-secondary"
-            } ${disabled ? "!bg-gray-100 !opacity-60 !cursor-not-allowed" : ""}`}
+            !ring-2 ${
+              error
+                ? "!ring-error-100"
+                : "!ring-neutral-300 focus:!ring-secondary"
+            } ${
+              disabled ? "!bg-gray-100 !opacity-60 !cursor-not-allowed" : ""
+            }`}
             dropdownClass="!text-lg !bg-white !shadow-lg"
             buttonClass="!text-lg !bg-gray-100 !border-none !rounded-s-lg"
             disabled={disabled}

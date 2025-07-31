@@ -2,6 +2,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../components/layout/AuthLayout";
+import FormError from "../../../components/form/FormError";
+import FormBtn from "../../../components/form/FormBtn";
 
 const ResetPassword = () => {
   const inputsRef = useRef([]);

@@ -6,6 +6,8 @@ import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import PageTitle from "../../components/common/PageTitle";
+import FormError from "../../components/form/FormError";
+import FormBtn from "../../components/form/FormBtn";
 
 const steps = [
   "المعلومات الأساسية",
@@ -33,6 +35,7 @@ const validationSchemas = [
 
 const AddDamana = () => {
   const [step, setStep] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
 
   const formik = useFormik({
     initialValues: {
@@ -80,12 +83,9 @@ const AddDamana = () => {
             {/* --- Step 2 --- */}
             {step === 2 && <Step2 formik={formik} getError={getError} />}
 
-            {/* --- Buttons --- */}
-            <div className="flex justify-between">
-              <button type="submit" className="mainBtn">
-                {step === steps.length - 1 ? "إرسال" : "التالي"}
-              </button>
-            </div>
+            <FormError errorMsg={errorMsg} />
+
+            <FormBtn title={step === steps.length - 1 ? "إرسال" : "التالي"} />
           </form>
         </div>
       </section>
