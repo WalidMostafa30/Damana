@@ -1,2 +1,2 @@
 import axios from "axios";
-axios.defaults.baseURL = "";
+axios.defaults.baseURL = "https://qa.edamana.live/api/v1";

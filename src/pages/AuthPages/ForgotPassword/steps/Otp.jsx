@@ -1,47 +1,52 @@
-import { Link, useNavigate } from "react-router-dom";
 import { useRef, useState, useEffect } from "react";
-import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
-import AuthLayout from "../../../components/layout/AuthLayout";
-import FormError from "../../../components/form/FormError";
-import FormBtn from "../../../components/form/FormBtn";
+import { useMutation } from "@tanstack/react-query";
+import { checkOtp } from "../../../../services/authService";
+import FormError from "../../../../components/form/FormError";
+import FormBtn from "../../../../components/form/FormBtn";
 
-const ResetPassword = () => {
+const Otp = ({ goNext, parentData, setParentData }) => {
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
-  const correctCode = "00000";
   const [errorMessage, setErrorMessage] = useState("");
-  const [errorMsg, setErrorMsg] = useState("");
 
-  const navigate = useNavigate();
+  // Mutation
+  const mutation = useMutation({
+    mutationFn: checkOtp,
+    onSuccess: (data) => {
+      setParentData((prev) => ({
+        ...prev,
+        otp_code: otp.join(""),
+        uid: data.data.uid,
+        password_reset_token: data.data.password_reset_token,
+      }));
+      goNext();
+    },
+    onError: (error) => {
+      setErrorMessage(
+        error?.response?.data?.error_msg || "رمز التحقق غير صحيح"
+      );
+    },
+  });
 
   useEffect(() => {
     if (timer === 0) {
       setCanResend(true);
       return;
     }
-
-    const interval = setInterval(() => {
-      setTimer((prev) => prev - 1);
-    }, 1000);
-
+    const interval = setInterval(() => setTimer((p) => p - 1), 1000);
     return () => clearInterval(interval);
   }, [timer]);
 
   const handleChange = (e, index) => {
     const value = e.target.value;
-
     if (!/^\d?$/.test(value)) return;
-
     const newOtp = [...otp];
     newOtp[index] = value;
     setOtp(newOtp);
     setErrorMessage("");
-
-    if (value && index < 4) {
-      inputsRef.current[index + 1]?.focus();
-    }
+    if (value && index < otp.length - 1) inputsRef.current[index + 1]?.focus();
   };
 
   const handleKeyDown = (e, index) => {
@@ -61,44 +66,27 @@ const ResetPassword = () => {
 
   const handleSubmit = () => {
     const fullCode = otp.join("");
-
     if (fullCode.length < 5) {
       setErrorMessage("من فضلك أدخل جميع الأرقام الخمسة");
       return;
     }
 
-    if (fullCode !== correctCode) {
-      setErrorMessage("رمز التحقق غير صحيح");
-      return;
-    }
-
-    console.log("OTP submitted:", fullCode);
-    navigate("/create-new-password");
+    mutation.mutate({
+      otp_code: fullCode,
+      uid: parentData.uid,
+      password_reset_token: parentData.password_reset_token,
+    });
   };
 
   const formatTime = (seconds) => {
-    const m = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
-    const s = (seconds % 60).toString().padStart(2, "0");
+    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
     return `${m}:${s}`;
   };
 
   return (
-    <AuthLayout>
-      <AuthBreadcrumbs
-        title="هل نسيت كلمة المرور ؟"
-        items={[
-          { label: "ضمانة", path: "/" },
-          { label: "نسيان كلمة المرور", path: "/forgot-password" },
-          { label: "ادخال كود التحقق" },
-        ]}
-      />
-
-      <p className="text-neutral-500 mb-4">
-        قم بإضافه الكود المكون من 5 أرقام لاسترجاع كلمة المرور
-      </p>
-
+    <>
+      <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
       <div className="flex gap-6 mb-2">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
@@ -121,10 +109,6 @@ const ResetPassword = () => {
           );
         })}
       </div>
-
-      {errorMessage && (
-        <p className="text-error-100 font-semibold mb-4">{errorMessage}</p>
-      )}
 
       <div className="text-center text-neutral-600 mb-3">
         {timer > 0 ? (
@@ -149,11 +133,14 @@ const ResetPassword = () => {
         </button>
       </div>
 
-      <FormError errorMsg={errorMsg} />
-
-      <FormBtn onClick={handleSubmit} title="تأكيد الكود" />
-    </AuthLayout>
+      <FormError errorMsg={errorMessage} />
+      <FormBtn
+        onClick={handleSubmit}
+        title="تأكيد الكود"
+        loading={mutation.isPending}
+      />
+    </>
   );
 };
 
-export default ResetPassword;
+export default Otp;

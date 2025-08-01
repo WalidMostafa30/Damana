@@ -101,17 +101,10 @@ const AddDamana = () => {
 
         <div className="col-span-1 lg:col-span-3 space-y-4 baseWhiteContainer">
           <form onSubmit={formik.handleSubmit} className="space-y-4">
-            {/* --- Step 0 --- */}
             {step === 0 && <Step0 formik={formik} getError={getError} />}
-
-            {/* --- Step 1 --- */}
             {step === 1 && <Step1 formik={formik} getError={getError} />}
-
-            {/* --- Step 2 --- */}
             {step === 2 && <Step2 formik={formik} getError={getError} />}
-
             <FormError errorMsg={errorMsg} />
-
             <FormBtn title={step === steps.length - 1 ? "إرسال" : "التالي"} />
           </form>
         </div>

@@ -26,15 +26,6 @@ const LoginPage = React.lazy(() =>
 const ForgotPassword = React.lazy(() =>
   import("../pages/AuthPages/ForgotPassword/ForgotPassword")
 );
-const MultiStepForgotPassword = React.lazy(() =>
-  import("../pages/AuthPages/ForgotPassword/MultiStepForgotPassword")
-);
-const ResetPassword = React.lazy(() =>
-  import("../pages/AuthPages/ForgotPassword/ResetPassword")
-);
-const CreateNewPassword = React.lazy(() =>
-  import("../pages/AuthPages/ForgotPassword/CreateNewPassword")
-);
 const RegisterPerson = React.lazy(() =>
   import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
 );
@@ -92,9 +83,7 @@ const router = createBrowserRouter([
   },
 
   { path: "login", element: <LoginPage /> },
-  { path: "forgot-password", element: <MultiStepForgotPassword /> },
-  { path: "reset-password", element: <ResetPassword /> },
-  { path: "create-new-password", element: <CreateNewPassword /> },
+  { path: "forgot-password", element: <ForgotPassword /> },
   { path: "register-person", element: <RegisterPerson /> },
   { path: "register-company", element: <RegisterCompany /> },
 ]);

@@ -1,5 +1,3 @@
-import { Link } from "react-router-dom";
-
 const AuthBreadcrumbs = ({ items = [], title }) => {
   return (
     <div className="mb-4 lg:mb-8">
@@ -10,11 +8,7 @@ const AuthBreadcrumbs = ({ items = [], title }) => {
       <div className="text-neutral-500 flex items-center gap-2 text-sm lg:text-base">
         {items.map((item, index) => (
           <span key={index} className="flex items-center gap-2">
-            {item.path ? (
-              <Link to={item.path}>{item.label}</Link>
-            ) : (
-              <span>{item.label}</span>
-            )}
+            {item.path ? <span>{item.label}</span> : <span>{item.label}</span>}
             {index < items.length - 1 && <span>{">"}</span>}
           </span>
         ))}

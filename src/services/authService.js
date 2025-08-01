@@ -1,8 +1,36 @@
-// authService.js
-import api from "./api"; // استخدم instance الخاص بـ Axios الذي قمت بإعداده
+import api from "./api";
+import Cookies from "js-cookie";
 
+export const loginUser = async (formData) => {
+  const { data } = await api.post("/auth/login", formData);
+
+  if (data?.data?.token) {
+    Cookies.set("token", data.data.token);
+  }
+
+  return data.data;
+};
+
+export const checkMobile = async (payload) => {
+  const { data } = await api.post("/auth/forgot-password/check", payload);
+  return data;
+};
+
+export const checkOtp = async (payload) => {
+  const { data } = await api.post("/auth/forgot-password/check-otp", payload);
+  return data;
+};
+
+export const resetPassword = async (payload) => {
+  const { data } = await api.post(
+    "/auth/forgot-password/reset-password",
+    payload
+  );
+  return data;
+};
+
+// ########################################################
 export const login = async (credentials) => {
-  // تأكد من أن نقطة النهاية (endpoint) تتوافق مع الخادم لديك
   const response = await api.post("web/auth/login", credentials);
   return response.data;
 };

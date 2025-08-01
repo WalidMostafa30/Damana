@@ -1,6 +1,7 @@
 import successIcon from "./icons/correct-icon.png";
 import errorIcon from "./icons/error-icon.png";
 import warningIcon from "./icons/warning-icon.png";
+import protectIcon from "./icons/protect-icon.png";
 import Modal from "./Modal";
 
 const ActionModal = ({
@@ -10,6 +11,7 @@ const ActionModal = ({
   icon = "success",
   primaryBtn = { text: "", action: () => {} },
   dangerBtn = { text: "", action: () => {} },
+  lightBtn = { text: "", action: () => {} },
 }) => {
   return (
     <Modal openModal={openModal} setOpenModal={setOpenModal}>
@@ -20,6 +22,8 @@ const ActionModal = ({
               ? successIcon
               : icon === "error"
               ? errorIcon
+              : icon === "protect"
+              ? protectIcon
               : warningIcon
           }
           alt="icon"
@@ -28,7 +32,7 @@ const ActionModal = ({
         />
       )}
 
-      {msg && <p className="text-lg font-bold text-center">{msg}</p>}
+      {msg && <div className="text-lg font-bold text-center">{msg}</div>}
 
       <div className="flex flex-wrap gap-2 lg:gap-4">
         {primaryBtn.text && (
@@ -47,6 +51,15 @@ const ActionModal = ({
             disabled={!dangerBtn.action}
           >
             {dangerBtn.text}
+          </button>
+        )}
+        {lightBtn.text && (
+          <button
+            className={`mainBtn light flex-1`}
+            onClick={() => lightBtn.action()}
+            disabled={!lightBtn.action}
+          >
+            {lightBtn.text}
           </button>
         )}
       </div>
