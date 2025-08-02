@@ -32,7 +32,6 @@ const Step3Company = ({ formik, getError }) => {
           onChange={formik.handleChange}
           error={getError("account_number")}
           icon={<IoIdCardSharp />}
-          type="number"
         />
 
         <MainInput

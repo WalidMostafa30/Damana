@@ -4,13 +4,16 @@ import MainInput from "../../components/form/MainInput/MainInput";
 import { GoMail } from "react-icons/go";
 import { useFormik } from "formik";
 import * as Yup from "yup";
+import { useSelector } from "react-redux";
 
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
+  const { profile, loading } = useSelector((state) => state.profile);
+
   const profileSchema = Yup.object({
     phoneNumber: Yup.string()
-      .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
+      .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
       .required("رقم الهاتف مطلوب"),
     email: Yup.string()
       .email("البريد الالكتروني غير صالح")
@@ -18,18 +21,31 @@ const MyProfile = () => {
   });
 
   const formik = useFormik({
+    enableReinitialize: true,
     initialValues: {
-      phoneNumber: "",
-      email: "",
+      phoneNumber: profile?.full_mobile,
+      email: profile?.email || "",
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
-      console.log("Login data:", values);
+      console.log("📤 بيانات الإرسال:", values);
       setIsEditing(false);
     },
   });
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
+
+  if (loading) {
+    return <p>جاري تحميل البيانات...</p>;
+  }
+
+  const getInitials = (fullName) => {
+    if (!fullName) return "";
+    const parts = fullName.trim().split(" ");
+    const first = parts[0]?.[0] || "";
+    const second = parts[1]?.[0] || "";
+    return `${first}${second}`.toUpperCase();
+  };
 
   return (
     <>
@@ -39,14 +55,18 @@ const MyProfile = () => {
             dir="ltr"
             className="w-12 h-12 lg:w-16 lg:h-16 text-2xl lg:text-3xl font-bold bg-white rounded-full flex items-center justify-center border border-neutral-300"
           >
-            <span className="text-primary">Y</span>
-            <span className="text-secondary">M</span>
+            <span className="text-primary">
+              {getInitials(profile?.name)[0] || ""}
+            </span>
+            <span className="text-secondary">
+              {getInitials(profile?.name)[1] || ""}
+            </span>
           </div>
           <div>
             <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
-              ياسمين حسن احمد المقداد
+              {profile?.name || "الاسم غير متاح"}
             </h3>
-            <p>+765656756856</p>
+            <p>{profile?.full_mobile}</p>
           </div>
         </div>
 

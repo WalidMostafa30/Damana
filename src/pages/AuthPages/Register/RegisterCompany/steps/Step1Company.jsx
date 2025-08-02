@@ -65,7 +65,6 @@ const Step1Company = ({ formik, getError }) => {
               onChange={formik.handleChange}
               error={getError(`partners.${index}.national_passport_number`)}
               icon={<LuFileDigit />}
-              type="number"
             />
 
             <MainInput

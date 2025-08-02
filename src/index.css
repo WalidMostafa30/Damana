@@ -39,9 +39,6 @@ html {
 }
 
 .htmlContent {
-  overflow-wrap: break-word;
-  overflow-x: auto;
-
   iframe {
     max-width: 100%;
     margin-inline: auto;

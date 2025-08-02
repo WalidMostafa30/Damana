@@ -18,6 +18,8 @@ import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
+import { useMutation } from "@tanstack/react-query";
+import { registerCompany } from "../../../../services/authService";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -172,13 +174,58 @@ const stepSchemas = [
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(6);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
+  // Mutation React Query
+  const mutation = useMutation({
+    mutationFn: registerCompany,
+    onSuccess: () => {
+      setOpenModal(true);
+    },
+    onError: (error) => {
+      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء التسجيل");
+    },
+  });
+
+  // تحويل الداتا للشكل المطلوب قبل الإرسال
+  const formatPayload = (values) => {
+    return {
+      ar_name: values.ar_name,
+      en_name: values.en_name,
+      registration_type_legal_form: values.registration_type_legal_form,
+      country_registration: values.country_registration,
+      commercial_ar_name: values.commercial_ar_name,
+      commercial_en_name: values.commercial_en_name,
+      commercial_registration_number: values.commercial_registration_number,
+      national_number: values.national_number,
+      license_number: values.license_number,
+      tax_number: values.tax_number,
+      registration_date: values.registration_date,
+      capital_equity: values.capital_equity,
+      address: values.address,
+      email: values.email,
+      phone: values.phone,
+      commissioners_text: values.commissioners_text,
+      partners: values.partners,
+      commissioners: values.commissioners,
+      managementCommissioners: values.managementCommissioners,
+      bank_name: values.bank_name,
+      account_number: values.account_number,
+      iban: values.iban,
+      swift_code: values.swift_code,
+      currency: values.currency,
+      branch: values.branch,
+      clik_name: values.clik_name,
+      // هنا لو فيه ملفات أو بيانات إضافية ممكن تضيفها
+    };
+  };
 
   const formik = useFormik({
     initialValues: {
-      // Step 0 (Step 1 في الـ Schema)
+      // نفس الـ initialValues اللي عندك
       ar_name: "",
       en_name: "",
       commercial_ar_name: "",
@@ -197,8 +244,6 @@ const RegisterCompany = () => {
       tax_number: "",
       capital_equity: "",
       signed_name: "",
-
-      // Step 1 (Step 2 في الـ Schema)
       partners: [
         {
           full_name: "",
@@ -209,8 +254,6 @@ const RegisterCompany = () => {
           email: "",
         },
       ],
-
-      // Step 2 (Step 3 في الـ Schema)
       commissioners_text: "",
       commissioners: [
         {
@@ -239,8 +282,6 @@ const RegisterCompany = () => {
         email: "",
         delegation_permissions: "",
       },
-
-      // Step 3 (Step 4 في الـ Schema)
       bank_name: "",
       account_number: "",
       iban: "",
@@ -249,29 +290,24 @@ const RegisterCompany = () => {
       currency: "",
       clik_name: "",
       info_name: "",
-
-      // Step 4 (Step 5 في الـ Schema)
       file_commercial_register: null,
       file_memorandum_association: null,
       file_Professional_License_lease_contract: null,
       file_identity_document_signatories: null,
-
-      // Step 5 (Step 6 في الـ Schema)
       acknowledgement: "",
-
-      // Step 6 (Step 7 في الـ Schema)
       group_id: {},
       accept_policy_terms: "",
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
     onSubmit: (values) => {
-      if (step < stepSchemas.length - 1) {
+      setErrorMsg("");
+      if (step < steps.length - 1) {
         setStep((prev) => prev + 1);
         formik.setTouched({});
       } else {
-        console.log("بيانات الشركة:", values);
-        setOpenModal(true);
+        const payload = formatPayload(values);
+        mutation.mutate(payload);
       }
     },
   });
@@ -286,31 +322,22 @@ const RegisterCompany = () => {
     switch (step) {
       case 0:
         return <Step0Company formik={formik} getError={getError} />;
-
       case 1:
         return <Step1Company formik={formik} getError={getError} />;
-
       case 2:
         return <Step2Company formik={formik} getError={getError} />;
-
       case 3:
         return <Step3Company formik={formik} getError={getError} />;
-
       case 4:
         return <Step4Company formik={formik} getError={getError} />;
-
       case 5:
         return <Step5Company formik={formik} getError={getError} />;
-
       case 6:
         return <Step6Company formik={formik} getError={getError} />;
-
       default:
         return null;
     }
   };
-
-  const navigate = useNavigate();
 
   return (
     <>
@@ -318,7 +345,7 @@ const RegisterCompany = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
         msg="تم تأكيد الهوية وبياناتك البنكيه تسطتيع انشاء ضمانتك"
-        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
+        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
       />
 
       <AuthLayout>
@@ -343,7 +370,10 @@ const RegisterCompany = () => {
 
           <FormError errorMsg={errorMsg} />
 
-          <FormBtn title={step < steps.length - 1 ? "التالي" : "إنهاء"} />
+          <FormBtn
+            title={step < steps.length - 1 ? "التالي" : "إنهاء"}
+            loading={mutation.isPending}
+          />
 
           {step > 0 && (
             <button

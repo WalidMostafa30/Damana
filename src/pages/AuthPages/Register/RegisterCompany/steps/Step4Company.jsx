@@ -1,28 +1,74 @@
 import { MdCloudUpload } from "react-icons/md";
 
+import { useState } from "react";
+
 const FileInput = ({ label, name, formik, error }) => {
+  const [dragActive, setDragActive] = useState(false);
+  const fileValue = formik.values[name];
+
+  const handleFiles = (files) => {
+    if (files && files[0]) {
+      formik.setFieldValue(name, files[0]);
+    }
+  };
+
+  const handleDrag = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.type === "dragenter" || e.type === "dragover") {
+      setDragActive(true);
+    } else if (e.type === "dragleave") {
+      setDragActive(false);
+    }
+  };
+
+  const handleDrop = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFiles(e.dataTransfer.files);
+    }
+  };
+
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
         {label}
       </label>
-      <div className="flex flex-col items-center justify-center border-2 border-dashed border-gray-300 rounded-lg p-4 text-center cursor-pointer hover:border-primary transition-all duration-300">
+
+      <div
+        className={`flex flex-col items-center justify-center border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-all duration-300 ${
+          dragActive ? "border-primary bg-primary/5" : "border-gray-300"
+        } hover:border-primary`}
+        onDragEnter={handleDrag}
+        onDragOver={handleDrag}
+        onDragLeave={handleDrag}
+        onDrop={handleDrop}
+      >
         <input
           type="file"
           name={name}
           id={name}
-          onChange={(event) => {
-            formik.setFieldValue(name, event.currentTarget.files[0]);
-          }}
+          onChange={(event) => handleFiles(event.currentTarget.files)}
           className="hidden"
         />
-        <label htmlFor={name} className="cursor-pointer">
+
+        <label
+          htmlFor={name}
+          className="cursor-pointer flex flex-col items-center"
+        >
           <MdCloudUpload className="mx-auto text-gray-400 text-5xl" />
-          <p className="text-sm text-gray-500 mt-2">
-            اسحب الملف هنا أو اضغط لاختياره
-          </p>
+          {!fileValue ? (
+            <p className="text-sm text-gray-500 mt-2">
+              اسحب الملف هنا أو اضغط لاختياره
+            </p>
+          ) : (
+            <p className="text-sm text-green-600 mt-2">📄 {fileValue.name}</p>
+          )}
         </label>
       </div>
+
       {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
     </div>
   );

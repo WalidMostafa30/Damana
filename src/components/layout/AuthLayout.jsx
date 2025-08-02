@@ -6,7 +6,7 @@ const AuthLayout = ({ children }) => {
     <section className="min-h-screen flex justify-between bg-base-white">
       <div
         className="flex-1 p-4 flex items-center justify-center
-        bg-cover bg-no-repeat bg-center bg-[url(images/banner-img.png)] xl:bg-none relative
+        bg-cover bg-no-repeat bg-center bg-fixed bg-[url(images/banner-img.png)] xl:bg-none relative
         after:absolute after:inset-0 after:bg-primary/50 xl:after:bg-transparent"
       >
         <div className="w-full h-full max-w-2xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">

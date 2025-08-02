@@ -108,7 +108,6 @@ const Step0Company = ({ formik, getError }) => {
           id="commercial_registration_number"
           name="commercial_registration_number"
           placeholder="123456"
-          type="number"
           value={formik.values.commercial_registration_number}
           onChange={formik.handleChange}
           error={getError("commercial_registration_number")}
@@ -131,7 +130,6 @@ const Step0Company = ({ formik, getError }) => {
           id="national_number"
           name="national_number"
           placeholder="0987654321"
-          type="number"
           value={formik.values.national_number}
           onChange={formik.handleChange}
           error={getError("national_number")}
@@ -154,7 +152,6 @@ const Step0Company = ({ formik, getError }) => {
           id="license_number"
           name="license_number"
           placeholder="555555"
-          type="number"
           value={formik.values.license_number}
           onChange={formik.handleChange}
           error={getError("license_number")}
@@ -200,7 +197,6 @@ const Step0Company = ({ formik, getError }) => {
           id="tax_number"
           name="tax_number"
           placeholder="123456789"
-          type="number"
           value={formik.values.tax_number}
           onChange={formik.handleChange}
           error={getError("tax_number")}
@@ -212,7 +208,6 @@ const Step0Company = ({ formik, getError }) => {
           id="capital_equity"
           name="capital_equity"
           placeholder="100000"
-          type="number"
           value={formik.values.capital_equity}
           onChange={formik.handleChange}
           error={getError("capital_equity")}
