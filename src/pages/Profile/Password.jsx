@@ -78,7 +78,7 @@ const ChangePassword = () => {
   });
 
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-6">
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="lg:w-1/2">
         <MainInput
           type="password"

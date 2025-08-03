@@ -78,14 +78,9 @@ const Step0Company = ({ formik, getError }) => {
 
         <MainInput
           label="بلد التسجيل / جنسية الشركة"
-          type="select"
+          placeholder={"بلد التسجيل / جنسية الشركة"}
           id="country_registration"
           name="country_registration"
-          options={[
-            { value: "مصر", label: "مصر" },
-            { value: "السعودية", label: "السعودية" },
-            { value: "الإمارات", label: "الإمارات" },
-          ]}
           value={formik.values.country_registration}
           onChange={formik.handleChange}
           error={getError("country_registration")}

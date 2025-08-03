@@ -34,13 +34,11 @@ export const registerCompany = async (payload) => {
   return data;
 };
 
-// جلب مجموعات الشركات
 export const getCompanyGroups = async () => {
   const { data } = await api.get("/auth/register/company/groups");
   return data || [];
 };
 
-// إنشاء مجموعة جديدة
 export const createCompanyGroup = async (payload) => {
   const { data } = await api.post(
     "/auth/register/company/groups/create",

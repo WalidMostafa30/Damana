@@ -15,7 +15,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
   const validationSchema = Yup.object(
     method === "mobile"
       ? {
-          phoneNumber: Yup.string()
+          mobile: Yup.string()
             .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
             .required("رقم الهاتف مطلوب"),
         }
@@ -44,14 +44,14 @@ const CheckMobile = ({ goNext, setParentData }) => {
   });
 
   const formik = useFormik({
-    initialValues: { phoneNumber: "", email: "", country_code: "+962" },
+    initialValues: { mobile: "", email: "", country_code: "+962" },
     validationSchema,
     onSubmit: (values) => {
       setErrorMsg("");
       const payload =
         method === "mobile"
           ? {
-              mobile: values.phoneNumber,
+              mobile: values.mobile,
               country_code: values.country_code,
               by: "mobile",
             }
@@ -76,20 +76,28 @@ const CheckMobile = ({ goNext, setParentData }) => {
         {method === "mobile" ? (
           <MainInput
             type="tel"
-            id="phoneNumber"
-            name="phoneNumber"
+            id="mobile"
+            name="mobile"
             placeholder="96269077885+"
             label="رقم الهاتف"
-            value={formik.values.phoneNumber}
+            value={`${formik.values.country_code?.replace("+", "") || ""}${
+              formik.values.mobile || ""
+            }`} // عرض الكود مع الرقم
             onChange={(phone, country) => {
-              formik.setFieldValue("country_code", `+${country.dialCode}`);
-              formik.setFieldValue(
-                "phoneNumber",
-                phone.slice(country.dialCode.length)
-              );
+              const countryCode = country?.dialCode
+                ? `+${country.dialCode}`
+                : "";
+
+              // الرقم بدون كود الدولة
+              const numberWithoutCode = country?.dialCode
+                ? phone.slice(country.dialCode.length)
+                : phone;
+
+              formik.setFieldValue("country_code", countryCode);
+              formik.setFieldValue("mobile", numberWithoutCode);
             }}
             onBlur={formik.handleBlur}
-            error={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            error={formik.touched.mobile && formik.errors.mobile}
           />
         ) : (
           <MainInput

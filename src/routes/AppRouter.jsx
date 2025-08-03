@@ -6,6 +6,7 @@ import {
 } from "react-router-dom";
 import App from "../App";
 import LoadingPage from "../components/layout/Loading/LoadingPage";
+import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const Purchase = React.lazy(() => import("../pages/Home/Purchase"));
@@ -44,7 +45,11 @@ const Terms = React.lazy(() => import("../pages/Profile/Terms"));
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />,
+    element: (
+      <ProtectedRoute>
+        <App />
+      </ProtectedRoute>
+    ),
     children: [
       {
         index: true,

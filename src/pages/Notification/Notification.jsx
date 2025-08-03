@@ -1,5 +1,6 @@
 import { IoMdTime } from "react-icons/io";
 import PageTitle from "../../components/common/PageTitle";
+import Avatar from "../../components/common/Avatar";
 
 const Notification = () => {
   const notifications = [
@@ -36,13 +37,11 @@ const Notification = () => {
             key={n.id}
             className="flex gap-4 p-4 cursor-pointer not-last:border-b border-neutral-200"
           >
-            <div
-              dir="ltr"
-              className="w-16 h-16 text-3xl font-bold bg-white rounded-full border border-neutral-300 flex items-center justify-center"
-            >
-              <span className="text-primary">R</span>
-              <span className="text-secondary">A</span>
-            </div>
+            <Avatar
+              // image={profile?.profile_image_full_path}
+              name={"شركه مرسيدس للسيارات"}
+              size="lg"
+            />
 
             <div className="space-y-2 flex-1">
               <p className="text-neutral-800 flex-1 lg:text-xl">

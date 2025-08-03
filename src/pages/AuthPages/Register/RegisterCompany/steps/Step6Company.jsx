@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaCirclePlus } from "react-icons/fa6";
+import { FaCirclePlus, FaPeopleGroup } from "react-icons/fa6";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import {
@@ -91,6 +91,7 @@ const Step6Company = ({ formik, getError }) => {
             value: group.id,
           })),
         ]}
+        icon={<FaPeopleGroup />}
       />
 
       {/* زر إضافة مجموعة جديدة */}

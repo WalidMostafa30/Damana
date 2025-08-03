@@ -5,6 +5,7 @@ import { GoMail } from "react-icons/go";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
+import Avatar from "../../components/common/Avatar";
 
 const MyProfile = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -12,7 +13,7 @@ const MyProfile = () => {
   const { profile, loading } = useSelector((state) => state.profile);
 
   const profileSchema = Yup.object({
-    phoneNumber: Yup.string()
+    full_mobile: Yup.string()
       .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
       .required("رقم الهاتف مطلوب"),
     email: Yup.string()
@@ -23,7 +24,7 @@ const MyProfile = () => {
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
-      phoneNumber: profile?.full_mobile,
+      full_mobile: profile?.full_mobile,
       email: profile?.email || "",
     },
     validationSchema: profileSchema,
@@ -39,31 +40,17 @@ const MyProfile = () => {
     return <p>جاري تحميل البيانات...</p>;
   }
 
-  const getInitials = (fullName) => {
-    if (!fullName) return "";
-    const parts = fullName.trim().split(" ");
-    const first = parts[0]?.[0] || "";
-    const second = parts[1]?.[0] || "";
-    return `${first}${second}`.toUpperCase();
-  };
-
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
         <div className="flex gap-2">
-          <div
-            dir="ltr"
-            className="w-12 h-12 lg:w-16 lg:h-16 text-2xl lg:text-3xl font-bold bg-white rounded-full flex items-center justify-center border border-neutral-300"
-          >
-            <span className="text-primary">
-              {getInitials(profile?.name)[0] || ""}
-            </span>
-            <span className="text-secondary">
-              {getInitials(profile?.name)[1] || ""}
-            </span>
-          </div>
+          <Avatar
+            image={profile?.profile_image_full_path}
+            name={profile?.name}
+            size="lg"
+          />
           <div>
-            <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
+            <h3 className="text-lg lg:text-2xl font-bold text-primary mb-1">
               {profile?.name || "الاسم غير متاح"}
             </h3>
             <p>{profile?.full_mobile}</p>
@@ -95,10 +82,10 @@ const MyProfile = () => {
             id="phone"
             placeholder="96269077885+"
             label="رقم الهاتف"
-            value={formik.values.phoneNumber}
-            onChange={(phone) => formik.setFieldValue("phoneNumber", phone)}
+            value={formik.values.full_mobile}
+            onChange={(phone) => formik.setFieldValue("full_mobile", phone)}
             onBlur={formik.handleBlur}
-            error={getError("phoneNumber")}
+            error={getError("full_mobile")}
             disabled={!isEditing}
           />
 

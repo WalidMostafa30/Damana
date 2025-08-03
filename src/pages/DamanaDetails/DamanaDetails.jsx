@@ -1,7 +1,6 @@
-import { CiCalendarDate } from "react-icons/ci";
-import Timer from "../../components/common/Timer";
 import DetailsCard from "../../components/common/DetailsCard";
 import ActionsSection from "./ActionsSection";
+import DamanaDetailsHead from "../../components/common/DamanaDetailsHead";
 
 const DamanaDetails = () => {
   const data = [
@@ -30,21 +29,7 @@ const DamanaDetails = () => {
     <article className="pageContainer">
       {pageTitle("بانتظار موافقة المشتري", true, "secondary")}
       <section className="baseWhiteContainer space-y-4">
-        <div className="grid lg:grid-cols-2 xl:grid-cols-4 gap-4 whiteContainer">
-          <div className="flex items-center gap-2">
-            <p className="font-medium">رقم الضمانة:</p>
-            <p className="text-primary font-bold">123456789</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <p className="font-medium">رقم الترميز واللوحة:</p>
-            <p className="text-primary font-bold">123-6789</p>
-          </div>
-          <div className="flex items-center gap-2">
-            <CiCalendarDate className="text-2xl" />
-            <p className="text-primary font-bold">01/01/2023</p>
-          </div>
-          <Timer hours={24} />
-        </div>
+        <DamanaDetailsHead hours={2} minutes={30} />
 
         <div>
           {pageTitle("بيانات البائع")}

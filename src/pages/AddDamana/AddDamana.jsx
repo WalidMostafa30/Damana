@@ -8,6 +8,7 @@ import Step2 from "./steps/Step2";
 import PageTitle from "../../components/common/PageTitle";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
+import { ImArrowRight } from "react-icons/im";
 
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
@@ -106,6 +107,17 @@ const AddDamana = () => {
             {step === 2 && <Step2 formik={formik} getError={getError} />}
             <FormError errorMsg={errorMsg} />
             <FormBtn title={step === steps.length - 1 ? "إرسال" : "التالي"} />
+
+            {step > 0 && (
+              <button
+                type="button"
+                className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
+                onClick={() => setStep(step - 1)}
+              >
+                <ImArrowRight />
+                الرجوع للخلف
+              </button>
+            )}
           </form>
         </div>
       </section>

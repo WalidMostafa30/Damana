@@ -30,7 +30,7 @@ const Address = () => {
     mutationFn: completeRegister,
     onSuccess: (data) => {
       console.log("completeRegister data", data);
-      
+
       alert("تم تعديل العنوان بنجاح ✅");
       setIsEditing(false);
     },
@@ -64,7 +64,6 @@ const Address = () => {
       mutation.mutate({
         form_type: "address",
         address: {
-          // ✅ نحطهم جوه object اسمه address
           address_building_number: values.address_building_number,
           address_street_name: values.address_street_name,
           address_country_id: values.address_country_id,
@@ -105,7 +104,7 @@ const Address = () => {
         </button>
       </div>
 
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 mb-6">
           {/* رقم البناية */}
           <MainInput
@@ -169,6 +168,8 @@ const Address = () => {
           />
         </div>
 
+        <FormError errorMsg={errorMsg} />
+
         {isEditing && (
           <FormBtn
             title="حفظ"
@@ -176,8 +177,6 @@ const Address = () => {
             className="lg:col-span-2"
           />
         )}
-
-        <FormError errorMsg={errorMsg} />
       </form>
     </>
   );

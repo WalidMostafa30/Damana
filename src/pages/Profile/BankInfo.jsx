@@ -87,7 +87,7 @@ const BankInfo = () => {
         </button>
       </div>
 
-      <form onSubmit={formik.handleSubmit} className="space-y-6">
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
           <MainInput
             id="bank_name"
@@ -175,6 +175,8 @@ const BankInfo = () => {
           />
         </div>
 
+        <FormError errorMsg={errorMsg} />
+
         {isEditing && (
           <FormBtn
             title="حفظ"
@@ -182,8 +184,6 @@ const BankInfo = () => {
             className="lg:col-span-2"
           />
         )}
-
-        <FormError errorMsg={errorMsg} />
       </form>
     </>
   );

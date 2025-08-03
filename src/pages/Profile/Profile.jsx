@@ -1,16 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import PageTitle from "../../components/common/PageTitle";
-import { useEffect } from "react";
-import { getProfileAct } from "../../store/profile/profileAction";
-import { useDispatch } from "react-redux";
 
 const Profile = () => {
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProfileAct());
-  }, [dispatch]);
-
   return (
     <section className="pageContainer space-y-4">
       <PageTitle

@@ -19,7 +19,7 @@ const PaymentOptions = () => {
         subtitle="هنا لديك طرق الدفع المتاحة ، يمكنك اختيار الطريقة التي تناسبك"
       />
 
-      <div className="space-y-4 baseWhiteContainer !border-neutral-100">
+      <div className="space-y-4 baseWhiteContainer ">
         {data.map((method) => (
           <div
             key={method.id}

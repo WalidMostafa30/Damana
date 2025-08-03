@@ -175,6 +175,7 @@ const Step2Company = ({ formik, getError }) => {
 
             <MainInput
               label="صلاحيات التفويض"
+              placeholder={"صلاحيات التفويض"}
               id={`commissioners.${index}.delegation_permissions`}
               name={`commissioners.${index}.delegation_permissions`}
               value={comm.delegation_permissions}
@@ -324,6 +325,7 @@ const Step2Company = ({ formik, getError }) => {
             value={formik.values.managementCommissioners.delegation_permissions}
             onChange={formik.handleChange}
             error={getError("managementCommissioners.delegation_permissions")}
+            icon={<GrMoney />}
           />
         </div>
       </div>
