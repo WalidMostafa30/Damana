@@ -1,13 +1,76 @@
-import { LuCircleUserRound, LuFileDigit } from "react-icons/lu";
+import { useState } from "react";
+import { useFormik } from "formik";
+import { useMutation } from "@tanstack/react-query";
+import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import { FaIdCard } from "react-icons/fa";
-import { CiCreditCard2 } from "react-icons/ci";
+import { CiCreditCard2, CiUser } from "react-icons/ci";
 import ActionModal from "../../../components/modals/ActionModal";
-import { useState } from "react";
+// import { createDamana } from "../../../services/damanaService"; // ⬅ حط هنا API بتاعتك
 
-const Step0 = ({ formik, getError }) => {
-  const ownerValue = formik.values.owner;
+const Step0 = ({ goNext, setParentData, profile }) => {
   const [openModal, setOpenModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+
+  // ✅ Mutation
+  const mutation = useMutation({
+    mutationFn: async (payload) => {
+      // ⬅ هنا حط API call بتاعتك
+      // return await createDamana(payload);
+      return { data: { request_id: 123 } }; // مثال مؤقت
+    },
+    onSuccess: (data) => {
+      setParentData((prev) => ({
+        ...prev,
+        ...formik.values,
+        request_id: data.data.request_id, // ⬅ ممكن تضيف أي بيانات راجعة من الـ API
+      }));
+      setErrorMsg("");
+      goNext();
+    },
+    onError: (error) => {
+      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
+    },
+  });
+
+  // ✅ Formik Setup
+  const formik = useFormik({
+    initialValues: {
+      owner: "yes",
+      ownerName: "",
+      ownerNationalId: "",
+      ownerPhone: "",
+      vehicleRegistrationNumber: "",
+      agreement: false,
+    },
+    validationSchema: Yup.object({
+      owner: Yup.string().required("اختيار المالك مطلوب"),
+      vehicleRegistrationNumber: Yup.string().required(
+        "رقم تسجيل المركبة مطلوب"
+      ),
+      ownerNationalId: Yup.string().when("owner", {
+        is: "no",
+        then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      ownerPhone: Yup.string().when("owner", {
+        is: "no",
+        then: (schema) => schema.required("رقم هاتف المالك مطلوب"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      agreement: Yup.boolean().oneOf([true], "يجب الموافقة على الشروط"),
+    }),
+    onSubmit: (values) => {
+      setErrorMsg("");
+      mutation.mutate(values);
+    },
+  });
+
+  const getError = (name) =>
+    formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+
+  const ownerValue = formik.values.owner;
+
   const modalMsg = (
     <>
       <h3 className="text-lg lg:text-2xl font-bold mb-4">
@@ -15,13 +78,13 @@ const Step0 = ({ formik, getError }) => {
       </h3>
       <p className="text-sm lg:text-base">
         أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
-        البنك العربي وشركة ضمانة  بالاستعلام عن البيانات الشخصية العائدة لي
+        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية العائدة لي
         ومعالجتها من خلال استخدام خدمات واجهة برمجة التطبيقات المفتوحة APIs
         المتوفرة من خلال نظام الربط البيني الحكومي , لأغراض التحقق من ملكية
         المركبة, كما أوافق على قيام البنك العربي بمعالجة بياناتي الشخصية بما
         يشمل الاسم، تاريخ الميلاد، العنوان، ورقم هوية الأحوال المدنية الخاص بي
         لأغراض تنفيذ الحوالات أو لأي غرض آخر لازم لغايات الامتثال بالقوانين
-        والأنظمة والتعليمات واللوائح المعمول بها في المملكة.  يبقى هذا التفويض
+        والأنظمة والتعليمات واللوائح المعمول بها في المملكة. يبقى هذا التفويض
         مستمراً ومنتجا لأثاره دون قيد او شرط طيلة فترة عملية بيع المركبة، وذلك
         ضمن نطاق الاستخدام القانوني المصرّح به ويخضع في جميع الأوقات للرقابة
         الداخلية والتدقيق في البنك العربي
@@ -30,11 +93,11 @@ const Step0 = ({ formik, getError }) => {
   );
 
   return (
-    <>
-      <div className="space-y-4">
-        <h3 className="text-2xl font-bold text-primary">بيانات التسجيل</h3>
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
+      <h3 className="text-2xl font-bold text-primary">بيانات التسجيل</h3>
 
-        {/* Radio owner */}
+      {/* لو الحساب شركة → يظهر السؤال */}
+      {profile?.account_type === "company" && (
         <div>
           <label className="block mb-2 font-semibold">هل أنت المالك؟</label>
           <div className="flex gap-4">
@@ -65,74 +128,90 @@ const Step0 = ({ formik, getError }) => {
             <div className="text-error mt-1">{getError("owner")}</div>
           )}
         </div>
+      )}
 
-        {/* لو مش المالك يظهر الحقول الإضافية */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {ownerValue === "no" && (
-            <>
-              <MainInput
-                label="الرقم الوطنى للمالك"
-                placeholder={"ادخل الرقم الوطنى"}
-                name="ownerNationalId"
-                type="number"
-                value={formik.values.ownerNationalId}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={getError("ownerNationalId")}
-                icon={<FaIdCard />}
-              />
-              <MainInput
-                label="رقم الهاتف للمالك"
-                placeholder={"ادخل رقم الهاتف"}
-                name="ownerPhone"
-                type="tel"
-                value={formik.values.ownerPhone}
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                error={getError("ownerPhone")}
-              />
-            </>
-          )}
-          {/* هذا الحقل دائمًا يظهر */}
-          <MainInput
-            label="رقم تسجيل المركبه"
-            placeholder={"ادخل رقم تسجيل المركبه"}
-            name="vehicleRegistrationNumber"
-            id={"vehicleRegistrationNumber"}
-            type="number"
-            value={formik.values.vehicleRegistrationNumber}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={getError("vehicleRegistrationNumber")}
-            icon={<CiCreditCard2 />}
-          />
-        </div>
+      {/* الحقول */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <MainInput
+          id={"vehicleRegistrationNumber"}
+          label="رقم تسجيل المركبه"
+          placeholder="ادخل رقم تسجيل المركبه"
+          name="vehicleRegistrationNumber"
+          type="number"
+          value={formik.values.vehicleRegistrationNumber}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={getError("vehicleRegistrationNumber")}
+          icon={<CiCreditCard2 />}
+        />
 
-        {/* Agreement */}
-        <div className="flex items-center gap-2">
+        {profile?.account_type === "company" && ownerValue === "no" && (
+          <>
+            <MainInput
+              label="اسم المالك"
+              placeholder="ادخل اسم المالك"
+              name="ownerName"
+              value={formik.values.ownerName}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={getError("ownerName")}
+              icon={<CiUser />}
+            />
+            <MainInput
+              label="الرقم الوطنى للمالك"
+              placeholder="ادخل الرقم الوطنى"
+              name="ownerNationalId"
+              type="number"
+              value={formik.values.ownerNationalId}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={getError("ownerNationalId")}
+              icon={<FaIdCard />}
+            />
+            <MainInput
+              label="رقم الهاتف للمالك"
+              placeholder="ادخل رقم الهاتف"
+              name="ownerPhone"
+              type="tel"
+              value={formik.values.ownerPhone}
+              onChange={formik.handleChange}
+              onBlur={formik.handleBlur}
+              error={getError("ownerPhone")}
+            />
+          </>
+        )}
+      </div>
+
+      {/* Agreement */}
+      <div className="flex items-center flex-wrap gap-2">
+        <div className="flex gap-1">
           <input
             type="checkbox"
             name="agreement"
             checked={formik.values.agreement}
             onChange={formik.handleChange}
             id="agreement"
-            className="w-5 h-5 rounded-full accent-primary cursor-pointer"
+            className="w-5 h-5 accent-primary cursor-pointer"
           />
           <label htmlFor="agreement" className="cursor-pointer">
             أوافق على مشاركة بياناتي لأغراض التحقق حسب الشروط.{" "}
           </label>
-          <span
-            onClick={() => setOpenModal(true)}
-            className="underline text-secondary cursor-pointer"
-          >
-            (عرض النص الكامل للتفويض)
-          </span>
         </div>
-        {getError("agreement") && (
-          <div className="text-error-200 mt-1">{getError("agreement")}</div>
-        )}
+        <span
+          onClick={() => setOpenModal(true)}
+          className="underline text-secondary cursor-pointer"
+        >
+          (عرض النص الكامل للتفويض)
+        </span>
       </div>
+      {getError("agreement") && (
+        <div className="text-error-200 mt-1">{getError("agreement")}</div>
+      )}
 
+      {/* عرض رسالة الخطأ العامة */}
+      {errorMsg && <div className="text-error-200">{errorMsg}</div>}
+
+      {/* المودال */}
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
@@ -147,7 +226,11 @@ const Step0 = ({ formik, getError }) => {
         }}
         lightBtn={{ text: "العوده", action: () => setOpenModal(false) }}
       />
-    </>
+
+      <button type="submit" className="mainBtn" disabled={mutation.isPending}>
+        {mutation.isPending ? "جارٍ الإرسال..." : "التالي"}
+      </button>
+    </form>
   );
 };
 

@@ -81,7 +81,7 @@ const HeaderActions = ({ setOpenNav }) => {
           name={profile?.name}
           size="md"
         />
-        <p className="text-lg hidden lg:block">ياسمين محمد</p>
+        <p className="text-lg hidden lg:block">{profile?.name}</p>
         <IoIosArrowDown className="text-2xl hidden lg:block" />
         <DropDown
           isOpen={openProfileMenu}

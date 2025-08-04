@@ -44,7 +44,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
   });
 
   const formik = useFormik({
-    initialValues: { mobile: "", email: "", country_code: "+962" },
+    initialValues: { mobile: "", email: "", country_code: "" },
     validationSchema,
     onSubmit: (values) => {
       setErrorMsg("");
