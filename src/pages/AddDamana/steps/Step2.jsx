@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
@@ -7,53 +7,117 @@ import { CiDiscount1 } from "react-icons/ci";
 import { FaMoneyBillWave } from "react-icons/fa";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
-// import { createDamanaStep2 } from "../../../services/damanaService"; // ⬅ ضع API هنا
+import { checkCoupon, getCommission } from "../../../services/authService";
+import FormBtn from "../../../components/form/FormBtn";
+import FormError from "../../../components/form/FormError";
 
 const Step2 = ({ goNext, setParentData, parentData }) => {
   const [errorMsg, setErrorMsg] = useState("");
+  const [couponErrorMsg, setCouponErrorMsg] = useState("");
+  const [couponServer, setCouponServer] = useState(null);
+  const [details, setDetails] = useState([]);
 
-  // ✅ Mutation
-  const mutation = useMutation({
-    mutationFn: async (payload) => {
-      // return await createDamanaStep2(payload);
-      return { data: { request_step2_id: 789 } }; // ⬅ مثال مؤقت
+  // ✅ تحقق الكوبون
+  const couponMutation = useMutation({
+    mutationFn: async (code) => {
+      return await checkCoupon(code);
     },
     onSuccess: (data) => {
-      setParentData((prev) => ({
-        ...prev,
-        ...formik.values,
-        request_step2_id: data.data.request_step2_id,
-      }));
-      setErrorMsg("");
-      goNext();
+      setCouponServer(data.data);
+      setCouponErrorMsg("");
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
+      setCouponServer(null);
+      setCouponErrorMsg(
+        error?.response?.data?.error_msg || "كود الخصم غير صالح"
+      );
     },
   });
 
-  // ✅ بيانات المركبة
-  const data = [
-    { label: "رقم التسجيل", value: "45665790" },
-    { label: "رقم اللوحة والرمز", value: "10558777" },
-    { label: "نوع المركبة", value: "مارسيدس - بنز" },
-    { label: "الصنف", value: "E - 200" },
-    { label: "لون المركبة", value: "اسود" },
-    { label: "رقم الشاصي", value: "57765875432" },
-    { label: "رقم التسجيل", value: "1 3012758754" },
-    { label: "تاريخ انتهاء الرخصة", value: "20/02/2027" },
-    { label: "نوع التأمين", value: "شامل" },
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "-";
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
+
+  // ✅ API حساب العمولة
+  const commissionMutation = useMutation({
+    mutationFn: async (payload) => {
+      return await getCommission(payload);
+    },
+    onSuccess: (data) => {
+      const newDetails = [
+        {
+          label: "قيمة المركبة",
+          value: `${formatNumber(data.vehicle_price)} دينار أردني`,
+        },
+        {
+          label: "عمولة الضمانة",
+          value:
+            formik.values.commission_on === "buyer"
+              ? `${formatNumber(data.commission_value)} دينار على المشتري`
+              : formik.values.commission_on === "seller"
+              ? `${formatNumber(data.commission_value)} دينار على البائع`
+              : `${formatNumber(
+                  data.commission_value / 2
+                )} دينار على البائع و ${formatNumber(
+                  data.commission_value / 2
+                )} دينار على المشتري`,
+        },
+        {
+          label: "كود الخصم",
+          value: formik.values.code || "-",
+        },
+        {
+          label: "نسبة الخصم",
+          value: data.discount
+            ? `${formatNumber(data.discount)}${
+                data.discount_type === "percentage" ? "%" : " دينار"
+              }`
+            : "-",
+        },
+        {
+          label: "سعر الضمانة الكلي",
+          value: `${formatNumber(
+            data.vehicle_price_with_commission
+          )} دينار أردني`,
+        },
+        {
+          label: "المستحق للبائع",
+          value: `${formatNumber(data.due_to_seller)} دينار أردني`,
+        },
+      ];
+
+      // ✅ لو transfer_commission > 0 أضف ضمانة فورية
+      if (data.transfer_commission > 0) {
+        newDetails.splice(4, 0, {
+          label: "ضمانة فورية",
+          value: "نعم",
+        });
+      }
+
+      setDetails(newDetails);
+    },
+
+    onError: (error) => {
+      console.error(error);
+    },
+  });
+
+  const commission_on_options = [
+    { value: "buyer", label: "على المشتري" },
+    { value: "seller", label: "البائع" },
+    { value: "equally", label: "مناصفة 50% على المشتري و 50% على البائع" },
   ];
 
-  // ✅ Formik Setup
   const formik = useFormik({
     initialValues: {
       vehicle_price: "",
-      seller_commission: "",
       commission_on: "",
-      payment_amount: "",
       code: "",
-      payout_method: "fast",
+      payout_method: "",
     },
     validationSchema: Yup.object({
       vehicle_price: Yup.string().required("قيمة المركبة مطلوبة"),
@@ -62,12 +126,42 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
     onSubmit: (values) => {
       setErrorMsg("");
       const payload = { ...parentData, ...values };
-      mutation.mutate(payload);
+      // هنا تستبدل بـ API الحقيقية createDamanaStep2
+      console.log("Submit Payload:", payload);
     },
   });
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+
+  // 🎯 متابعة تغير الحقول وطلب العمولة
+  useEffect(() => {
+    const { vehicle_price, commission_on, code, payout_method } = formik.values;
+
+    // 🛑 لو أول 2 مش مليانين أو مفيش payout_method يوقف
+    if (!vehicle_price || !commission_on || !payout_method) return;
+
+    // تحضير البيانات للإرسال
+    const payload = {
+      vehicle_price,
+      commission_on,
+      transfer_commission: payout_method === "fast" ? "RTGS" : "ACH",
+    };
+
+    // لو فيه كود خصم صحيح أضفه
+    if (couponServer?.discount) {
+      payload.code = code;
+    }
+
+    // إرسال الطلب
+    commissionMutation.mutate(payload);
+  }, [
+    formik.values.vehicle_price,
+    formik.values.commission_on,
+    formik.values.code,
+    formik.values.payout_method,
+    couponServer,
+  ]);
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -75,11 +169,11 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
         بيانات الضمانة
       </h3>
 
-      {/* الحقول */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
-          label="قيمة المركبه"
-          placeholder="ادخل قيمة المركبه"
+          label="قيمة المركبة"
+          id={"vehicle_price"}
+          placeholder={"ادخل قيمة المركبة"}
           type="number"
           name="vehicle_price"
           icon={<FaMoneyBillWave />}
@@ -90,24 +184,13 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
         />
 
         <MainInput
-          label="عمولة البائع"
-          placeholder="ادخل عمولة البائع"
-          type="number"
-          name="seller_commission"
-          icon={<LuHandCoins />}
-          value={formik.values.seller_commission}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
-
-        <MainInput
-          label="عموله ضمانه"
+          label="اختر العمولة"
           type="select"
+          id="commission_on"
           name="commission_on"
           options={[
-            { value: "", label: "اختر عموله ضمانه" },
-            { value: "yes", label: "نعم" },
-            { value: "no", label: "لا" },
+            { value: "", label: "اختر العمولة" },
+            ...commission_on_options,
           ]}
           icon={<LuHandCoins />}
           value={formik.values.commission_on}
@@ -115,77 +198,78 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
           onBlur={formik.handleBlur}
           error={getError("commission_on")}
         />
-
-        <MainInput
-          label="قيمة الدفعه"
-          placeholder="ادخل قيمة الدفعه"
-          type="number"
-          name="payment_amount"
-          icon={<LuHandCoins />}
-          value={formik.values.payment_amount}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-        />
       </div>
 
       {/* كود الخصم */}
       <div>
         <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
-        <div className="lg:w-1/2">
+        <div className="flex flex-col gap-2 lg:w-1/2">
           <MainInput
             label="كود الخصم"
             type="text"
             name="code"
+            id="code"
             placeholder="ادخل كود الخصم"
             icon={<CiDiscount1 />}
             value={formik.values.code}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              setCouponServer(null);
+            }}
             onBlur={formik.handleBlur}
             error={getError("code")}
           />
+
+          {couponServer?.discount && (
+            <p className="text-success font-bold">
+              حصلت على خصم {couponServer.discount}
+              {couponServer.discount_type === "percentage" ? "%" : " دينار"}
+            </p>
+          )}
+          <FormError errorMsg={couponErrorMsg} />
+
+          {formik.values.code && (
+            <FormBtn
+              title="تحقق"
+              type="button"
+              loading={couponMutation.isPending}
+              onClick={() => couponMutation.mutate(formik.values.code)}
+            />
+          )}
         </div>
       </div>
 
-      {/* صرف ضمانه */}
-      <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانه</h3>
-      <p className="lg:text-lg font-bold mb-4">
-        خلي ضمانك يوصلك أسرع! كيف تحب يتم التحويل بعد التنازل؟
-      </p>
+      {/* صرف ضمانة */}
+      <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
       <div className="space-y-2">
-        <label className="flex items-center gap-2 text-sm lg:text-base">
+        <label className="flex items-center gap-2">
           <input
             type="radio"
             name="payout_method"
             value="fast"
             checked={formik.values.payout_method === "fast"}
             onChange={formik.handleChange}
-            className="w-5 h-5 accent-primary cursor-pointer"
+            className="w-5 h-5 accent-primary"
           />
           فورًا – بأسرع وقت ممكن (تُضاف 4 دنانير)
         </label>
-        <label className="flex items-center gap-2 text-sm lg:text-base">
+        <label className="flex items-center gap-2">
           <input
             type="radio"
             name="payout_method"
             value="normal"
             checked={formik.values.payout_method === "normal"}
             onChange={formik.handleChange}
-            className="w-5 h-5 accent-primary cursor-pointer"
+            className="w-5 h-5 accent-primary"
           />
           بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
         </label>
       </div>
 
-      {/* بيانات المركبة */}
-      <DetailsCard data={data} />
+      {details && <DetailsCard data={details} />}
 
-      {/* عرض رسالة الخطأ العامة */}
-      {errorMsg && <div className="text-error-200">{errorMsg}</div>}
-
-      {/* زر التالي */}
-      <button type="submit" className="mainBtn" disabled={mutation.isPending}>
-        {mutation.isPending ? "جارٍ الإرسال..." : "التالي"}
-      </button>
+      <FormError errorMsg={errorMsg} />
+      <FormBtn title="ارسال ضمانه" loading={false} />
     </form>
   );
 };

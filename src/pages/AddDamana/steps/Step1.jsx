@@ -5,9 +5,8 @@ import * as Yup from "yup";
 import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
-// import { createDamanaStep1 } from "../../../services/damanaService"; // ⬅ ضع API بتاعتك هنا
 
-const Step1 = ({ goNext, setParentData, parentData }) => {
+const Step1 = ({ goNext, setParentData, parentData, setFinalData }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   // ✅ Mutation
@@ -22,6 +21,14 @@ const Step1 = ({ goNext, setParentData, parentData }) => {
         ...formik.values,
         request_step1_id: data.data.request_step1_id,
       }));
+
+      // نحفظ المطلوب من Step1 في finalData
+      setFinalData((prev) => ({
+        ...prev,
+        buyer_national_number: formik.values.buyer_national_number,
+        buyer_full_mobile: formik.values.buyer_full_mobile,
+      }));
+
       setErrorMsg("");
       goNext();
     },
@@ -32,37 +39,39 @@ const Step1 = ({ goNext, setParentData, parentData }) => {
 
   // ✅ بيانات تفاصيل المركبة
   const data = [
-    { label: "رقم التسجيل", value: "45665790" },
-    { label: "رقم اللوحة والرمز", value: "10558777" },
-    { label: "نوع المركبة", value: "مارسيدس - بنز" },
-    { label: "الصنف", value: "E - 200" },
-    { label: "لون المركبة", value: "اسود" },
-    { label: "رقم الشاصي", value: "57765875432" },
-    { label: "رقم التسجيل", value: "1 3012758754" },
-    { label: "تاريخ انتهاء الرخصة", value: "20/02/2027" },
-    { label: "نوع التأمين", value: "شامل" },
-    { label: "شركة التأمين", value: "شركة دنيا للتأمين" },
-    { label: "مركز الترخيص", value: "عمان" },
-    { label: "رقم المحرك", value: "555496735" },
-    { label: "نوع الوقود", value: "بنزين" },
-    { label: "الحمولة", value: "4 ركاب" },
-    { label: "رقم البوليصة", value: "2024/ 585785" },
-    { label: "صفة التسجيل", value: "خصوصي" },
+    { label: "رقم التسجيل", value: parentData.registration_number },
+    {
+      label: "رقم اللوحة والرمز",
+      value: `${parentData.plate_number} - ${parentData.plate_code}`,
+    },
+    { label: "نوع المركبة", value: parentData.vehicle_type },
+    { label: "الصنف", value: parentData.vehicle_class },
+    { label: "لون المركبة", value: parentData.color },
+    { label: "رقم الشاصي", value: parentData.chassis_number },
+    { label: "سنة الصنع", value: parentData.manufacture_year },
+    { label: "تاريخ انتهاء الرخصة", value: parentData.license_expiry_date },
+    { label: "مركز الترخيص", value: parentData.licensing_center },
+    { label: "رقم المحرك", value: parentData.engine_number },
+    { label: "سعة المحرك", value: parentData.engine_capacity },
+    { label: "الحمولة", value: parentData.load_capacity },
+    { label: "الوزن القائم", value: parentData.net_weight },
+    { label: "الوزن الصافي", value: parentData.cargo_capacity },
+    { label: "قيمة المركبة التقديرية", value: parentData.estimated_value },
+    { label: "صفة التسجيل", value: parentData.registration_type },
+    { label: "تصنيف المركبة", value: parentData.vehicle_classification },
   ];
 
   // ✅ Formik Setup
   const formik = useFormik({
     initialValues: {
-      ownerNationalId: "",
-      ownerPhone: "",
-      buyerNationalId: "",
-      buyerPhone: "",
+      buyer_national_number: "",
+      buyer_full_mobile: "",
     },
     validationSchema: Yup.object({
-      ownerNationalId: Yup.string().required("الرقم الوطني للمالك مطلوب"),
-      ownerPhone: Yup.string().required("رقم هاتف المالك مطلوب"),
-      buyerNationalId: Yup.string().required("الرقم الوطني للمشتري مطلوب"),
-      buyerPhone: Yup.string().required("رقم هاتف المشتري مطلوب"),
+      buyer_national_number: Yup.string().required(
+        "الرقم الوطني للمشتري مطلوب"
+      ),
+      buyer_full_mobile: Yup.string().required("رقم هاتف المشتري مطلوب"),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
@@ -90,12 +99,12 @@ const Step1 = ({ goNext, setParentData, parentData }) => {
       </h3>
 
       {/* المالك */}
-      <div>
+      {/* <div>
         {pageTitle("المالك")}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MainInput
             label="الرقم الوطني"
-            id={"ownerNationalId"}
+            id="ownerNationalId"
             placeholder="ادخل الرقم الوطني"
             name="ownerNationalId"
             value={formik.values.ownerNationalId}
@@ -104,43 +113,71 @@ const Step1 = ({ goNext, setParentData, parentData }) => {
             error={getError("ownerNationalId")}
             icon={<LuCircleUserRound />}
           />
+
           <MainInput
-            label="رقم الهاتف"
-            placeholder="ادخل رقم الهاتف"
-            name="ownerPhone"
             type="tel"
-            value={formik.values.ownerPhone}
-            onChange={formik.handleChange}
+            id="ownerPhone"
+            name="ownerPhone"
+            placeholder="96269077885+"
+            label="رقم الهاتف"
+            value={`${formik.values.ownerCountryCode?.replace("+", "") || ""}${
+              formik.values.ownerPhone || ""
+            }`}
+            onChange={(phone, country) => {
+              const countryCode = country?.dialCode
+                ? `+${country.dialCode}`
+                : "";
+              const numberWithoutCode = country?.dialCode
+                ? phone.slice(country.dialCode.length)
+                : phone;
+
+              formik.setFieldValue("ownerCountryCode", countryCode);
+              formik.setFieldValue("ownerPhone", numberWithoutCode);
+            }}
             onBlur={formik.handleBlur}
             error={getError("ownerPhone")}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* المشتري */}
       <div>
         {pageTitle("المشتري")}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MainInput
-            id={"buyerNationalId"}
+            id="buyer_national_number"
             label="الرقم الوطني"
             placeholder="ادخل الرقم الوطني"
-            name="buyerNationalId"
-            value={formik.values.buyerNationalId}
+            name="buyer_national_number"
+            value={formik.values.buyer_national_number}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            error={getError("buyerNationalId")}
+            error={getError("buyer_national_number")}
             icon={<LuCircleUserRound />}
           />
+
           <MainInput
-            label="رقم الهاتف"
-            placeholder="ادخل رقم الهاتف"
-            name="buyerPhone"
             type="tel"
-            value={formik.values.buyerPhone}
-            onChange={formik.handleChange}
+            id="buyer_full_mobile"
+            name="buyer_full_mobile"
+            placeholder="96269077885+"
+            label="رقم الهاتف"
+            value={`${formik.values.buyerCountryCode?.replace("+", "") || ""}${
+              formik.values.buyer_full_mobile || ""
+            }`}
+            onChange={(phone, country) => {
+              const countryCode = country?.dialCode
+                ? `+${country.dialCode}`
+                : "";
+              const numberWithoutCode = country?.dialCode
+                ? phone.slice(country.dialCode.length)
+                : phone;
+
+              formik.setFieldValue("buyerCountryCode", countryCode);
+              formik.setFieldValue("buyer_full_mobile", numberWithoutCode);
+            }}
             onBlur={formik.handleBlur}
-            error={getError("buyerPhone")}
+            error={getError("buyer_full_mobile")}
           />
         </div>
       </div>
@@ -148,7 +185,7 @@ const Step1 = ({ goNext, setParentData, parentData }) => {
       {/* بيانات المركبة */}
       <div>
         {pageTitle("بيانات المركبة")}
-        <DetailsCard data={data} col={2} blur />
+        <DetailsCard data={data} col={2} />
       </div>
 
       {/* عرض رسالة الخطأ العامة */}

@@ -1,8 +1,14 @@
-const FormBtn = ({ title, disabled, loading, onClick = () => {} }) => {
+const FormBtn = ({
+  title,
+  disabled,
+  loading,
+  onClick = () => {},
+  type = "submit",
+}) => {
   const isDisabled = disabled || loading;
   return (
     <button
-      type="submit"
+      type={type}
       onClick={onClick}
       disabled={isDisabled}
       className={`mainBtn ${loading ? "!cursor-wait contrast-50" : ""}`}

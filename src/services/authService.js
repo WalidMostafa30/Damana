@@ -76,3 +76,24 @@ export const getCountries = async () => {
   const { data } = await api.get("/static-data/countries");
   return data;
 };
+
+export const checkByRegN = async (number) => {
+  const { data } = await api.get(
+    `/dvld/checkByRegN?registration_number=${number}`
+  );
+  return data;
+};
+
+export const checkCoupon = async (code) => {
+  const { data } = await api.post(`/check-coupon`, { code });
+  return data;
+};
+
+export const getCommission = async (payload) => {
+  const { data } = await api.post("/vehicle-transfers/get-commission", payload);
+  return data.data;
+};
+
+export const createVehicleTransfer = (payload) => {
+  return api.post("/vehicle-transfers/create", payload);
+};

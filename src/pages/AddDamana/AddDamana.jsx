@@ -10,8 +10,9 @@ import { ImArrowRight } from "react-icons/im";
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 export default function AddDamana() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [formData, setFormData] = useState({});
+  const [finalData, setFinalData] = useState({});
   const { profile } = useSelector((state) => state.profile);
 
   useEffect(() => {
@@ -36,6 +37,7 @@ export default function AddDamana() {
               goNext={() => setStep((prev) => prev + 1)}
               setParentData={setFormData}
               profile={profile}
+              setFinalData={setFinalData}
             />
           )}
           {step === 1 && (
@@ -43,6 +45,7 @@ export default function AddDamana() {
               goNext={() => setStep((prev) => prev + 1)}
               setParentData={setFormData}
               parentData={formData}
+              setFinalData={setFinalData}
             />
           )}
           {step === 2 && (
@@ -50,6 +53,8 @@ export default function AddDamana() {
               goNext={() => setStep((prev) => prev + 1)}
               parentData={formData}
               setParentData={setFormData}
+              setFinalData={setFinalData}
+              finalData={finalData}
             />
           )}
         </div>

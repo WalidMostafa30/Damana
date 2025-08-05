@@ -6,25 +6,31 @@ import MainInput from "../../../components/form/MainInput/MainInput";
 import { FaIdCard } from "react-icons/fa";
 import { CiCreditCard2, CiUser } from "react-icons/ci";
 import ActionModal from "../../../components/modals/ActionModal";
-// import { createDamana } from "../../../services/damanaService"; // ⬅ حط هنا API بتاعتك
+import { checkByRegN } from "../../../services/authService";
+import FormError from "../../../components/form/FormError";
+import FormBtn from "../../../components/form/FormBtn";
 
-const Step0 = ({ goNext, setParentData, profile }) => {
+const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
   // ✅ Mutation
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      // ⬅ هنا حط API call بتاعتك
-      // return await createDamana(payload);
-      return { data: { request_id: 123 } }; // مثال مؤقت
+      return await checkByRegN(payload.registration_number);
     },
     onSuccess: (data) => {
       setParentData((prev) => ({
         ...prev,
-        ...formik.values,
-        request_id: data.data.request_id, // ⬅ ممكن تضيف أي بيانات راجعة من الـ API
+        ...data.data.data,
       }));
+
+      // نحفظ في finalData المطلوب من Step0
+      setFinalData((prev) => ({
+        ...prev,
+        registration_number: data.data.data.registration_number,
+      }));
+
       setErrorMsg("");
       goNext();
     },
@@ -40,14 +46,12 @@ const Step0 = ({ goNext, setParentData, profile }) => {
       ownerName: "",
       ownerNationalId: "",
       ownerPhone: "",
-      vehicleRegistrationNumber: "",
+      registration_number: "",
       agreement: false,
     },
     validationSchema: Yup.object({
       owner: Yup.string().required("اختيار المالك مطلوب"),
-      vehicleRegistrationNumber: Yup.string().required(
-        "رقم تسجيل المركبة مطلوب"
-      ),
+      registration_number: Yup.string().required("رقم تسجيل المركبة مطلوب"),
       ownerNationalId: Yup.string().when("owner", {
         is: "no",
         then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
@@ -133,15 +137,15 @@ const Step0 = ({ goNext, setParentData, profile }) => {
       {/* الحقول */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
-          id={"vehicleRegistrationNumber"}
+          id={"registration_number"}
           label="رقم تسجيل المركبه"
           placeholder="ادخل رقم تسجيل المركبه"
-          name="vehicleRegistrationNumber"
+          name="registration_number"
           type="number"
-          value={formik.values.vehicleRegistrationNumber}
+          value={formik.values.registration_number}
           onChange={formik.handleChange}
           onBlur={formik.handleBlur}
-          error={getError("vehicleRegistrationNumber")}
+          error={getError("registration_number")}
           icon={<CiCreditCard2 />}
         />
 
@@ -208,9 +212,6 @@ const Step0 = ({ goNext, setParentData, profile }) => {
         <div className="text-error-200 mt-1">{getError("agreement")}</div>
       )}
 
-      {/* عرض رسالة الخطأ العامة */}
-      {errorMsg && <div className="text-error-200">{errorMsg}</div>}
-
       {/* المودال */}
       <ActionModal
         openModal={openModal}
@@ -227,9 +228,9 @@ const Step0 = ({ goNext, setParentData, profile }) => {
         lightBtn={{ text: "العوده", action: () => setOpenModal(false) }}
       />
 
-      <button type="submit" className="mainBtn" disabled={mutation.isPending}>
-        {mutation.isPending ? "جارٍ الإرسال..." : "التالي"}
-      </button>
+      <FormError errorMsg={errorMsg} />
+
+      <FormBtn title="التالي" loading={mutation.isPending} />
     </form>
   );
 };
