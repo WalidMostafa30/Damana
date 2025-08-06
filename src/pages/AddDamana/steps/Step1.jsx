@@ -6,44 +6,43 @@ import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 
-const Step1 = ({ goNext, vehicleData, setFinalData }) => {
+const Step1 = ({ goNext, formData, setFormData }) => {
   const [errorMsg, setErrorMsg] = useState("");
 
   // ✅ بيانات تفاصيل المركبة
   const data = [
-    { label: "رقم التسجيل", value: vehicleData.registration_number },
+    { label: "رقم التسجيل", value: formData.registration_number },
     {
       label: "رقم اللوحة والرمز",
-      value: `${vehicleData.plate_number} - ${vehicleData.plate_code}`,
+      value: `${formData.plate_number || "-"} - ${formData.plate_code || "-"}`,
     },
-    { label: "نوع المركبة", value: vehicleData.vehicle_type },
-    { label: "الصنف", value: vehicleData.vehicle_class },
-    { label: "لون المركبة", value: vehicleData.color },
-    { label: "رقم الشاصي", value: vehicleData.chassis_number },
-    { label: "سنة الصنع", value: vehicleData.manufacture_year },
-    { label: "تاريخ انتهاء الرخصة", value: vehicleData.license_expiry_date },
-    { label: "مركز الترخيص", value: vehicleData.licensing_center },
-    { label: "رقم المحرك", value: vehicleData.engine_number },
-    { label: "سعة المحرك", value: vehicleData.engine_capacity },
-    { label: "الحمولة", value: vehicleData.load_capacity },
-    { label: "الوزن القائم", value: vehicleData.net_weight },
-    { label: "الوزن الصافي", value: vehicleData.cargo_capacity },
-    { label: "قيمة المركبة التقديرية", value: vehicleData.estimated_value },
-    { label: "صفة التسجيل", value: vehicleData.registration_type },
-    { label: "تصنيف المركبة", value: vehicleData.vehicle_classification },
+    { label: "نوع المركبة", value: formData.vehicle_type },
+    { label: "الصنف", value: formData.vehicle_class },
+    { label: "لون المركبة", value: formData.color },
+    { label: "رقم الشاصي", value: formData.chassis_number },
+    { label: "سنة الصنع", value: formData.manufacture_year },
+    { label: "تاريخ انتهاء الرخصة", value: formData.license_expiry_date },
+    { label: "مركز الترخيص", value: formData.licensing_center },
+    { label: "رقم المحرك", value: formData.engine_number },
+    { label: "سعة المحرك", value: formData.engine_capacity },
+    { label: "الحمولة", value: formData.load_capacity },
+    { label: "الوزن القائم", value: formData.net_weight },
+    { label: "الوزن الصافي", value: formData.cargo_capacity },
+    { label: "قيمة المركبة التقديرية", value: formData.estimated_value },
+    { label: "صفة التسجيل", value: formData.registration_type },
+    { label: "تصنيف المركبة", value: formData.vehicle_classification },
   ];
 
-  // ✅ Mutation
   const mutation = useMutation({
     mutationFn: async (payload) => {
       // return await createVehicleTransfer(payload);
     },
-    onSuccess: (data) => {
-      // نحفظ المطلوب من Step1 في finalData
-      setFinalData((prev) => ({
+    onSuccess: () => {
+      setFormData((prev) => ({
         ...prev,
         buyer_national_number: formik.values.buyer_national_number,
         buyer_full_mobile: formik.values.buyer_full_mobile,
+        buyerCountryCode: formik.values.buyerCountryCode,
       }));
 
       setErrorMsg("");
@@ -54,11 +53,11 @@ const Step1 = ({ goNext, vehicleData, setFinalData }) => {
     },
   });
 
-  // ✅ Formik Setup
   const formik = useFormik({
     initialValues: {
-      buyer_national_number: "",
-      buyer_full_mobile: "",
+      buyer_national_number: formData.buyer_national_number || "",
+      buyer_full_mobile: formData.buyer_full_mobile || "",
+      buyerCountryCode: formData.buyerCountryCode || "",
     },
     validationSchema: Yup.object({
       buyer_national_number: Yup.string().required(
@@ -68,11 +67,10 @@ const Step1 = ({ goNext, vehicleData, setFinalData }) => {
     }),
     onSubmit: (values) => {
       setErrorMsg("");
-      const payload = {
-        ...vehicleData,
+      mutation.mutate({
+        ...formData,
         ...values,
-      };
-      mutation.mutate(payload);
+      });
     },
   });
 
@@ -91,49 +89,6 @@ const Step1 = ({ goNext, vehicleData, setFinalData }) => {
         بيانات أطراف الضمانة
       </h3>
 
-      {/* المالك */}
-      {/* <div>
-        {pageTitle("المالك")}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MainInput
-            label="الرقم الوطني"
-            id="ownerNationalId"
-            placeholder="ادخل الرقم الوطني"
-            name="ownerNationalId"
-            value={formik.values.ownerNationalId}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={getError("ownerNationalId")}
-            icon={<LuCircleUserRound />}
-          />
-
-          <MainInput
-            type="tel"
-            id="ownerPhone"
-            name="ownerPhone"
-            placeholder="96269077885+"
-            label="رقم الهاتف"
-            value={`${formik.values.ownerCountryCode?.replace("+", "") || ""}${
-              formik.values.ownerPhone || ""
-            }`}
-            onChange={(phone, country) => {
-              const countryCode = country?.dialCode
-                ? `+${country.dialCode}`
-                : "";
-              const numberWithoutCode = country?.dialCode
-                ? phone.slice(country.dialCode.length)
-                : phone;
-
-              formik.setFieldValue("ownerCountryCode", countryCode);
-              formik.setFieldValue("ownerPhone", numberWithoutCode);
-            }}
-            onBlur={formik.handleBlur}
-            error={getError("ownerPhone")}
-          />
-        </div>
-      </div> */}
-
-      {/* المشتري */}
       <div>
         {pageTitle("المشتري")}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -175,13 +130,11 @@ const Step1 = ({ goNext, vehicleData, setFinalData }) => {
         </div>
       </div>
 
-      {/* بيانات المركبة */}
       <div>
         {pageTitle("بيانات المركبة")}
         <DetailsCard data={data} col={2} />
       </div>
 
-      {/* عرض رسالة الخطأ العامة */}
       {errorMsg && <div className="text-error-200">{errorMsg}</div>}
 
       <button type="submit" className="mainBtn" disabled={mutation.isPending}>

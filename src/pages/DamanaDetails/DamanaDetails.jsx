@@ -2,25 +2,36 @@ import DetailsCard from "../../components/common/DetailsCard";
 import ActionsSection from "./ActionsSection";
 import DamanaDetailsHead from "../../components/common/DamanaDetailsHead";
 import { useParams } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { fetchDamanaDetails } from "../../services/damanaServices";
 
 const DamanaDetails = () => {
   const { id } = useParams();
 
-  const data = [
-    { label: "رقم التسجيل", value: "45665790" },
-    { label: "رقم اللوحة والرمز", value: "10558777" },
-    { label: "نوع المركبة", value: "مارسيدس - بنز" },
-    { label: "الصنف", value: "E - 200" },
-    { label: "لون المركبة", value: "اسود" },
-    { label: "رقم الشاصي", value: "57765875432" },
-    { label: "رقم التسجيل", value: "1 3012758754" },
-    { label: "تاريخ انتهاء الرخصة", value: "20/02/2027" },
-    { label: "نوع التأمين", value: "شامل" },
-  ];
+  // 🛠 جلب بيانات الضمانة
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["damana-details", id],
+    queryFn: () => fetchDamanaDetails(id),
+    enabled: !!id, // يتأكد إن id موجود قبل ما يعمل الطلب
+  });
+
+  if (isLoading) {
+    return <p className="text-center mt-6">جاري التحميل...</p>;
+  }
+
+  if (isError) {
+    return (
+      <p className="text-center text-red-500 mt-6">
+        فشل في تحميل البيانات: {error.message}
+      </p>
+    );
+  }
+
+  const damana = data?.data; // من الـ API
 
   const pageTitle = (title, large = false, color = "primary") => (
     <h3
-      className={` font-bold text-white bg-primary px-4 py-2 rounded-se-2xl w-fit ${
+      className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
         large ? "text-lg lg:text-2xl" : "lg:text-xl"
       } ${color === "secondary" ? "bg-secondary" : "bg-primary"}`}
     >
@@ -28,30 +39,110 @@ const DamanaDetails = () => {
     </h3>
   );
 
+  const vehicleData = [
+    damana?.plate_number && {
+      label: "رقم اللوحة والترميز",
+      value: `${damana.plate_number}-${damana.plate_number}`,
+    },
+    damana?.vehicle_type && {
+      label: "نوع المركبة",
+      value: damana.vehicle_type,
+    },
+    damana?.category && { label: "الصنف", value: damana.category },
+    damana?.color && { label: "لون المركبة", value: damana.color },
+    damana?.chassis_number && {
+      label: "رقم الشاصي",
+      value: damana.chassis_number,
+    },
+    damana?.registration_number && {
+      label: "رقم التسجيل",
+      value: damana.registration_number,
+    },
+    damana?.registration_date && {
+      label: "تاريخ التسجيل",
+      value: damana.registration_date,
+    },
+    damana?.manufacture_year && {
+      label: "تاريخ الصنع",
+      value: damana.manufacture_year,
+    },
+    damana?.license_expiry_date && {
+      label: "تاريخ انتهاء الرخصة",
+      value: damana.license_expiry_date,
+    },
+    damana?.licensing_center && {
+      label: "مركز الترخيص",
+      value: damana.licensing_center,
+    },
+    damana?.engine_number && {
+      label: "رقم المحرك",
+      value: damana.engine_number,
+    },
+    damana?.load_capacity && {
+      label: "الحمولة",
+      value: damana.load_capacity,
+    },
+    damana?.registration_type && {
+      label: "صفة التسجيل",
+      value: damana.registration_type,
+    },
+    damana?.country_name && {
+      label: "الدولة",
+      value: damana.country_name,
+    },
+    damana?.vehicle_classification && {
+      label: "تصنيف المركبة",
+      value: damana.vehicle_classification,
+    },
+    damana?.engine_capacity && {
+      label: "سعة المحرك",
+      value: damana.engine_capacity,
+    },
+  ].filter(Boolean);
+
   return (
     <article className="pageContainer">
-      {id && (
-        <p className="text-primary text-lg font-bold">رقم الضمانة: {id}</p>
+      {pageTitle(
+        damana?.status_translate || "جار التحميل...",
+        true,
+        "secondary"
       )}
-      {pageTitle("بانتظار موافقة المشتري", true, "secondary")}
-      <section className="baseWhiteContainer space-y-4">
-        <DamanaDetailsHead hours={2} minutes={30} />
 
+      <section className="baseWhiteContainer space-y-4">
+        {/* رأس الصفحة */}
+        <DamanaDetailsHead hours={2} minutes={30} data={damana} />
+
+        {/* بيانات البائع */}
         <div>
           {pageTitle("بيانات البائع")}
-          <DetailsCard data={data} />
+          <DetailsCard
+            data={[
+              { label: "الاسم", value: damana?.seller?.name },
+              { label: "رقم الهاتف", value: damana?.seller?.full_mobile },
+              { label: "رقم الوطنى", value: damana?.seller?.national_number },
+            ]}
+          />
         </div>
 
+        {/* بيانات المشتري */}
+        <div>
+          {pageTitle("بيانات المشتري")}
+          <DetailsCard
+            data={[
+              { label: "الاسم", value: damana?.buyer?.name },
+              { label: "رقم الهاتف", value: damana?.buyer?.full_mobile },
+              { label: "رقم الوطنى", value: damana?.buyer?.national_number },
+            ]}
+          />
+        </div>
+
+        {/* بيانات المركبة */}
         <div>
           {pageTitle("بيانات المركبة")}
-          <DetailsCard data={data} col={2} />
+          <DetailsCard data={vehicleData} col={2} />
         </div>
 
-        <div>
-          {pageTitle("بيانات الضمانة")}
-          <DetailsCard data={data} />
-        </div>
-
+        {/* أزرار التحكم */}
         <ActionsSection />
       </section>
     </article>

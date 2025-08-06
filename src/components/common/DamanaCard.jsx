@@ -6,10 +6,12 @@ import Timer from "./Timer";
 const DamanaCard = ({
   hours,
   number,
+  id,
   plate,
   seller,
-  buyer,
+  price,
   date,
+  statusText = "بانتظار موافقة المشتري",
   selectable = false,
   selected = false,
   onSelect = () => {},
@@ -23,7 +25,7 @@ const DamanaCard = ({
       style={{ cursor: selectable ? "pointer" : "default" }}
     >
       <h3 className="lg:text-lg font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">
-        بانتظار موافقه المشتري
+        {statusText}
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
@@ -45,11 +47,10 @@ const DamanaCard = ({
               <span>البائع</span> : <span className="font-bold">{seller}</span>
             </p>
           </div>
+
           <div className="flex items-center gap-1 text-sm lg:text-base">
-            <CiUser className="text-2xl" />
-            <p>
-              <span>المشتري</span> : <span className="font-bold">{buyer}</span>
-            </p>
+            <CiCalendarDate className="text-2xl" />
+            <p>{price}</p>
           </div>
           <div className="flex items-center gap-1 text-sm lg:text-base">
             <CiCalendarDate className="text-2xl" />
@@ -66,7 +67,7 @@ const DamanaCard = ({
               )}
             </span>
           ) : (
-            <Link to="/damana" className="mainBtn w-full">
+            <Link to={`/damana/${id}`} className="mainBtn w-full">
               عرض
             </Link>
           )}

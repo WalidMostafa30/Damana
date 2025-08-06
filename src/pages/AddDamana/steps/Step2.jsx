@@ -31,14 +31,14 @@ const formatNumber = (num) => {
   }).format(num);
 };
 
-const Step2 = ({ finalData }) => {
+const Step2 = ({ formData, setFormData }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [couponErrorMsg, setCouponErrorMsg] = useState("");
   const [couponServer, setCouponServer] = useState(null);
   const [details, setDetails] = useState([]);
   const [openModal, setOpenModal] = useState(false);
-  const [modalMsg, setModalMsg] = useState("");
-  const [damanaID, setDamanaID] = useState("");
+  const [damanaData, setDamanaData] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const navigate = useNavigate();
 
@@ -103,7 +103,6 @@ const Step2 = ({ finalData }) => {
         },
       ];
 
-      // ✅ لو transfer_commission > 0 أضف ضمانة فورية
       if (data.transfer_commission > 0) {
         newDetails.splice(4, 0, {
           label: "ضمانة فورية",
@@ -113,23 +112,14 @@ const Step2 = ({ finalData }) => {
 
       setDetails(newDetails);
     },
-    onError: (error) => {
-      console.error(error);
-    },
   });
 
   // ✅ إرسال طلب إنشاء الضمانة
   const createVehicleTransferMutation = useMutation({
     mutationFn: async (payload) => await createVehicleTransfer(payload),
     onSuccess: (data) => {
-      console.log("تم إنشاء الضمانة بنجاح ✅", data);
+      setDamanaData(data);
       setOpenModal(true);
-      setModalMsg(
-        <p>
-          تم إنشاء الضمانة بنجاح رقم الضمانة <span>{data?.serial_number}</span>
-        </p>
-      );
-      setDamanaID(data?.id);
     },
     onError: (error) => {
       setErrorMsg(
@@ -140,11 +130,12 @@ const Step2 = ({ finalData }) => {
 
   const formik = useFormik({
     initialValues: {
-      vehicle_price: "",
-      commission_on: "",
-      code: "",
-      transfer_commission: "", // ✅ الحقل الجديد
+      vehicle_price: formData.vehicle_price || "",
+      commission_on: formData.commission_on || "",
+      code: formData.code || "",
+      transfer_commission: formData.transfer_commission || "",
     },
+    enableReinitialize: true,
     validationSchema: Yup.object({
       vehicle_price: Yup.string().required("قيمة المركبة مطلوبة"),
       commission_on: Yup.string().required("اختيار عمولة ضمانة مطلوب"),
@@ -153,16 +144,23 @@ const Step2 = ({ finalData }) => {
     onSubmit: (values) => {
       setErrorMsg("");
 
+      setFormData((prev) => ({
+        ...prev,
+        ...values,
+      }));
+
       const payload = {
-        ...finalData,
+        registration_number: formData.registration_number,
+        buyer_national_number: formData.buyer_national_number,
+        buyer_full_mobile: formData.buyer_full_mobile,
         vehicle_price: values.vehicle_price,
         commission_on: values.commission_on,
-        code: values.code || undefined,
+        code: values.code,
         transfer_type: values.transfer_commission,
       };
 
-      console.log("📦 Payload to API:", payload);
       createVehicleTransferMutation.mutate(payload);
+      console.log("📤 إرسال طلب إنشاء الضمانة:", payload);
     },
   });
 
@@ -194,6 +192,15 @@ const Step2 = ({ finalData }) => {
     formik.values.transfer_commission,
     couponServer,
   ]);
+
+  const handleCopySerial = () => {
+    if (damanaData?.serial_number) {
+      navigator.clipboard.writeText(damanaData.serial_number).then(() => {
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      });
+    }
+  };
 
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -309,12 +316,26 @@ const Step2 = ({ finalData }) => {
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        msg={modalMsg}
-        icon="protect"
+        msg={
+          <p>
+            تم إنشاء الضمانة بنجاح رقم الضمانة{" "}
+            <span
+              className="font-bold text-success-200 cursor-pointer underline"
+              onClick={handleCopySerial}
+              title="اضغط للنسخ"
+            >
+              {damanaData?.serial_number}
+            </span>
+            {copied && (
+              <span className="ml-2 text-xs text-primary">تم النسخ</span>
+            )}
+          </p>
+        }
+        icon="success"
         primaryBtn={{
           text: "اذهب الى صفحة الضمانه",
           action: () => {
-            navigate(`/damana/${damanaID}`);
+            navigate(`/damana/${damanaData?.id}`);
           },
         }}
       />

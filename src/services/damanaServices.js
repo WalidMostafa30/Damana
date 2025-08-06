@@ -21,3 +21,15 @@ export const createVehicleTransfer = async (payload) => {
   const { data } = await api.post("/vehicle-transfers/create", payload);
   return data?.data;
 };
+
+export const fetchCancellableDamanat = async (page = 1) => {
+  const { data } = await api.get(
+    `/vehicle-transfers/list?status=cancellable&page=${page}`
+  );
+  return data;
+};
+
+export const fetchDamanaDetails = async (id) => {
+  const { data } = await api.get(`/vehicle-transfers/show?id=${id}`);
+  return data;
+};

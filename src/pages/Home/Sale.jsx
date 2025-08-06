@@ -1,47 +1,54 @@
-import { useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { fetchCancellableDamanat } from "../../services/damanaServices";
 import DamanaCard from "../../components/common/DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const allDamanat = Array.from({ length: 15 }, (_, i) => ({
-  id: i + 1,
-  hours: 3,
-  number: `13212312213-${i + 1}`,
-  plate: "12-1212",
-  seller: "رائد الدوو",
-  buyer: "محمد علي",
-  date: "1/2/2023",
-}));
-
 const Sale = () => {
-  const [items, setItems] = useState(allDamanat.slice(0, 5));
-  const [hasMore, setHasMore] = useState(true);
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    isError,
+  } = useInfiniteQuery({
+    queryKey: ["cancellableDamanat"],
+    queryFn: ({ pageParam = 1 }) => fetchCancellableDamanat(pageParam),
+    getNextPageParam: (lastPage, allPages) => {
+      if (lastPage?.data?.length === 0) return undefined; // مفيش بيانات تانية
+      return allPages.length + 1; // الصفحة التالية
+    },
+  });
 
-  // دالة تحميل بيانات إضافية
-  const fetchMoreData = () => {
-    if (items.length >= allDamanat.length) {
-      setHasMore(false);
-      return;
-    }
+  // دمج كل الصفحات في مصفوفة واحدة
+  const items = data?.pages.flatMap((page) => page.data) || [];
 
-    // نضيف 10 عناصر إضافية
-    setTimeout(() => {
-      setItems((prev) => [
-        ...prev,
-        ...allDamanat.slice(prev.length, prev.length + 5),
-      ]);
-    }, 1000);
-  };
+  if (isLoading) {
+    return <h4 className="text-center mt-4">جارِ التحميل...</h4>;
+  }
+
+  if (isError) {
+    return (
+      <h4 className="text-center mt-4 text-red-500">
+        حدث خطأ في تحميل البيانات
+      </h4>
+    );
+  }
 
   return (
     <>
-      {allDamanat.length !== 0 ? (
+      {items.length !== 0 ? (
         <InfiniteScroll
           dataLength={items.length}
-          next={fetchMoreData}
-          hasMore={hasMore}
-          loader={<h4 className="text-center mt-4">جارِ التحميل...</h4>}
+          next={fetchNextPage}
+          hasMore={!!hasNextPage}
+          loader={
+            isFetchingNextPage ? (
+              <h4 className="text-center mt-4">جارِ التحميل...</h4>
+            ) : null
+          }
           endMessage={
             <p className="text-center mt-4 font-bold">تم عرض جميع الضمانات</p>
           }
@@ -49,7 +56,23 @@ const Sale = () => {
         >
           <section className="space-y-4">
             {items.map((damana) => (
-              <DamanaCard key={damana.id} {...damana} />
+              <DamanaCard
+                key={damana.id}
+                number={damana.serial_number}
+                plate={damana.plate_number_code}
+                seller={damana.seller?.name}
+                id={damana.id}
+                price={`${damana.vehicle_price} دينار أردني`}
+                date={new Date(damana.created_at).toLocaleDateString("ar-EG")}
+                statusText={damana.status_translate}
+                hours={Math.max(
+                  0,
+                  Math.floor(
+                    (new Date(damana.approval_period) - new Date()) /
+                      (1000 * 60 * 60)
+                  )
+                )}
+              />
             ))}
           </section>
         </InfiniteScroll>

@@ -10,7 +10,7 @@ import FormError from "../../../components/form/FormError";
 import FormBtn from "../../../components/form/FormBtn";
 import { checkByRegN } from "../../../services/damanaServices";
 
-const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
+const Step0 = ({ goNext, formData, setFormData, profile }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -19,13 +19,10 @@ const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
       return await checkByRegN(payload.registration_number);
     },
     onSuccess: (data) => {
-      setVehicleData((prev) => ({
+      // حفظ بيانات المركبة في formData
+      setFormData((prev) => ({
         ...prev,
         ...data,
-      }));
-
-      setFinalData((prev) => ({
-        ...prev,
         registration_number: data.registration_number,
       }));
 
@@ -38,14 +35,8 @@ const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
   });
 
   const formik = useFormik({
-    initialValues: {
-      registration_number: "",
-      owner: "yes",
-      ownerName: "",
-      ownerNationalId: "",
-      ownerPhone: "",
-      agreement: false,
-    },
+    initialValues: formData,
+    enableReinitialize: true, // مهم عشان يقرأ القيم المحفوظة لو رجعت خطوة
     validationSchema: Yup.object({
       registration_number: Yup.string().required("رقم تسجيل المركبة مطلوب"),
       owner: Yup.string().required("اختيار المالك مطلوب"),
@@ -63,6 +54,7 @@ const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
     }),
     onSubmit: (values) => {
       setErrorMsg("");
+      setFormData((prev) => ({ ...prev, ...values })); // حفظ القيم المدخلة
       mutation.mutate(values);
     },
   });
@@ -193,7 +185,7 @@ const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
             className="w-5 h-5 accent-primary cursor-pointer"
           />
           <label htmlFor="agreement" className="cursor-pointer">
-            أوافق على مشاركة بياناتي لأغراض التحقق حسب الشروط.{" "}
+            أوافق على مشاركة بياناتي لأغراض التحقق حسب الشروط.
           </label>
         </div>
         <span
