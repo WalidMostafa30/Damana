@@ -6,29 +6,27 @@ import MainInput from "../../../components/form/MainInput/MainInput";
 import { FaIdCard } from "react-icons/fa";
 import { CiCreditCard2, CiUser } from "react-icons/ci";
 import ActionModal from "../../../components/modals/ActionModal";
-import { checkByRegN } from "../../../services/authService";
 import FormError from "../../../components/form/FormError";
 import FormBtn from "../../../components/form/FormBtn";
+import { checkByRegN } from "../../../services/damanaServices";
 
-const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
+const Step0 = ({ goNext, setVehicleData, profile, setFinalData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ Mutation
   const mutation = useMutation({
     mutationFn: async (payload) => {
       return await checkByRegN(payload.registration_number);
     },
     onSuccess: (data) => {
-      setParentData((prev) => ({
+      setVehicleData((prev) => ({
         ...prev,
-        ...data.data.data,
+        ...data,
       }));
 
-      // نحفظ في finalData المطلوب من Step0
       setFinalData((prev) => ({
         ...prev,
-        registration_number: data.data.data.registration_number,
+        registration_number: data.registration_number,
       }));
 
       setErrorMsg("");
@@ -39,19 +37,18 @@ const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
     },
   });
 
-  // ✅ Formik Setup
   const formik = useFormik({
     initialValues: {
+      registration_number: "",
       owner: "yes",
       ownerName: "",
       ownerNationalId: "",
       ownerPhone: "",
-      registration_number: "",
       agreement: false,
     },
     validationSchema: Yup.object({
-      owner: Yup.string().required("اختيار المالك مطلوب"),
       registration_number: Yup.string().required("رقم تسجيل المركبة مطلوب"),
+      owner: Yup.string().required("اختيار المالك مطلوب"),
       ownerNationalId: Yup.string().when("owner", {
         is: "no",
         then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
@@ -100,7 +97,6 @@ const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <h3 className="text-2xl font-bold text-primary">بيانات التسجيل</h3>
 
-      {/* لو الحساب شركة → يظهر السؤال */}
       {profile?.account_type === "company" && (
         <div>
           <label className="block mb-2 font-semibold">هل أنت المالك؟</label>
@@ -134,7 +130,6 @@ const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
         </div>
       )}
 
-      {/* الحقول */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           id={"registration_number"}
@@ -212,7 +207,6 @@ const Step0 = ({ goNext, setParentData, profile, setFinalData }) => {
         <div className="text-error-200 mt-1">{getError("agreement")}</div>
       )}
 
-      {/* المودال */}
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}

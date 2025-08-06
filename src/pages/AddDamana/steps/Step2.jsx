@@ -7,23 +7,46 @@ import { CiDiscount1 } from "react-icons/ci";
 import { FaMoneyBillWave } from "react-icons/fa";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
-import { checkCoupon, getCommission } from "../../../services/authService";
+import {
+  checkCoupon,
+  createVehicleTransfer,
+  getCommission,
+} from "../../../services/damanaServices";
 import FormBtn from "../../../components/form/FormBtn";
 import FormError from "../../../components/form/FormError";
+import ActionModal from "../../../components/modals/ActionModal";
+import { useNavigate } from "react-router-dom";
 
-const Step2 = ({ goNext, setParentData, parentData }) => {
+const commission_on_options = [
+  { value: "buyer", label: "على المشتري" },
+  { value: "seller", label: "البائع" },
+  { value: "equally", label: "مناصفة 50% على المشتري و 50% على البائع" },
+];
+
+const formatNumber = (num) => {
+  if (num === null || num === undefined || num === "") return "-";
+  return new Intl.NumberFormat("en-US", {
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 2,
+  }).format(num);
+};
+
+const Step2 = ({ finalData }) => {
   const [errorMsg, setErrorMsg] = useState("");
   const [couponErrorMsg, setCouponErrorMsg] = useState("");
   const [couponServer, setCouponServer] = useState(null);
   const [details, setDetails] = useState([]);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalMsg, setModalMsg] = useState("");
+  const [damanaID, setDamanaID] = useState("");
+
+  const navigate = useNavigate();
 
   // ✅ تحقق الكوبون
   const couponMutation = useMutation({
-    mutationFn: async (code) => {
-      return await checkCoupon(code);
-    },
+    mutationFn: async (code) => await checkCoupon(code),
     onSuccess: (data) => {
-      setCouponServer(data.data);
+      setCouponServer(data);
       setCouponErrorMsg("");
     },
     onError: (error) => {
@@ -34,19 +57,9 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
     },
   });
 
-  const formatNumber = (num) => {
-    if (num === null || num === undefined || num === "") return "-";
-    return new Intl.NumberFormat("en-US", {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 2,
-    }).format(num);
-  };
-
   // ✅ API حساب العمولة
   const commissionMutation = useMutation({
-    mutationFn: async (payload) => {
-      return await getCommission(payload);
-    },
+    mutationFn: async (payload) => await getCommission(payload),
     onSuccess: (data) => {
       const newDetails = [
         {
@@ -100,34 +113,56 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
 
       setDetails(newDetails);
     },
-
     onError: (error) => {
       console.error(error);
     },
   });
 
-  const commission_on_options = [
-    { value: "buyer", label: "على المشتري" },
-    { value: "seller", label: "البائع" },
-    { value: "equally", label: "مناصفة 50% على المشتري و 50% على البائع" },
-  ];
+  // ✅ إرسال طلب إنشاء الضمانة
+  const createVehicleTransferMutation = useMutation({
+    mutationFn: async (payload) => await createVehicleTransfer(payload),
+    onSuccess: (data) => {
+      console.log("تم إنشاء الضمانة بنجاح ✅", data);
+      setOpenModal(true);
+      setModalMsg(
+        <p>
+          تم إنشاء الضمانة بنجاح رقم الضمانة <span>{data?.serial_number}</span>
+        </p>
+      );
+      setDamanaID(data?.id);
+    },
+    onError: (error) => {
+      setErrorMsg(
+        error?.response?.data?.error_msg || "حدث خطأ أثناء إنشاء الضمانة"
+      );
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
       vehicle_price: "",
       commission_on: "",
       code: "",
-      payout_method: "",
+      transfer_commission: "", // ✅ الحقل الجديد
     },
     validationSchema: Yup.object({
       vehicle_price: Yup.string().required("قيمة المركبة مطلوبة"),
       commission_on: Yup.string().required("اختيار عمولة ضمانة مطلوب"),
+      transfer_commission: Yup.string().required("اختيار نوع التحويل مطلوب"),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
-      const payload = { ...parentData, ...values };
-      // هنا تستبدل بـ API الحقيقية createDamanaStep2
-      console.log("Submit Payload:", payload);
+
+      const payload = {
+        ...finalData,
+        vehicle_price: values.vehicle_price,
+        commission_on: values.commission_on,
+        code: values.code || undefined,
+        transfer_type: values.transfer_commission,
+      };
+
+      console.log("📦 Payload to API:", payload);
+      createVehicleTransferMutation.mutate(payload);
     },
   });
 
@@ -136,30 +171,27 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
 
   // 🎯 متابعة تغير الحقول وطلب العمولة
   useEffect(() => {
-    const { vehicle_price, commission_on, code, payout_method } = formik.values;
+    const { vehicle_price, commission_on, code, transfer_commission } =
+      formik.values;
 
-    // 🛑 لو أول 2 مش مليانين أو مفيش payout_method يوقف
-    if (!vehicle_price || !commission_on || !payout_method) return;
+    if (!vehicle_price || !commission_on || !transfer_commission) return;
 
-    // تحضير البيانات للإرسال
     const payload = {
       vehicle_price,
       commission_on,
-      transfer_commission: payout_method === "fast" ? "RTGS" : "ACH",
+      transfer_commission,
     };
 
-    // لو فيه كود خصم صحيح أضفه
     if (couponServer?.discount) {
       payload.code = code;
     }
 
-    // إرسال الطلب
     commissionMutation.mutate(payload);
   }, [
     formik.values.vehicle_price,
     formik.values.commission_on,
     formik.values.code,
-    formik.values.payout_method,
+    formik.values.transfer_commission,
     couponServer,
   ]);
 
@@ -172,8 +204,8 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="قيمة المركبة"
-          id={"vehicle_price"}
-          placeholder={"ادخل قيمة المركبة"}
+          id="vehicle_price"
+          placeholder="ادخل قيمة المركبة"
           type="number"
           name="vehicle_price"
           icon={<FaMoneyBillWave />}
@@ -245,9 +277,9 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
         <label className="flex items-center gap-2">
           <input
             type="radio"
-            name="payout_method"
-            value="fast"
-            checked={formik.values.payout_method === "fast"}
+            name="transfer_commission"
+            value="RTGS"
+            checked={formik.values.transfer_commission === "RTGS"}
             onChange={formik.handleChange}
             className="w-5 h-5 accent-primary"
           />
@@ -256,9 +288,9 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
         <label className="flex items-center gap-2">
           <input
             type="radio"
-            name="payout_method"
-            value="normal"
-            checked={formik.values.payout_method === "normal"}
+            name="transfer_commission"
+            value="ACH"
+            checked={formik.values.transfer_commission === "ACH"}
             onChange={formik.handleChange}
             className="w-5 h-5 accent-primary"
           />
@@ -269,7 +301,23 @@ const Step2 = ({ goNext, setParentData, parentData }) => {
       {details && <DetailsCard data={details} />}
 
       <FormError errorMsg={errorMsg} />
-      <FormBtn title="ارسال ضمانه" loading={false} />
+      <FormBtn
+        title="ارسال ضمانه"
+        loading={createVehicleTransferMutation.isPending}
+      />
+
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        msg={modalMsg}
+        icon="protect"
+        primaryBtn={{
+          text: "اذهب الى صفحة الضمانه",
+          action: () => {
+            navigate(`/damana/${damanaID}`);
+          },
+        }}
+      />
     </form>
   );
 };

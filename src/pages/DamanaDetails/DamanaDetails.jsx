@@ -1,8 +1,11 @@
 import DetailsCard from "../../components/common/DetailsCard";
 import ActionsSection from "./ActionsSection";
 import DamanaDetailsHead from "../../components/common/DamanaDetailsHead";
+import { useParams } from "react-router-dom";
 
 const DamanaDetails = () => {
+  const { id } = useParams();
+
   const data = [
     { label: "رقم التسجيل", value: "45665790" },
     { label: "رقم اللوحة والرمز", value: "10558777" },
@@ -27,6 +30,9 @@ const DamanaDetails = () => {
 
   return (
     <article className="pageContainer">
+      {id && (
+        <p className="text-primary text-lg font-bold">رقم الضمانة: {id}</p>
+      )}
       {pageTitle("بانتظار موافقة المشتري", true, "secondary")}
       <section className="baseWhiteContainer space-y-4">
         <DamanaDetailsHead hours={2} minutes={30} />

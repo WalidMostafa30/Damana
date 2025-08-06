@@ -11,13 +11,14 @@ const steps = ["المعلومات الأساسية", "بيانات الأطرا
 
 export default function AddDamana() {
   const [step, setStep] = useState(0);
-  const [formData, setFormData] = useState({});
+  const [vehicleData, setVehicleData] = useState({});
   const [finalData, setFinalData] = useState({});
   const { profile } = useSelector((state) => state.profile);
 
   useEffect(() => {
-    console.log("📌 البيانات المشتركة بين الخطوات:", formData);
-  }, [formData]);
+    console.log("📌 البيانات المشتركة بين الخطوات:", vehicleData);
+    console.log("البيانات النهائية", finalData);
+  }, [vehicleData, finalData]);
 
   return (
     <section className="pageContainer space-y-4">
@@ -35,40 +36,31 @@ export default function AddDamana() {
           {step === 0 && (
             <Step0
               goNext={() => setStep((prev) => prev + 1)}
-              setParentData={setFormData}
               profile={profile}
+              setVehicleData={setVehicleData}
               setFinalData={setFinalData}
             />
           )}
           {step === 1 && (
             <Step1
               goNext={() => setStep((prev) => prev + 1)}
-              setParentData={setFormData}
-              parentData={formData}
+              vehicleData={vehicleData}
               setFinalData={setFinalData}
             />
           )}
-          {step === 2 && (
-            <Step2
-              goNext={() => setStep((prev) => prev + 1)}
-              parentData={formData}
-              setParentData={setFormData}
-              setFinalData={setFinalData}
-              finalData={finalData}
-            />
+          {step === 2 && <Step2 finalData={finalData} />}
+
+          {step > 0 && (
+            <button
+              type="button"
+              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
+              onClick={() => setStep(step - 1)}
+            >
+              <ImArrowRight />
+              الرجوع للخلف
+            </button>
           )}
         </div>
-
-        {step > 0 && (
-          <button
-            type="button"
-            className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-            onClick={() => setStep(step - 1)}
-          >
-            <ImArrowRight />
-            الرجوع للخلف
-          </button>
-        )}
       </section>
     </section>
   );

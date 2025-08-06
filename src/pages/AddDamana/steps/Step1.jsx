@@ -6,22 +6,39 @@ import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 
-const Step1 = ({ goNext, setParentData, parentData, setFinalData }) => {
+const Step1 = ({ goNext, vehicleData, setFinalData }) => {
   const [errorMsg, setErrorMsg] = useState("");
+
+  // ✅ بيانات تفاصيل المركبة
+  const data = [
+    { label: "رقم التسجيل", value: vehicleData.registration_number },
+    {
+      label: "رقم اللوحة والرمز",
+      value: `${vehicleData.plate_number} - ${vehicleData.plate_code}`,
+    },
+    { label: "نوع المركبة", value: vehicleData.vehicle_type },
+    { label: "الصنف", value: vehicleData.vehicle_class },
+    { label: "لون المركبة", value: vehicleData.color },
+    { label: "رقم الشاصي", value: vehicleData.chassis_number },
+    { label: "سنة الصنع", value: vehicleData.manufacture_year },
+    { label: "تاريخ انتهاء الرخصة", value: vehicleData.license_expiry_date },
+    { label: "مركز الترخيص", value: vehicleData.licensing_center },
+    { label: "رقم المحرك", value: vehicleData.engine_number },
+    { label: "سعة المحرك", value: vehicleData.engine_capacity },
+    { label: "الحمولة", value: vehicleData.load_capacity },
+    { label: "الوزن القائم", value: vehicleData.net_weight },
+    { label: "الوزن الصافي", value: vehicleData.cargo_capacity },
+    { label: "قيمة المركبة التقديرية", value: vehicleData.estimated_value },
+    { label: "صفة التسجيل", value: vehicleData.registration_type },
+    { label: "تصنيف المركبة", value: vehicleData.vehicle_classification },
+  ];
 
   // ✅ Mutation
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      // return await createDamanaStep1(payload);
-      return { data: { request_step1_id: 456 } }; // ⬅ مثال مؤقت
+      // return await createVehicleTransfer(payload);
     },
     onSuccess: (data) => {
-      setParentData((prev) => ({
-        ...prev,
-        ...formik.values,
-        request_step1_id: data.data.request_step1_id,
-      }));
-
       // نحفظ المطلوب من Step1 في finalData
       setFinalData((prev) => ({
         ...prev,
@@ -36,30 +53,6 @@ const Step1 = ({ goNext, setParentData, parentData, setFinalData }) => {
       setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
     },
   });
-
-  // ✅ بيانات تفاصيل المركبة
-  const data = [
-    { label: "رقم التسجيل", value: parentData.registration_number },
-    {
-      label: "رقم اللوحة والرمز",
-      value: `${parentData.plate_number} - ${parentData.plate_code}`,
-    },
-    { label: "نوع المركبة", value: parentData.vehicle_type },
-    { label: "الصنف", value: parentData.vehicle_class },
-    { label: "لون المركبة", value: parentData.color },
-    { label: "رقم الشاصي", value: parentData.chassis_number },
-    { label: "سنة الصنع", value: parentData.manufacture_year },
-    { label: "تاريخ انتهاء الرخصة", value: parentData.license_expiry_date },
-    { label: "مركز الترخيص", value: parentData.licensing_center },
-    { label: "رقم المحرك", value: parentData.engine_number },
-    { label: "سعة المحرك", value: parentData.engine_capacity },
-    { label: "الحمولة", value: parentData.load_capacity },
-    { label: "الوزن القائم", value: parentData.net_weight },
-    { label: "الوزن الصافي", value: parentData.cargo_capacity },
-    { label: "قيمة المركبة التقديرية", value: parentData.estimated_value },
-    { label: "صفة التسجيل", value: parentData.registration_type },
-    { label: "تصنيف المركبة", value: parentData.vehicle_classification },
-  ];
 
   // ✅ Formik Setup
   const formik = useFormik({
@@ -76,7 +69,7 @@ const Step1 = ({ goNext, setParentData, parentData, setFinalData }) => {
     onSubmit: (values) => {
       setErrorMsg("");
       const payload = {
-        ...parentData, // ⬅ علشان نكمل البيانات السابقة
+        ...vehicleData,
         ...values,
       };
       mutation.mutate(payload);
