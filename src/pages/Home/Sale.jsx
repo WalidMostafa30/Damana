@@ -62,6 +62,7 @@ const Sale = () => {
                 plate={damana.plate_number_code}
                 seller={damana.seller?.name}
                 id={damana.id}
+                status_translate={damana.status_translate}
                 price={`${damana.vehicle_price} دينار أردني`}
                 date={new Date(damana.created_at).toLocaleDateString("ar-EG")}
                 statusText={damana.status_translate}

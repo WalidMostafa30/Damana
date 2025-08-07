@@ -11,7 +11,7 @@ const DamanaCard = ({
   seller,
   price,
   date,
-  statusText = "بانتظار موافقة المشتري",
+  status_translate = "",
   selectable = false,
   selected = false,
   onSelect = () => {},
@@ -25,7 +25,7 @@ const DamanaCard = ({
       style={{ cursor: selectable ? "pointer" : "default" }}
     >
       <h3 className="lg:text-lg font-bold bg-secondary text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit">
-        {statusText}
+        {status_translate}
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">

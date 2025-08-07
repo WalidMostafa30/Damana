@@ -31,5 +31,5 @@ export const fetchCancellableDamanat = async (page = 1) => {
 
 export const fetchDamanaDetails = async (id) => {
   const { data } = await api.get(`/vehicle-transfers/show?id=${id}`);
-  return data;
+  return data?.data;
 };

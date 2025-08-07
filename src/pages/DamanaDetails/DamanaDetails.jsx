@@ -27,7 +27,7 @@ const DamanaDetails = () => {
     );
   }
 
-  const damana = data?.data; // من الـ API
+  const damana = data; 
 
   const pageTitle = (title, large = false, color = "primary") => (
     <h3
@@ -143,7 +143,7 @@ const DamanaDetails = () => {
         </div>
 
         {/* أزرار التحكم */}
-        <ActionsSection />
+        <ActionsSection damana={damana} />
       </section>
     </article>
   );
