@@ -33,3 +33,13 @@ export const fetchDamanaDetails = async (id) => {
   const { data } = await api.get(`/vehicle-transfers/show?id=${id}`);
   return data?.data;
 };
+
+export const fetchDamanat = async (type, status) => {
+  const { data } = await api.get("/vehicle-transfers/list", {
+    params: {
+      type, // sell or buy
+      status, // new, accepted, etc (أو null)
+    },
+  });
+  return data;
+};

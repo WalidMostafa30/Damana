@@ -1,16 +1,18 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
+import { fetchDamanat } from "../../services/damanaServices";
 
 const RemoveDamana = () => {
   const [step, setStep] = useState(0);
-  const [selectedDamanat, setSelectedDamanat] = useState([]); // مصفوفة للاختيارات
+  const [selectedDamanat, setSelectedDamanat] = useState([]);
   const [selectError, setSelectError] = useState("");
-
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
+  const [allDamanat, setAllDamanat] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const steps = [
     {
@@ -30,22 +32,32 @@ const RemoveDamana = () => {
     },
   ];
 
-  const allDamanat = Array.from({ length: 3 }, (_, i) => ({
-    id: i + 1,
-    hours: 3,
-    number: `13212312213-${i + 1}`,
-    plate: "12-1212",
-    seller: "رائد الدوو",
-    buyer: "محمد علي",
-    date: "1/2/2023",
-  }));
+  // جلب البيانات من API باستخدام fetchDamanat
+  useEffect(() => {
+    const loadDamanat = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchDamanat(null, "cancellable"); // بدون type
+        if (Array.isArray(data)) {
+          setAllDamanat(data);
+        } else {
+          setAllDamanat([]);
+        }
+      } catch (error) {
+        console.error("Error fetching damanat:", error);
+        setAllDamanat([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadDamanat();
+  }, []);
 
   const toggleSelect = (id) => {
-    if (selectedDamanat.includes(id)) {
-      setSelectedDamanat(selectedDamanat.filter((item) => item !== id));
-    } else {
-      setSelectedDamanat([...selectedDamanat, id]);
-    }
+    setSelectedDamanat((prev) =>
+      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+    );
   };
 
   const handleNextFromSelect = () => {
@@ -84,30 +96,33 @@ const RemoveDamana = () => {
       <h3 className="text-lg lg:text-2xl text-primary font-bold">
         {steps[step].title}
       </h3>
-
       <p className="text-neutral-500 lg:text-lg">{steps[step].description}</p>
 
       <StepProgress steps={steps} currentStep={step} />
 
-      {/* الخطوة 1: اختيار الضمانة */}
-      {step === 0 && (
+      {loading && <p>جار التحميل...</p>}
+
+      {!loading && step === 0 && (
         <div className="space-y-4">
-          {allDamanat.map((d) => (
-            <DamanaCard
-              key={d.id}
-              {...d}
-              selectable
-              selected={selectedDamanat.includes(d.id)}
-              onSelect={() => toggleSelect(d.id)}
-            />
-          ))}
+          {allDamanat.length > 0 ? (
+            allDamanat.map((d) => (
+              <DamanaCard
+                key={d.id}
+                {...d}
+                selectable
+                selected={selectedDamanat.includes(d.id)}
+                onSelect={() => toggleSelect(d.id)}
+              />
+            ))
+          ) : (
+            <p>لا توجد ضمانات متاحة للإلغاء</p>
+          )}
           {selectError && (
             <p className="text-error-100 text-lg">{selectError}</p>
           )}
         </div>
       )}
 
-      {/* الخطوة 2: كتابة السبب */}
       {step === 1 && (
         <div>
           <MainInput
@@ -124,7 +139,6 @@ const RemoveDamana = () => {
         </div>
       )}
 
-      {/* الخطوة 3: رسالة نجاح */}
       {step === 2 && (
         <div className="text-center space-y-4">
           <h4 className="text-xl font-semibold text-primary">
@@ -137,8 +151,7 @@ const RemoveDamana = () => {
         </div>
       )}
 
-      {/* الأزرار */}
-      {step === 0 && (
+      {step === 0 && !loading && allDamanat.length > 0 && (
         <button onClick={handleNextFromSelect} className="mainBtn">
           متابعة
         </button>

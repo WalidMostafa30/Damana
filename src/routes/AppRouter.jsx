@@ -9,8 +9,6 @@ import LoadingPage from "../components/layout/Loading/LoadingPage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
-const Purchase = React.lazy(() => import("../pages/Home/Purchase"));
-const Sale = React.lazy(() => import("../pages/Home/Sale"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
 const DamanaDetails = React.lazy(() =>
   import("../pages/DamanaDetails/DamanaDetails")
@@ -56,16 +54,8 @@ const router = createBrowserRouter([
         element: <Navigate to="damanaty/sale" replace />,
       },
       {
-        path: "/damanaty",
+        path: "/damanaty/*",
         element: <Home />,
-        children: [
-          {
-            index: true,
-            element: <Navigate to="sale" replace />,
-          },
-          { path: "sale", element: <Sale /> },
-          { path: "purchase", element: <Purchase /> },
-        ],
       },
       { path: "add-damana", element: <AddDamana /> },
       { path: "damana/:id", element: <DamanaDetails /> },
@@ -86,7 +76,6 @@ const router = createBrowserRouter([
       },
     ],
   },
-
   { path: "login", element: <LoginPage /> },
   { path: "forgot-password", element: <ForgotPassword /> },
   { path: "register-person", element: <RegisterPerson /> },

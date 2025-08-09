@@ -1,9 +1,13 @@
 import { IoIosArrowDown } from "react-icons/io";
-import { Link, Outlet, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
 import HomeSlider from "./HomeSlider/HomeSlider";
+import Sale from "./Sale";
+import Purchase from "./Purchase";
+import { fetchDamanat } from "../../services/damanaServices";
 
 const faqs = [
   "كيف تعمل ضمانة ؟",
@@ -13,13 +17,40 @@ const faqs = [
   "ما هي شروط قبول الضمانة للمشتري ؟",
 ];
 
+const damana_status_options = [
+  { value: null, label: "حالة الضمانة" },
+  { value: "new", label: "جديد / بانتظار موافقه المشتري" },
+  { value: "accepted", label: "مقبول بانتظار الدفع" },
+  { value: "paid", label: "مدفوع بانتظار الصرف" },
+  { value: "finished", label: "تم الصرف / منتهي " },
+  { value: "rejected", label: "تم الرفض من المشتري" },
+  { value: "cancelled", label: "تم الالغاء" },
+];
+
 const Home = () => {
   const [openIndex, setOpenIndex] = useState(null);
+  const [selectedType, setSelectedType] = useState("sell"); // ⬅ type
+  const [selectedStatus, setSelectedStatus] = useState(null); // ⬅ status
   const { pathname } = useLocation();
+  const navigate = useNavigate();
+
+  // جلب البيانات
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["damanat", selectedType, selectedStatus],
+    queryFn: () => fetchDamanat(selectedType, selectedStatus),
+    keepPreviousData: true,
+  });
 
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  useEffect(() => {
+    // لو دخل /damanaty من غير تحديد، يروح على /sale
+    if (pathname === "/damanaty") {
+      navigate("/damanaty/sale", { replace: true });
+    }
+  }, [pathname, navigate]);
 
   return (
     <section className="pageContainer grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -29,30 +60,41 @@ const Home = () => {
           subtitle="هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها."
         />
 
-        <section className="baseWhiteContainer  space-y-4">
+        <section className="baseWhiteContainer space-y-4">
           <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 lg:gap-4">
-            <Link
-              to={"/damanaty/sale"}
+            <button
+              onClick={() => {
+                setSelectedType("sell");
+                navigate("/damanaty/sale");
+              }}
               className={`homeLink ${
-                pathname.includes("/sale") ? "active-sale" : ""
+                selectedType === "sell" ? "active-sale" : ""
               }`}
             >
               ضمانات البيع
-            </Link>
-            <Link
-              to={"/damanaty/purchase"}
+            </button>
+            <button
+              onClick={() => {
+                setSelectedType("buy");
+                navigate("/damanaty/purchase");
+              }}
               className={`homeLink ${
-                pathname.includes("/purchase") ? "active-purchase" : ""
+                selectedType === "buy" ? "active-purchase" : ""
               }`}
             >
               ضمانات الشراء
-            </Link>
+            </button>
 
-            <select id="" className="bg-transparent outline-none homeLink">
-              <option value="">حاله الضمانة</option>
-              <option value="جديدة">جديدة</option>
-              <option value="جارية">جارية</option>
-              <option value="منتهية">منتهية</option>
+            <select
+              className="bg-transparent outline-none homeLink"
+              value={selectedStatus || ""}
+              onChange={(e) => setSelectedStatus(e.target.value || null)}
+            >
+              {damana_status_options.map((option) => (
+                <option key={option.value ?? "all"} value={option.value ?? ""}>
+                  {option.label}
+                </option>
+              ))}
             </select>
 
             <input
@@ -61,12 +103,17 @@ const Home = () => {
             />
           </div>
 
-          <Outlet />
+          {pathname.includes("/sale") && (
+            <Sale data={data?.data} loading={isLoading} error={isError} />
+          )}
+          {pathname.includes("/purchase") && (
+            <Purchase data={data?.data} loading={isLoading} error={isError} />
+          )}
         </section>
       </div>
 
       <aside className="space-y-8">
-        <div className="whiteContainer  text-center !p-8">
+        <div className="whiteContainer text-center !p-8">
           <h3 className="text-2xl font-bold mb-4">مرحبًا بك في ضمانة!</h3>
           <p className="text-lg text-neutral-500 mb-4">
             يمكنك بدء ضمانة جديدة بالضغط على الزر أدناه
@@ -79,7 +126,7 @@ const Home = () => {
 
         <HomeSlider />
 
-        <div className="whiteContainer  !p-0">
+        <div className="whiteContainer !p-0">
           <h3 className="text-2xl font-bold text-center p-4 text-primary border-b border-neutral-200">
             الأسئلة الشائعة
           </h3>
