@@ -77,6 +77,11 @@ export const getCountries = async () => {
   return data;
 };
 
+export const getBanks = async () => {
+  const { data } = await api.get("/static-data/banks");
+  return data;
+};
+
 // +++++++++++++++++++ register person +++++++++++++++++++++
 export const registerPerson = async (payload) => {
   const { data } = await api.post("/auth/register", payload);
@@ -101,12 +106,22 @@ export const checkOtpRegister = async (otp_code) => {
   return data;
 };
 
-export const sendStep0Data = async (payload) => {
+export const sendPersonalData = async (payload) => {
   const { data } = await api.post("/auth/psd", payload);
+
+  if (data?.data?.token) {
+    Cookies.set("token", data?.data?.token);
+  }
+
   return data;
 };
 
-export const sendStep1Data = async (payload) => {
+export const sendAddressOrBankData = async (payload) => {
   const { data } = await api.post("/auth/complete-register", payload);
+
+  if (data?.data?.token) {
+    Cookies.set("token", data?.data?.token);
+  }
+
   return data;
 };

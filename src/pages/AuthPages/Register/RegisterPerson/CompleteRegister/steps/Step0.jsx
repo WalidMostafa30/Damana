@@ -1,30 +1,81 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 import MainInput from "../../../../../../components/form/MainInput/MainInput";
 import { CiBank, CiCalendar } from "react-icons/ci";
 import { MdOutlinePublic } from "react-icons/md";
-import { getCountries } from "../../../../../../services/authService";
+import {
+  getCountries,
+  sendPersonalData,
+} from "../../../../../../services/authService";
+import FormBtn from "../../../../../../components/form/FormBtn";
+import { useState } from "react";
+import FormError from "../../../../../../components/form/FormError";
 
-const Step0 = ({ formik, getError }) => {
-  // 🟢 جلب الدول
+export default function Step0({ formData, setFormData, setStep }) {
+  const [errorMsg, setErrorMsg] = useState(null);
+
+  // جلب الدول
   const { data: countriesData, isLoading: loadingCountries } = useQuery({
     queryKey: ["countries"],
     queryFn: getCountries,
   });
   const countries = countriesData?.data || [];
 
-  // 🟢 تحديث الدولة المختارة
-  const handleCountryChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedCountry = countries.find(
-      (c) => String(c.id) === String(selectedId)
-    );
+  // mutation للإرسال
+  const mutation = useMutation({
+    mutationFn: sendPersonalData,
+    onSuccess: (data, values) => {
+      setFormData((prev) => ({ ...prev, ...values }));
+      setStep((prev) => prev + 1);
+    },
+    onError: (err) => {
+      setErrorMsg(err?.response?.data?.error_msg || "حدث خطاء ما");
+    },
+  });
 
-    formik.setFieldValue("address_country_id", selectedCountry?.id || "");
-  };
+  // الفورم + فاليديشن
+  const formik = useFormik({
+    initialValues: {
+      dob: formData.dob || "",
+      national_number: formData.national_number || "",
+      nationality_type: formData.nationality_type || "",
+      country_id: formData.country_id || "",
+      document_id: formData.document_id || "",
+    },
+    validationSchema: Yup.object({
+      dob: Yup.string().required("تاريخ الميلاد مطلوب"),
+      national_number: Yup.string().required("الرقم الوطني مطلوب"),
+      nationality_type: Yup.string().required("نوع الجنسية مطلوب"),
+      country_id: Yup.string().when("nationality_type", {
+        is: (val) => val === "non",
+        then: (schema) => schema.required("الدولة مطلوبة"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+      document_id: Yup.string().when("nationality_type", {
+        is: (val) => val === "jordanian" || val === "sons",
+        then: (schema) => schema.required("رقم الهوية مطلوب"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+    }),
+    onSubmit: (values) => {
+      const payload = {
+        ...values,
+        country_id:
+          values.nationality_type === "jordanian" ||
+          values.nationality_type === "sons"
+            ? 1
+            : values.country_id,
+      };
+      mutation.mutate(payload);
+    },
+  });
+
+  const getError = (name) =>
+    formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+
   return (
-    <>
-      <h3 className="text-xl font-bold mb-2 lg:mb-4">بياناتك الشخصية</h3>
-
+    <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           id="dob"
@@ -49,47 +100,56 @@ const Step0 = ({ formik, getError }) => {
 
         <MainInput
           id="nationality_type"
+          type="select"
           label="نوع الجنسية"
           name="nationality_type"
-          placeholder="مثال: أردني"
           value={formik.values.nationality_type}
           onChange={formik.handleChange}
           error={getError("nationality_type")}
           icon={<MdOutlinePublic />}
-        />
-
-        <MainInput
-          id="address_country_name"
-          type="select"
-          placeholder="اسم الدولة"
-          label="اسم الدولة"
-          error={getError("address_country_id")}
-          value={formik.values.address_country_id}
-          onChange={handleCountryChange}
-          onBlur={formik.handleBlur}
-          disabled={loadingCountries}
-          icon={<CiBank />}
           options={[
-            { value: "", label: "اختر الدولة" },
-            ...countries.map((country) => ({
-              value: country.id,
-              label: country.name,
-            })),
+            { value: "", label: "اختر نوع الجنسية" },
+            { value: "jordanian", label: "أردني" },
+            { value: "sons", label: "أبناء" },
+            { value: "non", label: "غير أردني" },
           ]}
         />
 
-        <MainInput
-          id="document_id"
-          label="رقم الهوية"
-          name="document_id"
-          placeholder="123456"
-          value={formik.values.document_id}
-          onChange={formik.handleChange}
-          error={getError("document_id")}
-        />
-      </div>
-    </>
-  );
-};
+        {formik.values.nationality_type === "non" && (
+          <MainInput
+            id="country_id"
+            type="select"
+            placeholder="اسم الدولة"
+            label="اسم الدولة"
+            error={getError("country_id")}
+            value={formik.values.country_id}
+            onChange={formik.handleChange}
+            disabled={loadingCountries}
+            icon={<CiBank />}
+            options={[
+              { value: "", label: "اختر الدولة" },
+              ...countries.map((c) => ({ value: c.id, label: c.name })),
+            ]}
+          />
+        )}
 
-export default Step0;
+        {(formik.values.nationality_type === "jordanian" ||
+          formik.values.nationality_type === "sons") && (
+          <MainInput
+            id="document_id"
+            label="رقم الهوية"
+            name="document_id"
+            placeholder="123456"
+            value={formik.values.document_id}
+            onChange={formik.handleChange}
+            error={getError("document_id")}
+          />
+        )}
+      </div>
+
+      <FormError errorMsg={errorMsg} />
+
+      <FormBtn title="التالي" loading={mutation.isPending} />
+    </form>
+  );
+}

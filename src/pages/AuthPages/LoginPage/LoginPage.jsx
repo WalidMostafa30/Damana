@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import { GoLock } from "react-icons/go";
-import AuthLayout from "../../../components/layout/AuthLayout";
+import AuthLayout from "../../../components/common/AuthLayout";
 import { useState } from "react";
 import FormBtn from "../../../components/form/FormBtn";
 import FormError from "../../../components/form/FormError";
