@@ -13,10 +13,10 @@ function App() {
 
   return (
     <main>
-      <TopHeader />
-      <Header />
+      {/* <TopHeader /> */}
+      {/* <Header /> */}
       <Outlet />
-      <Footer />
+      {/* <Footer /> */}
     </main>
   );
 }

@@ -25,12 +25,21 @@ const LoginPage = React.lazy(() =>
 const ForgotPassword = React.lazy(() =>
   import("../pages/AuthPages/ForgotPassword/ForgotPassword")
 );
-const RegisterPerson = React.lazy(() =>
-  import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
-);
 const RegisterCompany = React.lazy(() =>
   import("../pages/AuthPages/Register/RegisterCompany/RegisterCompany")
 );
+const RegisterPerson = React.lazy(() =>
+  import("../pages/AuthPages/Register/RegisterPerson/RegisterPerson")
+);
+const RegisterOTP = React.lazy(() =>
+  import("../pages/AuthPages/Register/RegisterPerson/OTP")
+);
+const CompleteRegister = React.lazy(() =>
+  import(
+    "../pages/AuthPages/Register/RegisterPerson/CompleteRegister/CompleteRegister"
+  )
+);
+
 const Profile = React.lazy(() => import("../pages/Profile/Profile"));
 const MyProfile = React.lazy(() => import("../pages/Profile/MyProfile"));
 const BankInfo = React.lazy(() => import("../pages/Profile/BankInfo"));
@@ -78,8 +87,10 @@ const router = createBrowserRouter([
   },
   { path: "login", element: <LoginPage /> },
   { path: "forgot-password", element: <ForgotPassword /> },
-  { path: "register-person", element: <RegisterPerson /> },
   { path: "register-company", element: <RegisterCompany /> },
+  { path: "register-person", element: <RegisterPerson /> },
+  { path: "register-otp", element: <RegisterOTP /> },
+  { path: "complete-register", element: <CompleteRegister /> },
 ]);
 
 const AppRouter = () => {

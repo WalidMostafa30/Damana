@@ -1,182 +1,162 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useMutation } from "@tanstack/react-query";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
-import Step0 from "./steps/Step0";
-import Step1 from "./steps/Step1";
-import Step2 from "./steps/Step2";
-import StepProgress from "../../../../components/common/StepProgress/StepProgress";
-import { ImArrowRight } from "react-icons/im";
-import AuthLayout from "../../../../components/layout/AuthLayout";
+import AuthLayout from "../../../../components/common/AuthLayout";
+import MainInput from "../../../../components/form/MainInput/MainInput";
+import { CiUser } from "react-icons/ci";
+import { GoLock } from "react-icons/go";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
-import ActionModal from "../../../../components/modals/ActionModal";
-
-const steps = ["معلومات الحساب", "معلومات إضافية", "التحقق"];
-
-const stepSchemas = [
-  Yup.object({
-    account_type: Yup.string().required("نوع المستخدم مطلوب"),
-    full_name_ar: Yup.string()
-      .required("الاسم بالعربية مطلوب")
-      .min(3, "الاسم بالعربية يجب أن لا يقل عن 3 حروف"),
-    full_name_en: Yup.string()
-      .required("الاسم بالإنجليزية مطلوب")
-      .min(3, "الاسم بالإنجليزية يجب أن لا يقل عن 3 حروف"),
-    nationality: Yup.string().required("الجنسية مطلوبة"),
-    document_type: Yup.string().required("نوع الوثيقة مطلوب"),
-    document_id: Yup.string()
-      .required("رقم الوثيقة مطلوب")
-      .min(3, "رقم الوثيقة يجب أن لا يقل عن 3 أرقام"),
-    issuance_date: Yup.string().required("تاريخ الاصدار مطلوب"),
-    expiry_date: Yup.string().required("تاريخ الانتهاء مطلوب"),
-    country_of_issuance: Yup.string().required("بلد الاصدار مطلوب"),
-    birth_place: Yup.string().required("مكان الميلاد مطلوب"),
-    country_of_residency: Yup.string().required("بلد الإقامة مطلوب"),
-    city_of_birth: Yup.string().required("مدينة الميلاد مطلوبة"),
-    mother_name: Yup.string().required("اسم الأم مطلوب"),
-    gender: Yup.string().required("الجنس مطلوب"),
-  }),
-  Yup.object({
-    address_building_number: Yup.string().required("رقم البناية مطلوب"),
-    address_street_name: Yup.string().required("اسم الشارع مطلوب"),
-    address_city_town: Yup.string().required("المدينة مطلوبة"),
-    address_country: Yup.string().required("البلد مطلوب"),
-    full_mobile: Yup.string().required("رقم الهاتف مطلوب"),
-    country_code: Yup.string().required("مفتاح الدولة مطلوب"),
-    mobile: Yup.string().required("رقم الهاتف مطلوب"),
-    email: Yup.string()
-      .required("البريد الإلكتروني مطلوب")
-      .email("البريد الإلكتروني غير صالح"),
-  }),
-  Yup.object({
-    bank_name: Yup.string().required("اسم البنك مطلوب"),
-    branch: Yup.string().required("اسم الفرع مطلوب"),
-    swift_code: Yup.string()
-      .required("رمز السويفت مطلوب")
-      .min(3, "رمز السويفت مطلوب"),
-    account_number: Yup.string().required("رقم الحساب مطلوب"),
-    iban: Yup.string()
-      .required("رقم الايبان مطلوب")
-      .min(16, "رقم الايبان غير صالح"),
-  }),
-];
+import { registerPerson } from "../../../../services/authService";
 
 const RegisterPerson = () => {
-  const [step, setStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  const navigate = useNavigate();
+
+  const validationSchema = Yup.object({
+    name: Yup.string()
+      .required("الاسم مطلوب")
+      .min(3, "الاسم يجب أن لا يقل عن 3 حروف"),
+    mobile: Yup.string()
+      .required("رقم الهاتف مطلوب")
+      .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل"),
+    password: Yup.string()
+      .required("كلمة المرور مطلوبة")
+      .min(8, "كلمة المرور يجب ان تكون على الاقل 8 حروف"),
+    password_confirmation: Yup.string()
+      .required("تأكيد كلمة المرور مطلوب")
+      .oneOf([Yup.ref("password"), null], "كلمة المرور غير متطابقة"),
+  });
+
+  // Mutation للتسجيل
+  const registerMutation = useMutation({
+    mutationFn: registerPerson,
+    onSuccess: async (data, variables) => {
+      navigate("/register-otp", {
+        state: {
+          mobile: variables.mobile,
+          country_code: variables.country_code,
+        },
+      });
+    },
+    onError: (error) => {
+      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء التسجيل");
+    },
+  });
 
   const formik = useFormik({
     initialValues: {
-      account_type: "",
-      full_name_ar: "",
-      full_name_en: "",
-      nationality: "",
-      document_type: "",
-      document_id: "",
-      issuance_date: "",
-      expiry_date: "",
-      country_of_issuance: "",
-      birth_place: "",
-      country_of_residency: "",
-      city_of_birth: "",
-      mother_name: "",
-      gender: "",
-
-      address_building_number: "",
-      address_street_name: "",
-      address_city_town: "",
-      address_country: "",
-      full_mobile: "",
-      country_code: "",
+      name: "",
       mobile: "",
-      email: "",
-
-      bank_name: "",
-      branch: "",
-      swift_code: "",
-      account_number: "",
-      iban: "",
+      country_code: "",
+      password: "",
+      password_confirmation: "",
     },
-    validationSchema: stepSchemas[step],
-    validateOnBlur: true,
+    validationSchema,
     onSubmit: (values) => {
-      if (step < 2) {
-        setStep((prevStep) => prevStep + 1);
-        formik.setTouched({});
-      } else {
-        console.log("البيانات كاملة:", values);
-        setOpenModal(true);
-      }
+      setErrorMsg("");
+      const payload = {
+        name: values.name,
+        mobile: values.mobile,
+        country_code: values.country_code,
+        password: values.password,
+        password_confirmation: values.password_confirmation,
+      };
+      registerMutation.mutate(payload);
     },
   });
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  const navigate = useNavigate();
-
   return (
-    <>
-      <ActionModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        msg="تم تأكيد الهوية وبياناتك البنكيه تسطتيع انشاء ضمانتك"
-        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
+    <AuthLayout>
+      <AuthBreadcrumbs
+        title="أهلاً في ضمانة!"
+        items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
       />
 
-      <AuthLayout>
-        <AuthBreadcrumbs
-          title="أهلاً في ضمانة!"
-          items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
-        />
+      <div className="mb-8">
+        <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">
+          اكد هويتك الشخصية
+        </h3>
+        <p className="text-sm lg:text-base text-neutral-500">
+          حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد هويتك
+          وبيانات البنك الخاص بك
+        </p>
+      </div>
 
-        <StepProgress steps={steps} currentStep={step} />
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <MainInput
+            label="الاسم"
+            id="name"
+            name="name"
+            placeholder="اسم المستخدم"
+            value={formik.values.name}
+            onChange={formik.handleChange}
+            error={getError("name")}
+            icon={<CiUser />}
+          />
 
-        <div className="mb-8">
-          <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">
-            اكد هويتك الشخصية
-          </h3>
-          <p className="text-sm lg:text-base text-neutral-500">
-            حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد
-            هويتك وبيانات البنك الخاص بك
-          </p>
+          <MainInput
+            type="tel"
+            id="mobile"
+            name="mobile"
+            placeholder="96269077885+"
+            label="رقم الهاتف"
+            value={`${formik.values.country_code?.replace("+", "")}${
+              formik.values.mobile
+            }`}
+            onChange={(phone, country) => {
+              const countryCode = country?.dialCode
+                ? `+${country.dialCode}`
+                : "";
+              const mobileWithoutCode = country?.dialCode
+                ? phone.slice(country.dialCode.length)
+                : phone;
+              formik.setFieldValue("country_code", countryCode);
+              formik.setFieldValue("mobile", mobileWithoutCode);
+            }}
+            onBlur={formik.handleBlur}
+            error={getError("mobile")}
+          />
+
+          <MainInput
+            type="password"
+            id="password"
+            name="password"
+            placeholder="••••••••••"
+            label="كلمة المرور"
+            icon={<GoLock />}
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={getError("password")}
+          />
+
+          <MainInput
+            type="password"
+            id="password_confirmation"
+            name="password_confirmation"
+            placeholder="••••••••••"
+            label="تاكيد كلمة المرور"
+            icon={<GoLock />}
+            value={formik.values.password_confirmation}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={getError("password_confirmation")}
+          />
         </div>
 
-        <form onSubmit={formik.handleSubmit} className="space-y-4">
-          {step === 0 && <Step0 formik={formik} getError={getError} />}
-          {step === 1 && <Step1 formik={formik} getError={getError} />}
-          {step === 2 && <Step2 formik={formik} getError={getError} />}
+        <FormError errorMsg={errorMsg} />
 
-          <FormError errorMsg={errorMsg} />
-
-          <FormBtn title={step < 2 ? "التالي" : "إنهاء"} />
-
-          <p className="text-center">
-            هل تمتلك حساب؟{" "}
-            <Link
-              to="/login"
-              className="text-secondary hover:brightness-50 transition-colors"
-            >
-              تسجيل الدخول
-            </Link>
-          </p>
-
-          {step > 0 && (
-            <button
-              type="button"
-              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-              onClick={() => setStep(step - 1)}
-            >
-              <ImArrowRight />
-              الرجوع للخلف
-            </button>
-          )}
-        </form>
-      </AuthLayout>
-    </>
+        <FormBtn title="انشاء حساب" loading={registerMutation.isPending} />
+      </form>
+    </AuthLayout>
   );
 };
 

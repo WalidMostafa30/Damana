@@ -76,3 +76,37 @@ export const getCountries = async () => {
   const { data } = await api.get("/static-data/countries");
   return data;
 };
+
+// +++++++++++++++++++ register person +++++++++++++++++++++
+export const registerPerson = async (payload) => {
+  const { data } = await api.post("/auth/register", payload);
+
+  if (data?.data?.token) {
+    Cookies.set("token", data?.data?.token);
+  }
+
+  return data;
+};
+
+export const sendOtp = async () => {
+  const { data } = await api.post("/auth/verified-mobile/sendOtp");
+  return data;
+};
+
+export const checkOtpRegister = async (otp_code) => {
+  const { data } = await api.post(
+    "/auth/verified-mobile/checkOtpWithVerified",
+    otp_code
+  );
+  return data;
+};
+
+export const sendStep0Data = async (payload) => {
+  const { data } = await api.post("/auth/psd", payload);
+  return data;
+};
+
+export const sendStep1Data = async (payload) => {
+  const { data } = await api.post("/auth/complete-register", payload);
+  return data;
+};
