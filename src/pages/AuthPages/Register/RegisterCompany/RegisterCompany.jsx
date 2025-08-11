@@ -11,8 +11,7 @@ import Step3Company from "./steps/Step3Company";
 import Step4Company from "./steps/Step4Company";
 import Step5Company from "./steps/Step5Company";
 import Step6Company from "./steps/Step6Company";
-import { ImArrowRight } from "react-icons/im";
-import AuthLayout from "../../../../components/layout/AuthLayout";
+import AuthLayout from "../../../../components/common/AuthLayout";
 import get from "lodash.get";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
@@ -20,6 +19,7 @@ import { useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useMutation } from "@tanstack/react-query";
 import { registerCompany } from "../../../../services/authService";
+import BackStepBtn from "../../../../components/form/MainInput/BackStepBtn";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -339,6 +339,8 @@ const RegisterCompany = () => {
     }
   };
 
+  const goBack = () => setStep((prev) => prev - 1);
+
   return (
     <>
       <ActionModal
@@ -375,16 +377,7 @@ const RegisterCompany = () => {
             loading={mutation.isPending}
           />
 
-          {step > 0 && (
-            <button
-              type="button"
-              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-              onClick={() => setStep(step - 1)}
-            >
-              <ImArrowRight />
-              الرجوع للخلف
-            </button>
-          )}
+          <BackStepBtn step={step} goBack={goBack} />
         </form>
       </AuthLayout>
     </>

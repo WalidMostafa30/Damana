@@ -7,6 +7,7 @@ import Modal from "./Modal";
 const ActionModal = ({
   openModal,
   setOpenModal,
+  closeBtn = false,
   msg,
   icon = "success",
   primaryBtn = { text: "", action: () => {} },
@@ -14,7 +15,11 @@ const ActionModal = ({
   lightBtn = { text: "", action: () => {} },
 }) => {
   return (
-    <Modal openModal={openModal} setOpenModal={setOpenModal}>
+    <Modal
+      openModal={openModal}
+      setOpenModal={setOpenModal}
+      closeBtn={closeBtn}
+    >
       {icon && (
         <img
           src={

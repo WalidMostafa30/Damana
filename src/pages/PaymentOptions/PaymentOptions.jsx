@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
 import { getPaymentMethods } from "../../services/authService";
+import LoadingSection from "../../components/layout/Loading/LoadingSection";
 
 const PaymentOptions = () => {
   const { data, isLoading, isError, error } = useQuery({
@@ -8,8 +9,10 @@ const PaymentOptions = () => {
     queryFn: getPaymentMethods,
   });
 
-  if (isLoading) return <p>جاري التحميل...</p>;
+  if (isLoading) return <LoadingSection />;
+
   if (isError) return <p>حدث خطأ: {error.message}</p>;
+
   if (!data?.length) return <p>لا توجد بيانات متاحة</p>;
 
   return (

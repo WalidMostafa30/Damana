@@ -202,6 +202,7 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
+        closeBtn
         msg={modalMsg}
         icon="protect"
         primaryBtn={{

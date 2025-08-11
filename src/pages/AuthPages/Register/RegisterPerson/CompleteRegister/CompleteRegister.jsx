@@ -7,11 +7,13 @@ import StepProgress from "../../../../../components/common/StepProgress/StepProg
 import { ImArrowRight } from "react-icons/im";
 import AuthLayout from "../../../../../components/common/AuthLayout";
 import AuthBreadcrumbs from "../../../../../components/common/AuthBreadcrumbs";
+import BackStepBtn from "../../../../../components/form/MainInput/BackStepBtn";
 
 const steps = ["بياناتك الشخصية", "البيانات البنكية", "العنوان السكني"];
 
 export default function CompleteRegister() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
+    const goBack = () => setStep((prev) => prev - 1);
 
   const [formData, setFormData] = useState({
     dob: "",
@@ -62,15 +64,7 @@ export default function CompleteRegister() {
         />
       )}
 
-      {step > 0 && (
-        <button
-          type="button"
-          onClick={() => setStep(step - 1)}
-          className="flex items-center gap-1 text-gray-500 mt-4"
-        >
-          <ImArrowRight /> الرجوع للخلف
-        </button>
-      )}
+      <BackStepBtn step={step} goBack={goBack} />
 
       <p className="text-center mt-4">
         هل تمتلك حساب؟{" "}

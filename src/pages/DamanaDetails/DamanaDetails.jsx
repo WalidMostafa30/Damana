@@ -4,6 +4,7 @@ import DamanaDetailsHead from "../../components/common/DamanaDetailsHead";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDamanaDetails } from "../../services/damanaServices";
+import LoadingSection from "../../components/layout/Loading/LoadingSection";
 
 const DamanaDetails = () => {
   const { id } = useParams();
@@ -16,7 +17,7 @@ const DamanaDetails = () => {
   });
 
   if (isLoading) {
-    return <p className="text-center mt-6">جاري التحميل...</p>;
+    return <LoadingSection />;
   }
 
   if (isError) {
@@ -27,7 +28,7 @@ const DamanaDetails = () => {
     );
   }
 
-  const damana = data; 
+  const damana = data;
 
   const pageTitle = (title, large = false, color = "primary") => (
     <h3
@@ -109,8 +110,7 @@ const DamanaDetails = () => {
       )}
 
       <section className="baseWhiteContainer space-y-4">
-        {/* رأس الصفحة */}
-        <DamanaDetailsHead hours={2} minutes={30} data={damana} />
+        <DamanaDetailsHead data={damana} />
 
         {/* بيانات البائع */}
         <div>

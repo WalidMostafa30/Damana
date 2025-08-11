@@ -40,14 +40,14 @@ const CompleteRegister = React.lazy(() =>
   )
 );
 
-const Profile = React.lazy(() => import("../pages/Profile/Profile"));
-const MyProfile = React.lazy(() => import("../pages/Profile/MyProfile"));
-const BankInfo = React.lazy(() => import("../pages/Profile/BankInfo"));
-const Address = React.lazy(() => import("../pages/Profile/Address"));
-const Support = React.lazy(() => import("../pages/Profile/Support"));
-const Password = React.lazy(() => import("../pages/Profile/Password"));
-const RemoveDamana = React.lazy(() => import("../pages/Profile/RemoveDamana"));
-const Terms = React.lazy(() => import("../pages/Profile/Terms"));
+const Account = React.lazy(() => import("../pages/Account/Account"));
+const Profile = React.lazy(() => import("../pages/Account/Profile"));
+const BankInfo = React.lazy(() => import("../pages/Account/BankInfo"));
+const Address = React.lazy(() => import("../pages/Account/Address"));
+const Support = React.lazy(() => import("../pages/Account/Support"));
+const Password = React.lazy(() => import("../pages/Account/Password"));
+const RemoveDamana = React.lazy(() => import("../pages/Account/RemoveDamana"));
+const Terms = React.lazy(() => import("../pages/Account/Terms"));
 
 const router = createBrowserRouter([
   {
@@ -71,10 +71,10 @@ const router = createBrowserRouter([
       { path: "payment-options", element: <PaymentOptions /> },
       { path: "notifications", element: <Notification /> },
       {
-        path: "profile",
-        element: <Profile />,
+        path: "account",
+        element: <Account />,
         children: [
-          { index: true, element: <MyProfile /> },
+          { index: true, element: <Profile /> },
           { path: "bank-info", element: <BankInfo /> },
           { path: "address", element: <Address /> },
           { path: "support", element: <Support /> },

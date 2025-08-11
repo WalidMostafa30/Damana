@@ -63,12 +63,6 @@ const ActionsSection = ({ damana }) => {
   const isBuyer = damana?.buyer?.id === profile.id;
   const isSeller = damana?.seller?.id === profile.id;
 
-  console.log("isBuyer", isBuyer);
-  console.log("isSeller", isSeller);
-  console.log("status", damana.status);
-  console.log("is_paid", damana.is_paid);
-  console.log("release_request", damana.release_request);
-
   return (
     <div className="mt-4 space-y-3">
       <Toaster position="top-left" />
@@ -79,13 +73,13 @@ const ActionsSection = ({ damana }) => {
             onClick={() => handleChangeStatus("accepted")}
             className="mainBtn flex-1 min-w-[150px]"
           >
-            ✅ تأكيد الضمانة
+            تأكيد الضمانة
           </button>
           <button
             onClick={() => handleChangeStatus("rejected")}
             className="mainBtn light flex-1 min-w-[150px]"
           >
-            ❌ رفض الضمانة
+            رفض الضمانة
           </button>
         </div>
       )}

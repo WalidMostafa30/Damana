@@ -5,7 +5,7 @@ import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import { useSelector } from "react-redux";
-import { ImArrowRight } from "react-icons/im";
+import BackStepBtn from "../../components/form/MainInput/BackStepBtn";
 
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
@@ -75,16 +75,7 @@ export default function AddDamana() {
             <Step2 formData={formData} setFormData={setFormData} />
           )}
 
-          {step > 0 && (
-            <button
-              type="button"
-              className="text-neutral-500 hover:text-secondary flex items-center gap-1 cursor-pointer"
-              onClick={goBack}
-            >
-              <ImArrowRight />
-              الرجوع للخلف
-            </button>
-          )}
+          <BackStepBtn step={step} goBack={goBack} />
         </div>
       </section>
     </section>

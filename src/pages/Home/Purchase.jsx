@@ -1,11 +1,14 @@
 import DamanaCard from "../../components/common/DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
+import LoadingSection from "../../components/layout/Loading/LoadingSection";
 
 const Purchase = ({ data, loading, error }) => {
-  if (loading) return <p className="text-center mt-4">جار التحميل...</p>;
+  if (loading) return <LoadingSection />;
+
   if (error)
     return <p className="text-center text-red-500">حدث خطأ في التحميل</p>;
+
   if (!data || data.length === 0)
     return (
       <div className="flex items-center justify-center flex-col gap-4 mt-8">

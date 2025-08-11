@@ -16,6 +16,7 @@ import FormBtn from "../../../components/form/FormBtn";
 import FormError from "../../../components/form/FormError";
 import ActionModal from "../../../components/modals/ActionModal";
 import { useNavigate } from "react-router-dom";
+import LoadingModal from "../../../components/modals/LoadingModal";
 
 const commission_on_options = [
   { value: "buyer", label: "على المشتري" },
@@ -207,7 +208,6 @@ const Step2 = ({ formData, setFormData }) => {
       <h3 className="text-xl lg:text-2xl font-bold text-primary">
         بيانات الضمانة
       </h3>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="قيمة المركبة"
@@ -238,7 +238,6 @@ const Step2 = ({ formData, setFormData }) => {
           error={getError("commission_on")}
         />
       </div>
-
       {/* كود الخصم */}
       <div>
         <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
@@ -277,7 +276,6 @@ const Step2 = ({ formData, setFormData }) => {
           )}
         </div>
       </div>
-
       {/* صرف ضمانة */}
       <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
       <div className="space-y-2">
@@ -304,15 +302,12 @@ const Step2 = ({ formData, setFormData }) => {
           بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
         </label>
       </div>
-
       {details && <DetailsCard data={details} />}
-
       <FormError errorMsg={errorMsg} />
       <FormBtn
         title="ارسال ضمانه"
         loading={createVehicleTransferMutation.isPending}
       />
-
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
@@ -339,6 +334,7 @@ const Step2 = ({ formData, setFormData }) => {
           },
         }}
       />
+      <LoadingModal openModal={commissionMutation.isPending} />
     </form>
   );
 };

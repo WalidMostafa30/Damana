@@ -7,7 +7,7 @@ import * as Yup from "yup";
 import { useSelector } from "react-redux";
 import Avatar from "../../components/common/Avatar";
 
-const MyProfile = () => {
+const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
 
   const { profile, loading } = useSelector((state) => state.profile);
@@ -113,4 +113,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Profile;

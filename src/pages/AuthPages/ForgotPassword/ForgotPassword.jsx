@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
-import AuthLayout from "../../../components/layout/AuthLayout";
+import AuthLayout from "../../../components/common/AuthLayout";
 import CheckMobile from "./steps/CheckMobile";
 import Otp from "./steps/Otp";
 import ResetPassword from "./steps/ResetPassword";

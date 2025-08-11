@@ -5,6 +5,7 @@ import * as Yup from "yup";
 import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
+import FormBtn from "../../../components/form/FormBtn";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -137,9 +138,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
 
       {errorMsg && <div className="text-error-200">{errorMsg}</div>}
 
-      <button type="submit" className="mainBtn" disabled={mutation.isPending}>
-        {mutation.isPending ? "جارٍ الإرسال..." : "التالي"}
-      </button>
+      <FormBtn title="التالي" loading={mutation.isPending} />
     </form>
   );
 };

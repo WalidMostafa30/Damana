@@ -87,7 +87,7 @@ const Otp = ({ goNext, parentData, setParentData }) => {
   return (
     <>
       <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
-      <div className="flex gap-6 mb-2">
+      <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
           return (

@@ -8,6 +8,7 @@ import {
   deleteAllNotifications,
   markNotificationRead,
 } from "../../services/notificationsService";
+import LoadingSection from "../../components/layout/Loading/LoadingSection";
 
 const Notification = () => {
   const queryClient = useQueryClient();
@@ -41,7 +42,8 @@ const Notification = () => {
     onSuccess: () => queryClient.invalidateQueries(["notifications"]),
   });
 
-  if (isLoading) return <p>جاري التحميل...</p>;
+  if (isLoading) return <LoadingSection />;
+
   if (isError) return <p>حدث خطأ أثناء تحميل الإشعارات</p>;
 
   return (

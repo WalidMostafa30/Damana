@@ -1,7 +1,7 @@
 import { NavLink, Outlet } from "react-router-dom";
 import PageTitle from "../../components/common/PageTitle";
 
-const Profile = () => {
+const Account = () => {
   return (
     <section className="pageContainer space-y-4">
       <PageTitle
@@ -12,25 +12,25 @@ const Profile = () => {
       <section className="baseWhiteContainer grid grid-cols-1 xl:grid-cols-4 gap-4">
         <div>
           <nav className="grid gap-2 lg:gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-1">
-            <NavLink to="/profile" end className="profileLink">
+            <NavLink to="/account" end className="profileLink">
               الملف الشخصي
             </NavLink>
-            <NavLink to="/profile/bank-info" className="profileLink">
+            <NavLink to="/account/bank-info" className="profileLink">
               البيانات البنكية
             </NavLink>
-            <NavLink to="/profile/address" className="profileLink">
+            <NavLink to="/account/address" className="profileLink">
               العنوان
             </NavLink>
-            <NavLink to="/profile/remove-damana" className="profileLink">
+            <NavLink to="/account/remove-damana" className="profileLink">
               الغاء ضمانة
             </NavLink>
-            <NavLink to="/profile/support" className="profileLink">
+            <NavLink to="/account/support" className="profileLink">
               الدعم
             </NavLink>
-            <NavLink to="/profile/password" className="profileLink">
+            <NavLink to="/account/password" className="profileLink">
               تعديل كلمة المرور
             </NavLink>
-            <NavLink to="/profile/terms" className="profileLink">
+            <NavLink to="/account/terms" className="profileLink">
               الشروط والأحكام
             </NavLink>
           </nav>
@@ -44,4 +44,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Account;
