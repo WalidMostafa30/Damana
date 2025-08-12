@@ -11,6 +11,7 @@ import { GoLock } from "react-icons/go";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { registerPerson } from "../../../../services/authService";
+import PhoneInput from "../../../../components/form/PhoneInput";
 
 const RegisterPerson = () => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -102,7 +103,7 @@ const RegisterPerson = () => {
             icon={<CiUser />}
           />
 
-          <MainInput
+          {/* <MainInput
             type="tel"
             id="mobile"
             name="mobile"
@@ -123,7 +124,8 @@ const RegisterPerson = () => {
             }}
             onBlur={formik.handleBlur}
             error={getError("mobile")}
-          />
+          /> */}
+          <PhoneInput formik={formik} />
 
           <MainInput
             type="password"

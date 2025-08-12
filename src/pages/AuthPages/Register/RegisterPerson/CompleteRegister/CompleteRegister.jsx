@@ -4,16 +4,15 @@ import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import StepProgress from "../../../../../components/common/StepProgress/StepProgress";
-import { ImArrowRight } from "react-icons/im";
 import AuthLayout from "../../../../../components/common/AuthLayout";
 import AuthBreadcrumbs from "../../../../../components/common/AuthBreadcrumbs";
-import BackStepBtn from "../../../../../components/form/MainInput/BackStepBtn";
+import BackStepBtn from "../../../../../components/form/BackStepBtn";
 
 const steps = ["بياناتك الشخصية", "البيانات البنكية", "العنوان السكني"];
 
 export default function CompleteRegister() {
-  const [step, setStep] = useState(1);
-    const goBack = () => setStep((prev) => prev - 1);
+  const [step, setStep] = useState(0);
+  const goBack = () => setStep((prev) => prev - 1);
 
   const [formData, setFormData] = useState({
     dob: "",

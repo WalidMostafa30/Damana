@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../../../../../components/form/MainInput/MainInput";
@@ -6,23 +6,21 @@ import { GoNumber } from "react-icons/go";
 import { GiDoubleStreetLights } from "react-icons/gi";
 import { FaCity } from "react-icons/fa";
 import FormBtn from "../../../../../../components/form/FormBtn";
-import {
-  getCountries,
-  sendAddressOrBankData,
-} from "../../../../../../services/authService";
+import { sendAddressOrBankData } from "../../../../../../services/authService";
 import { useState } from "react";
 import FormError from "../../../../../../components/form/FormError";
 import { useNavigate } from "react-router-dom";
+import CountrySelect from "../../../../../../components/form/CountrySelect";
 
 export default function Step2({ formData, setFormData }) {
   const [errorMsg, setErrorMsg] = useState(null);
 
-  // جلب الدول
-  const { data: countriesData, isLoading: loadingCountries } = useQuery({
-    queryKey: ["countries"],
-    queryFn: getCountries,
-  });
-  const countries = countriesData?.data || [];
+  // // جلب الدول
+  // const { data: countriesData, isLoading: loadingCountries } = useQuery({
+  //   queryKey: ["countries"],
+  //   queryFn: getCountries,
+  // });
+  // const countries = countriesData?.data || [];
 
   const navigate = useNavigate();
 
@@ -89,7 +87,7 @@ export default function Step2({ formData, setFormData }) {
           error={getError("address_street_name")}
           icon={<GiDoubleStreetLights />}
         />
-        <MainInput
+        {/* <MainInput
           id="address_country_id"
           type="select"
           placeholder="اسم البلد"
@@ -102,7 +100,8 @@ export default function Step2({ formData, setFormData }) {
             { value: "", label: "اختر البلد" },
             ...countries.map((c) => ({ value: c.id, label: c.name })),
           ]}
-        />
+        /> */}
+        <CountrySelect formik={formik} name="address_country_id" />
         <MainInput
           id="address_city_town"
           label="المدينة"

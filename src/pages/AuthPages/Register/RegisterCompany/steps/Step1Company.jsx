@@ -4,6 +4,7 @@ import { LuFileDigit } from "react-icons/lu";
 import { FaEarthAsia } from "react-icons/fa6";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { BsBuildings } from "react-icons/bs";
+import PhoneInput from "../../../../../components/form/PhoneInput";
 
 const Step1Company = ({ formik, getError }) => {
   const partners = formik.values.partners;
@@ -78,7 +79,7 @@ const Step1Company = ({ formik, getError }) => {
               icon={<FaEarthAsia />}
             />
 
-            <MainInput
+            {/* <MainInput
               label="رقم الهاتف"
               type="tel"
               id={`partners.${index}.phone`}
@@ -89,6 +90,11 @@ const Step1Company = ({ formik, getError }) => {
                 formik.setFieldValue(`partners.${index}.phone`, phone)
               }
               error={getError(`partners.${index}.phone`)}
+            /> */}
+            <PhoneInput
+              formik={formik}
+              name={`partners.${index}.phone`}
+              combineValue={true}
             />
 
             <MainInput

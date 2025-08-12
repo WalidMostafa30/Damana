@@ -16,9 +16,9 @@
   --color-error-200: #c03744;
 }
 
-/* * {
+* {
   filter: brightness(1) drop-shadow(0px 0px 0px #a9f30d) invert(1) contrast(1);
-} */
+}
 
 html {
   scroll-behavior: smooth;
@@ -79,7 +79,7 @@ html {
   }
 
   .pageContainer {
-    @apply container py-6 lg:py-10 min-h-[calc(100vh-220px)];
+    @apply container py-6 lg:py-10 min-h-[calc(100vh-210px)];
   }
 
   .whiteContainer {

@@ -6,6 +6,7 @@ import { LuFileDigit } from "react-icons/lu";
 import { BiShoppingBag } from "react-icons/bi";
 import { GrMoney } from "react-icons/gr";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import PhoneInput from "../../../../../components/form/PhoneInput";
 
 const Step2Company = ({ formik, getError }) => {
   const commissioners = formik.values.commissioners;
@@ -148,7 +149,7 @@ const Step2Company = ({ formik, getError }) => {
               icon={<GrMoney />}
             />
 
-            <MainInput
+            {/* <MainInput
               label="رقم الهاتف"
               placeholder={"رقم الهاتف"}
               id={`commissioners.${index}.phone`}
@@ -159,6 +160,11 @@ const Step2Company = ({ formik, getError }) => {
                 formik.setFieldValue(`commissioners.${index}.phone`, phone)
               }
               error={getError(`commissioners.${index}.phone`)}
+            /> */}
+            <PhoneInput
+              formik={formik}
+              name={`commissioners.${index}.phone`}
+              combineValue={true}
             />
 
             <MainInput
@@ -292,7 +298,7 @@ const Step2Company = ({ formik, getError }) => {
             icon={<GrMoney />}
           />
 
-          <MainInput
+          {/* <MainInput
             label="رقم الهاتف"
             placeholder="رقم الهاتف"
             type="tel"
@@ -303,6 +309,11 @@ const Step2Company = ({ formik, getError }) => {
               formik.setFieldValue("managementCommissioners.phone", phone)
             }
             error={getError("managementCommissioners.phone")}
+          /> */}
+          <PhoneInput
+            formik={formik}
+            name="managementCommissioners.phone"
+            combineValue={true}
           />
 
           <MainInput

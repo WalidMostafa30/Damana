@@ -10,6 +10,7 @@ import FormBtn from "../../../components/form/FormBtn";
 import FormError from "../../../components/form/FormError";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../../services/authService";
+import PhoneInput from "../../../components/form/PhoneInput";
 
 const loginSchema = Yup.object({
   mobile: Yup.string()
@@ -67,7 +68,7 @@ const LoginPage = () => {
       />
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        <MainInput
+        {/* <MainInput
           type="tel"
           id="mobile"
           name="mobile"
@@ -89,7 +90,8 @@ const LoginPage = () => {
           }}
           onBlur={formik.handleBlur}
           error={getError("mobile")}
-        />
+        /> */}
+        <PhoneInput formik={formik} />
 
         <MainInput
           type="password"

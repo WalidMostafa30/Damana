@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useMutation } from "@tanstack/react-query";
 import { registerCompany } from "../../../../services/authService";
-import BackStepBtn from "../../../../components/form/MainInput/BackStepBtn";
+import BackStepBtn from "../../../../components/form/BackStepBtn";
 
 const steps = [
   "القسم الاول: بيانات الشركة",

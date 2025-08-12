@@ -5,7 +5,7 @@ import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import { useSelector } from "react-redux";
-import BackStepBtn from "../../components/form/MainInput/BackStepBtn";
+import BackStepBtn from "../../components/form/BackStepBtn";
 
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 

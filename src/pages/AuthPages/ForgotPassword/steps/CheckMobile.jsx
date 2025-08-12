@@ -7,6 +7,7 @@ import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { useMutation } from "@tanstack/react-query";
 import { checkMobile } from "../../../../services/authService";
+import PhoneInput from "../../../../components/form/PhoneInput";
 
 const CheckMobile = ({ goNext, setParentData }) => {
   const [method, setMethod] = useState("mobile");
@@ -73,8 +74,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
       </p>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
-        {method === "mobile" ? (
-          <MainInput
+        {/* <MainInput
             type="tel"
             id="mobile"
             name="mobile"
@@ -98,7 +98,9 @@ const CheckMobile = ({ goNext, setParentData }) => {
             }}
             onBlur={formik.handleBlur}
             error={formik.touched.mobile && formik.errors.mobile}
-          />
+          /> */}
+        {method === "mobile" ? (
+          <PhoneInput formik={formik} />
         ) : (
           <MainInput
             id="email"

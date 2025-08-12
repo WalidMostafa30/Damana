@@ -24,8 +24,10 @@ const Otp = () => {
     onSuccess: (data) => {
       console.log("تم إرسال الكود ✅", data);
     },
-    onError: () => {
-      setErrorMessage("فشل إرسال رمز التحقق");
+    onError: (error) => {
+      setErrorMessage(
+        error?.response?.data?.error_msg || "فشل إرسال رمز التحقق"
+      );
     },
   });
 
@@ -161,7 +163,9 @@ const Otp = () => {
         </button>
       </div>
 
-      <FormError errorMsg={errorMessage} />
+      <div className="mb-4">
+        <FormError errorMsg={errorMessage} />
+      </div>
 
       <FormBtn
         onClick={handleSubmit}

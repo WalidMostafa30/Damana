@@ -39,6 +39,7 @@ const CompleteRegister = React.lazy(() =>
     "../pages/AuthPages/Register/RegisterPerson/CompleteRegister/CompleteRegister"
   )
 );
+const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
 const Account = React.lazy(() => import("../pages/Account/Account"));
 const Profile = React.lazy(() => import("../pages/Account/Profile"));
@@ -91,6 +92,8 @@ const router = createBrowserRouter([
   { path: "register-person", element: <RegisterPerson /> },
   { path: "register-otp", element: <RegisterOTP /> },
   { path: "complete-register", element: <CompleteRegister /> },
+
+  { path: "*", element: <NotFound /> },
 ]);
 
 const AppRouter = () => {

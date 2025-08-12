@@ -8,6 +8,7 @@ import { TbWorldWww } from "react-icons/tb";
 import { FaEarthAsia, FaMoneyBill1Wave } from "react-icons/fa6";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { GiReceiveMoney } from "react-icons/gi";
+import PhoneInput from "../../../../../components/form/PhoneInput";
 
 const Step0Company = ({ formik, getError }) => {
   return (
@@ -176,7 +177,7 @@ const Step0Company = ({ formik, getError }) => {
           icon={<MdOutlineMarkEmailUnread />}
         />
 
-        <MainInput
+        {/* <MainInput
           label="رقم الهاتف"
           id="phone"
           name="phone"
@@ -185,7 +186,8 @@ const Step0Company = ({ formik, getError }) => {
           value={formik.values.phone}
           onChange={(phone) => formik.setFieldValue("phone", phone)}
           error={getError("phone")}
-        />
+        /> */}
+        <PhoneInput formik={formik} name="phone" combineValue={true} />
 
         <MainInput
           label="الرقم الضريبي"
