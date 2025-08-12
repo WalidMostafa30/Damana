@@ -104,10 +104,10 @@ const Home = () => {
           </div>
 
           {pathname.includes("/sale") && (
-            <Sale data={data?.data} loading={isLoading} error={isError} />
+            <Sale data={data} loading={isLoading} error={isError} />
           )}
           {pathname.includes("/purchase") && (
-            <Purchase data={data?.data} loading={isLoading} error={isError} />
+            <Purchase data={data} loading={isLoading} error={isError} />
           )}
         </section>
       </div>

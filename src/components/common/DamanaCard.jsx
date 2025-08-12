@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import Timer from "./Timer";
 
 const DamanaCard = ({
-  hours,
+  expireDate,
   number,
   id,
   plate,
@@ -59,7 +59,7 @@ const DamanaCard = ({
         </div>
 
         <div className="flex flex-col items-center gap-2">
-          <Timer hours={hours} />
+          <Timer expiryDate={expireDate} />
           {selectable ? (
             <span className="w-10 h-10 rounded-full border-2 border-primary p-1 flex items-center justify-center">
               {selected && (

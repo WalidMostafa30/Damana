@@ -16,8 +16,8 @@ const DamanaDetails = React.lazy(() =>
 const PaymentOptions = React.lazy(() =>
   import("../pages/PaymentOptions/PaymentOptions")
 );
-const Notification = React.lazy(() =>
-  import("../pages/Notification/Notification")
+const NotificationsPage = React.lazy(() =>
+  import("../pages/NotificationsPage/NotificationsPage")
 );
 const LoginPage = React.lazy(() =>
   import("../pages/AuthPages/LoginPage/LoginPage")
@@ -69,7 +69,7 @@ const router = createBrowserRouter([
       { path: "add-damana", element: <AddDamana /> },
       { path: "damana/:id", element: <DamanaDetails /> },
       { path: "payment-options", element: <PaymentOptions /> },
-      { path: "notifications", element: <Notification /> },
+      { path: "notifications", element: <NotificationsPage /> },
       {
         path: "account",
         element: <Account />,

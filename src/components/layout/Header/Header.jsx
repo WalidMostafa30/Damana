@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import logo from "../../../assets/images/header-logo.png";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
-import HeaderActions from "./HeaderActions";
+import HeaderActions from "./HeaderActions/HeaderActions";
 import NavBar from "./NavBar";
 import { useDispatch } from "react-redux";
 import { getProfileAct } from "../../../store/profile/profileAction";

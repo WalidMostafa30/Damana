@@ -41,5 +41,5 @@ export const fetchDamanat = async (type, status) => {
       status, // new, accepted, etc (أو null)
     },
   });
-  return data;
+  return data?.data;
 };

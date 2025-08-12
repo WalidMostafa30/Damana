@@ -1,12 +1,15 @@
 import { useRef, useState } from "react";
 import { SlBell } from "react-icons/sl";
 import { IoIosArrowDown } from "react-icons/io";
-import DropDown from "../../common/DropDown";
+import DropDown from "../../../common/DropDown";
 import { FaUserAlt } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
-import Avatar from "../../common/Avatar";
+import Avatar from "../../../common/Avatar";
 import { useSelector } from "react-redux";
+import { useQuery } from "@tanstack/react-query";
+import { fetchNotifications } from "../../../../services/notificationsService";
+import Notifications from "./Notifications";
 
 const HeaderActions = ({ setOpenNav }) => {
   const [openNotification, setOpenNotification] = useState(false);
@@ -16,6 +19,12 @@ const HeaderActions = ({ setOpenNav }) => {
   const profileBtnRef = useRef(null);
 
   const { profile } = useSelector((state) => state.profile);
+
+  // جلب الإشعارات
+  const { data: notifications, isLoading } = useQuery({
+    queryKey: ["notifications"],
+    queryFn: fetchNotifications,
+  });
 
   return (
     <div className="flex items-center gap-4">
@@ -39,29 +48,12 @@ const HeaderActions = ({ setOpenNav }) => {
             <h3 className="lg:text-lg text-neutral-800 font-bold p-4">
               الاشعارات
             </h3>
-            <div className="flex gap-2 lg:gap-4 p-4 bg-secondary/20 cursor-pointer">
-              <Avatar
-                image={profile?.profile_image_full_path}
-                name={profile?.name}
-                size="lg"
-              />
-              <p className="text-sm text-neutral-800 line-clamp-3 flex-1">
-                <span className="font-bold text-primary">
-                  شركه مرسيدس للسيارات
-                </span>{" "}
-                ارسلت اليك طلب ضمانه لمتابعه عمليه البيع وعمليه نقل الملكيه
-                لضمانه رقمها{" "}
-                <span className="font-bold text-primary">#123</span>
-              </p>
-            </div>
-            <Link
-              onClick={() => setOpenNotification(false)}
-              to="/notifications"
-              className="text-primary text-sm font-bold p-4 flex items-center gap-1 cursor-pointer"
-            >
-              <SlBell className="text-2xl" />
-              رؤيه كل الاشعارات
-            </Link>
+
+            <Notifications
+              notifications={notifications}
+              isLoading={isLoading}
+              onClose={() => setOpenNotification(false)}
+            />
           </div>
         </DropDown>
       </div>

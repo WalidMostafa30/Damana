@@ -36,13 +36,11 @@ const Profile = () => {
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
-  if (loading) {
-    return <p>جاري تحميل البيانات...</p>;
-  }
+  if (loading) return <LoadingSection />;
 
   return (
     <>
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-10">
+      <div className="flex flex-wrap items-start justify-between gap-4 mb-10">
         <div className="flex gap-2">
           <Avatar
             image={profile?.profile_image_full_path}

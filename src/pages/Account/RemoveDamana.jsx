@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { useQuery } from "@tanstack/react-query";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
@@ -11,8 +12,6 @@ const RemoveDamana = () => {
   const [selectError, setSelectError] = useState("");
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
-  const [allDamanat, setAllDamanat] = useState([]);
-  const [loading, setLoading] = useState(true);
 
   const steps = [
     {
@@ -32,27 +31,16 @@ const RemoveDamana = () => {
     },
   ];
 
-  // جلب البيانات من API باستخدام fetchDamanat
-  useEffect(() => {
-    const loadDamanat = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchDamanat(null, "cancellable"); // بدون type
-        if (Array.isArray(data)) {
-          setAllDamanat(data);
-        } else {
-          setAllDamanat([]);
-        }
-      } catch (error) {
-        console.error("Error fetching damanat:", error);
-        setAllDamanat([]);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadDamanat();
-  }, []);
+  // جلب البيانات من API باستخدام React Query
+  const {
+    data: allDamanat = [],
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
+    queryKey: ["damanat", "cancellable"],
+    queryFn: () => fetchDamanat(null, "cancellable"),
+  });
 
   const toggleSelect = (id) => {
     setSelectedDamanat((prev) =>
@@ -100,15 +88,24 @@ const RemoveDamana = () => {
 
       <StepProgress steps={steps} currentStep={step} />
 
-      {loading && <p>جار التحميل...</p>}
+      {isLoading && <p>جار التحميل...</p>}
+      {isError && <p className="text-error-100">حدث خطأ أثناء جلب البيانات</p>}
 
-      {!loading && step === 0 && (
+      {!isLoading && step === 0 && (
         <div className="space-y-4">
-          {allDamanat.length > 0 ? (
-            allDamanat.map((d) => (
+          {allDamanat?.length > 0 ? (
+            allDamanat?.map((d) => (
               <DamanaCard
                 key={d.id}
-                {...d}
+                number={d.serial_number}
+                plate={d.plate_number_code}
+                seller={d.seller?.name}
+                id={d.id}
+                status_translate={d.status_translate}
+                price={`${d.vehicle_price} دينار أردني`}
+                date={new Date(d.created_at).toLocaleDateString("ar-EG")}
+                statusText={d.status_translate}
+                expireDate={d.license_expiry_date}
                 selectable
                 selected={selectedDamanat.includes(d.id)}
                 onSelect={() => toggleSelect(d.id)}
@@ -151,7 +148,7 @@ const RemoveDamana = () => {
         </div>
       )}
 
-      {step === 0 && !loading && allDamanat.length > 0 && (
+      {step === 0 && selectedDamanat.length > 0 && (
         <button onClick={handleNextFromSelect} className="mainBtn">
           متابعة
         </button>

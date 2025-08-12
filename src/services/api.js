@@ -23,4 +23,15 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
+// api.interceptors.response.use(
+//   (response) => {
+//     const token = response?.data?.data?.token;
+//     if (token) {
+//       Cookies.set("token", token);
+//     }
+//     return response;
+//   },
+//   (error) => Promise.reject(error)
+// );
+
 export default api;

@@ -10,7 +10,7 @@ import {
 } from "../../services/notificationsService";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
 
-const Notification = () => {
+const NotificationsPage = () => {
   const queryClient = useQueryClient();
 
   // جلب الإشعارات
@@ -22,7 +22,6 @@ const Notification = () => {
     queryKey: ["notifications"],
     queryFn: fetchNotifications,
   });
-  console.log("notifications", notifications);
 
   // Mutation - تحديد الكل كمقروء
   const markAllReadMutation = useMutation({
@@ -77,7 +76,7 @@ const Notification = () => {
                 className={`flex gap-4 p-4 cursor-pointer not-last:border-b border-neutral-200 ${
                   n.read_at ? "" : "bg-secondary/20 hover:bg-secondary/30"
                 }`}
-                onClick={() => markReadMutation.mutate(n.id)}
+                onClick={() => markReadMutation.mutate({ id: n.id })}
               >
                 <Avatar name={n.data?.title || "إشعار"} size="lg" />
 
@@ -108,4 +107,4 @@ const Notification = () => {
   );
 };
 
-export default Notification;
+export default NotificationsPage;

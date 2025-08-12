@@ -11,6 +11,11 @@ export const loginUser = async (formData) => {
   return data?.data;
 };
 
+export const logoutUser = async () => {
+  const { data } = await api.post("/auth/logout");
+  return data;
+};
+
 export const checkMobile = async (payload) => {
   const { data } = await api.post("/auth/forgot-password/check", payload);
   return data;

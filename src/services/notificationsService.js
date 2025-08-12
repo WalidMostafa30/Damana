@@ -18,5 +18,5 @@ export const deleteAllNotifications = async () => {
 
 // قراءة إشعار محدد
 export const markNotificationRead = async (id) => {
-  await api.post(`/notifications/read/${id}`);
+  await api.post(`/notifications/read`, id);
 };

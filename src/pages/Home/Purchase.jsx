@@ -35,12 +35,7 @@ const Purchase = ({ data, loading, error }) => {
           price={`${damana.vehicle_price} دينار أردني`}
           date={new Date(damana.created_at).toLocaleDateString("ar-EG")}
           statusText={damana.status_translate}
-          hours={Math.max(
-            0,
-            Math.floor(
-              (new Date(damana.approval_period) - new Date()) / (1000 * 60 * 60)
-            )
-          )}
+          expireDate={damana.license_expiry_date}
         />
       ))}
     </section>

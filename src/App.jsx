@@ -14,7 +14,7 @@ function App() {
   return (
     <main>
       {/* <TopHeader /> */}
-      {/* <Header /> */}
+      <Header />
       <Outlet />
       {/* <Footer /> */}
     </main>
