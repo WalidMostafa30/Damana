@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import { FaIdCard } from "react-icons/fa";
@@ -9,6 +9,7 @@ import ActionModal from "../../../components/modals/ActionModal";
 import FormError from "../../../components/form/FormError";
 import FormBtn from "../../../components/form/FormBtn";
 import { checkByRegN } from "../../../services/damanaServices";
+import { getApplicationConfiguration } from "../../../services/staticDataService";
 
 const Step0 = ({ goNext, formData, setFormData, profile }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -63,6 +64,13 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
   const ownerValue = formik.values.owner;
+
+  const { data: msg } = useQuery({
+    queryKey: ["paymentMethods"],
+    queryFn: getApplicationConfiguration,
+  });
+
+  console.log(msg);
 
   const modalMsg = (
     <>

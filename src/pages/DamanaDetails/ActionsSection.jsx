@@ -1,61 +1,66 @@
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster } from "react-hot-toast";
+import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
+import { useMutation } from "@tanstack/react-query";
+import { changeStatus, releaseRequest } from "../../services/damanaServices";
 
 const ActionsSection = ({ damana }) => {
   const { profile } = useSelector((state) => state.profile);
-  console.log("Damana ActionsSection", damana);
-  console.log("profile", profile);
 
-  const handleChangeStatus = (newStatus) => {
+  // تغيير الحالة
+  const changeStatusMutation = useMutation({
+    mutationFn: (status) => changeStatus({ id: damana.id, status }),
+    onSuccess: (data) => {
+      if (data.status) {
+        toast.success("تم تحديث الحالة بنجاح");
+        window.location.reload();
+      } else {
+        toast.error(data.error_message || "حدث خطأ");
+      }
+    },
+    onError: () => {
+      toast.error("فشل الاتصال بالخادم");
+    },
+  });
+
+  // طلب صرف الضمانة
+  const releaseRequestMutation = useMutation({
+    mutationFn: () => releaseRequest({ id: damana.id }),
+    onSuccess: (data) => {
+      if (data.status) {
+        toast.success("تم طلب صرف الضمانة بنجاح");
+        window.location.reload();
+      } else {
+        toast.error(data.error_message || "حدث خطأ");
+      }
+    },
+    onError: () => {
+      toast.error("فشل الاتصال بالخادم");
+    },
+  });
+
+  const handleChangeStatus = (status) => {
     const confirmMsg =
-      newStatus === "accepted"
-        ? "هل تريد تأكيد الضمانة؟"
-        : "هل تريد رفض الضمانة؟";
+      status === "accepted" ? "هل تريد تأكيد الضمانة؟" : "هل تريد رفض الضمانة؟";
 
     if (!window.confirm(confirmMsg)) {
       toast("تم إلغاء العملية 👏");
       return;
     }
 
-    // Simulate API call
-    fetch(`/api/change-status`, {
-      method: "POST",
-      body: JSON.stringify({ id: damana.id, status: newStatus }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status) {
-          toast.success("تم التحديث بنجاح");
-          window.location.reload();
-        } else {
-          toast.error(data.error_message || "حدث خطأ");
-        }
-      })
-      .catch(() => toast.error("فشل الاتصال بالخادم"));
+    changeStatusMutation.mutate(status);
   };
 
   const handleReleaseRequest = () => {
-    const confirmMsg = `هل تريد صرف الضمانة؟\n\nيجب إكمال إجراءات التنازل أولاً وإلا قد تُفرض رسوم إضافية.`;
+    const confirmMsg =
+      "هل تريد صرف الضمانة؟\n\nيجب إكمال إجراءات التنازل أولاً وإلا قد تُفرض رسوم إضافية.";
 
     if (!window.confirm(confirmMsg)) {
       toast("تم إلغاء العملية 👏");
       return;
     }
 
-    fetch(`/api/release-request`, {
-      method: "POST",
-      body: JSON.stringify({ id: damana.id }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        if (data.status) {
-          toast.success("تم طلب صرف الضمانة");
-          window.location.reload();
-        } else {
-          toast.error(data.error_message || "حدث خطأ");
-        }
-      })
-      .catch(() => toast.error("فشل الاتصال بالخادم"));
+    releaseRequestMutation.mutate();
   };
 
   if (!profile) return null;
@@ -73,13 +78,13 @@ const ActionsSection = ({ damana }) => {
             onClick={() => handleChangeStatus("accepted")}
             className="mainBtn flex-1 min-w-[150px]"
           >
-            تأكيد الضمانة
+            ✅ تأكيد الضمانة
           </button>
           <button
             onClick={() => handleChangeStatus("rejected")}
             className="mainBtn light flex-1 min-w-[150px]"
           >
-            رفض الضمانة
+            ❌ رفض الضمانة
           </button>
         </div>
       )}

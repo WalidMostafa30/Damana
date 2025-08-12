@@ -1,10 +1,26 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
-import { fetchDamanat } from "../../services/damanaServices";
+import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
+import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import ActionModal from "../../components/modals/ActionModal";
+import { useNavigate } from "react-router-dom";
+
+const steps = [
+  {
+    title: "طلب الغاء ضمانة",
+    description:
+      "يمكنك طلب الغاء الضمانة التي انشاتها ، اختار الضمانة ومن ثم اشرح سبب الالغاء وسيتم الرد عليك من قبل الدعم بأسرع وقت ممكن",
+  },
+  {
+    title: "تأكيد الغاء ضمانة",
+    description:
+      "سيتم ارجاع المبلغ الاساسي مخصوم منه عمولة الغاء الضمانة في حال موافقة مدير النظام على عملية الالغاء",
+  },
+];
 
 const RemoveDamana = () => {
   const [step, setStep] = useState(0);
@@ -12,26 +28,10 @@ const RemoveDamana = () => {
   const [selectError, setSelectError] = useState("");
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
+  const navigate = useNavigate();
 
-  const steps = [
-    {
-      title: "طلب الغاء ضمانة",
-      description:
-        "يمكنك طلب الغاء الضمانة التي انشاتها ، اختار الضمانة ومن ثم اشرح سبب الالغاء وسيتم الرد عليك من قبل الدعم بأسرع وقت ممكن",
-    },
-    {
-      title: "تأكيد الغاء ضمانة",
-      description:
-        "سيتم ارجاع المبلغ الاساسي مخصوم منه عمولة الغاء الضمانة في حال موافقة مدير النظام على عملية الالغاء",
-    },
-    {
-      title: "تم إرسال طلب الإلغاء",
-      description:
-        "تم إرسال طلبك وسيتم التواصل معك من قبل الدعم في أقرب وقت ممكن",
-    },
-  ];
-
-  // جلب البيانات من API باستخدام React Query
   const {
     data: allDamanat = [],
     isLoading,
@@ -40,6 +40,17 @@ const RemoveDamana = () => {
   } = useQuery({
     queryKey: ["damanat", "cancellable"],
     queryFn: () => fetchDamanat(null, "cancellable"),
+  });
+
+  const cancelDamanaMutation = useMutation({
+    mutationFn: cancelDamana,
+    onSuccess: () => {
+      setOpenModal(true);
+    },
+    onError: (error) => {
+      console.error("فشل إلغاء الضمانة:", error);
+      setErrorMsg(error?.response?.data?.error_msg || "حدث خطاء");
+    },
   });
 
   const toggleSelect = (id) => {
@@ -63,12 +74,11 @@ const RemoveDamana = () => {
       return;
     }
     setReasonError("");
-    window.alert(
-      `تم إرسال طلب الإلغاء بنجاح ✅ \n الضمانات المختارة: ${selectedDamanat.join(
-        ", "
-      )}`
-    );
-    setStep(2);
+
+    cancelDamanaMutation.mutate({
+      ids: selectedDamanat,
+      reason,
+    });
   };
 
   const resetAndBack = () => {
@@ -88,8 +98,12 @@ const RemoveDamana = () => {
 
       <StepProgress steps={steps} currentStep={step} />
 
-      {isLoading && <p>جار التحميل...</p>}
-      {isError && <p className="text-error-100">حدث خطأ أثناء جلب البيانات</p>}
+      {isLoading && <LoadingSection />}
+      {isError && (
+        <FormError
+          errorMsg={error?.response?.data?.error_msg || "حدث خطا ثناء التحميل"}
+        />
+      )}
 
       {!isLoading && step === 0 && (
         <div className="space-y-4">
@@ -114,9 +128,7 @@ const RemoveDamana = () => {
           ) : (
             <p>لا توجد ضمانات متاحة للإلغاء</p>
           )}
-          {selectError && (
-            <p className="text-error-100 text-lg">{selectError}</p>
-          )}
+          {selectError && <FormError errorMsg={selectError} />}
         </div>
       )}
 
@@ -133,6 +145,7 @@ const RemoveDamana = () => {
             <IoWarningOutline className="text-2xl" />
             تحذير: سيتم خصم العمولة الخاصة بالغاء الضمانة التي قيمتها 5 دنانير
           </p>
+          {errorMsg && <FormError errorMsg={errorMsg} />}
         </div>
       )}
 
@@ -148,6 +161,23 @@ const RemoveDamana = () => {
         </div>
       )}
 
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        closeBtn
+        msg={
+          "تم ارسال فورم الالغاء الى مدير النظام, سيتم التواصل معك في اقرب وقت ممكن."
+        }
+        icon="success"
+        primaryBtn={{
+          text: "الذهاب الى صفحه الضمانات",
+          action: () => {
+            setOpenModal(false);
+            navigate("/account/remove-damana");
+          },
+        }}
+      />
+
       {step === 0 && selectedDamanat.length > 0 && (
         <button onClick={handleNextFromSelect} className="mainBtn">
           متابعة
@@ -161,9 +191,14 @@ const RemoveDamana = () => {
           </button>
           <button
             onClick={handleConfirmCancel}
-            className="mainBtn danger min-w-[250px]"
+            className={`mainBtn danger min-w-[250px] ${
+              cancelDamanaMutation.isPending && "cursor-wait contrast-50"
+            }`}
+            disabled={cancelDamanaMutation.isPending}
           >
-            تأكيد الغاء الضمانة
+            {cancelDamanaMutation.isPending
+              ? "جاري التحميل..."
+              : "تاكيد الغاء الضمانة"}
           </button>
         </div>
       )}

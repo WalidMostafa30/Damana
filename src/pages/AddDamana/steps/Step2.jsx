@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
@@ -43,7 +43,7 @@ const Step2 = ({ formData, setFormData }) => {
 
   const navigate = useNavigate();
 
-  // ✅ تحقق الكوبون
+  // تحقق الكوبون
   const couponMutation = useMutation({
     mutationFn: async (code) => await checkCoupon(code),
     onSuccess: (data) => {
@@ -58,7 +58,7 @@ const Step2 = ({ formData, setFormData }) => {
     },
   });
 
-  // ✅ API حساب العمولة
+  // API حساب العمولة
   const commissionMutation = useMutation({
     mutationFn: async (payload) => await getCommission(payload),
     onSuccess: (data) => {
@@ -115,7 +115,7 @@ const Step2 = ({ formData, setFormData }) => {
     },
   });
 
-  // ✅ إرسال طلب إنشاء الضمانة
+  // إرسال طلب إنشاء الضمانة
   const createVehicleTransferMutation = useMutation({
     mutationFn: async (payload) => await createVehicleTransfer(payload),
     onSuccess: (data) => {
@@ -168,8 +168,10 @@ const Step2 = ({ formData, setFormData }) => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  // 🎯 متابعة تغير الحقول وطلب العمولة
-  useEffect(() => {
+  // دالة تنفذ حساب العمولة بعد الخروج من أي حقل
+  const [lastCommissionPayload, setLastCommissionPayload] = useState(null);
+
+  const handleCommissionBlur = () => {
     const { vehicle_price, commission_on, code, transfer_commission } =
       formik.values;
 
@@ -185,15 +187,14 @@ const Step2 = ({ formData, setFormData }) => {
       payload.code = code;
     }
 
-    commissionMutation.mutate(payload);
-  }, [
-    formik.values.vehicle_price,
-    formik.values.commission_on,
-    formik.values.code,
-    formik.values.transfer_commission,
-    couponServer,
-  ]);
+    // مقارنة مع آخر payload
+    if (JSON.stringify(payload) === JSON.stringify(lastCommissionPayload)) {
+      return; // مفيش تغيير => متبعتش طلب
+    }
 
+    setLastCommissionPayload(payload); // حفظ القيم الجديدة
+    commissionMutation.mutate(payload);
+  };
   const handleCopySerial = () => {
     if (damanaData?.serial_number) {
       navigator.clipboard.writeText(damanaData.serial_number).then(() => {
@@ -208,6 +209,7 @@ const Step2 = ({ formData, setFormData }) => {
       <h3 className="text-xl lg:text-2xl font-bold text-primary">
         بيانات الضمانة
       </h3>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="قيمة المركبة"
@@ -218,7 +220,10 @@ const Step2 = ({ formData, setFormData }) => {
           icon={<FaMoneyBillWave />}
           value={formik.values.vehicle_price}
           onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          onBlur={(e) => {
+            formik.handleBlur(e);
+            handleCommissionBlur();
+          }}
           error={getError("vehicle_price")}
         />
 
@@ -233,11 +238,17 @@ const Step2 = ({ formData, setFormData }) => {
           ]}
           icon={<LuHandCoins />}
           value={formik.values.commission_on}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
+          onChange={(e) => {
+            formik.handleChange(e);
+            handleCommissionBlur();
+          }}
+          onBlur={(e) => {
+            formik.handleBlur(e);
+          }}
           error={getError("commission_on")}
         />
       </div>
+
       {/* كود الخصم */}
       <div>
         <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
@@ -254,7 +265,10 @@ const Step2 = ({ formData, setFormData }) => {
               formik.handleChange(e);
               setCouponServer(null);
             }}
-            onBlur={formik.handleBlur}
+            onBlur={(e) => {
+              formik.handleBlur(e);
+              handleCommissionBlur();
+            }}
             error={getError("code")}
           />
 
@@ -276,6 +290,7 @@ const Step2 = ({ formData, setFormData }) => {
           )}
         </div>
       </div>
+
       {/* صرف ضمانة */}
       <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
       <div className="space-y-2">
@@ -285,7 +300,11 @@ const Step2 = ({ formData, setFormData }) => {
             name="transfer_commission"
             value="RTGS"
             checked={formik.values.transfer_commission === "RTGS"}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              handleCommissionBlur();
+            }}
+            onBlur={handleCommissionBlur}
             className="w-5 h-5 accent-primary"
           />
           فورًا – بأسرع وقت ممكن (تُضاف 4 دنانير)
@@ -296,18 +315,26 @@ const Step2 = ({ formData, setFormData }) => {
             name="transfer_commission"
             value="ACH"
             checked={formik.values.transfer_commission === "ACH"}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              formik.handleChange(e);
+              handleCommissionBlur();
+            }}
+            onBlur={handleCommissionBlur}
             className="w-5 h-5 accent-primary"
           />
           بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
         </label>
       </div>
-      {details && <DetailsCard data={details} />}
+
+      {details.length > 0 && <DetailsCard data={details} />}
       <FormError errorMsg={errorMsg} />
-      <FormBtn
-        title="ارسال ضمانه"
-        loading={createVehicleTransferMutation.isPending}
-      />
+      {details.length > 0 && (
+        <FormBtn
+          title="ارسال ضمانه"
+          loading={createVehicleTransferMutation.isPending}
+        />
+      )}
+
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
@@ -329,11 +356,10 @@ const Step2 = ({ formData, setFormData }) => {
         icon="success"
         primaryBtn={{
           text: "اذهب الى صفحة الضمانه",
-          action: () => {
-            navigate(`/damana/${damanaData?.id}`);
-          },
+          action: () => navigate(`/damana/${damanaData?.id}`),
         }}
       />
+
       <LoadingModal openModal={commissionMutation.isPending} />
     </form>
   );

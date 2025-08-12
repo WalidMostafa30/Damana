@@ -10,7 +10,12 @@ const DamanaDetails = () => {
   const { id } = useParams();
 
   // 🛠 جلب بيانات الضمانة
-  const { data, isLoading, isError, error } = useQuery({
+  const {
+    data: damana,
+    isLoading,
+    isError,
+    error,
+  } = useQuery({
     queryKey: ["damana-details", id],
     queryFn: () => fetchDamanaDetails(id),
     enabled: !!id, // يتأكد إن id موجود قبل ما يعمل الطلب
@@ -27,8 +32,6 @@ const DamanaDetails = () => {
       </p>
     );
   }
-
-  const damana = data;
 
   const pageTitle = (title, large = false, color = "primary") => (
     <h3

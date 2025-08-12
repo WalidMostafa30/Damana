@@ -11,9 +11,15 @@ const PaymentOptions = () => {
 
   if (isLoading) return <LoadingSection />;
 
-  if (isError) return <p>حدث خطأ: {error.message}</p>;
+  if (isError)
+    return (
+      <p className="text-center text-lg">
+        حدث خطأ: {error?.response?.data?.error_msg}
+      </p>
+    );
 
-  if (!data?.length) return <p>لا توجد بيانات متاحة</p>;
+  if (!data?.length)
+    return <p className="text-center text-lg">لا توجد بيانات متاحة</p>;
 
   return (
     <section className="pageContainer space-y-4">

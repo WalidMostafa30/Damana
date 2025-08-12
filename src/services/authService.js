@@ -13,6 +13,8 @@ export const loginUser = async (formData) => {
 
 export const logoutUser = async () => {
   const { data } = await api.post("/auth/logout");
+  // Cookies.remove("token");
+  Cookies.remove("token");
   return data;
 };
 

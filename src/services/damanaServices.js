@@ -43,3 +43,18 @@ export const fetchDamanat = async (type, status) => {
   });
   return data?.data;
 };
+
+export const cancelDamana = async (payload) => {
+  const { data } = await api.post(`/vehicle-transfers/cancel_by_list`, payload);
+  return data?.data;
+};
+
+export const changeStatus = async (payload) => {
+  const { data } = await api.post("vehicle-transfers/update_status", payload);
+  return data;
+};
+
+export const releaseRequest = async (payload) => {
+  const { data } = await api.post("vehicle-transfers/release_request", payload);
+  return data;
+};

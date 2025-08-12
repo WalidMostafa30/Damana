@@ -7,9 +7,10 @@ import { RiLogoutBoxRFill } from "react-icons/ri";
 import { Link } from "react-router-dom";
 import Avatar from "../../../common/Avatar";
 import { useSelector } from "react-redux";
-import { useQuery } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { fetchNotifications } from "../../../../services/notificationsService";
 import Notifications from "./Notifications";
+import { logoutUser } from "../../../../services/authService";
 
 const HeaderActions = ({ setOpenNav }) => {
   const [openNotification, setOpenNotification] = useState(false);
@@ -24,6 +25,11 @@ const HeaderActions = ({ setOpenNav }) => {
   const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
     queryFn: fetchNotifications,
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: () => logoutUser(),
+    // onSuccess: () => window.location.reload(),
   });
 
   return (
@@ -90,6 +96,7 @@ const HeaderActions = ({ setOpenNav }) => {
             </Link>
             <Link
               to="/login"
+              onClick={() => logoutMutation.mutate()}
               className="flex items-center gap-2 font-bold p-2 lg:p-3 lg:text-lg border border-error-200 bg-error-200/10 text-error-200 rounded-lg cursor-pointer"
             >
               <RiLogoutBoxRFill className="text-lg lg:text-2xl" />
