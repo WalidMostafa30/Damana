@@ -1,16 +1,16 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { store } from "../store/store";
+import { openLogoutModal } from "../store/modalsSlice/logoutModalSlice";
 
 const api = axios.create({
-  baseURL: "https://qa.edamana.live/api/v1",
+  baseURL: import.meta.env.VITE_BASE_URL,
   headers: {
     "Content-Type": "application/json",
-    "X-API-Key":
-      "771c47fb41-18684646a5-67fa2a8d10-95f8dbe30b-31cb9b261e-4ef52c9e4b",
+    "X-API-Key": import.meta.env.VITE_X_API_KEY,
     Accept: "application/json",
-    "X-Nonce": "3f0e04dc37a4046b1739024107062",
-    "X-Signature":
-      "581f6f2fbd904486205a474a6510c028f0e0d6c7b3f2c645f1ef4edb91abb2eb",
+    "X-Nonce": import.meta.env.VITE_X_NONCE,
+    "X-Signature": import.meta.env.VITE_X_SIGNATURE,
     lang: "en",
   },
 });
@@ -23,15 +23,15 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// api.interceptors.response.use(
-//   (response) => {
-//     const token = response?.data?.data?.token;
-//     if (token) {
-//       Cookies.set("token", token);
-//     }
-//     return response;
-//   },
-//   (error) => Promise.reject(error)
-// );
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response?.status === 401 || err.response?.status === 403) {
+      Cookies.remove("token");
+      store.dispatch(openLogoutModal());
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default api;

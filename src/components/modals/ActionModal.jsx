@@ -37,7 +37,11 @@ const ActionModal = ({
         />
       )}
 
-      {msg && <div className="text-lg font-bold text-center">{msg}</div>}
+      {msg && (
+        <div className="text-lg font-bold text-center space-y-2 lg:space-y-4">
+          {msg}
+        </div>
+      )}
 
       <div className="flex flex-wrap gap-2 lg:gap-4">
         {primaryBtn.text && (

@@ -88,7 +88,7 @@ const HeaderActions = ({ setOpenNav }) => {
         >
           <div className="bg-white w-48 lg:w-60 space-y-2 p-2">
             <Link
-              to="/account"
+              to="/profile"
               className="flex items-center gap-2 font-bold p-2 lg:p-3 lg:text-lg border border-primary bg-primary/10 text-primary rounded-lg cursor-pointer"
             >
               <FaUserAlt className="text-lg lg:text-2xl" />

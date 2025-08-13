@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
-import { getPaymentMethods } from "../../services/authService";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import { getPaymentMethods } from "../../services/staticDataService";
 
 const PaymentOptions = () => {
   const { data, isLoading, isError, error } = useQuery({

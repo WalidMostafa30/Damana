@@ -72,7 +72,7 @@ const router = createBrowserRouter([
       { path: "payment-options", element: <PaymentOptions /> },
       { path: "notifications", element: <NotificationsPage /> },
       {
-        path: "account",
+        path: "profile",
         element: <Account />,
         children: [
           { index: true, element: <Profile /> },

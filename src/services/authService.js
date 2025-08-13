@@ -13,7 +13,6 @@ export const loginUser = async (formData) => {
 
 export const logoutUser = async () => {
   const { data } = await api.post("/auth/logout");
-  // Cookies.remove("token");
   Cookies.remove("token");
   return data;
 };
@@ -69,26 +68,10 @@ export const changePassword = async (formData) => {
   return data;
 };
 
-export const getPaymentMethods = async () => {
-  const { data } = await api.get("/static-data/payment-methods");
-  return data?.data || [];
-};
-
 export const completeRegister = async (formData) => {
   const { data } = await api.post("/auth/complete-register", formData);
   return data;
 };
-
-export const getCountries = async () => {
-  const { data } = await api.get("/static-data/countries");
-  return data;
-};
-
-export const getBanks = async () => {
-  const { data } = await api.get("/static-data/banks");
-  return data;
-};
-
 // +++++++++++++++++++ register person +++++++++++++++++++++
 export const registerPerson = async (payload) => {
   const { data } = await api.post("/auth/register", payload);

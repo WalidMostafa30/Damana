@@ -74,7 +74,7 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
 
   const modalMsg = (
     <>
-      <h3 className="text-lg lg:text-2xl font-bold mb-4">
+      <h3 className="text-lg lg:text-2xl font-bold">
         تفويض بمشاركة البيانات
       </h3>
       <p className="text-sm lg:text-base">

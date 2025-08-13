@@ -5,10 +5,11 @@ import { CiBank } from "react-icons/ci";
 import MainInput from "../../components/form/MainInput/MainInput";
 import * as Yup from "yup";
 import { useSelector } from "react-redux";
-import { useMutation, useQuery } from "@tanstack/react-query";
-import { completeRegister, getCountries } from "../../services/authService";
+import { useMutation } from "@tanstack/react-query";
+import { completeRegister } from "../../services/authService";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
+import CountrySelect from "../../components/form/CountrySelect";
 
 const Address = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -19,11 +20,11 @@ const Address = () => {
   const userAddress = profile || {};
 
   // 🟢 جلب الدول
-  const { data: countriesData, isLoading: loadingCountries } = useQuery({
-    queryKey: ["countries"],
-    queryFn: getCountries,
-  });
-  const countries = countriesData?.data || [];
+  // const { data: countriesData, isLoading: loadingCountries } = useQuery({
+  //   queryKey: ["countries"],
+  //   queryFn: getCountries,
+  // });
+  // const countries = countriesData?.data || [];
 
   // 🟢 Mutation
   const mutation = useMutation({
@@ -76,17 +77,6 @@ const Address = () => {
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
-  // 🟢 تحديث الدولة المختارة
-  const handleCountryChange = (e) => {
-    const selectedId = e.target.value;
-    const selectedCountry = countries.find(
-      (c) => String(c.id) === String(selectedId)
-    );
-
-    formik.setFieldValue("address_country_id", selectedCountry?.id || "");
-    formik.setFieldValue("address_country_name", selectedCountry?.name || "");
-  };
-
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -134,7 +124,7 @@ const Address = () => {
           />
 
           {/* الدولة */}
-          <MainInput
+          {/* <MainInput
             id="address_country_name"
             type="select"
             placeholder="اسم الدولة"
@@ -152,6 +142,11 @@ const Address = () => {
                 label: country.name,
               })),
             ]}
+          /> */}
+          <CountrySelect
+            formik={formik}
+            name="address_country_id"
+            combineValue={true}
           />
 
           {/* المدينة */}

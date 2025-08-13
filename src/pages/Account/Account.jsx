@@ -12,25 +12,25 @@ const Account = () => {
       <section className="baseWhiteContainer grid grid-cols-1 xl:grid-cols-4 gap-4">
         <div>
           <nav className="grid gap-2 lg:gap-4 grid-cols-2 lg:grid-cols-3 xl:grid-cols-1">
-            <NavLink to="/account" end className="profileLink">
+            <NavLink to="/profile" end className="profileLink">
               الملف الشخصي
             </NavLink>
-            <NavLink to="/account/bank-info" className="profileLink">
+            <NavLink to="/profile/bank-info" className="profileLink">
               البيانات البنكية
             </NavLink>
-            <NavLink to="/account/address" className="profileLink">
+            <NavLink to="/profile/address" className="profileLink">
               العنوان
             </NavLink>
-            <NavLink to="/account/remove-damana" className="profileLink">
+            <NavLink to="/profile/remove-damana" className="profileLink">
               الغاء ضمانة
             </NavLink>
-            <NavLink to="/account/support" className="profileLink">
+            <NavLink to="/profile/support" className="profileLink">
               الدعم
             </NavLink>
-            <NavLink to="/account/password" className="profileLink">
+            <NavLink to="/profile/password" className="profileLink">
               تعديل كلمة المرور
             </NavLink>
-            <NavLink to="/account/terms" className="profileLink">
+            <NavLink to="/profile/terms" className="profileLink">
               الشروط والأحكام
             </NavLink>
           </nav>

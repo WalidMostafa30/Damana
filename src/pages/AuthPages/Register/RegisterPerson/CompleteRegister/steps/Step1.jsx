@@ -1,28 +1,24 @@
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../../../../../components/form/MainInput/MainInput";
 import { RiBankLine } from "react-icons/ri";
 import FormBtn from "../../../../../../components/form/FormBtn";
-import {
-  getBanks,
-  sendAddressOrBankData,
-} from "../../../../../../services/authService";
+import { sendAddressOrBankData } from "../../../../../../services/authService";
 import FormError from "../../../../../../components/form/FormError";
 import { useState } from "react";
 import { CiBank } from "react-icons/ci";
+import BankSelect from "../../../../../../components/form/BankSelect";
 
 export default function Step1({ formData, setFormData, setStep }) {
   const [errorMsg, setErrorMsg] = useState(null);
 
   // جلب البنوك
-  const { data: banksData, isLoading: loadingBanks } = useQuery({
-    queryKey: ["banks"],
-    queryFn: getBanks,
-  });
-  const banks = banksData?.data || [];
-
-  console.log("banks", banks);
+  // const { data: banksData, isLoading: loadingBanks } = useQuery({
+  //   queryKey: ["banks"],
+  //   queryFn: getBanks,
+  // });
+  // const banks = banksData?.data || [];
 
   const mutation = useMutation({
     mutationFn: sendAddressOrBankData,
@@ -95,7 +91,7 @@ export default function Step1({ formData, setFormData, setStep }) {
           error={getError("clik_name")}
           icon={<RiBankLine />}
         />
-        <MainInput
+        {/* <MainInput
           id="bank_id"
           type="select"
           placeholder="اسم الفرع"
@@ -107,9 +103,10 @@ export default function Step1({ formData, setFormData, setStep }) {
           icon={<CiBank />}
           options={[
             { value: "", label: "اختر البنك" },
-            ...banks.map((c) => ({ value: c.id, label: c.name })),
+            ...banks.map((b) => ({ value: b.id, label: b.name })),
           ]}
-        />
+        /> */}
+        <BankSelect formik={formik} />
       </div>
 
       <FormError errorMsg={errorMsg} />

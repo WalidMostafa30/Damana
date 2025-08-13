@@ -25,7 +25,6 @@ const steps = [
 const RemoveDamana = () => {
   const [step, setStep] = useState(0);
   const [selectedDamanat, setSelectedDamanat] = useState([]);
-  const [selectError, setSelectError] = useState("");
   const [reason, setReason] = useState("");
   const [reasonError, setReasonError] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -48,8 +47,7 @@ const RemoveDamana = () => {
       setOpenModal(true);
     },
     onError: (error) => {
-      console.error("فشل إلغاء الضمانة:", error);
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطاء");
+      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ اثناء الإلغاء");
     },
   });
 
@@ -57,15 +55,6 @@ const RemoveDamana = () => {
     setSelectedDamanat((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
-  };
-
-  const handleNextFromSelect = () => {
-    if (selectedDamanat.length === 0) {
-      setSelectError("من فضلك اختر ضمانة واحدة على الأقل");
-      return;
-    }
-    setSelectError("");
-    setStep(1);
   };
 
   const handleConfirmCancel = () => {
@@ -86,7 +75,6 @@ const RemoveDamana = () => {
     setSelectedDamanat([]);
     setReason("");
     setReasonError("");
-    setSelectError("");
   };
 
   return (
@@ -101,7 +89,7 @@ const RemoveDamana = () => {
       {isLoading && <LoadingSection />}
       {isError && (
         <FormError
-          errorMsg={error?.response?.data?.error_msg || "حدث خطا ثناء التحميل"}
+          errorMsg={error?.response?.data?.error_msg || "حدث خطأ اثناء التحميل"}
         />
       )}
 
@@ -126,14 +114,19 @@ const RemoveDamana = () => {
               />
             ))
           ) : (
-            <p>لا توجد ضمانات متاحة للإلغاء</p>
+            <p className="text-center text-lg">لا توجد ضمانات متاحة للإلغاء</p>
           )}
-          {selectError && <FormError errorMsg={selectError} />}
+
+          {selectedDamanat.length > 0 && (
+            <button onClick={setStep(1)} className="mainBtn">
+              متابعة
+            </button>
+          )}
         </div>
       )}
 
       {step === 1 && (
-        <div>
+        <div className="space-y-4">
           <MainInput
             label="سبب الغاء الضمانة"
             type="textarea"
@@ -141,30 +134,33 @@ const RemoveDamana = () => {
             onChange={(e) => setReason(e.target.value)}
             error={reasonError}
           />
-          <p className="text-error-100 text-lg mt-2 flex items-center gap-1">
+          <p className="text-error-100 text-lg flex items-center gap-1">
             <IoWarningOutline className="text-2xl" />
             تحذير: سيتم خصم العمولة الخاصة بالغاء الضمانة التي قيمتها 5 دنانير
           </p>
           {errorMsg && <FormError errorMsg={errorMsg} />}
-        </div>
-      )}
 
-      {step === 2 && (
-        <div className="text-center space-y-4">
-          <h4 className="text-xl font-semibold text-primary">
-            تم إرسال طلب الإلغاء
-          </h4>
-          <p className="text-neutral-600">سيتم التواصل معك في أقرب وقت ممكن.</p>
-          <button onClick={resetAndBack} className="mainBtn">
-            الرجوع إلى الضمانات
-          </button>
+          <div className="flex flex-col md:flex-row items-center gap-4">
+            <button onClick={resetAndBack} className="mainBtn min-w-[250px]">
+              الاستمرار فى الضمانة
+            </button>
+            <button
+              onClick={handleConfirmCancel}
+              className={`mainBtn danger min-w-[250px] ${
+                cancelDamanaMutation.isPending && "cursor-wait contrast-50"
+              }`}
+              disabled={cancelDamanaMutation.isPending}
+            >
+              {cancelDamanaMutation.isPending
+                ? "جاري التحميل..."
+                : "تاكيد الغاء الضمانة"}
+            </button>
+          </div>
         </div>
       )}
 
       <ActionModal
         openModal={openModal}
-        setOpenModal={setOpenModal}
-        closeBtn
         msg={
           "تم ارسال فورم الالغاء الى مدير النظام, سيتم التواصل معك في اقرب وقت ممكن."
         }
@@ -173,35 +169,10 @@ const RemoveDamana = () => {
           text: "الذهاب الى صفحه الضمانات",
           action: () => {
             setOpenModal(false);
-            navigate("/account/remove-damana");
+            navigate("/profile/remove-damana");
           },
         }}
       />
-
-      {step === 0 && selectedDamanat.length > 0 && (
-        <button onClick={handleNextFromSelect} className="mainBtn">
-          متابعة
-        </button>
-      )}
-
-      {step === 1 && (
-        <div className="flex flex-col md:flex-row items-center gap-4">
-          <button onClick={() => setStep(0)} className="mainBtn min-w-[250px]">
-            الاستمرار فى الضمانة
-          </button>
-          <button
-            onClick={handleConfirmCancel}
-            className={`mainBtn danger min-w-[250px] ${
-              cancelDamanaMutation.isPending && "cursor-wait contrast-50"
-            }`}
-            disabled={cancelDamanaMutation.isPending}
-          >
-            {cancelDamanaMutation.isPending
-              ? "جاري التحميل..."
-              : "تاكيد الغاء الضمانة"}
-          </button>
-        </div>
-      )}
     </>
   );
 };

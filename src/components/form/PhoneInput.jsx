@@ -4,7 +4,7 @@ const PhoneInput = ({
   formik,
   name = "mobile",
   codeName = "country_code",
-  combineValue = false, // بروب جديد
+  combineValue = false,
 }) => {
   const getError = (field) => formik.touched[field] && formik.errors[field];
 

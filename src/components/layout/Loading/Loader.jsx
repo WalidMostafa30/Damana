@@ -1,10 +1,12 @@
+import favLogo from "../../../assets/images/fav-logo.png";
+
 const Loader = () => {
   return (
     <div className="flex flex-col items-center">
       <img
         loading="lazy"
-        src="/images/fav-logo.png"
-        className="w-18 lg:w-26 animate-bounce"
+        src={favLogo}
+        className="w-26 lg:w-36 animate-bounce"
         alt="Loading"
       />
 

@@ -1,13 +1,10 @@
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../../../../../components/form/MainInput/MainInput";
 import { CiBank, CiCalendar } from "react-icons/ci";
 import { MdOutlinePublic } from "react-icons/md";
-import {
-  getCountries,
-  sendPersonalData,
-} from "../../../../../../services/authService";
+import { sendPersonalData } from "../../../../../../services/authService";
 import FormBtn from "../../../../../../components/form/FormBtn";
 import { useState } from "react";
 import FormError from "../../../../../../components/form/FormError";
@@ -16,11 +13,11 @@ export default function Step0({ formData, setFormData, setStep }) {
   const [errorMsg, setErrorMsg] = useState(null);
 
   // جلب الدول
-  const { data: countriesData, isLoading: loadingCountries } = useQuery({
-    queryKey: ["countries"],
-    queryFn: getCountries,
-  });
-  const countries = countriesData?.data || [];
+  // const { data: countriesData, isLoading: loadingCountries } = useQuery({
+  //   queryKey: ["countries"],
+  //   queryFn: getCountries,
+  // });
+  // const countries = countriesData?.data || [];
 
   // mutation للإرسال
   const mutation = useMutation({
@@ -115,22 +112,23 @@ export default function Step0({ formData, setFormData, setStep }) {
           ]}
         />
 
+        {/* <MainInput
+          id="country_id"
+          type="select"
+          placeholder="اسم الدولة"
+          label="اسم الدولة"
+          error={getError("country_id")}
+          value={formik.values.country_id}
+          onChange={formik.handleChange}
+          disabled={loadingCountries}
+          icon={<CiBank />}
+          options={[
+            { value: "", label: "اختر الدولة" },
+            ...countries.map((c) => ({ value: c.id, label: c.name })),
+          ]}
+        /> */}
         {formik.values.nationality_type === "non" && (
-          <MainInput
-            id="country_id"
-            type="select"
-            placeholder="اسم الدولة"
-            label="اسم الدولة"
-            error={getError("country_id")}
-            value={formik.values.country_id}
-            onChange={formik.handleChange}
-            disabled={loadingCountries}
-            icon={<CiBank />}
-            options={[
-              { value: "", label: "اختر الدولة" },
-              ...countries.map((c) => ({ value: c.id, label: c.name })),
-            ]}
-          />
+          <CountrySelect formik={formik} name="country_id" />
         )}
 
         {(formik.values.nationality_type === "jordanian" ||
