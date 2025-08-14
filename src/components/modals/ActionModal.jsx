@@ -43,7 +43,7 @@ const ActionModal = ({
         </div>
       )}
 
-      <div className="flex flex-wrap gap-2 lg:gap-4">
+      <div className="flex flex-col lg:flex-row flex-wrap gap-2 lg:gap-4">
         {primaryBtn.text && (
           <button
             className={`mainBtn flex-1`}

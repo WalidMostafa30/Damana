@@ -1,20 +1,13 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import logo from "../../../assets/images/header-logo.png";
 import { HiMenuAlt2 } from "react-icons/hi";
 import { IoClose } from "react-icons/io5";
 import HeaderActions from "./HeaderActions/HeaderActions";
 import NavBar from "./NavBar";
-import { useDispatch } from "react-redux";
-import { getProfileAct } from "../../../store/profile/profileAction";
 import { Link } from "react-router-dom";
 
 const Header = () => {
   const [openNav, setOpenNav] = useState(false);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    dispatch(getProfileAct());
-  }, [dispatch]);
 
   return (
     <header className="bg-primary text-white relative">

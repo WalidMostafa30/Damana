@@ -147,6 +147,7 @@ const Address = () => {
             formik={formik}
             name="address_country_id"
             combineValue={true}
+            disabled={!isEditing}
           />
 
           {/* المدينة */}

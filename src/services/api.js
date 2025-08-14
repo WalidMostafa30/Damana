@@ -23,15 +23,15 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-api.interceptors.response.use(
-  (res) => res,
-  (err) => {
-    if (err.response?.status === 401 || err.response?.status === 403) {
-      Cookies.remove("token");
-      store.dispatch(openLogoutModal());
-    }
-    return Promise.reject(err);
-  }
-);
+// api.interceptors.response.use(
+//   (res) => res,
+//   (err) => {
+//     if (err.response?.status === 401 || err.response?.status === 403) {
+//       Cookies.remove("token");
+//       store.dispatch(openLogoutModal());
+//     }
+//     return Promise.reject(err);
+//   }
+// );
 
 export default api;

@@ -18,7 +18,7 @@ const Notifications = ({ notifications, isLoading, onClose }) => {
         {notifications.slice(0, 3).map((n) => (
           <div
             key={n.id}
-            className={`flex gap-2 p-4 cursor-pointer not-last:border-b border-neutral-200 ${
+            className={`flex gap-2 p-2 lg:p-4 cursor-pointer not-last:border-b border-neutral-400 ${
               n.read_at ? "" : "bg-secondary/20 hover:bg-secondary/30"
             }`}
           >
@@ -43,9 +43,9 @@ const Notifications = ({ notifications, isLoading, onClose }) => {
       <Link
         onClick={onClose}
         to="/notifications"
-        className="text-primary text-sm font-bold p-4 flex items-center gap-1 cursor-pointer"
+        className="text-primary text-sm font-bold p-2 lg:p-4 flex items-center gap-1 cursor-pointer"
       >
-        <SlBell className="text-2xl" />
+        <SlBell className="text-xl" />
         رؤيه كل الاشعارات
       </Link>
     </>

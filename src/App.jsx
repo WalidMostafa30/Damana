@@ -7,6 +7,7 @@ import TopHeader from "./components/layout/Header/TopHeader";
 import { useDispatch, useSelector } from "react-redux";
 import { closeLogoutModal } from "./store/modalsSlice/logoutModalSlice";
 import ActionModal from "./components/modals/ActionModal";
+import { getProfileAct } from "./store/profile/profileAction";
 
 function App() {
   const { pathname } = useLocation();
@@ -18,12 +19,16 @@ function App() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  useEffect(() => {
+    dispatch(getProfileAct());
+  }, [dispatch]);
+
   return (
     <main>
-      {/* <TopHeader /> */}
-      {/* <Header /> */}
+      <TopHeader />
+      <Header />
       <Outlet />
-      {/* <Footer /> */}
+      <Footer />
 
       {/* logout modal */}
       <ActionModal

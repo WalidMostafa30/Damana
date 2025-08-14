@@ -22,7 +22,7 @@ const Modal = ({ openModal, setOpenModal, closeBtn = false, children }) => {
       }`}
     >
       <div
-        className={`w-full max-w-2xl p-4 pt-12 bg-white rounded-xl duration-300 flex flex-col gap-4 relative ${
+        className={`w-full max-h-full max-w-2xl p-4 pt-12 bg-white rounded-xl duration-300 flex flex-col gap-4 relative overflow-y-auto ${
           openModal ? "translate-y-0" : "translate-y-8"
         }`}
       >

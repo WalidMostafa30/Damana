@@ -10,24 +10,24 @@ const AuthLayout = ({ children }) => {
         after:absolute after:inset-0 after:bg-primary/50 xl:after:bg-transparent"
       >
         <div className="w-full h-full max-w-2xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">
-          {/* <img
+          <img
             src={favLogo}
             alt="logo"
             loading="lazy"
             className="mb-4 xl:mb-8 w-20 lg:w-32"
-          /> */}
+          />
           {children}
         </div>
       </div>
 
-      {/* <div className="hidden xl:block sticky top-0 w-1/2 h-screen overflow-hidden bg-[url(images/main-img.png)] bg-cover bg-right">
+      <div className="hidden xl:block sticky top-0 w-1/2 h-screen overflow-hidden bg-[url(images/main-img.png)] bg-cover bg-right">
         <img
           src={logoImg}
           alt="logo"
           loading="lazy"
           className="w-96 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
         />
-      </div> */}
+      </div>
     </section>
   );
 };
