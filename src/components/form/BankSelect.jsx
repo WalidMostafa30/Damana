@@ -1,4 +1,4 @@
-import { getBanks } from "../../services/authService";
+import { getBanks } from "../../services/staticDataService";
 import { useQuery } from "@tanstack/react-query";
 
 const BankSelect = ({ formik, name = "bank_id" }) => {
