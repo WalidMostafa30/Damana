@@ -78,13 +78,13 @@ const ActionsSection = ({ damana }) => {
             onClick={() => handleChangeStatus("accepted")}
             className="mainBtn flex-1 min-w-[150px]"
           >
-            ✅ تأكيد الضمانة
+            تأكيد الضمانة
           </button>
           <button
             onClick={() => handleChangeStatus("rejected")}
             className="mainBtn light flex-1 min-w-[150px]"
           >
-            ❌ رفض الضمانة
+            رفض الضمانة
           </button>
         </div>
       )}
