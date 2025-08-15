@@ -4,7 +4,7 @@ import { IoIosArrowDown } from "react-icons/io";
 import DropDown from "../../../common/DropDown";
 import { FaUserAlt } from "react-icons/fa";
 import { RiLogoutBoxRFill } from "react-icons/ri";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Avatar from "../../../common/Avatar";
 import { useSelector } from "react-redux";
 import { useMutation, useQuery } from "@tanstack/react-query";
@@ -21,8 +21,6 @@ const HeaderActions = ({ setOpenNav }) => {
 
   const { profile } = useSelector((state) => state.profile);
 
-  const navigate = useNavigate();
-
   // جلب الإشعارات
   const { data: notifications, isLoading } = useQuery({
     queryKey: ["notifications"],
@@ -31,7 +29,6 @@ const HeaderActions = ({ setOpenNav }) => {
 
   const logoutMutation = useMutation({
     mutationFn: () => logoutUser(),
-    onSuccess: () => navigate("/login"),
   });
 
   return (
@@ -96,14 +93,14 @@ const HeaderActions = ({ setOpenNav }) => {
               <FaUserAlt className="text-lg lg:text-2xl" />
               الملف الشخصي
             </Link>
-            <button
+            <Link
+              to={"/login"}
               onClick={() => logoutMutation.mutate()}
-              disabled={logoutMutation.isPending}
               className="w-full flex items-center gap-2 font-bold p-2 lg:p-3 lg:text-lg border border-error-200 bg-error-200/10 text-error-200 rounded-lg cursor-pointer"
             >
               <RiLogoutBoxRFill className="text-lg lg:text-2xl" />
               تسجيل الخروج
-            </button>
+            </Link>
           </div>
         </DropDown>
       </div>

@@ -9,16 +9,12 @@ import FormError from "../../../../../../components/form/FormError";
 import { useState } from "react";
 import { CiBank } from "react-icons/ci";
 import BankSelect from "../../../../../../components/form/BankSelect";
+import { GoFileBinary } from "react-icons/go";
+import { SiBitcoin } from "react-icons/si";
+import { IoIdCardSharp } from "react-icons/io5";
 
 export default function Step1({ formData, setFormData, setStep }) {
   const [errorMsg, setErrorMsg] = useState(null);
-
-  // جلب البنوك
-  // const { data: banksData, isLoading: loadingBanks } = useQuery({
-  //   queryKey: ["banks"],
-  //   queryFn: getBanks,
-  // });
-  // const banks = banksData?.data || [];
 
   const mutation = useMutation({
     mutationFn: sendAddressOrBankData,
@@ -64,32 +60,44 @@ export default function Step1({ formData, setFormData, setStep }) {
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
+          label="رقم الحساب الدولي (IBAN)"
           id="iban"
-          label="رقم الايبان"
           name="iban"
-          placeholder="SA1234567890123456"
+          placeholder="مثال: SA4420000001234567891234"
           value={formik.values.iban}
           onChange={formik.handleChange}
           error={getError("iban")}
+          icon={<GoFileBinary />}
         />
         <MainInput
+          type="select"
+          label="العملة"
           id="currency"
-          label="رقم الحساب"
           name="currency"
-          placeholder="123456"
           value={formik.values.currency}
           onChange={formik.handleChange}
           error={getError("currency")}
+          icon={<SiBitcoin />}
+          options={[
+            {
+              value: "",
+              label: "اختر العمله",
+            },
+            ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
+              value: c,
+              label: c,
+            })),
+          ]}
         />
         <MainInput
+          label="اسم المستخدم (CLIQ)"
           id="clik_name"
-          label="اسم البنك"
           name="clik_name"
-          placeholder="اسم البنك"
+          placeholder="مثال: user@bank.com"
           value={formik.values.clik_name}
           onChange={formik.handleChange}
           error={getError("clik_name")}
-          icon={<RiBankLine />}
+          icon={<IoIdCardSharp />}
         />
         {/* <MainInput
           id="bank_id"

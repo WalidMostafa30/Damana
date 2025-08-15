@@ -8,6 +8,7 @@ import App from "../App";
 import LoadingPage from "../components/layout/Loading/LoadingPage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import GuestRoute from "../components/ProtectedRoute/GuestRoute";
+import CheckAuthRoute from "../components/ProtectedRoute/CheckAuthRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
@@ -56,7 +57,9 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <ProtectedRoute>
-        <App />
+        <CheckAuthRoute>
+          <App />
+        </CheckAuthRoute>
       </ProtectedRoute>
     ),
     children: [
@@ -89,51 +92,27 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: (
-      <GuestRoute>
-        <LoginPage />
-      </GuestRoute>
-    ),
+    element: <LoginPage />,
   },
   {
     path: "forgot-password",
-    element: (
-      <GuestRoute>
-        <ForgotPassword />
-      </GuestRoute>
-    ),
+    element: <ForgotPassword />,
   },
   {
     path: "register-company",
-    element: (
-      <GuestRoute>
-        <RegisterCompany />
-      </GuestRoute>
-    ),
+    element: <RegisterCompany />,
   },
   {
     path: "register-person",
-    element: (
-      <GuestRoute>
-        <RegisterPerson />
-      </GuestRoute>
-    ),
+    element: <RegisterPerson />,
   },
   {
     path: "register-otp",
-    element: (
-      <GuestRoute>
-        <RegisterOTP />
-      </GuestRoute>
-    ),
+    element: <RegisterOTP />,
   },
   {
     path: "complete-register",
-    element: (
-      <GuestRoute>
-        <CompleteRegister />
-      </GuestRoute>
-    ),
+    element: <CompleteRegister />,
   },
 
   { path: "*", element: <NotFound /> },

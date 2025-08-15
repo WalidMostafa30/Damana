@@ -11,7 +11,7 @@ import BackStepBtn from "../../../../../components/form/BackStepBtn";
 const steps = ["بياناتك الشخصية", "البيانات البنكية", "العنوان السكني"];
 
 export default function CompleteRegister() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const goBack = () => setStep((prev) => prev - 1);
 
   const [formData, setFormData] = useState({
@@ -63,15 +63,17 @@ export default function CompleteRegister() {
         />
       )}
 
-      <BackStepBtn step={step} goBack={goBack} />
+      <div className="mt-4">
+        <BackStepBtn step={step} goBack={goBack} />
+      </div>
 
-      <p className="text-center mt-4">
-        هل تمتلك حساب؟{" "}
+      <p className="text-center font-semibold text-sm lg:text-base mt-4">
+        هل تمتلك حساب بالفعل؟{" "}
         <Link
           to="/login"
           className="text-secondary hover:brightness-50 transition-colors"
         >
-          تسجيل الدخول
+          تسجيل دخول
         </Link>
       </p>
     </AuthLayout>

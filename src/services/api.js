@@ -23,15 +23,22 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// api.interceptors.response.use(
-//   (res) => res,
-//   (err) => {
-//     if (err.response?.status === 401 || err.response?.status === 403) {
-//       Cookies.remove("token");
-//       store.dispatch(openLogoutModal());
-//     }
-//     return Promise.reject(err);
-//   }
-// );
+api.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    const status = err.response?.status;
+
+    // if (status === 401 || status === 403) {
+    //   Cookies.remove("token");
+    //   store.dispatch(openLogoutModal());
+    // }
+
+    // if (status === 451) {
+    //   window.location.href = "/register-otp";
+    // }
+
+    return Promise.reject(err);
+  }
+);
 
 export default api;

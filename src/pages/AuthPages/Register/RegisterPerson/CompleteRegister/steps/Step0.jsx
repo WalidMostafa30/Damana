@@ -8,6 +8,7 @@ import { sendPersonalData } from "../../../../../../services/authService";
 import FormBtn from "../../../../../../components/form/FormBtn";
 import { useState } from "react";
 import FormError from "../../../../../../components/form/FormError";
+import CountrySelect from "../../../../../../components/form/CountrySelect";
 
 export default function Step0({ formData, setFormData, setStep }) {
   const [errorMsg, setErrorMsg] = useState(null);

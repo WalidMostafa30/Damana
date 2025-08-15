@@ -18,6 +18,7 @@
     "google-libphonenumber": "^3.2.42",
     "js-cookie": "^3.0.5",
     "lodash.get": "^4.4.2",
+    "number-to-arabic-words": "^1.5.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-hot-toast": "^2.5.2",

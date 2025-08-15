@@ -1,15 +1,25 @@
 import { getBanks } from "../../services/staticDataService";
 import { useQuery } from "@tanstack/react-query";
+import MainInput from "./MainInput/MainInput";
+import { CiBank } from "react-icons/ci";
 
-const BankSelect = ({ formik, name = "bank_id" }) => {
-  // جلب البنوك
+const BankSelect = ({ formik, name = "bank_id", setSwiftCode }) => {
   const { data: banksData, isLoading: loadingBanks } = useQuery({
     queryKey: ["banks"],
     queryFn: getBanks,
   });
+
   const banks = banksData?.data || [];
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
+
+  const handleChange = (e) => {
+    formik.handleChange(e);
+    if (setSwiftCode) {
+      const selectedBank = banks.find((b) => b.id === Number(e.target.value));
+      setSwiftCode(selectedBank?.swift_code || "");
+    }
+  };
 
   return (
     <MainInput
@@ -19,7 +29,7 @@ const BankSelect = ({ formik, name = "bank_id" }) => {
       label="اسم الفرع"
       error={getError(name)}
       value={formik.values[name]}
-      onChange={formik.handleChange}
+      onChange={handleChange}
       disabled={loadingBanks}
       icon={<CiBank />}
       options={[

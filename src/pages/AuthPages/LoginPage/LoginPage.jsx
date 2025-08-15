@@ -126,25 +126,23 @@ const LoginPage = () => {
 
         <FormBtn title="تسجيل الدخول" loading={mutation.isPending} />
 
-        <div className="text-center font-semibold text-sm lg:text-base">
-          <p>
-            ليس لديك حساب؟{" "}
-            <Link
-              to="/register-person"
-              className="text-secondary hover:brightness-50 transition-colors"
-            >
-              إنشئ حساب فرديا
-            </Link>{" "}
-            أو قدم{" "}
-            <Link
-              to="/register-company"
-              className="text-secondary hover:brightness-50 transition-colors"
-            >
-              طلب انضمام
-            </Link>{" "}
-            ان كنت تمثل شركة
-          </p>
-        </div>
+        <p className="text-center font-semibold text-sm lg:text-base">
+          ليس لديك حساب؟{" "}
+          <Link
+            to="/register-person"
+            className="text-secondary hover:brightness-50 transition-colors"
+          >
+            إنشئ حساب فرديا
+          </Link>{" "}
+          أو قدم{" "}
+          <Link
+            to="/register-company"
+            className="text-secondary hover:brightness-50 transition-colors"
+          >
+            طلب انضمام
+          </Link>{" "}
+          ان كنت تمثل شركة
+        </p>
       </form>
     </AuthLayout>
   );

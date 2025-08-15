@@ -83,16 +83,26 @@ export const registerPerson = async (payload) => {
   return data;
 };
 
-export const sendOtp = async () => {
-  const { data } = await api.post("/auth/verified-mobile/sendOtp");
+export const sendOtp = async (payload) => {
+  const { data } = await api.post("/auth/verified-mobile/sendOtp", payload);
   return data;
 };
 
-export const checkOtpRegister = async (otp_code) => {
+export const sendOtpFlow2 = async (payload) => {
+  const { data } = await api.post("/auth/register/sendOtp/Flow2", payload);
+  return data;
+};
+
+export const checkOtpRegister = async (payload) => {
   const { data } = await api.post(
     "/auth/verified-mobile/checkOtpWithVerified",
-    otp_code
+    payload
   );
+  return data;
+};
+
+export const checkOtpRegisterFlow2 = async (payload) => {
+  const { data } = await api.post("/auth/register/checkOtp/Flow2", payload);
   return data;
 };
 
@@ -114,4 +124,13 @@ export const sendAddressOrBankData = async (payload) => {
   }
 
   return data;
+};
+export const checkAuth = async () => {
+  const { data } = await api.get("/auth/check-auth");
+
+  if (data?.data?.token) {
+    Cookies.set("token", data?.data?.token);
+  }
+
+  return data?.data;
 };

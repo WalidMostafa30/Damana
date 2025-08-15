@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../../components/common/AuthLayout";
@@ -36,11 +36,17 @@ const RegisterPerson = () => {
   const registerMutation = useMutation({
     mutationFn: registerPerson,
     onSuccess: async (data, variables) => {
+      const state = {};
+
+      if (data?.error_code === 1101) {
+        state.mobile = variables.mobile;
+        state.country_code = variables.country_code;
+        state.flow = 2;
+        state.ref_key = data?.ref_key;
+      }
+
       navigate("/register-otp", {
-        state: {
-          mobile: variables.mobile,
-          country_code: variables.country_code,
-        },
+        state: state,
       });
     },
     onError: (error) => {
@@ -157,6 +163,16 @@ const RegisterPerson = () => {
         <FormError errorMsg={errorMsg} />
 
         <FormBtn title="انشاء حساب" loading={registerMutation.isPending} />
+
+        <p className="text-center font-semibold text-sm lg:text-base">
+          هل تمتلك حساب بالفعل؟{" "}
+          <Link
+            to="/login"
+            className="text-secondary hover:brightness-50 transition-colors"
+          >
+            تسجيل دخول
+          </Link>
+        </p>
       </form>
     </AuthLayout>
   );

@@ -6,10 +6,31 @@ import {
   createCompanyGroup,
   getCompanyGroups,
 } from "../../../../../services/authService";
+import ActionModal from "../../../../../components/modals/ActionModal";
 
 const Step6Company = ({ formik, getError }) => {
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);
   const [customGroupName, setCustomGroupName] = useState("");
+  const [openModal, setOpenModal] = useState(false);
+  const modalMsg = (
+    <>
+      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
+      <p className="text-sm lg:text-base">
+        أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
+        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية العائدة لي
+        ومعالجتها من خلال استخدام خدمات واجهة برمجة التطبيقات المفتوحة APIs
+        المتوفرة من خلال نظام الربط البيني الحكومي , لأغراض التحقق من ملكية
+        المركبة, كما أوافق على قيام البنك العربي بمعالجة بياناتي الشخصية بما
+        يشمل الاسم، تاريخ الميلاد، العنوان، ورقم هوية الأحوال المدنية الخاص بي
+        لأغراض تنفيذ الحوالات أو لأي غرض آخر لازم لغايات الامتثال بالقوانين
+        والأنظمة والتعليمات واللوائح المعمول بها في المملكة. يبقى هذا التفويض
+        مستمراً ومنتجا لأثاره دون قيد او شرط طيلة فترة عملية بيع المركبة، وذلك
+        ضمن نطاق الاستخدام القانوني المصرّح به ويخضع في جميع الأوقات للرقابة
+        الداخلية والتدقيق في البنك العربي
+      </p>
+    </>
+  );
+
   const queryClient = useQueryClient();
 
   const { data, isLoading } = useQuery({
@@ -129,27 +150,42 @@ const Step6Company = ({ formik, getError }) => {
         <input
           type="checkbox"
           name="accept_policy_terms"
-          checked={formik.values.accept_policy_terms === "yes"}
+          checked={formik.values.accept_policy_terms}
           onChange={(e) =>
-            formik.setFieldValue(
-              "accept_policy_terms",
-              e.target.checked ? "yes" : ""
-            )
+            formik.setFieldValue("accept_policy_terms", e.target.checked)
           }
           className="h-5 w-5 accent-primary focus:ring-primary"
         />
         <span>
           الموافقة على سياسة{" "}
-          <a href="#" className="text-primary font-semibold">
-            الخصوصية
-          </a>{" "}
-          و{" "}
-          <a href="#" className="text-primary font-semibold">
-            شروط استخدام
-          </a>{" "}
-          ضمانة
+          <button
+            type="button"
+            onClick={() => setOpenModal(true)}
+            className="text-primary font-semibold cursor-pointer"
+          >
+            الخصوصية و شروط استخدام ضمانة
+          </button>{" "}
         </span>
       </label>
+      {getError("accept_policy_terms") && (
+        <p className="text-error-100">{getError("accept_policy_terms")}</p>
+      )}
+
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        closeBtn
+        msg={modalMsg}
+        icon="protect"
+        primaryBtn={{
+          text: "أوافق على الشروط و المتابعه",
+          action: () => {
+            formik.setFieldValue("accept_policy_terms", true);
+            setOpenModal(false);
+          },
+        }}
+        lightBtn={{ text: "العوده", action: () => setOpenModal(false) }}
+      />
     </>
   );
 };

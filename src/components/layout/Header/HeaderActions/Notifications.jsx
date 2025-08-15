@@ -8,14 +8,14 @@ const Notifications = ({ notifications, isLoading, onClose }) => {
     return <p className="p-4 text-center">جاري التحميل...</p>;
   }
 
-  if (!notifications?.length) {
+  if (notifications?.length === 0) {
     return <p className="p-4 text-center">لا يوجد اشعارات</p>;
   }
 
   return (
     <>
       <div>
-        {notifications.slice(0, 3).map((n) => (
+        {notifications?.slice(0, 3).map((n) => (
           <div
             key={n.id}
             className={`flex gap-2 p-2 lg:p-4 cursor-pointer not-last:border-b border-neutral-400 ${

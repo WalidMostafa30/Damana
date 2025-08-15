@@ -15,7 +15,7 @@ import AuthLayout from "../../../../components/common/AuthLayout";
 import get from "lodash.get";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useMutation } from "@tanstack/react-query";
 import { registerCompany } from "../../../../services/authService";
@@ -113,14 +113,12 @@ const stepSchemas = [
 
   // Step 4
   Yup.object({
-    bank_name: Yup.string().required("اسم البنك مطلوب"),
-    account_number: Yup.string().required("رقم الحساب مطلوب"),
+    bank_id: Yup.string().required("اسم البنك مطلوب"),
     iban: Yup.string().required("رقم الايبان مطلوب"),
-    branch: Yup.string().required("اسم الفرع مطلوب"),
-    swift_code: Yup.string().required("رمز السويفت مطلوب"),
+    // swift_code: Yup.string().required("رمز السويفت مطلوب"),
     currency: Yup.string().required("العملة مطلوبة"),
-    clik_name: Yup.string().required("العملة مطلوبة"),
-    info_name: Yup.string().required("اسم المصرح بالبيانات مطلوب"),
+    clik_name: Yup.string(),
+    // info_name: Yup.string().required("اسم المصرح بالبيانات مطلوب"),
   }),
 
   // Step 5
@@ -157,17 +155,17 @@ const stepSchemas = [
 
   // Step 6
   Yup.object({
-    acknowledgement: Yup.string().oneOf(
-      ["yes"],
+    acknowledgement: Yup.boolean().oneOf(
+      [true],
       "يجب الموافقة على الإقرار قبل المتابعة"
     ),
   }),
 
   // Step 7
   Yup.object({
-    group_id: Yup.object(),
-    accept_policy_terms: Yup.string().oneOf(
-      ["yes"],
+    group_id: Yup.object(), // اختياري عادي
+    accept_policy_terms: Yup.boolean().oneOf(
+      [true],
       "يجب الموافقة على الإقرار قبل المتابعة"
     ),
   }),
@@ -212,12 +210,10 @@ const RegisterCompany = () => {
       partners: values.partners,
       commissioners: values.commissioners,
       managementCommissioners: values.managementCommissioners,
-      bank_name: values.bank_name,
-      account_number: values.account_number,
+      bank_id: values.bank_id,
       iban: values.iban,
       swift_code: values.swift_code,
       currency: values.currency,
-      branch: values.branch,
       clik_name: values.clik_name,
       // هنا لو فيه ملفات أو بيانات إضافية ممكن تضيفها
     };
@@ -282,21 +278,19 @@ const RegisterCompany = () => {
         email: "",
         delegation_permissions: "",
       },
-      bank_name: "",
-      account_number: "",
+      bank_id: "",
       iban: "",
-      branch: "",
       swift_code: "",
       currency: "",
       clik_name: "",
-      info_name: "",
+      // info_name: "",
       file_commercial_register: null,
       file_memorandum_association: null,
       file_Professional_License_lease_contract: null,
       file_identity_document_signatories: null,
-      acknowledgement: "",
+      acknowledgement: false,
       group_id: {},
-      accept_policy_terms: "",
+      accept_policy_terms: false,
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
@@ -310,6 +304,41 @@ const RegisterCompany = () => {
         mutation.mutate(payload);
       }
     },
+    // onSubmit: async (values) => {
+    //   setErrorMsg("");
+
+    //   try {
+    //     // تحقّق من مخطط الخطوة الحالية فقط
+    //     await stepSchemas[step].validate(values, { abortEarly: false });
+
+    //     if (step < steps.length - 1) {
+    //       setStep((prev) => prev + 1);
+    //       // اختياري: نظّف touched عشان ما تظهرش أخطاء قديمة
+    //       formik.setTouched({});
+    //     } else {
+    //       const payload = formatPayload(values);
+    //       mutation.mutate(payload);
+    //     }
+    //   } catch (err) {
+    //     if (err.name === "ValidationError") {
+    //       const formErrors = err.inner.reduce((acc, cur) => {
+    //         if (cur.path) acc[cur.path] = cur.message;
+    //         return acc;
+    //       }, {});
+    //       formik.setErrors(formErrors);
+
+    //       // علّم الحقول اللي فيها أخطاء كـ touched عشان تعرض الرسائل
+    //       const touched = Object.keys(formErrors).reduce((acc, key) => {
+    //         acc[key] = true;
+    //         return acc;
+    //       }, {});
+    //       formik.setTouched(touched, true);
+    //     } else {
+    //       // أي خطأ غير متوقع
+    //       setErrorMsg("حدث خطأ غير متوقع");
+    //     }
+    //   }
+    // },
   });
 
   const getError = (name) => {
@@ -376,6 +405,16 @@ const RegisterCompany = () => {
             title={step < steps.length - 1 ? "التالي" : "إنهاء"}
             loading={mutation.isPending}
           />
+
+          <p className="text-center font-semibold text-sm lg:text-base">
+            هل تمتلك حساب بالفعل؟{" "}
+            <Link
+              to="/login"
+              className="text-secondary hover:brightness-50 transition-colors"
+            >
+              تسجيل دخول
+            </Link>
+          </p>
 
           <BackStepBtn step={step} goBack={goBack} />
         </form>

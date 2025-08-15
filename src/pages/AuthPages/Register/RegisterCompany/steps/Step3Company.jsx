@@ -5,34 +5,27 @@ import { GoFileBinary } from "react-icons/go";
 import { IoMdCode } from "react-icons/io";
 import { SiBitcoin } from "react-icons/si";
 import { FaEarthAsia } from "react-icons/fa6";
+import BankSelect from "../../../../../components/form/BankSelect";
+import { useState } from "react";
 
 const Step3Company = ({ formik, getError }) => {
+  const [swiftCode, setSwiftCode] = useState("");
   return (
     <>
       <p className="text-primary text-lg font-bold">بيانات الحساب البنكي</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <MainInput
+        {/* <MainInput
           label="اسم البنك"
-          id="bank_name"
-          name="bank_name"
+          id="bank_id"
+          name="bank_id"
           placeholder="مثال: البنك الأهلي"
-          value={formik.values.bank_name}
+          value={formik.values.bank_id}
           onChange={formik.handleChange}
-          error={getError("bank_name")}
+          error={getError("bank_id")}
           icon={<BsBank />}
-        />
-
-        <MainInput
-          label="رقم الحساب"
-          id="account_number"
-          name="account_number"
-          placeholder="مثال: 1234567890"
-          value={formik.values.account_number}
-          onChange={formik.handleChange}
-          error={getError("account_number")}
-          icon={<IoIdCardSharp />}
-        />
+        /> */}
+        <BankSelect formik={formik} setSwiftCode={setSwiftCode} />
 
         <MainInput
           label="رقم الحساب الدولي (IBAN)"
@@ -50,36 +43,36 @@ const Step3Company = ({ formik, getError }) => {
           id="swift_code"
           name="swift_code"
           placeholder="مثال: NBEGEGCXXXX"
-          value={formik.values.swift_code}
+          value={swiftCode}
           onChange={formik.handleChange}
           error={getError("swift_code")}
           icon={<IoMdCode />}
+          disabled
         />
 
         <MainInput
+          type="select"
           label="العملة"
           id="currency"
           name="currency"
-          placeholder="مثال: ريال سعودي"
           value={formik.values.currency}
           onChange={formik.handleChange}
           error={getError("currency")}
           icon={<SiBitcoin />}
+          options={[
+            {
+              value: "",
+              label: "اختر العمله",
+            },
+            ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
+              value: c,
+              label: c,
+            })),
+          ]}
         />
 
         <MainInput
-          label="الفرع"
-          id="branch"
-          name="branch"
-          placeholder="مثال: فرع الرياض"
-          value={formik.values.branch}
-          onChange={formik.handleChange}
-          error={getError("branch")}
-          icon={<FaEarthAsia />}
-        />
-
-        <MainInput
-          label="اسم المستخدم (CLIQ)"
+          label="اسم المستخدم (CLIQ) (اختياري)"
           id="clik_name"
           name="clik_name"
           placeholder="مثال: user@bank.com"
@@ -89,7 +82,7 @@ const Step3Company = ({ formik, getError }) => {
           icon={<IoIdCardSharp />}
         />
 
-        <MainInput
+        {/* <MainInput
           label="اسم المصرح بالبيانات"
           id="info_name"
           name="info_name"
@@ -98,7 +91,7 @@ const Step3Company = ({ formik, getError }) => {
           onChange={formik.handleChange}
           error={getError("info_name")}
           icon={<IoIdCardSharp />}
-        />
+        /> */}
       </div>
     </>
   );

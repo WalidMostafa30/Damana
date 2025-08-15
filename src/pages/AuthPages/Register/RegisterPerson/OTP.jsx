@@ -1,26 +1,39 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
-import { checkOtpRegister, sendOtp } from "../../../../services/authService";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  checkOtpRegister,
+  checkOtpRegisterFlow2,
+  sendOtp,
+  sendOtpFlow2,
+} from "../../../../services/authService";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../../components/common/AuthLayout";
+import ActionModal from "../../../../components/modals/ActionModal";
 
 const Otp = () => {
-  const location = useLocation();
-  const { mobile, country_code } = location.state || {};
-
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { flow = 1, mobile, country_code, ref_key } = location.state || {};
+
+  const sendOtpFn =
+    flow === 2
+      ? () => sendOtpFlow2({ mobile, country_code, ref_key })
+      : () => sendOtp();
+
+  const checkOtpFn = flow === 2 ? checkOtpRegisterFlow2 : checkOtpRegister;
 
   // Mutation: إرسال OTP
   const sendOtpMutation = useMutation({
-    mutationFn: () => sendOtp({ mobile, country_code }),
+    mutationFn: sendOtpFn,
     onSuccess: (data) => {
       console.log("تم إرسال الكود ✅", data);
     },
@@ -33,10 +46,14 @@ const Otp = () => {
 
   // Mutation: التحقق من OTP
   const checkOtpMutation = useMutation({
-    mutationFn: checkOtpRegister,
+    mutationFn: checkOtpFn,
     onSuccess: (data) => {
       console.log("OTP صحيح ✅", data);
-      navigate("/complete-register");
+      if (flow === 2) {
+        setOpenModal(true);
+      } else {
+        navigate("/complete-register");
+      }
     },
     onError: (error) => {
       setErrorMessage(
@@ -47,10 +64,8 @@ const Otp = () => {
 
   // أول ما الصفحة تفتح أرسل الكود
   useEffect(() => {
-    if (mobile && country_code) {
-      sendOtpMutation.mutate();
-    }
-  }, [mobile, country_code]);
+    sendOtpMutation.mutate();
+  }, []);
 
   // مؤقت إعادة الإرسال
   useEffect(() => {
@@ -89,6 +104,12 @@ const Otp = () => {
     }
   };
 
+  const formatTime = (seconds) => {
+    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${m}:${s}`;
+  };
+
   const handleSubmit = () => {
     const fullCode = otp.join("");
     if (fullCode.length < 5) {
@@ -97,13 +118,15 @@ const Otp = () => {
     }
     console.log("الكود:", fullCode);
 
-    checkOtpMutation.mutate({ otp_code: fullCode });
-  };
+    const payload = { otp_code: fullCode };
 
-  const formatTime = (seconds) => {
-    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${m}:${s}`;
+    if (flow === 2) {
+      payload.ref_key = ref_key;
+      payload.mobile = mobile;
+      payload.country_code = country_code;
+    }
+
+    checkOtpMutation.mutate(payload);
   };
 
   return (
@@ -171,6 +194,28 @@ const Otp = () => {
         onClick={handleSubmit}
         title="تأكيد الكود"
         loading={checkOtpMutation.isPending}
+      />
+
+      <p className="text-center font-semibold text-sm lg:text-base mt-4">
+        هل تمتلك حساب بالفعل؟{" "}
+        <Link
+          to="/login"
+          className="text-secondary hover:brightness-50 transition-colors"
+        >
+          تسجيل دخول
+        </Link>
+      </p>
+
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        icon="warning"
+        msg="لديك حساب مسجل مسبقا بالفعل"
+        primaryBtn={{ text: "تسجيل دخول", action: () => navigate("/login") }}
+        lightBtn={{
+          text: "استعادة كلمة المرور",
+          action: () => navigate("/forgot-password"),
+        }}
       />
     </AuthLayout>
   );

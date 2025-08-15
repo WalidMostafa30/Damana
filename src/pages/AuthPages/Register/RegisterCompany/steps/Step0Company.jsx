@@ -6,9 +6,13 @@ import { IoLocationOutline } from "react-icons/io5";
 import { LuFileDigit } from "react-icons/lu";
 import { TbWorldWww } from "react-icons/tb";
 import { FaEarthAsia, FaMoneyBill1Wave } from "react-icons/fa6";
-import { MdOutlineMarkEmailUnread } from "react-icons/md";
+import {
+  MdOutlineDriveFileRenameOutline,
+  MdOutlineMarkEmailUnread,
+} from "react-icons/md";
 import { GiReceiveMoney } from "react-icons/gi";
 import PhoneInput from "../../../../../components/form/PhoneInput";
+import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
 
 const Step0Company = ({ formik, getError }) => {
   return (
@@ -212,21 +216,23 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="اسم الموقع الرسمي"
+          label="اسم المفوض بالتوقيع"
           id="signed_name"
           name="signed_name"
-          placeholder="اسم الموقع"
+          placeholder="اسم المفوض بالتوقيع"
           value={formik.values.signed_name}
           onChange={formik.handleChange}
           error={getError("signed_name")}
-          icon={<FaMoneyBill1Wave />}
+          icon={<MdOutlineDriveFileRenameOutline />}
         />
       </div>
 
-      <p className="text-neutral-500 flex items-center gap-1 mt-3">
-        <CgMailOpen className="text-2xl" />
-        الفان وخمس وعشرون دينار اردني
-      </p>
+      {formik.values.capital_equity && (
+        <p className="text-neutral-500 flex items-center gap-1 mt-3">
+          <CgMailOpen className="text-2xl" />
+          {toArabicWord(formik.values.capital_equity)} دينار أردني
+        </p>
+      )}
     </>
   );
 };
