@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
@@ -175,7 +175,7 @@ const Step2 = ({ formData, setFormData }) => {
     const { vehicle_price, commission_on, code, transfer_commission } =
       formik.values;
 
-    if (!vehicle_price || !commission_on || !transfer_commission) return;
+    if (!vehicle_price || !commission_on) return;
 
     const payload = {
       vehicle_price,
@@ -304,7 +304,6 @@ const Step2 = ({ formData, setFormData }) => {
               formik.handleChange(e);
               handleCommissionBlur();
             }}
-            onBlur={handleCommissionBlur}
             className="w-5 h-5 accent-primary"
           />
           فورًا – بأسرع وقت ممكن (تُضاف 4 دنانير)
@@ -319,7 +318,6 @@ const Step2 = ({ formData, setFormData }) => {
               formik.handleChange(e);
               handleCommissionBlur();
             }}
-            onBlur={handleCommissionBlur}
             className="w-5 h-5 accent-primary"
           />
           بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)

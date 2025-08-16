@@ -11,7 +11,7 @@ import BackStepBtn from "../../../../../components/form/BackStepBtn";
 const steps = ["بياناتك الشخصية", "البيانات البنكية", "العنوان السكني"];
 
 export default function CompleteRegister() {
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(0);
   const goBack = () => setStep((prev) => prev - 1);
 
   const [formData, setFormData] = useState({

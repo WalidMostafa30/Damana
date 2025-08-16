@@ -121,7 +121,7 @@ const MainInput = ({
           <PhoneInput
             id={id}
             country={"jo"}
-            value={value} 
+            value={value}
             onChange={(phone, country) => onChange(phone, country)}
             inputClass={`form-control !w-full !h-auto !p-3 lg:p-4 !ps-14 !text-lg !rounded-lg !border-none !outline-none !transition-all
             !ring-2 ${

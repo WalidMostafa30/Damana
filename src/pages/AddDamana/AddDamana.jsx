@@ -10,7 +10,7 @@ import BackStepBtn from "../../components/form/BackStepBtn";
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 export default function AddDamana() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
 
   // ✅ هنا هنخزن كل البيانات المشتركة بين الخطوات
   const [formData, setFormData] = useState({
@@ -31,7 +31,7 @@ export default function AddDamana() {
     vehicle_price: "",
     commission_on: "",
     code: "",
-    transfer_commission: "",
+    transfer_commission: "ACH",
   });
 
   const { profile } = useSelector((state) => state.profile);

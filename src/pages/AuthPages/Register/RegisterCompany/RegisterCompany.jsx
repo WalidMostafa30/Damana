@@ -15,7 +15,7 @@ import AuthLayout from "../../../../components/common/AuthLayout";
 import get from "lodash.get";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useMutation } from "@tanstack/react-query";
 import { registerCompany } from "../../../../services/authService";
@@ -172,10 +172,9 @@ const stepSchemas = [
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(6);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
 
   // Mutation React Query
   const mutation = useMutation({
@@ -291,6 +290,7 @@ const RegisterCompany = () => {
       acknowledgement: false,
       group_id: {},
       accept_policy_terms: false,
+      loginusers: [],
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
@@ -304,41 +304,6 @@ const RegisterCompany = () => {
         mutation.mutate(payload);
       }
     },
-    // onSubmit: async (values) => {
-    //   setErrorMsg("");
-
-    //   try {
-    //     // تحقّق من مخطط الخطوة الحالية فقط
-    //     await stepSchemas[step].validate(values, { abortEarly: false });
-
-    //     if (step < steps.length - 1) {
-    //       setStep((prev) => prev + 1);
-    //       // اختياري: نظّف touched عشان ما تظهرش أخطاء قديمة
-    //       formik.setTouched({});
-    //     } else {
-    //       const payload = formatPayload(values);
-    //       mutation.mutate(payload);
-    //     }
-    //   } catch (err) {
-    //     if (err.name === "ValidationError") {
-    //       const formErrors = err.inner.reduce((acc, cur) => {
-    //         if (cur.path) acc[cur.path] = cur.message;
-    //         return acc;
-    //       }, {});
-    //       formik.setErrors(formErrors);
-
-    //       // علّم الحقول اللي فيها أخطاء كـ touched عشان تعرض الرسائل
-    //       const touched = Object.keys(formErrors).reduce((acc, key) => {
-    //         acc[key] = true;
-    //         return acc;
-    //       }, {});
-    //       formik.setTouched(touched, true);
-    //     } else {
-    //       // أي خطأ غير متوقع
-    //       setErrorMsg("حدث خطأ غير متوقع");
-    //     }
-    //   }
-    // },
   });
 
   const getError = (name) => {
@@ -375,8 +340,8 @@ const RegisterCompany = () => {
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
-        msg="تم تأكيد الهوية وبياناتك البنكيه تسطتيع انشاء ضمانتك"
-        primaryBtn={{ text: "الصفحة الرئيسية", action: () => navigate("/") }}
+        closeBtn
+        msg="تم ارسال طلبك الى الادارة ، سيتم مراجعته واستكمال باقي الخطوات"
       />
 
       <AuthLayout>
