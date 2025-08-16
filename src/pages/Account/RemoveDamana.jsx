@@ -7,7 +7,6 @@ import { IoWarningOutline } from "react-icons/io5";
 import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
-import { useNavigate } from "react-router-dom";
 
 const steps = [
   {
@@ -29,7 +28,6 @@ const RemoveDamana = () => {
   const [reasonError, setReasonError] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
-  const navigate = useNavigate();
 
   const {
     data: allDamanat = [],
@@ -118,7 +116,7 @@ const RemoveDamana = () => {
           )}
 
           {selectedDamanat.length > 0 && (
-            <button onClick={setStep(1)} className="mainBtn">
+            <button onClick={() => setStep(1)} className="mainBtn">
               متابعة
             </button>
           )}
@@ -169,7 +167,7 @@ const RemoveDamana = () => {
           text: "الذهاب الى صفحه الضمانات",
           action: () => {
             setOpenModal(false);
-            navigate("/profile/remove-damana");
+            resetAndBack();
           },
         }}
       />
