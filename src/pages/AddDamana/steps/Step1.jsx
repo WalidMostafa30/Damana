@@ -132,8 +132,33 @@ const Step1 = ({ goNext, formData, setFormData }) => {
       </div>
 
       <div>
+        {pageTitle("المالك")}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <MainInput
+            id="owner_national_number"
+            label="الرقم الوطني"
+            placeholder="ادخل الرقم الوطني"
+            name="owner_national_number"
+            value={formData.owner_national_number}
+            icon={<LuCircleUserRound />}
+            disabled
+          />
+
+          <MainInput
+            type="tel"
+            id="owner_full_mobile"
+            name="owner_full_mobile"
+            placeholder="96269077885+"
+            label="رقم الهاتف"
+            value={formData.owner_full_mobile}
+            disabled
+          />
+        </div>
+      </div>
+
+      <div>
         {pageTitle("بيانات المركبة")}
-        <DetailsCard data={data} col={2} />
+        <DetailsCard data={data} col={2} blur={!formData.is_owner} />
       </div>
 
       {errorMsg && <div className="text-error-200">{errorMsg}</div>}

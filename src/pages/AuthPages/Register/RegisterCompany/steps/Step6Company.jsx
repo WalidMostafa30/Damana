@@ -8,11 +8,22 @@ import {
 } from "../../../../../services/authService";
 import ActionModal from "../../../../../components/modals/ActionModal";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import toast, { Toaster } from "react-hot-toast";
+import PhoneInput from "../../../../../components/form/PhoneInput";
 
 const Step6Company = ({ formik, getError }) => {
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);
   const [customGroupName, setCustomGroupName] = useState("");
   const [openModal, setOpenModal] = useState(false);
+
+  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [loginForm, setLoginForm] = useState({
+    name: "",
+    phone: "",
+    authorizationFile: null,
+  });
+
+  console.log(loginForm);
 
   const modalMsg = (
     <>
@@ -31,7 +42,7 @@ const Step6Company = ({ formik, getError }) => {
     queryFn: getCompanyGroups,
     select: (res) => res?.data || [],
     onError: (err) => {
-      alert(err?.response?.data?.error_msg || "حدث خطأ أثناء جلب المجموعات");
+      toast(err?.response?.data?.error_msg || "حدث خطأ أثناء جلب المجموعات");
     },
   });
 
@@ -41,7 +52,7 @@ const Step6Company = ({ formik, getError }) => {
   const createGroupMutation = useMutation({
     mutationFn: createCompanyGroup,
     onSuccess: (res) => {
-      alert("تمت إضافة المجموعة بنجاح");
+      toast.success("تمت إضافة المجموعة بنجاح");
       if (res?.data) {
         formik.setFieldValue("group_id", {
           id: res.data.id,
@@ -53,13 +64,15 @@ const Step6Company = ({ formik, getError }) => {
       setShowAddGroupInput(false);
     },
     onError: (err) => {
-      alert(err?.response?.data?.error_msg || "حدث خطأ أثناء إضافة المجموعة");
+      toast.error(
+        err?.response?.data?.error_msg || "حدث خطأ أثناء إضافة المجموعة"
+      );
     },
   });
 
   const handleAddGroup = () => {
     if (!customGroupName.trim()) {
-      alert("من فضلك أدخل اسم المجموعة");
+      toast.error("من فضلك أدخل اسم المجموعة");
       return;
     }
     createGroupMutation.mutate({ name: customGroupName });
@@ -100,8 +113,32 @@ const Step6Company = ({ formik, getError }) => {
     );
   };
 
+  const handleAddLoginAccount = () => {
+    if (!loginForm.name || !loginForm.phone || !loginForm.authorizationFile) {
+      toast.error("من فضلك أكمل كل الحقول");
+      return;
+    }
+
+    const current = formik.values.login_accounts || [];
+    formik.setFieldValue("login_accounts", [...current, loginForm]);
+
+    // reset
+    setLoginForm({ name: "", phone: "", authorizationFile: null });
+    setShowLoginForm(false);
+  };
+
+  // ✅ حذف حساب
+  const handleRemoveLoginAccount = (idx) => {
+    const current = formik.values.login_accounts || [];
+    formik.setFieldValue(
+      "login_accounts",
+      current.filter((_, i) => i !== idx)
+    );
+  };
+
   return (
     <>
+      <Toaster position="top-left" />
       {/* اختيار المجموعة */}
       <MainInput
         label="هل تنتمي شركتك إلى مجموعة شركات؟"
@@ -192,6 +229,81 @@ const Step6Company = ({ formik, getError }) => {
             {formik.errors.loginusers}
           </div>
         )}
+      </div>
+
+      {/* ✅ إضافة حساب تسجيل دخول جديد */}
+      <div className="mt-4">
+        <button
+          type="button"
+          onClick={() => setShowLoginForm(!showLoginForm)}
+          className="flex items-center gap-1 text-sm text-primary"
+        >
+          <FaCirclePlus className="text-xl" />
+          إضافة حساب تسجيل دخول جديد
+        </button>
+
+        {showLoginForm && (
+          <div className="mt-4 baseWhiteContainer space-y-3">
+            <MainInput
+              label="الاسم"
+              id={"login_name"}
+              type="text"
+              value={loginForm.name}
+              onChange={(e) =>
+                setLoginForm((prev) => ({ ...prev, name: e.target.value }))
+              }
+            />
+            <PhoneInput formik={formik} name="login_phone" combineValue />
+            <div>
+              <label className="block text-sm font-medium mb-1">
+                ملف خطاب التفويض
+              </label>
+              <input
+                type="file"
+                accept=".pdf,image/*"
+                className="whiteContainer"
+                onChange={(e) =>
+                  setLoginForm((prev) => ({
+                    ...prev,
+                    authorizationFile: e.target.files[0] || null,
+                  }))
+                }
+              />
+            </div>
+            <button
+              type="button"
+              onClick={handleAddLoginAccount}
+              className="bg-secondary text-white py-2 px-4 rounded-lg cursor-pointer"
+            >
+              إضافة
+            </button>
+          </div>
+        )}
+
+        {/* ✅ عرض الحسابات المضافة */}
+        <div className="mt-4 space-y-2">
+          {(formik.values.login_accounts || []).map((acc, idx) => (
+            <div
+              key={idx}
+              className="p-2 border rounded-lg bg-white flex items-center justify-between"
+            >
+              <div>
+                <p className="font-semibold">{acc.name}</p>
+                <p className="text-sm">{acc.phone}</p>
+                <p className="text-xs text-gray-500">
+                  {acc.authorizationFile?.name}
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => handleRemoveLoginAccount(idx)}
+                className="text-error-100 text-xl"
+              >
+                <IoCloseCircleOutline />
+              </button>
+            </div>
+          ))}
+        </div>
       </div>
 
       {/* Checkbox سياسة الخصوصية */}

@@ -1,8 +1,14 @@
 import api from "./api";
 
-export const checkByRegN = async (number) => {
+export const checkByRegN = async (payload) => {
   const { data } = await api.get(
-    `/dvld/checkByRegN?registration_number=${number}`
+    `/dvld/checkByRegN?registration_number=${payload.registration_number}`,
+    {
+      params: {
+        is_owner: payload.is_owner ? 1 : 0,
+        owner_national_number: payload.owner_national_number,
+      },
+    }
   );
   return data?.data?.data;
 };

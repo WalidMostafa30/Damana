@@ -11,7 +11,7 @@ const AuthLayout = ({ children }) => {
           src={bannerImg}
           loading="lazy"
           alt="background"
-          className="absolute inset-0 w-full h-full object-cover object-center xl:hidden"
+          className="fixed inset-0 w-full h-full object-cover object-center xl:hidden"
         />
         <div className="absolute inset-0 bg-primary/50 xl:bg-transparent" />
         <div className="w-full h-full max-w-2xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">

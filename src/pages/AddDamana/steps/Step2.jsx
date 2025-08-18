@@ -242,9 +242,6 @@ const Step2 = ({ formData, setFormData }) => {
             formik.handleChange(e);
             handleCommissionBlur();
           }}
-          onBlur={(e) => {
-            formik.handleBlur(e);
-          }}
           error={getError("commission_on")}
         />
       </div>

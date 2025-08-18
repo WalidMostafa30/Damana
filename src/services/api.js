@@ -1,7 +1,5 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { store } from "../store/store";
-import { openLogoutModal } from "../store/modalsSlice/logoutModalSlice";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -26,16 +24,16 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    // const status = err.response?.status;
+    const status = err.response?.status;
 
-    // if (status === 401 || status === 403) {
-    //   Cookies.remove("token");
-    //   store.dispatch(openLogoutModal());
-    // }
+    if (status === 401 || status === 403) {
+      Cookies.remove("token");
+      window.location.href = "/login";
+    }
 
-    // if (status === 451) {
-    //   window.location.href = "/register-otp";
-    // }
+    if (status === 451) {
+      window.location.href = "/register-otp";
+    }
 
     return Promise.reject(err);
   }

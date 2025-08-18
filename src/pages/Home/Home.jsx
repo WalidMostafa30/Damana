@@ -31,13 +31,14 @@ const Home = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const [selectedType, setSelectedType] = useState("sell"); // ⬅ type
   const [selectedStatus, setSelectedStatus] = useState(null); // ⬅ status
+  const [date, setDate] = useState(""); // ⬅ date filter
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
   // جلب البيانات
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["damanat", selectedType, selectedStatus],
-    queryFn: () => fetchDamanat(selectedType, selectedStatus),
+    queryKey: ["damanat", selectedType, selectedStatus, date],
+    queryFn: () => fetchDamanat(selectedType, selectedStatus, date),
     keepPreviousData: true,
   });
 
@@ -99,6 +100,9 @@ const Home = () => {
 
             <input
               type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="تاريخ الضمانة"
               className="bg-transparent cursor-pointer outline-none homeLink"
             />
           </div>

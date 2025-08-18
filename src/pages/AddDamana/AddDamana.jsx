@@ -6,28 +6,36 @@ import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import { useSelector } from "react-redux";
 import BackStepBtn from "../../components/form/BackStepBtn";
+import { useQuery } from "@tanstack/react-query";
+import { getApplicationConfiguration } from "../../services/staticDataService";
 
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 export default function AddDamana() {
   const [step, setStep] = useState(0);
 
-  // ✅ هنا هنخزن كل البيانات المشتركة بين الخطوات
+  const { data: configData } = useQuery({
+    queryKey: ["applicationConfiguration"],
+    queryFn: getApplicationConfiguration,
+  });
+
+  console.log("configData:", configData);
+
+  // ✅ البيانات المشتركة بين الخطوات
   const [formData, setFormData] = useState({
-    // بيانات Step0
+    // Step0
     registration_number: "",
-    owner: "yes",
-    ownerName: "",
-    ownerNationalId: "",
-    ownerPhone: "",
+    is_owner: true, // ✅ بقت boolean
+    owner_national_number: "",
+    owner_full_mobile: "",
     agreement: false,
 
-    // بيانات Step1
+    // Step1
     buyer_national_number: "",
     buyer_full_mobile: "",
     buyerCountryCode: "",
 
-    // بيانات Step2
+    // Step2
     vehicle_price: "",
     commission_on: "",
     code: "",

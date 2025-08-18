@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useFormik } from "formik";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import { FaIdCard } from "react-icons/fa";
@@ -9,7 +9,7 @@ import ActionModal from "../../../components/modals/ActionModal";
 import FormError from "../../../components/form/FormError";
 import FormBtn from "../../../components/form/FormBtn";
 import { checkByRegN } from "../../../services/damanaServices";
-import { getApplicationConfiguration } from "../../../services/staticDataService";
+import PhoneInput from "../../../components/form/PhoneInput";
 
 const Step0 = ({ goNext, formData, setFormData, profile }) => {
   const [openModal, setOpenModal] = useState(false);
@@ -17,10 +17,13 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
 
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      return await checkByRegN(payload.registration_number);
+      return await checkByRegN({
+        registration_number: payload.registration_number,
+        is_owner: payload.is_owner,
+        owner_national_number: payload.owner_national_number,
+      });
     },
     onSuccess: (data) => {
-      // حفظ بيانات المركبة في formData
       setFormData((prev) => ({
         ...prev,
         ...data,
@@ -37,25 +40,29 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
 
   const formik = useFormik({
     initialValues: formData,
-    enableReinitialize: true, // مهم عشان يقرأ القيم المحفوظة لو رجعت خطوة
+    enableReinitialize: true,
     validationSchema: Yup.object({
       registration_number: Yup.string().required("رقم تسجيل المركبة مطلوب"),
-      owner: Yup.string().required("اختيار المالك مطلوب"),
-      ownerNationalId: Yup.string().when("owner", {
-        is: "no",
+      is_owner: Yup.boolean()
+        .oneOf([true, false], "اختيار المالك مطلوب")
+        .required("اختيار المالك مطلوب"),
+      owner_national_number: Yup.string().when("is_owner", {
+        is: false,
         then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
         otherwise: (schema) => schema.notRequired(),
       }),
-      ownerPhone: Yup.string().when("owner", {
-        is: "no",
+      owner_full_mobile: Yup.string().when("is_owner", {
+        is: false,
         then: (schema) => schema.required("رقم هاتف المالك مطلوب"),
         otherwise: (schema) => schema.notRequired(),
       }),
       agreement: Yup.boolean().oneOf([true], "يجب الموافقة على الشروط"),
     }),
     onSubmit: (values) => {
+      console.log("Submitting values:", values);
+
       setErrorMsg("");
-      setFormData((prev) => ({ ...prev, ...values })); // حفظ القيم المدخلة
+      setFormData((prev) => ({ ...prev, ...values }));
       mutation.mutate(values);
     },
   });
@@ -63,20 +70,9 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  const ownerValue = formik.values.owner;
-
-  const { data: msg } = useQuery({
-    queryKey: ["paymentMethods"],
-    queryFn: getApplicationConfiguration,
-  });
-
-  console.log(msg);
-
   const modalMsg = (
     <>
-      <h3 className="text-lg lg:text-2xl font-bold">
-        تفويض بمشاركة البيانات
-      </h3>
+      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
       <p className="text-sm lg:text-base">
         أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
         البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية العائدة لي
@@ -104,28 +100,27 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
             <label className="flex items-center gap-2">
               <input
                 type="radio"
-                name="owner"
-                value="yes"
-                checked={ownerValue === "yes"}
-                onChange={formik.handleChange}
+                name="is_owner"
+                checked={formik.values.is_owner === true}
+                onChange={() => formik.setFieldValue("is_owner", true)}
                 className="w-5 h-5 accent-primary cursor-pointer"
               />
               نعم
             </label>
+
             <label className="flex items-center gap-2">
               <input
                 type="radio"
-                name="owner"
-                value="no"
-                checked={ownerValue === "no"}
-                onChange={formik.handleChange}
+                name="is_owner"
+                checked={formik.values.is_owner === false}
+                onChange={() => formik.setFieldValue("is_owner", false)}
                 className="w-5 h-5 accent-primary cursor-pointer"
               />
               لا
             </label>
           </div>
-          {getError("owner") && (
-            <div className="text-error mt-1">{getError("owner")}</div>
+          {getError("is_owner") && (
+            <div className="text-error mt-1">{getError("is_owner")}</div>
           )}
         </div>
       )}
@@ -144,41 +139,29 @@ const Step0 = ({ goNext, formData, setFormData, profile }) => {
           icon={<CiCreditCard2 />}
         />
 
-        {profile?.account_type === "company" && ownerValue === "no" && (
-          <>
-            <MainInput
-              label="اسم المالك"
-              placeholder="ادخل اسم المالك"
-              name="ownerName"
-              value={formik.values.ownerName}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={getError("ownerName")}
-              icon={<CiUser />}
-            />
-            <MainInput
-              label="الرقم الوطنى للمالك"
-              placeholder="ادخل الرقم الوطنى"
-              name="ownerNationalId"
-              type="number"
-              value={formik.values.ownerNationalId}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={getError("ownerNationalId")}
-              icon={<FaIdCard />}
-            />
-            <MainInput
-              label="رقم الهاتف للمالك"
-              placeholder="ادخل رقم الهاتف"
-              name="ownerPhone"
-              type="tel"
-              value={formik.values.ownerPhone}
-              onChange={formik.handleChange}
-              onBlur={formik.handleBlur}
-              error={getError("ownerPhone")}
-            />
-          </>
-        )}
+        {profile?.account_type === "company" &&
+          formik.values.is_owner === false && (
+            <>
+              <MainInput
+                label="الرقم الوطنى للمالك"
+                id={"owner_national_number"}
+                placeholder="ادخل الرقم الوطنى"
+                name="owner_national_number"
+                type="number"
+                value={formik.values.owner_national_number}
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                error={getError("owner_national_number")}
+                icon={<FaIdCard />}
+              />
+
+              <PhoneInput
+                formik={formik}
+                name="owner_full_mobile"
+                combineValue
+              />
+            </>
+          )}
       </div>
 
       {/* Agreement */}

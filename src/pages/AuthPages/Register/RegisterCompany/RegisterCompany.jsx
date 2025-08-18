@@ -169,11 +169,22 @@ const stepSchemas = [
     loginusers: Yup.array()
       .of(Yup.string())
       .min(1, "يجب إضافة مستخدم واحد على الأقل"),
+    login_accounts: Yup.array().of(
+      Yup.object({
+        name: Yup.string().required("الحقل مطلوب"),
+        phone: Yup.string().required("الحقل مطلوب"),
+        authorizationFile: Yup.mixed().test(
+          "fileFormat",
+          "صيغة ملف غير مدعومة. فقط صور و PDF مسموح بها.",
+          (value) => !value || FILE_SUPPORTED_FORMATS.includes(value.type)
+        ),
+      })
+    ),
   }),
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(6);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
@@ -269,6 +280,7 @@ const RegisterCompany = () => {
       group_id: {},
       accept_policy_terms: false,
       loginusers: [],
+      login_accounts: [],
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
