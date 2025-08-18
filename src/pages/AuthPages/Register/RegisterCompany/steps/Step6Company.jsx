@@ -7,6 +7,7 @@ import {
   getCompanyGroups,
 } from "../../../../../services/authService";
 import ActionModal from "../../../../../components/modals/ActionModal";
+import { IoCloseCircleOutline } from "react-icons/io5";
 
 const Step6Company = ({ formik, getError }) => {
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);
@@ -81,19 +82,12 @@ const Step6Company = ({ formik, getError }) => {
 
   // اختيار مفوضين متعدد
   const handleCommissionerSelect = (e) => {
-    const commissionerId = e.target.value;
-    const commissioner = formik.values.commissioners.find(
-      (c, idx) => String(idx) === commissionerId
-    );
+    const commissionerName = e.target.value;
+    if (!commissionerName) return;
 
-    if (commissioner) {
-      const current = formik.values.loginusers || [];
-      if (!current.includes(commissioner.full_name)) {
-        formik.setFieldValue("loginusers", [
-          ...current,
-          commissioner.full_name,
-        ]);
-      }
+    const current = formik.values.loginusers || [];
+    if (!current.includes(commissionerName)) {
+      formik.setFieldValue("loginusers", [...current, commissionerName]);
     }
   };
 
@@ -166,32 +160,38 @@ const Step6Company = ({ formik, getError }) => {
           onChange={handleCommissionerSelect}
           options={[
             { label: "اختر مفوض", value: "" },
-            ...(formik.values.commissioners || []).map((c, idx) => ({
-              label: c.full_name || `مفوض ${idx + 1}`,
-              value: idx,
+            ...formik.values.commissioners.map((c) => ({
+              label: c.full_name,
+              value: c.full_name, // 👈 بدل index إلى full_name
             })),
           ]}
           icon={<FaUserTie />}
         />
 
         {/* عرض المفوضين المختارين */}
-        <div className="mt-4 space-y-2">
+        <div className="mt-4 flex flex-wrap gap-2">
           {(formik.values.loginusers || []).map((name, idx) => (
             <div
               key={idx}
-              className="p-2 rounded-lg border bg-gray-50 text-sm flex items-center justify-between"
+              className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2"
             >
               <span>{name}</span>
               <button
                 type="button"
-                className="text-red-500 text-xs"
+                className="text-error-100 text-2xl cursor-pointer"
                 onClick={() => handleRemoveCommissioner(name)}
               >
-                إزالة
+                <IoCloseCircleOutline />
               </button>
             </div>
           ))}
         </div>
+
+        {formik.errors.loginusers && formik.touched.loginusers && (
+          <div className="text-error-100 text-sm mt-1">
+            {formik.errors.loginusers}
+          </div>
+        )}
       </div>
 
       {/* Checkbox سياسة الخصوصية */}

@@ -79,7 +79,7 @@ html {
   }
 
   .pageContainer {
-    @apply container py-6 lg:py-10 min-h-[calc(100vh-210px)];
+    @apply container py-6 lg:py-10 min-h-[calc(100vh-156px)] lg:min-h-[calc(100vh-228px)];
   }
 
   .whiteContainer {

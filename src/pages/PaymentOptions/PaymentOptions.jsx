@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
-import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import LoadingPage from "../../components/layout/Loading/LoadingPage";
 import { getPaymentMethods } from "../../services/staticDataService";
 
 const PaymentOptions = () => {
@@ -9,7 +9,7 @@ const PaymentOptions = () => {
     queryFn: getPaymentMethods,
   });
 
-  if (isLoading) return <LoadingSection />;
+  if (isLoading) return <LoadingPage />;
 
   if (isError)
     return (

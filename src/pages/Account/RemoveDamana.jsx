@@ -94,21 +94,13 @@ const RemoveDamana = () => {
       {!isLoading && step === 0 && (
         <div className="space-y-4">
           {allDamanat?.length > 0 ? (
-            allDamanat?.map((d) => (
+            allDamanat?.map((damana) => (
               <DamanaCard
-                key={d.id}
-                number={d.serial_number}
-                plate={d.plate_number_code}
-                seller={d.seller?.name}
-                id={d.id}
-                status_translate={d.status_translate}
-                price={`${d.vehicle_price} دينار أردني`}
-                date={new Date(d.created_at).toLocaleDateString("ar-EG")}
-                statusText={d.status_translate}
-                expireDate={d.license_expiry_date}
+                key={damana.id}
+                damana={damana}
                 selectable
-                selected={selectedDamanat.includes(d.id)}
-                onSelect={() => toggleSelect(d.id)}
+                selected={selectedDamanat.includes(damana.id)}
+                onSelect={() => toggleSelect(damana.id)}
               />
             ))
           ) : (

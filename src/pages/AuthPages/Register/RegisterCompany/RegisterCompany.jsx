@@ -56,7 +56,7 @@ const stepSchemas = [
     commercial_en_name: Yup.string().required("الحقل مطلوب"),
     registration_type_legal_form: Yup.string().required("الحقل مطلوب"),
     country_registration: Yup.string().required("الحقل مطلوب"),
-    registration_authority: Yup.string().required("الحقل مطلوب"), // أضف هذا
+    registration_authority: Yup.string().required("الحقل مطلوب"),
     commercial_registration_number: Yup.string().required("الحقل مطلوب"),
     registration_date: Yup.string().required("الحقل مطلوب"),
     national_number: Yup.string().required("الحقل مطلوب"),
@@ -115,10 +115,8 @@ const stepSchemas = [
   Yup.object({
     bank_id: Yup.string().required("اسم البنك مطلوب"),
     iban: Yup.string().required("رقم الايبان مطلوب"),
-    // swift_code: Yup.string().required("رمز السويفت مطلوب"),
     currency: Yup.string().required("العملة مطلوبة"),
     clik_name: Yup.string(),
-    // info_name: Yup.string().required("اسم المصرح بالبيانات مطلوب"),
   }),
 
   // Step 5
@@ -161,13 +159,16 @@ const stepSchemas = [
     ),
   }),
 
-  // Step 7
+  // step 7
   Yup.object({
-    group_id: Yup.object(), // اختياري عادي
+    group_id: Yup.object(),
     accept_policy_terms: Yup.boolean().oneOf(
       [true],
       "يجب الموافقة على الإقرار قبل المتابعة"
     ),
+    loginusers: Yup.array()
+      .of(Yup.string())
+      .min(1, "يجب إضافة مستخدم واحد على الأقل"),
   }),
 ];
 
@@ -176,7 +177,6 @@ const RegisterCompany = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
 
-  // Mutation React Query
   const mutation = useMutation({
     mutationFn: registerCompany,
     onSuccess: () => {
@@ -187,40 +187,19 @@ const RegisterCompany = () => {
     },
   });
 
-  // تحويل الداتا للشكل المطلوب قبل الإرسال
-  const formatPayload = (values) => {
-    return {
-      ar_name: values.ar_name,
-      en_name: values.en_name,
-      registration_type_legal_form: values.registration_type_legal_form,
-      country_registration: values.country_registration,
-      commercial_ar_name: values.commercial_ar_name,
-      commercial_en_name: values.commercial_en_name,
-      commercial_registration_number: values.commercial_registration_number,
-      national_number: values.national_number,
-      license_number: values.license_number,
-      tax_number: values.tax_number,
-      registration_date: values.registration_date,
-      capital_equity: values.capital_equity,
-      address: values.address,
-      email: values.email,
-      phone: values.phone,
-      commissioners_text: values.commissioners_text,
-      partners: values.partners,
-      commissioners: values.commissioners,
-      managementCommissioners: values.managementCommissioners,
-      bank_id: values.bank_id,
-      iban: values.iban,
-      swift_code: values.swift_code,
-      currency: values.currency,
-      clik_name: values.clik_name,
-      // هنا لو فيه ملفات أو بيانات إضافية ممكن تضيفها
-    };
+  const buildFormData = (formData, data, parentKey = "") => {
+    if (data && typeof data === "object" && !(data instanceof File)) {
+      Object.entries(data).forEach(([key, value]) => {
+        const fullKey = parentKey ? `${parentKey}[${key}]` : key;
+        buildFormData(formData, value, fullKey);
+      });
+    } else {
+      formData.append(parentKey, data);
+    }
   };
 
   const formik = useFormik({
     initialValues: {
-      // نفس الـ initialValues اللي عندك
       ar_name: "",
       en_name: "",
       commercial_ar_name: "",
@@ -282,7 +261,6 @@ const RegisterCompany = () => {
       swift_code: "",
       currency: "",
       clik_name: "",
-      // info_name: "",
       file_commercial_register: null,
       file_memorandum_association: null,
       file_Professional_License_lease_contract: null,
@@ -300,8 +278,12 @@ const RegisterCompany = () => {
         setStep((prev) => prev + 1);
         formik.setTouched({});
       } else {
-        const payload = formatPayload(values);
-        mutation.mutate(payload);
+        // const payload = formatPayload(values);
+        const formData = new FormData();
+        // 👇 هنا يتم تحويل جميع البيانات بشكل تلقائي
+        buildFormData(formData, values);
+        console.log(formData);
+        mutation.mutate(formData);
       }
     },
   });
@@ -336,55 +318,52 @@ const RegisterCompany = () => {
   const goBack = () => setStep((prev) => prev - 1);
 
   return (
-    <>
+    <AuthLayout>
+      <AuthBreadcrumbs
+        title="أهلاً في ضمانة!"
+        items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
+      />
+
+      {step === 0 && <FileUploadSection />}
+
+      <StepProgress steps={steps} currentStep={step} />
+
+      <form
+        onSubmit={formik.handleSubmit}
+        className="space-y-4 bg-white p-6 rounded-lg shadow-md"
+      >
+        <h3 className="text-lg text-white font-bold bg-primary p-4 rounded-e-2xl w-fit">
+          {steps[step]}
+        </h3>
+
+        {renderStep()}
+
+        <FormError errorMsg={errorMsg} />
+
+        <FormBtn
+          title={step < steps.length - 1 ? "التالي" : "إنهاء"}
+          loading={mutation.isPending}
+        />
+
+        <p className="text-center font-semibold text-sm lg:text-base">
+          هل تمتلك حساب بالفعل؟{" "}
+          <Link
+            to="/login"
+            className="text-secondary hover:brightness-50 transition-colors"
+          >
+            تسجيل دخول
+          </Link>
+        </p>
+        {!mutation.isPending && <BackStepBtn step={step} goBack={goBack} />}
+      </form>
+
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
         closeBtn
         msg="تم ارسال طلبك الى الادارة ، سيتم مراجعته واستكمال باقي الخطوات"
       />
-
-      <AuthLayout>
-        <AuthBreadcrumbs
-          title="أهلاً في ضمانة!"
-          items={[{ label: "ضمانة", path: "/" }, { label: "طلب انضمام شركة" }]}
-        />
-
-        {step === 0 && <FileUploadSection />}
-
-        <StepProgress steps={steps} currentStep={step} />
-
-        <form
-          onSubmit={formik.handleSubmit}
-          className="space-y-4 bg-white p-6 rounded-lg shadow-md"
-        >
-          <h3 className="text-lg text-white font-bold bg-primary p-4 rounded-e-2xl w-fit">
-            {steps[step]}
-          </h3>
-
-          {renderStep()}
-
-          <FormError errorMsg={errorMsg} />
-
-          <FormBtn
-            title={step < steps.length - 1 ? "التالي" : "إنهاء"}
-            loading={mutation.isPending}
-          />
-
-          <p className="text-center font-semibold text-sm lg:text-base">
-            هل تمتلك حساب بالفعل؟{" "}
-            <Link
-              to="/login"
-              className="text-secondary hover:brightness-50 transition-colors"
-            >
-              تسجيل دخول
-            </Link>
-          </p>
-
-          <BackStepBtn step={step} goBack={goBack} />
-        </form>
-      </AuthLayout>
-    </>
+    </AuthLayout>
   );
 };
 

@@ -1,10 +1,11 @@
 import DetailsCard from "../../components/common/DetailsCard";
 import ActionsSection from "./ActionsSection";
-import DamanaDetailsHead from "../../components/common/DamanaDetailsHead";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDamanaDetails } from "../../services/damanaServices";
-import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import LoadingPage from "../../components/layout/Loading/LoadingPage";
+import Timer from "../../components/common/Timer";
+import { CiCalendarDate } from "react-icons/ci";
 
 const DamanaDetails = () => {
   const { id } = useParams();
@@ -20,24 +21,25 @@ const DamanaDetails = () => {
     queryFn: () => fetchDamanaDetails(id),
     enabled: !!id, // يتأكد إن id موجود قبل ما يعمل الطلب
   });
+  console.log("Damana Details:", damana);
 
-  if (isLoading) {
-    return <LoadingSection />;
-  }
+  if (isLoading) return <LoadingPage />;
 
-  if (isError) {
+  if (isError)
     return (
-      <p className="text-center text-red-500 mt-6">
+      <p className="text-center text-red-500 p-4 text-xl">
         فشل في تحميل البيانات: {error.message}
       </p>
     );
-  }
 
-  const pageTitle = (title, large = false, color = "primary") => (
+  const pageTitle = (title, large = false, color = "var(--color-primary)") => (
     <h3
       className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
         large ? "text-lg lg:text-2xl" : "lg:text-xl"
-      } ${color === "secondary" ? "bg-secondary" : "bg-primary"}`}
+      } `}
+      style={{
+        backgroundColor: color ? color : "var(--color-primary)",
+      }}
     >
       {title}
     </h3>
@@ -104,16 +106,44 @@ const DamanaDetails = () => {
     },
   ].filter(Boolean);
 
+  const isDisabled = damana?.is_expired || damana?.blocked;
+
   return (
-    <article className="pageContainer">
+    <article className="pageContainer relative">
+      {isDisabled ? (
+        <section className="absolute z-30 top-0 left-0 w-full h-full bg-gray-500/50 flex items-center justify-center p-4">
+          <p className="whiteContainer text-xl text-center">
+            هذه الضمانة غير نشطة أو محظورة. لا يمكن إجراء أي إجراءات عليها
+          </p>
+        </section>
+      ) : null}
+
       {pageTitle(
         damana?.status_translate || "جار التحميل...",
         true,
-        "secondary"
+        damana?.status_color || "var(--color-secondary)"
       )}
 
       <section className="baseWhiteContainer space-y-4">
-        <DamanaDetailsHead data={damana} />
+        <div
+          className={`grid lg:grid-cols-2 xl:grid-cols-4 gap-4 whiteContainer`}
+        >
+          <div className="flex items-center gap-2">
+            <p className="font-medium">رقم الضمانة:</p>
+            <p className="text-primary font-bold">{damana?.serial_number}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <p className="font-medium">رقم الترميز واللوحة:</p>
+            <p className="text-primary font-bold">{`${damana?.plate_number}-${damana?.plate_number}`}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <CiCalendarDate className="text-2xl" />
+            <p className="text-primary font-bold">
+              {damana?.license_expiry_date}
+            </p>
+          </div>
+          <Timer expiryDate={damana?.schedule_expired_at} />
+        </div>
 
         {/* بيانات البائع */}
         <div>

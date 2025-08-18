@@ -3,11 +3,35 @@ import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { changeStatus, releaseRequest } from "../../services/damanaServices";
+import { useEffect, useState } from "react";
 
 const ActionsSection = ({ damana }) => {
   const { profile } = useSelector((state) => state.profile);
 
-  // تغيير الحالة
+  // ⏱️ تايمر صرف الضمانة
+  const [releaseTimer, setReleaseTimer] = useState(null);
+
+  useEffect(() => {
+    if (damana?.coming_request_release) {
+      const interval = setInterval(() => {
+        const now = new Date();
+        const releaseTime = new Date(damana.coming_request_release);
+        if (releaseTime < now) {
+          setReleaseTimer("مسموح الآن بطلب الصرف ✅");
+          clearInterval(interval);
+        } else {
+          const diff = releaseTime - now;
+          const minutes = Math.floor(diff / 1000 / 60);
+          const seconds = Math.floor((diff / 1000) % 60);
+          setReleaseTimer(`${minutes}:${seconds} ⏳`);
+        }
+      }, 1000);
+
+      return () => clearInterval(interval);
+    }
+  }, [damana?.coming_request_release]);
+
+  // 🛠 تغيير الحالة
   const changeStatusMutation = useMutation({
     mutationFn: (status) => changeStatus({ id: damana.id, status }),
     onSuccess: (data) => {
@@ -23,7 +47,7 @@ const ActionsSection = ({ damana }) => {
     },
   });
 
-  // طلب صرف الضمانة
+  // 💸 طلب صرف الضمانة
   const releaseRequestMutation = useMutation({
     mutationFn: () => releaseRequest({ id: damana.id }),
     onSuccess: (data) => {
@@ -44,7 +68,7 @@ const ActionsSection = ({ damana }) => {
       status === "accepted" ? "هل تريد تأكيد الضمانة؟" : "هل تريد رفض الضمانة؟";
 
     if (!window.confirm(confirmMsg)) {
-      toast("تم إلغاء العملية 👏");
+      toast("تم إلغاء العملية");
       return;
     }
 
@@ -56,7 +80,7 @@ const ActionsSection = ({ damana }) => {
       "هل تريد صرف الضمانة؟\n\nيجب إكمال إجراءات التنازل أولاً وإلا قد تُفرض رسوم إضافية.";
 
     if (!window.confirm(confirmMsg)) {
-      toast("تم إلغاء العملية 👏");
+      toast("تم إلغاء العملية");
       return;
     }
 
@@ -68,43 +92,66 @@ const ActionsSection = ({ damana }) => {
   const isBuyer = damana?.buyer?.id === profile.id;
   const isSeller = damana?.seller?.id === profile.id;
 
+  // 🚫 ممنوع أي أكشن
+  const isDisabled = damana?.is_expired || damana?.blocked;
+
   return (
     <div className="mt-4 space-y-3">
       <Toaster position="top-left" />
 
+      {/* 🔔 تنبيه الإلغاء */}
+      {damana?.active_cancel_request && (
+        <div className="p-3 rounded-xl bg-yellow-100 text-yellow-800 border border-yellow-400">
+          {damana.active_cancel_request.cancelled_approved === null &&
+            "تم طلب إلغاء الضمانة بانتظار الموافقة"}
+          {damana.active_cancel_request.cancelled_approved === true &&
+            "تمت الموافقة على طلب إلغاء الضمانة"}
+          {damana.active_cancel_request.cancelled_approved === false &&
+            `تم رفض طلب الإلغاء: ${damana.active_cancel_request.cancelled_rejected_reason}`}
+        </div>
+      )}
+
+      {/* ✅ المشتري يقدر يقبل/يرفض إذا جديدة */}
       {isBuyer && damana.status === "new" && (
         <div className="flex flex-wrap gap-2">
           <button
+            disabled={isDisabled}
             onClick={() => handleChangeStatus("accepted")}
-            className="mainBtn flex-1 min-w-[150px]"
+            className={`mainBtn flex-1 min-w-[150px] ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             تأكيد الضمانة
           </button>
           <button
+            disabled={isDisabled}
             onClick={() => handleChangeStatus("rejected")}
-            className="mainBtn light flex-1 min-w-[150px]"
+            className={`mainBtn light flex-1 min-w-[150px] ${
+              isDisabled ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             رفض الضمانة
           </button>
         </div>
       )}
 
-      {isSeller &&
-        damana.status === "paid" &&
-        damana.release_request === 0 &&
-        damana.is_paid && (
+      {/* 💸 طلب صرف الضمانة */}
+      {isSeller && damana.status === "paid" && (
+        <div className="space-y-2">
+          <div className="text-sm text-gray-600">
+            {releaseTimer && `⏱️ ${releaseTimer}`}
+          </div>
           <button
+            disabled={isDisabled || !damana.can_request_release}
             onClick={handleReleaseRequest}
-            className="mainBtn flex-1 min-w-[150px]"
+            className={`mainBtn flex-1 min-w-[150px] ${
+              isDisabled || !damana.can_request_release
+                ? "opacity-50 cursor-not-allowed bg-gray-400"
+                : ""
+            }`}
           >
-            💸 طلب صرف الضمانة
+            طلب صرف الضمانة
           </button>
-        )}
-
-      {isSeller && damana.release_request === 1 && (
-        <div className="p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded">
-          تم طلب صرف الضمانة مسبقاً، وسيتم التحقق منها قريباً من قبل مسؤول
-          النظام.
         </div>
       )}
     </div>

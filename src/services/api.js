@@ -26,7 +26,7 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (res) => res,
   (err) => {
-    const status = err.response?.status;
+    // const status = err.response?.status;
 
     // if (status === 401 || status === 403) {
     //   Cookies.remove("token");

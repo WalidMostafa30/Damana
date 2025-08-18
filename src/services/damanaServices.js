@@ -37,8 +37,8 @@ export const fetchDamanaDetails = async (id) => {
 export const fetchDamanat = async (type, status) => {
   const { data } = await api.get("/vehicle-transfers/list", {
     params: {
-      type, // sell or buy
-      status, // new, accepted, etc (أو null)
+      type,
+      status,
     },
   });
   return data?.data;

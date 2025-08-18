@@ -30,10 +30,10 @@ const BankSelect = ({ formik, name = "bank_id", setSwiftCode, disabled }) => {
       error={getError(name)}
       value={formik.values[name]}
       onChange={handleChange}
-      disabled={loadingBanks || disabled}
+      disabled={disabled}
       icon={<CiBank />}
       options={[
-        { value: "", label: "اختر البنك" },
+        { value: "", label: loadingBanks ? "جارى التحميل .." : "اختر البنك" },
         ...banks.map((b) => ({ value: b.id, label: b.name })),
       ]}
     />

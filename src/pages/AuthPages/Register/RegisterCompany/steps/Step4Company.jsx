@@ -1,5 +1,4 @@
 import { MdCloudUpload } from "react-icons/md";
-
 import { useState } from "react";
 
 const FileInput = ({ label, name, formik, error }) => {
@@ -8,7 +7,7 @@ const FileInput = ({ label, name, formik, error }) => {
 
   const handleFiles = (files) => {
     if (files && files[0]) {
-      formik.setFieldValue(name, files[0]);
+      formik.setFieldValue(name, files[0]); // نخزن الملف كـ File object
     }
   };
 
@@ -50,6 +49,7 @@ const FileInput = ({ label, name, formik, error }) => {
           type="file"
           name={name}
           id={name}
+          accept=".pdf,image/*" // يسمح فقط بالصور و PDF
           onChange={(event) => handleFiles(event.currentTarget.files)}
           className="hidden"
         />
@@ -76,37 +76,35 @@ const FileInput = ({ label, name, formik, error }) => {
 
 const Step4Company = ({ formik, getError }) => {
   return (
-    <>
-      <div className="grid grid-cols-1 gap-4 mt-4">
-        <FileInput
-          label="نسخة حديثة من السجل التجاري"
-          name="file_commercial_register"
-          formik={formik}
-          error={getError("file_commercial_register")}
-        />
+    <div className="grid grid-cols-1 gap-4 mt-4">
+      <FileInput
+        label="نسخة حديثة من السجل التجاري"
+        name="file_commercial_register"
+        formik={formik}
+        error={getError("file_commercial_register")}
+      />
 
-        <FileInput
-          label="نسخة من عقد التأسيس"
-          name="file_memorandum_association"
-          formik={formik}
-          error={getError("file_memorandum_association")}
-        />
+      <FileInput
+        label="نسخة من عقد التأسيس"
+        name="file_memorandum_association"
+        formik={formik}
+        error={getError("file_memorandum_association")}
+      />
 
-        <FileInput
-          label="نسخة عن رخصة المزاولة و/أو نسخة عن عقد إيجار مصدق"
-          name="file_Professional_License_lease_contract"
-          formik={formik}
-          error={getError("file_Professional_License_lease_contract")}
-        />
+      <FileInput
+        label="نسخة عن رخصة المزاولة و/أو نسخة عن عقد إيجار مصدق"
+        name="file_Professional_License_lease_contract"
+        formik={formik}
+        error={getError("file_Professional_License_lease_contract")}
+      />
 
-        <FileInput
-          label="إثبات الشخصية للمفوضين بالتوقيع"
-          name="file_identity_document_signatories"
-          formik={formik}
-          error={getError("file_identity_document_signatories")}
-        />
-      </div>
-    </>
+      <FileInput
+        label="إثبات الشخصية للمفوضين بالتوقيع"
+        name="file_identity_document_signatories"
+        formik={formik}
+        error={getError("file_identity_document_signatories")}
+      />
+    </div>
   );
 };
 

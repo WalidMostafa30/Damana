@@ -36,7 +36,11 @@ export const resetPassword = async (payload) => {
 };
 
 export const registerCompany = async (payload) => {
-  const { data } = await api.post("/auth/register/company", payload);
+  const { data } = await api.post("/auth/register/company", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
   return data;
 };
 

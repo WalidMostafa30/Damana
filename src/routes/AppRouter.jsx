@@ -41,6 +41,7 @@ const CompleteRegister = React.lazy(() =>
     "../pages/AuthPages/Register/RegisterPerson/CompleteRegister/CompleteRegister"
   )
 );
+
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
 const Account = React.lazy(() => import("../pages/Account/Account"));

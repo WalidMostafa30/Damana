@@ -7,7 +7,11 @@ const Sale = ({ data, loading, error }) => {
   if (loading) return <LoadingSection />;
 
   if (error)
-    return <p className="text-center text-red-500">حدث خطأ في التحميل</p>;
+    return (
+      <p className="text-center text-red-500 p-4">
+        حدث خطأ في التحميل :{error?.response?.data?.error_msg}
+      </p>
+    );
 
   if (!data || data.length === 0)
     return (
@@ -25,18 +29,7 @@ const Sale = ({ data, loading, error }) => {
   return (
     <section className="space-y-4">
       {data.map((damana) => (
-        <DamanaCard
-          key={damana.id}
-          number={damana.serial_number}
-          plate={damana.plate_number_code}
-          seller={damana.seller?.name}
-          id={damana.id}
-          status_translate={damana.status_translate}
-          price={`${damana.vehicle_price} دينار أردني`}
-          date={new Date(damana.created_at).toLocaleDateString("ar-EG")}
-          statusText={damana.status_translate}
-          expireDate={damana.license_expiry_date}
-        />
+        <DamanaCard key={damana.id} damana={damana} />
       ))}
     </section>
   );
