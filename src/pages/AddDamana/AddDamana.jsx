@@ -12,7 +12,7 @@ import { getApplicationConfiguration } from "../../services/staticDataService";
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 export default function AddDamana() {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
 
   const { data: configData } = useQuery({
     queryKey: ["applicationConfiguration"],
@@ -25,7 +25,7 @@ export default function AddDamana() {
   const [formData, setFormData] = useState({
     // Step0
     registration_number: "",
-    is_owner: true, // ✅ بقت boolean
+    is_owner: true, 
     owner_national_number: "",
     owner_full_mobile: "",
     agreement: false,
@@ -80,7 +80,11 @@ export default function AddDamana() {
             />
           )}
           {step === 2 && (
-            <Step2 formData={formData} setFormData={setFormData} />
+            <Step2
+              formData={formData}
+              setFormData={setFormData}
+              configData={configData}
+            />
           )}
 
           <BackStepBtn step={step} goBack={goBack} />

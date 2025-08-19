@@ -45,7 +45,7 @@ const CompleteRegister = React.lazy(() =>
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
 const Account = React.lazy(() => import("../pages/Account/Account"));
-const Profile = React.lazy(() => import("../pages/Account/Profile"));
+const Profile = React.lazy(() => import("../pages/Account/Profile/Profile"));
 const BankInfo = React.lazy(() => import("../pages/Account/BankInfo"));
 const Address = React.lazy(() => import("../pages/Account/Address"));
 const Support = React.lazy(() => import("../pages/Account/Support"));
@@ -93,27 +93,51 @@ const router = createBrowserRouter([
   },
   {
     path: "login",
-    element: <LoginPage />,
+    element: (
+      <GuestRoute>
+        <LoginPage />
+      </GuestRoute>
+    ),
   },
   {
     path: "forgot-password",
-    element: <ForgotPassword />,
+    element: (
+      <GuestRoute>
+        <ForgotPassword />
+      </GuestRoute>
+    ),
   },
   {
     path: "register-company",
-    element: <RegisterCompany />,
+    element: (
+      <GuestRoute>
+        <RegisterCompany />
+      </GuestRoute>
+    ),
   },
   {
     path: "register-person",
-    element: <RegisterPerson />,
+    element: (
+      <GuestRoute>
+        <RegisterPerson />
+      </GuestRoute>
+    ),
   },
   {
     path: "register-otp",
-    element: <RegisterOTP />,
+    element: (
+      <GuestRoute>
+        <RegisterOTP />
+      </GuestRoute>
+    ),
   },
   {
     path: "complete-register",
-    element: <CompleteRegister />,
+    element: (
+      <GuestRoute>
+        <CompleteRegister />
+      </GuestRoute>
+    ),
   },
 
   { path: "*", element: <NotFound /> },

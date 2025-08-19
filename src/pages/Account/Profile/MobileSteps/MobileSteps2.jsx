@@ -1,59 +1,26 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
-  checkOtpRegister,
-  checkOtpRegisterFlow2,
-  sendOtp,
-  sendOtpFlow2,
+  changeMobileCheckOTP,
+  changeMobileSendOTP,
 } from "../../../../services/authService";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
-import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
-import AuthLayout from "../../../../components/common/AuthLayout";
 import ActionModal from "../../../../components/modals/ActionModal";
 
-const Otp = () => {
+const MobileSteps2 = ({ newPhoneNumber = {} }) => {
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [openModal, setOpenModal] = useState(false);
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { flow = 1, mobile, country_code, ref_key } = location.state || {};
 
-  const sendOtpFn =
-    flow === 2
-      ? () => sendOtpFlow2({ mobile, country_code, ref_key })
-      : () => sendOtp();
-
-  const checkOtpFn = flow === 2 ? checkOtpRegisterFlow2 : checkOtpRegister;
-
-  // Mutation: إرسال OTP
-  const sendOtpMutation = useMutation({
-    mutationFn: sendOtpFn,
+  // Mutation
+  const mutation = useMutation({
+    mutationFn: changeMobileCheckOTP,
     onSuccess: (data) => {
-      console.log("تم إرسال الكود ✅", data);
-    },
-    onError: (error) => {
-      setErrorMessage(
-        error?.response?.data?.error_msg || "فشل إرسال رمز التحقق"
-      );
-    },
-  });
-
-  // Mutation: التحقق من OTP
-  const checkOtpMutation = useMutation({
-    mutationFn: checkOtpFn,
-    onSuccess: (data) => {
-      console.log("OTP صحيح ✅", data);
-      if (flow === 2) {
-        setOpenModal(true);
-      } else {
-        navigate("/complete-register");
-      }
+      console.log("OTP verified successfully", data);
+      setErrorMessage("");
     },
     onError: (error) => {
       setErrorMessage(
@@ -62,12 +29,6 @@ const Otp = () => {
     },
   });
 
-  // أول ما الصفحة تفتح أرسل الكود
-  useEffect(() => {
-    sendOtpMutation.mutate();
-  }, []);
-
-  // مؤقت إعادة الإرسال
   useEffect(() => {
     if (timer === 0) {
       setCanResend(true);
@@ -99,13 +60,10 @@ const Otp = () => {
     setTimer(60);
     setCanResend(false);
     setErrorMessage("");
-    sendOtpMutation.mutate();
-  };
-
-  const formatTime = (seconds) => {
-    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
-    const s = String(seconds % 60).padStart(2, "0");
-    return `${m}:${s}`;
+    changeMobileSendOTP.mutate({
+      mobile: newPhoneNumber.mobile,
+      country_code: newPhoneNumber.country_code,
+    });
   };
 
   const handleSubmit = () => {
@@ -114,29 +72,22 @@ const Otp = () => {
       setErrorMessage("من فضلك أدخل جميع الأرقام الخمسة");
       return;
     }
-    console.log("الكود:", fullCode);
 
-    const payload = { otp_code: fullCode };
+    mutation.mutate({
+      otp_code: fullCode,
+      mobile: newPhoneNumber.mobile,
+      country_code: newPhoneNumber.country_code,
+    });
+  };
 
-    if (flow === 2) {
-      payload.ref_key = ref_key;
-      payload.mobile = mobile;
-      payload.country_code = country_code;
-    }
-
-    checkOtpMutation.mutate(payload);
+  const formatTime = (seconds) => {
+    const m = String(Math.floor(seconds / 60)).padStart(2, "0");
+    const s = String(seconds % 60).padStart(2, "0");
+    return `${m}:${s}`;
   };
 
   return (
-    <AuthLayout>
-      <AuthBreadcrumbs
-        title="التحقق من رمز التحقق"
-        items={[
-          { label: "ضمانة", path: "/" },
-          { label: "التحقق من رمز التحقق" },
-        ]}
-      />
-
+    <div className="max-w-md">
       <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
       <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
@@ -187,36 +138,25 @@ const Otp = () => {
       <div className="mb-4">
         <FormError errorMsg={errorMessage} />
       </div>
-
       <FormBtn
         onClick={handleSubmit}
         title="تأكيد الكود"
-        loading={checkOtpMutation.isPending}
+        loading={mutation.isPending}
       />
-
-      <p className="text-center font-semibold text-sm lg:text-base mt-4">
-        هل تمتلك حساب بالفعل؟{" "}
-        <Link
-          to="/login"
-          className="text-secondary hover:brightness-50 transition-colors"
-        >
-          تسجيل دخول
-        </Link>
-      </p>
 
       <ActionModal
-        openModal={openModal}
-        setOpenModal={setOpenModal}
-        icon="warning"
-        msg="لديك حساب مسجل مسبقا بالفعل"
-        primaryBtn={{ text: "تسجيل دخول", action: () => navigate("/login") }}
-        lightBtn={{
-          text: "استعادة كلمة المرور",
-          action: () => navigate("/forgot-password"),
+        openModal={mutation.isSuccess}
+        msg={"تم تغيير الرقم بنجاح"}
+        icon="success"
+        primaryBtn={{
+          text: "رجوع إلى الملف الشخصي",
+          action: () => {
+            window.location.reload();
+          },
         }}
       />
-    </AuthLayout>
+    </div>
   );
 };
 
-export default Otp;
+export default MobileSteps2;

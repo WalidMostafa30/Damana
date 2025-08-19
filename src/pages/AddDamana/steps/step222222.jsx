@@ -1,8 +1,8 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
-import { LuCopy, LuCopyCheck, LuHandCoins } from "react-icons/lu";
+import { LuHandCoins } from "react-icons/lu";
 import { CiDiscount1 } from "react-icons/ci";
 import { FaMoneyBillWave } from "react-icons/fa";
 import DetailsCard from "../../../components/common/DetailsCard";
@@ -40,6 +40,8 @@ const Step2 = ({ formData, setFormData, configData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [damanaData, setDamanaData] = useState("");
   const [copied, setCopied] = useState(false);
+
+  const [lastCommissionPayload, setLastCommissionPayload] = useState(null);
 
   const navigate = useNavigate();
 
@@ -110,11 +112,18 @@ const Step2 = ({ formData, setFormData, configData }) => {
           value: "نعم",
         });
       }
+
       setFormData({
         ...formData,
         broker_commission_value: data.broker_commission_value,
       });
       setDetails(newDetails);
+      setLastCommissionPayload({
+        vehicle_price: formik.values.vehicle_price,
+        commission_on: formik.values.commission_on,
+        transfer_commission: formik.values.transfer_commission,
+        code: couponServer?.discount ? formik.values.code : undefined,
+      });
     },
   });
 
@@ -175,57 +184,58 @@ const Step2 = ({ formData, setFormData, configData }) => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  const handleCopySerial = (number) => {
-    if (number) {
-      navigator.clipboard.writeText(number).then(() => {
+  // دالة "حفظ التغيرات"
+  const handleSaveChanges = () => {
+    const { vehicle_price, commission_on, code, transfer_commission } =
+      formik.values;
+
+    if (!vehicle_price || !commission_on || !transfer_commission) return;
+
+    const payload = {
+      vehicle_price,
+      commission_on,
+      transfer_commission,
+    };
+
+    if (couponServer?.discount) {
+      payload.code = code;
+    }
+
+    commissionMutation.mutate(payload);
+  };
+
+  // مقارنة القيم الحالية مع آخر حساب
+  const isChanged = (() => {
+    const { vehicle_price, commission_on, code, transfer_commission } =
+      formik.values;
+
+    const currentPayload = {
+      vehicle_price,
+      commission_on,
+      transfer_commission,
+      code: couponServer?.discount ? code : undefined,
+    };
+
+    return (
+      JSON.stringify(currentPayload) !== JSON.stringify(lastCommissionPayload)
+    );
+  })();
+
+  const handleCopySerial = () => {
+    if (damanaData?.serial_number) {
+      navigator.clipboard.writeText(damanaData.serial_number).then(() => {
         setCopied(true);
         setTimeout(() => setCopied(false), 2000);
       });
     }
   };
 
-  // 🟢 دالة تشغيل حساب العمولة
-  const triggerCommission = (extra = {}) => {
-    if (formik.values.vehicle_price && formik.values.commission_on) {
-      commissionMutation.mutate({
-        vehicle_price: formik.values.vehicle_price,
-        commission_on: formik.values.commission_on,
-        code: formik.values.code,
-        transfer_type: formik.values.transfer_commission,
-        ...extra,
-      });
-    }
-  };
-
-  // vehicle_price → عند الانتهاء من الكتابة فقط
-  const handleVehiclePriceBlur = (e) => {
-    formik.handleBlur(e);
-    triggerCommission();
-  };
-
-  // commission_on أو transfer_commission → عند أي تغيير
-  useEffect(() => {
-    if (
-      formik.values.commission_on &&
-      formik.values.transfer_commission &&
-      formik.values.vehicle_price
-    ) {
-      triggerCommission();
-    }
-  }, [formik.values.commission_on, formik.values.transfer_commission]);
-
-  // الكوبون لو اتأكد صح → نفذ الحساب
-  useEffect(() => {
-    if (couponServer) {
-      triggerCommission({ code: couponServer.code });
-    }
-  }, [couponServer]);
-
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <h3 className="text-xl lg:text-2xl font-bold text-primary">
         بيانات الضمانة
       </h3>
+
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           label="قيمة المركبة"
@@ -236,7 +246,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
           icon={<FaMoneyBillWave />}
           value={formik.values.vehicle_price}
           onChange={formik.handleChange}
-          onBlur={handleVehiclePriceBlur} // ✅ هنا التغيير
+          onBlur={formik.handleBlur}
           error={getError("vehicle_price")}
         />
 
@@ -255,6 +265,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
           error={getError("commission_on")}
         />
       </div>
+
       {/* كود الخصم */}
       <div>
         <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
@@ -293,6 +304,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
           )}
         </div>
       </div>
+
       {/* صرف ضمانة */}
       <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
       <div className="space-y-2">
@@ -320,29 +332,46 @@ const Step2 = ({ formData, setFormData, configData }) => {
           بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
         </label>
       </div>
+
       {details.length > 0 && <DetailsCard data={details} />}
       <FormError errorMsg={errorMsg} />
-      {details.length > 0 && (
+
+      {/* زرار حفظ التغيرات يظهر لو فى تغيير */}
+      {isChanged && (
+        <FormBtn
+          title="حفظ التغيرات"
+          type="button"
+          variant="light"
+          loading={commissionMutation.isPending}
+          onClick={handleSaveChanges}
+        />
+      )}
+
+      {/* زرار ارسال ضمانة يظهر لو اخر حساب مطابق للقيم الحالية */}
+      {details.length > 0 && !isChanged && (
         <FormBtn
           title="ارسال ضمانه"
           loading={createVehicleTransferMutation.isPending}
         />
       )}
+
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
         msg={
-          <>
-            <p className="text-center">تم إنشاء الضمانة بنجاح رقم الضمانة </p>
+          <p>
+            تم إنشاء الضمانة بنجاح رقم الضمانة{" "}
             <span
-              className="font-bold text-success-200 text-2xl cursor-pointer underline flex items-center gap-2"
-              onClick={() => handleCopySerial(damanaData?.serial_number)}
+              className="font-bold text-success-200 cursor-pointer underline"
+              onClick={handleCopySerial}
               title="اضغط للنسخ"
             >
               {damanaData?.serial_number}
-              {copied ? <LuCopyCheck /> : <LuCopy />}
             </span>
-          </>
+            {copied && (
+              <span className="ml-2 text-xs text-primary">تم النسخ</span>
+            )}
+          </p>
         }
         icon="success"
         primaryBtn={{
@@ -350,6 +379,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
           action: () => navigate(`/damana/${damanaData?.id}`),
         }}
       />
+
       <LoadingModal openModal={commissionMutation.isPending} />
     </form>
   );

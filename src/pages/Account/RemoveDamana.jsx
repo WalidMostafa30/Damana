@@ -7,6 +7,7 @@ import { IoWarningOutline } from "react-icons/io5";
 import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
+import DamanaList from "../../components/common/DamanaList";
 
 const steps = [
   {
@@ -92,27 +93,21 @@ const RemoveDamana = () => {
       )}
 
       {!isLoading && step === 0 && (
-        <div className="space-y-4">
-          {allDamanat?.length > 0 ? (
-            allDamanat?.map((damana) => (
-              <DamanaCard
-                key={damana.id}
-                damana={damana}
-                selectable
-                selected={selectedDamanat.includes(damana.id)}
-                onSelect={() => toggleSelect(damana.id)}
-              />
-            ))
-          ) : (
-            <p className="text-center text-lg">لا توجد ضمانات متاحة للإلغاء</p>
-          )}
-
+        <>
+          <DamanaList
+            data={allDamanat}
+            loading={isLoading}
+            error={error}
+            selectable
+            selectedIds={selectedDamanat}
+            onSelect={toggleSelect}
+          />
           {selectedDamanat.length > 0 && (
             <button onClick={() => setStep(1)} className="mainBtn">
               متابعة
             </button>
           )}
-        </div>
+        </>
       )}
 
       {step === 1 && (

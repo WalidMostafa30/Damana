@@ -280,7 +280,13 @@ const RegisterCompany = () => {
       group_id: {},
       accept_policy_terms: false,
       loginusers: [],
-      login_accounts: [],
+      login_accounts: [
+        {
+          login_name: "",
+          login_phone: "",
+          authorizationFile: null,
+        },
+      ],
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,

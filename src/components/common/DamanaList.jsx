@@ -1,8 +1,25 @@
 import DamanaCard from "./DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
+import LoadingSection from "../layout/Loading/LoadingSection";
 
-const DamanaList = ({ data = [] }) => {
+const DamanaList = ({
+  data = [],
+  loading,
+  error,
+  selectable,
+  selectedIds = [],
+  onSelect,
+}) => {
+  if (loading) return <LoadingSection />;
+
+  if (error)
+    return (
+      <p className="text-center text-red-500 p-4">
+        حدث خطأ في التحميل :{error?.response?.data?.error_msg}
+      </p>
+    );
+
   if (!data || data.length === 0)
     return (
       <div className="flex items-center justify-center flex-col gap-4 mt-8">
@@ -19,7 +36,13 @@ const DamanaList = ({ data = [] }) => {
   return (
     <section className="space-y-4">
       {data.map((damana) => (
-        <DamanaCard key={damana.id} damana={damana} />
+        <DamanaCard
+          key={damana.id}
+          damana={damana}
+          selectable={selectable}
+          selected={selectedIds.includes(damana.id)}
+          onSelect={() => onSelect(damana.id)}
+        />
       ))}
     </section>
   );

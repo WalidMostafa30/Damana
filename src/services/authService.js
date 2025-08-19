@@ -72,6 +72,20 @@ export const changePassword = async (formData) => {
   return data;
 };
 
+export const changeMobileSendOTP = async (formData) => {
+  const { data } = await api.post("/auth/update-mobile/sendOtp", formData);
+  return data;
+};
+
+export const changeMobileCheckOTP = async (formData) => {
+  const { data } = await api.post(
+    "/auth/update-mobile/checkOtpWithUpdate",
+    formData
+  );
+  return data;
+};
+
+
 export const completeRegister = async (formData) => {
   const { data } = await api.post("/auth/complete-register", formData);
   return data;

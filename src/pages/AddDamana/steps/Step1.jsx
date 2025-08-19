@@ -6,6 +6,7 @@ import { LuCircleUserRound } from "react-icons/lu";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import FormBtn from "../../../components/form/FormBtn";
+import PhoneInput from "../../../components/form/PhoneInput";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
   const [errorMsg, setErrorMsg] = useState("");
@@ -43,7 +44,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
         ...prev,
         buyer_national_number: formik.values.buyer_national_number,
         buyer_full_mobile: formik.values.buyer_full_mobile,
-        buyerCountryCode: formik.values.buyerCountryCode,
+        // buyerCountryCode: formik.values.buyerCountryCode,
       }));
 
       setErrorMsg("");
@@ -58,7 +59,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
     initialValues: {
       buyer_national_number: formData.buyer_national_number || "",
       buyer_full_mobile: formData.buyer_full_mobile || "",
-      buyerCountryCode: formData.buyerCountryCode || "",
+      // buyerCountryCode: formData.buyerCountryCode || "",
     },
     validationSchema: Yup.object({
       buyer_national_number: Yup.string().required(
@@ -105,56 +106,36 @@ const Step1 = ({ goNext, formData, setFormData }) => {
             icon={<LuCircleUserRound />}
           />
 
-          <MainInput
-            type="tel"
-            id="buyer_full_mobile"
-            name="buyer_full_mobile"
-            placeholder="96269077885+"
-            label="رقم الهاتف"
-            value={`${formik.values.buyerCountryCode?.replace("+", "") || ""}${
-              formik.values.buyer_full_mobile || ""
-            }`}
-            onChange={(phone, country) => {
-              const countryCode = country?.dialCode
-                ? `+${country.dialCode}`
-                : "";
-              const numberWithoutCode = country?.dialCode
-                ? phone.slice(country.dialCode.length)
-                : phone;
-
-              formik.setFieldValue("buyerCountryCode", countryCode);
-              formik.setFieldValue("buyer_full_mobile", numberWithoutCode);
-            }}
-            onBlur={formik.handleBlur}
-            error={getError("buyer_full_mobile")}
-          />
+          <PhoneInput formik={formik} name="buyer_full_mobile" combineValue />
         </div>
       </div>
 
-      <div>
-        {pageTitle("المالك")}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <MainInput
-            id="owner_national_number"
-            label="الرقم الوطني"
-            placeholder="ادخل الرقم الوطني"
-            name="owner_national_number"
-            value={formData.owner_national_number}
-            icon={<LuCircleUserRound />}
-            disabled
-          />
+      {!formData.is_owner && (
+        <div>
+          {pageTitle("المالك")}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <MainInput
+              id="owner_national_number"
+              label="الرقم الوطني"
+              placeholder="ادخل الرقم الوطني"
+              name="owner_national_number"
+              value={formData.owner_national_number}
+              icon={<LuCircleUserRound />}
+              disabled
+            />
 
-          <MainInput
-            type="tel"
-            id="owner_full_mobile"
-            name="owner_full_mobile"
-            placeholder="96269077885+"
-            label="رقم الهاتف"
-            value={formData.owner_full_mobile}
-            disabled
-          />
+            <MainInput
+              type="tel"
+              id="owner_full_mobile"
+              name="owner_full_mobile"
+              placeholder="96269077885+"
+              label="رقم الهاتف"
+              value={formData.owner_full_mobile}
+              disabled
+            />
+          </div>
         </div>
-      </div>
+      )}
 
       <div>
         {pageTitle("بيانات المركبة")}

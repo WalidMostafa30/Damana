@@ -18,8 +18,8 @@ const Step6Company = ({ formik, getError }) => {
 
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [loginForm, setLoginForm] = useState({
-    name: "",
-    phone: "",
+    login_name: "",
+    login_phone: "",
     authorizationFile: null,
   });
 
@@ -136,6 +136,22 @@ const Step6Company = ({ formik, getError }) => {
     );
   };
 
+  const login_accounts = formik.values.login_accounts;
+
+  const addLogin = () => {
+    const newLogin = {
+      login_name: "",
+      login_phone: "",
+      authorizationFile: null,
+    };
+    formik.setFieldValue("login_accounts", [...login_accounts, newLogin]);
+  };
+
+  const removeLogin = (index) => {
+    const updated = login_accounts.filter((_, i) => i !== index);
+    formik.setFieldValue("login_accounts", updated);
+  };
+
   return (
     <>
       <Toaster />
@@ -190,7 +206,7 @@ const Step6Company = ({ formik, getError }) => {
       {/* اختيار المفوضين */}
       <div className="mt-6">
         <MainInput
-          label="اختر المفوضين المرتبطين"
+          label="اختر المفوضين"
           id="commissioners_select"
           type="select"
           value=""
@@ -243,41 +259,75 @@ const Step6Company = ({ formik, getError }) => {
         </button>
 
         {showLoginForm && (
-          <div className="mt-4 baseWhiteContainer space-y-3">
-            <MainInput
-              label="الاسم"
-              id={"login_name"}
-              type="text"
-              value={loginForm.name}
-              onChange={(e) =>
-                setLoginForm((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-            <PhoneInput formik={formik} name="login_phone" combineValue />
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                ملف خطاب التفويض
-              </label>
-              <input
-                type="file"
-                accept=".pdf,image/*"
-                className="whiteContainer"
-                onChange={(e) =>
-                  setLoginForm((prev) => ({
-                    ...prev,
-                    authorizationFile: e.target.files[0] || null,
-                  }))
-                }
-              />
-            </div>
-            <button
-              type="button"
-              onClick={handleAddLoginAccount}
-              className="bg-secondary text-white py-2 px-4 rounded-lg cursor-pointer"
+          <>
+            {login_accounts.map((login, index) => (
+              <div
+                key={index}
+                className="mb-6 p-4 rounded-lg border border-neutral-300"
+              >
+                <p className="text-primary text-lg font-bold mb-4">
+                  بيانات حساب الدخول {index + 1}
+                </p>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <MainInput
+                    label="الاسم"
+                    id={`login_accounts.${index}.login_name`}
+                    name={`login_accounts.${index}.login_name`}
+                    value={login.login_name}
+                    onChange={formik.handleChange}
+                    error={getError(`login_accounts.${index}.login_name`)}
+                  />
+
+                  <PhoneInput
+                    formik={formik}
+                    name={`login_accounts.${index}.login_phone`}
+                    combineValue={true}
+                  />
+
+                  <div className="col-span-2">
+                    <label className="block text-sm font-medium mb-1">
+                      ملف خطاب التفويض
+                    </label>
+                    <input
+                      type="file"
+                      accept=".pdf,image/*"
+                      onChange={(e) =>
+                        formik.setFieldValue(
+                          `login_accounts.${index}.authorizationFile`,
+                          e.currentTarget.files[0] || null
+                        )
+                      }
+                      className="whiteContainer"
+                    />
+                    {getError(`login_accounts.${index}.authorizationFile`) && (
+                      <p className="text-error-100">
+                        {getError(`login_accounts.${index}.authorizationFile`)}
+                      </p>
+                    )}
+                  </div>
+                </div>
+
+                {login_accounts.length > 1 && (
+                  <button
+                    type="button"
+                    onClick={() => removeLogin(index)}
+                    className="text-red-500 mt-2 text-sm"
+                  >
+                    حذف الحساب
+                  </button>
+                )}
+              </div>
+            ))}
+
+            <p
+              className="text-secondary text-lg font-bold flex items-center gap-2 hover:brightness-75 cursor-pointer"
+              onClick={addLogin}
             >
-              إضافة
-            </button>
-          </div>
+              <IoCloseCircleOutline className="text-2xl" />
+              إضافة حساب جديد
+            </p>
+          </>
         )}
 
         {/* ✅ عرض الحسابات المضافة */}

@@ -5,8 +5,10 @@ const PhoneInput = ({
   name = "mobile",
   codeName = "country_code",
   combineValue = false,
+  disabled = false,
 }) => {
-  const getError = (field) => formik.touched[field] && formik.errors[field];
+  const getError = (name) =>
+    formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
   return (
     <MainInput
@@ -14,6 +16,7 @@ const PhoneInput = ({
       id={name}
       name={name}
       placeholder="96269077885+"
+      disabled={disabled}
       label="رقم الهاتف"
       value={
         combineValue
@@ -44,6 +47,5 @@ const PhoneInput = ({
     />
   );
 };
-
 
 export default PhoneInput;
