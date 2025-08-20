@@ -41,6 +41,8 @@ const CompleteRegister = React.lazy(() =>
     "../pages/AuthPages/Register/RegisterPerson/CompleteRegister/CompleteRegister"
   )
 );
+const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
+const GetPage = React.lazy(() => import("../pages/GetPage/GetPage"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
 
@@ -72,9 +74,11 @@ const router = createBrowserRouter([
         path: "/damanaty/*",
         element: <Home />,
       },
+      { path: "dashboard", element: <Dashboard /> },
       { path: "add-damana", element: <AddDamana /> },
       { path: "damana/:id", element: <DamanaDetails /> },
       { path: "payment-options", element: <PaymentOptions /> },
+      { path: "page/:page", element: <GetPage /> },
       { path: "notifications", element: <NotificationsPage /> },
       {
         path: "profile",

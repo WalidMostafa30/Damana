@@ -4,7 +4,6 @@ import StepProgressCol from "../../components/common/StepProgress/StepProgressCo
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
-import { useSelector } from "react-redux";
 import BackStepBtn from "../../components/form/BackStepBtn";
 import { useQuery } from "@tanstack/react-query";
 import { getApplicationConfiguration } from "../../services/staticDataService";
@@ -25,10 +24,9 @@ export default function AddDamana() {
   const [formData, setFormData] = useState({
     // Step0
     registration_number: "",
-    is_owner: true, 
+    is_owner: true,
     owner_national_number: "",
     owner_full_mobile: "",
-    agreement: false,
 
     // Step1
     buyer_national_number: "",
@@ -41,8 +39,6 @@ export default function AddDamana() {
     code: "",
     transfer_commission: "ACH",
   });
-
-  const { profile } = useSelector((state) => state.profile);
 
   useEffect(() => {
     console.log("📌 البيانات المشتركة بين الخطوات:", formData);
@@ -67,7 +63,6 @@ export default function AddDamana() {
           {step === 0 && (
             <Step0
               goNext={goNext}
-              profile={profile}
               formData={formData}
               setFormData={setFormData}
             />

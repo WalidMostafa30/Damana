@@ -40,14 +40,23 @@ export const fetchDamanaDetails = async (id) => {
   return data?.data;
 };
 
-export const fetchDamanat = async (type, status) => {
+export const fetchDamanat = async ({ pageParam = 1, queryKey }) => {
+  const [, type, status, date] = queryKey;
+
   const { data } = await api.get("/vehicle-transfers/list", {
     params: {
       type,
       status,
+      created_at: date,
+      page: pageParam,
     },
   });
-  return data?.data;
+
+  return {
+    data: data?.data || [],
+    nextPage: pageParam + 1,
+    hasMore: (data?.data?.length || 0) > 0, // لو مفيش داتا يبقى خلاص
+  };
 };
 
 export const cancelDamana = async (payload) => {

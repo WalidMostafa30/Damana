@@ -38,7 +38,7 @@ const ActionModal = ({
       )}
 
       {msg && (
-        <div className="text-lg font-bold text-center space-y-2 lg:space-y-4">
+        <div className="text-lg font-bold text-center flex flex-col items-center gap-2">
           {msg}
         </div>
       )}

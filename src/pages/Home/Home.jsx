@@ -2,33 +2,16 @@ import { IoIosArrowDown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
 import HomeSlider from "./HomeSlider/HomeSlider";
 import Sale from "./Sale";
 import Purchase from "./Purchase";
 import { fetchDamanat } from "../../services/damanaServices";
-
-const faqs = [
-  "كيف تعمل ضمانة ؟",
-  "ما هي شروط ضمانة ؟",
-  "ما هي حالات الدفع المتوفرة ؟",
-  "ما هي شروط انشاء ضمانة للبائع ؟",
-  "ما هي شروط قبول الضمانة للمشتري ؟",
-];
-
-const damana_status_options = [
-  { value: null, label: "حالة الضمانة" },
-  { value: "new", label: "جديد / بانتظار موافقه المشتري" },
-  { value: "accepted", label: "مقبول بانتظار الدفع" },
-  { value: "paid", label: "مدفوع بانتظار الصرف" },
-  { value: "finished", label: "تم الصرف / منتهي " },
-  { value: "rejected", label: "تم الرفض من المشتري" },
-  { value: "cancelled", label: "تم الالغاء" },
-];
+import FAQ from "./FAQ";
+import { getApplicationConfiguration } from "../../services/staticDataService";
 
 const Home = () => {
-  const [openIndex, setOpenIndex] = useState(null);
   const [selectedType, setSelectedType] = useState("sell"); // ⬅ type
   const [selectedStatus, setSelectedStatus] = useState(null); // ⬅ status
   const [date, setDate] = useState(""); // ⬅ date filter
@@ -36,15 +19,28 @@ const Home = () => {
   const navigate = useNavigate();
 
   // جلب البيانات
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["damanat", selectedType, selectedStatus, date],
-    queryFn: () => fetchDamanat(selectedType, selectedStatus, date),
-    keepPreviousData: true,
+  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
+    useInfiniteQuery({
+      queryKey: ["damanat", selectedType, selectedStatus, date],
+      queryFn: fetchDamanat,
+      getNextPageParam: (lastPage) =>
+        lastPage.hasMore ? lastPage.nextPage : undefined,
+    });
+
+  const { data: configData } = useQuery({
+    queryKey: ["applicationConfiguration"],
+    queryFn: getApplicationConfiguration,
   });
 
-  const toggleFAQ = (index) => {
-    setOpenIndex(openIndex === index ? null : index);
-  };
+  const damana_status_options = [
+    { value: "", label: "الكل" }, // 👈 أول اختيار
+    ...(configData?.filer_statuses
+      ? Object.entries(configData.filer_statuses).map(([key, value]) => ({
+          value: key,
+          label: value,
+        }))
+      : []),
+  ];
 
   useEffect(() => {
     // لو دخل /damanaty من غير تحديد، يروح على /sale
@@ -87,7 +83,7 @@ const Home = () => {
             </button>
 
             <select
-              className="bg-transparent outline-none homeLink"
+              className="bg-transparent outline-none homeLink filter"
               value={selectedStatus || ""}
               onChange={(e) => setSelectedStatus(e.target.value || null)}
             >
@@ -103,15 +99,25 @@ const Home = () => {
               value={date}
               onChange={(e) => setDate(e.target.value)}
               placeholder="تاريخ الضمانة"
-              className="bg-transparent cursor-pointer outline-none homeLink"
+              className="bg-transparent cursor-pointer outline-none homeLink filter"
             />
           </div>
 
           {pathname.includes("/sale") && (
-            <Sale data={data} loading={isLoading} error={isError} />
+            <Sale
+              data={data?.pages.flatMap((page) => page.data) || []}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+            />
           )}
           {pathname.includes("/purchase") && (
-            <Purchase data={data} loading={isLoading} error={isError} />
+            <Purchase
+              data={data?.pages.flatMap((page) => page.data) || []}
+              fetchNextPage={fetchNextPage}
+              hasNextPage={hasNextPage}
+              isFetchingNextPage={isFetchingNextPage}
+            />
           )}
         </section>
       </div>
@@ -130,36 +136,7 @@ const Home = () => {
 
         <HomeSlider />
 
-        <div className="whiteContainer !p-0">
-          <h3 className="text-2xl font-bold text-center p-4 text-primary border-b border-neutral-200">
-            الأسئلة الشائعة
-          </h3>
-          <ul>
-            {faqs.map((question, index) => (
-              <li key={index} className="border-b border-neutral-200">
-                <button
-                  onClick={() => toggleFAQ(index)}
-                  className="w-full flex items-center justify-between p-4 text-lg font-medium cursor-pointer"
-                >
-                  {question}
-                  <IoIosArrowDown
-                    className={`transition-transform duration-300 ${
-                      openIndex === index ? "rotate-180" : ""
-                    }`}
-                  />
-                </button>
-
-                <div
-                  className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                    openIndex === index ? "max-h-40" : "max-h-0"
-                  }`}
-                >
-                  <p className="p-4 text-neutral-600">{question}</p>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
+        <FAQ />
       </aside>
     </section>
   );

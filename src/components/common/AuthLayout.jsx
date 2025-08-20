@@ -14,7 +14,7 @@ const AuthLayout = ({ children }) => {
           className="fixed inset-0 w-full h-full object-cover object-center xl:hidden"
         />
         <div className="absolute inset-0 bg-primary/50 xl:bg-transparent" />
-        <div className="w-full h-full max-w-2xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">
+        <div className="w-full h-full max-w-4xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">
           <img
             src={favLogo}
             alt="logo"
@@ -25,7 +25,7 @@ const AuthLayout = ({ children }) => {
         </div>
       </div>
 
-      <div className="hidden xl:block sticky top-0 w-1/2 h-screen overflow-hidden">
+      <div className="hidden xl:block sticky top-0 flex-1 h-screen overflow-hidden">
         <img
           src={mainImg}
           loading="lazy"

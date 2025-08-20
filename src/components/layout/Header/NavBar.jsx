@@ -1,6 +1,8 @@
+import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 
 const NavBar = ({ openNav, setOpenNav }) => {
+  const { profile } = useSelector((state) => state.profile);
   return (
     <nav
       className={`flex flex-col lg:items-center gap-4 lg:gap-8 p-4 bg-primary absolute z-50 w-full lg:max-h-[500px] top-full left-0
@@ -16,6 +18,15 @@ const NavBar = ({ openNav, setOpenNav }) => {
       >
         ضماناتي
       </NavLink>
+      {profile?.account_type === "company" && (
+        <NavLink
+          onClick={() => setOpenNav(false)}
+          to="/dashboard"
+          className="navLink"
+        >
+          لوحة التحكم
+        </NavLink>
+      )}
       <NavLink
         onClick={() => setOpenNav(false)}
         to="/add-damana"

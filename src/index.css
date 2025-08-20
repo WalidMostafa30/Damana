@@ -79,7 +79,7 @@ html {
   }
 
   .pageContainer {
-    @apply container py-6 lg:py-10 min-h-[calc(100vh-156px)] lg:min-h-[calc(100vh-228px)];
+    @apply container py-6 lg:py-10 min-h-[calc(100dvh-156px)] lg:min-h-[calc(100vh-228px)];
   }
 
   .whiteContainer {
@@ -148,6 +148,10 @@ html {
 
     &.active-purchase {
       @apply bg-secondary border-secondary text-white;
+    }
+
+    &.filter{
+      @apply bg-white rounded-xl;
     }
   }
 }

@@ -83,7 +83,11 @@ const MainInput = ({
             className={commonInputClasses}
           >
             {options.map((option, idx) => (
-              <option key={`${option.value}-${idx}`} value={option.value}>
+              <option
+                className="text-start"
+                key={`${option.value}-${idx}`}
+                value={option.value}
+              >
                 {option.label}
               </option>
             ))}

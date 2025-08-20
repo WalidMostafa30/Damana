@@ -13,8 +13,8 @@ export default function CheckAuthRoute({ children }) {
     queryFn: checkAuth,
   });
 
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   if (isLoading) return <LoadingPage />;
 

@@ -2,6 +2,7 @@ import { CiCalendarDate, CiUser } from "react-icons/ci";
 import { PiCertificate } from "react-icons/pi";
 import { Link } from "react-router-dom";
 import Timer from "./Timer";
+import CopyToClipboard from "./CopyToClipboard";
 
 const DamanaCard = ({
   damana,
@@ -32,9 +33,8 @@ const DamanaCard = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
         <div className="grid xl:grid-cols-2 gap-2">
-          <p className="lg:text-lg text-primary font-bold xl:col-span-2">
-            رقم الضمانة:{" "}
-            <span className="font-bold">{damana?.serial_number}</span>
+          <p className="lg:text-lg text-primary font-bold xl:col-span-2 flex items-center gap-1">
+            رقم الضمانة: <CopyToClipboard text={damana?.serial_number} />
           </p>
 
           <div className="flex items-center gap-1 text-sm lg:text-base">

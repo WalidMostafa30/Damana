@@ -6,9 +6,9 @@ import {
   fetchNotifications,
   markAllNotificationsRead,
   deleteAllNotifications,
-  markNotificationRead,
 } from "../../services/notificationsService";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import NotificationCard from "../../components/common/NotificationCard";
 
 const NotificationsPage = () => {
   const queryClient = useQueryClient();
@@ -32,12 +32,6 @@ const NotificationsPage = () => {
   // Mutation - حذف الكل
   const deleteAllMutation = useMutation({
     mutationFn: deleteAllNotifications,
-    onSuccess: () => queryClient.invalidateQueries(["notifications"]),
-  });
-
-  // Mutation - قراءة إشعار
-  const markReadMutation = useMutation({
-    mutationFn: markNotificationRead,
     onSuccess: () => queryClient.invalidateQueries(["notifications"]),
   });
 
@@ -70,33 +64,11 @@ const NotificationsPage = () => {
           </div>
 
           <div className="bg-base-white border border-neutral-200">
-            {notifications?.map((n) => (
-              <div
-                key={n.id}
-                className={`flex gap-4 p-4 cursor-pointer not-last:border-b border-neutral-200 ${
-                  n.read_at ? "" : "bg-secondary/20 hover:bg-secondary/30"
-                }`}
-                onClick={() => markReadMutation.mutate({ id: n.id })}
-              >
-                <Avatar name={n.data?.title || "إشعار"} size="lg" />
-
-                <div className="space-y-2 flex-1">
-                  <p className="text-neutral-800 flex-1 lg:text-xl">
-                    <span className="font-bold text-primary">
-                      {n.data?.title}
-                    </span>{" "}
-                    {n.data?.body}
-                  </p>
-
-                  <p className="text-neutral-500 lg:text-lg flex items-center gap-1">
-                    <IoMdTime />
-                    {new Date(n.created_at).toLocaleString("ar-EG", {
-                      dateStyle: "short",
-                      timeStyle: "short",
-                    })}
-                  </p>
-                </div>
-              </div>
+            {notifications?.map((notification) => (
+              <NotificationCard
+                key={notification.id}
+                notification={notification}
+              />
             ))}
           </div>
         </>

@@ -60,9 +60,7 @@ const stepSchemas = [
     commercial_registration_number: Yup.string().required("الحقل مطلوب"),
     registration_date: Yup.string().required("الحقل مطلوب"),
     national_number: Yup.string().required("الحقل مطلوب"),
-    website_url: Yup.string()
-      .required("الحقل مطلوب")
-      .url("عنوان موقع غير صالح"),
+    website_url: Yup.string().required("الحقل مطلوب"),
     license_number: Yup.string().required("الحقل مطلوب"),
     address: Yup.string().required("الحقل مطلوب"),
     email: Yup.string().email("بريد غير صحيح").required("الحقل مطلوب"),

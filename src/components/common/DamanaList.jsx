@@ -10,6 +10,7 @@ const DamanaList = ({
   selectable,
   selectedIds = [],
   onSelect,
+  addDamanaText = false,
 }) => {
   if (loading) return <LoadingSection />;
 
@@ -24,12 +25,16 @@ const DamanaList = ({
     return (
       <div className="flex items-center justify-center flex-col gap-4 mt-8">
         <img src={noDataImg} alt="no data" loading="lazy" className="w-96" />
-        <p className="text-lg">
-          لا توجد ضمانات حالية بعد. يمكنك البدء الآن من هنا:{" "}
-          <Link to="/add-damana" className="text-primary font-bold">
-            طلب ضمانة جديدة
-          </Link>
-        </p>
+        {addDamanaText ? (
+          <p className="text-lg">
+            لا توجد ضمانات حالية بعد. يمكنك البدء الآن من هنا:{" "}
+            <Link to="/add-damana" className="text-primary font-bold">
+              طلب ضمانة جديدة
+            </Link>
+          </p>
+        ) : (
+          <p className="text-lg">لا توجد ضمانات حالية</p>
+        )}
       </div>
     );
 

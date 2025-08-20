@@ -6,6 +6,7 @@ import { fetchDamanaDetails } from "../../services/damanaServices";
 import LoadingPage from "../../components/layout/Loading/LoadingPage";
 import Timer from "../../components/common/Timer";
 import { CiCalendarDate } from "react-icons/ci";
+import CopyToClipboard from "../../components/common/CopyToClipboard";
 
 const DamanaDetails = () => {
   const { id } = useParams();
@@ -31,19 +32,6 @@ const DamanaDetails = () => {
         فشل في تحميل البيانات: {error.message}
       </p>
     );
-
-  const pageTitle = (title, large = false, color = "var(--color-primary)") => (
-    <h3
-      className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
-        large ? "text-lg lg:text-2xl" : "lg:text-xl"
-      } `}
-      style={{
-        backgroundColor: color ? `#${color}` : "var(--color-secondary)",
-      }}
-    >
-      {title}
-    </h3>
-  );
 
   const vehicleData = [
     damana?.plate_number && {
@@ -106,17 +94,31 @@ const DamanaDetails = () => {
     },
   ].filter(Boolean);
 
-  const isDisabled = damana?.is_expired || damana?.blocked;
+  // const isDisabled = damana?.is_expired || damana?.blocked;
+
+  const pageTitle = (title, large = false, color = "var(--color-primary)") => (
+    <h3
+      className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
+        large ? "text-lg lg:text-2xl" : "lg:text-xl !bg-primary"
+      } `}
+      style={{
+        backgroundColor:
+          large && color ? `#${color}` : "var(--color-secondary)",
+      }}
+    >
+      {title}
+    </h3>
+  );
 
   return (
     <article className="pageContainer relative">
-      {isDisabled ? (
+      {/* {isDisabled ? (
         <section className="absolute z-30 top-0 left-0 w-full h-full bg-gray-500/50 flex items-center justify-center p-4">
           <p className="whiteContainer text-xl text-center">
             هذه الضمانة غير نشطة أو محظورة. لا يمكن إجراء أي إجراءات عليها
           </p>
         </section>
-      ) : null}
+      ) : null} */}
 
       {pageTitle(
         damana?.status_translate || "جار التحميل...",
@@ -125,12 +127,10 @@ const DamanaDetails = () => {
       )}
 
       <section className="baseWhiteContainer space-y-4">
-        <div
-          className={`grid lg:grid-cols-2 xl:grid-cols-4 gap-4 whiteContainer`}
-        >
+        <div className="whiteContainer flex items-start lg:items-center justify-between flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
             <p className="font-medium">رقم الضمانة:</p>
-            <p className="text-primary font-bold">{damana?.serial_number}</p>
+            <CopyToClipboard text={damana?.serial_number} />
           </div>
           <div className="flex items-center gap-2">
             <p className="font-medium">رقم الترميز واللوحة:</p>
@@ -139,7 +139,7 @@ const DamanaDetails = () => {
           <div className="flex items-center gap-2">
             <CiCalendarDate className="text-2xl" />
             <p className="text-primary font-bold">
-              {damana?.license_expiry_date}
+              {new Date(damana?.created_at).toLocaleDateString("ar-EG")}
             </p>
           </div>
           <Timer expiryDate={damana?.schedule_expired_at} />
@@ -152,7 +152,7 @@ const DamanaDetails = () => {
             data={[
               { label: "الاسم", value: damana?.seller?.name },
               { label: "رقم الهاتف", value: damana?.seller?.full_mobile },
-              { label: "رقم الوطنى", value: damana?.seller?.national_number },
+              { label: "رقم الوطني", value: damana?.seller?.national_number },
             ]}
           />
         </div>
@@ -164,7 +164,7 @@ const DamanaDetails = () => {
             data={[
               { label: "الاسم", value: damana?.buyer?.name },
               { label: "رقم الهاتف", value: damana?.buyer?.full_mobile },
-              { label: "رقم الوطنى", value: damana?.buyer?.national_number },
+              { label: "رقم الوطني", value: damana?.buyer?.national_number },
             ]}
           />
         </div>

@@ -17,6 +17,7 @@ import FormError from "../../../components/form/FormError";
 import ActionModal from "../../../components/modals/ActionModal";
 import { useNavigate } from "react-router-dom";
 import LoadingModal from "../../../components/modals/LoadingModal";
+import CopyToClipboard from "../../../components/common/CopyToClipboard";
 
 const commission_on_options = [
   { value: "buyer", label: "على المشتري" },
@@ -39,7 +40,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
   const [details, setDetails] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [damanaData, setDamanaData] = useState("");
-  const [copied, setCopied] = useState(false);
 
   const navigate = useNavigate();
 
@@ -80,18 +80,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
                   data.commission_value / 2
                 )} دينار على المشتري`,
         },
-        // {
-        //   label: "كود الخصم",
-        //   value: formik.values.code || "-",
-        // },
-        // {
-        //   label: "نسبة الخصم",
-        //   value: data.discount
-        //     ? `${formatNumber(data.discount)}${
-        //         data.discount_type === "percentage" ? "%" : " دينار"
-        //       }`
-        //     : "-",
-        // },
         {
           label: "سعر الضمانة الكلي",
           value: `${formatNumber(
@@ -188,15 +176,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
-
-  const handleCopySerial = (number) => {
-    if (number) {
-      navigator.clipboard.writeText(number).then(() => {
-        setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
-      });
-    }
-  };
 
   // 🟢 دالة تشغيل حساب العمولة
   const triggerCommission = (extra = {}) => {
@@ -342,20 +321,17 @@ const Step2 = ({ formData, setFormData, configData }) => {
           loading={createVehicleTransferMutation.isPending}
         />
       )}
+
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
         msg={
           <>
             <p className="text-center">تم إنشاء الضمانة بنجاح رقم الضمانة </p>
-            <span
-              className="font-bold text-success-200 text-2xl cursor-pointer underline flex items-center gap-2"
-              onClick={() => handleCopySerial(damanaData?.serial_number)}
-              title="اضغط للنسخ"
-            >
-              {damanaData?.serial_number}
-              {copied ? <LuCopyCheck /> : <LuCopy />}
-            </span>
+            <CopyToClipboard
+              text={damanaData?.serial_number}
+              className="!text-success-200 !texl-xl"
+            />
           </>
         }
         icon="success"
