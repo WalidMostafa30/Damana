@@ -22,7 +22,9 @@ const DamanaCard = ({
       <h3
         className="lg:text-lg font-bold text-white px-4 py-2 rounded-t-2xl w-full lg:w-fit"
         style={{
-          backgroundColor: damana?.status_color || "var(--color-secondary)",
+          backgroundColor: damana?.status_color
+            ? `#${damana.status_color}`
+            : "var(--color-secondary)",
         }}
       >
         {damana?.status_translate}
@@ -61,7 +63,9 @@ const DamanaCard = ({
         </div>
 
         <div className="flex flex-col items-center justify-end gap-2">
-          {damana?.schedule_expired_at && <Timer expiryDate={damana?.schedule_expired_at} />}
+          {damana?.schedule_expired_at && (
+            <Timer expiryDate={damana?.schedule_expired_at} />
+          )}
           {selectable ? (
             <span className="w-10 h-10 rounded-full border-2 border-primary p-1 flex items-center justify-center">
               {selected && (

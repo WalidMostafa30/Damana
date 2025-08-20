@@ -7,7 +7,7 @@ import ResetPassword from "./steps/ResetPassword";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(1);
   const [data, setData] = useState({});
 
   useEffect(() => {

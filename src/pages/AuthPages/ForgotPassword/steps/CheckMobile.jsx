@@ -121,7 +121,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
         <FormBtn title="ارسال كود التحقق" loading={mutation.isPending} />
       </form>
 
-      <button
+      {/* <button
         onClick={toggleMethod}
         className="mainBtn light mt-4"
         type="button"
@@ -129,7 +129,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
         {method === "mobile"
           ? "استخدام البريد الإلكتروني؟"
           : "استخدام رقم الهاتف؟"}
-      </button>
+      </button> */}
     </>
   );
 };

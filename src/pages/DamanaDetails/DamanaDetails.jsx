@@ -38,7 +38,7 @@ const DamanaDetails = () => {
         large ? "text-lg lg:text-2xl" : "lg:text-xl"
       } `}
       style={{
-        backgroundColor: color ? color : "var(--color-primary)",
+        backgroundColor: color ? `#${color}` : "var(--color-secondary)",
       }}
     >
       {title}
@@ -121,7 +121,7 @@ const DamanaDetails = () => {
       {pageTitle(
         damana?.status_translate || "جار التحميل...",
         true,
-        damana?.status_color || "var(--color-secondary)"
+        damana?.status_color
       )}
 
       <section className="baseWhiteContainer space-y-4">
