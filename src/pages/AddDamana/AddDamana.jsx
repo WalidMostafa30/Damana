@@ -12,7 +12,7 @@ import { getApplicationConfiguration } from "../../services/staticDataService";
 const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
 
 export default function AddDamana() {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
 
   const { data: configData } = useQuery({
     queryKey: ["applicationConfiguration"],

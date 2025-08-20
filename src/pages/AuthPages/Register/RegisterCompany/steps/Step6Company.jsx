@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FaCirclePlus, FaPeopleGroup, FaUserTie } from "react-icons/fa6";
+import { FaCirclePlus, FaPeopleGroup } from "react-icons/fa6";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import {
@@ -7,33 +7,14 @@ import {
   getCompanyGroups,
 } from "../../../../../services/authService";
 import ActionModal from "../../../../../components/modals/ActionModal";
-import { IoCloseCircleOutline } from "react-icons/io5";
 import toast, { Toaster } from "react-hot-toast";
-import PhoneInput from "../../../../../components/form/PhoneInput";
+import Step6CompanyCommissioner from "./Step6CompanyCommissioner";
+import Step6CompanyLoginAccounts from "./Step6CompanyLoginAccounts";
 
 const Step6Company = ({ formik, getError }) => {
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);
   const [customGroupName, setCustomGroupName] = useState("");
   const [openModal, setOpenModal] = useState(false);
-
-  const [showLoginForm, setShowLoginForm] = useState(false);
-  const [loginForm, setLoginForm] = useState({
-    name: "",
-    phone: "",
-    authorizationFile: null,
-  });
-
-  console.log(loginForm);
-
-  const modalMsg = (
-    <>
-      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
-      <p className="text-sm lg:text-base">
-        أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
-        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية ...
-      </p>
-    </>
-  );
 
   const queryClient = useQueryClient();
 
@@ -93,52 +74,20 @@ const Step6Company = ({ formik, getError }) => {
     }
   };
 
-  // اختيار مفوضين متعدد
-  const handleCommissionerSelect = (e) => {
-    const commissionerName = e.target.value;
-    if (!commissionerName) return;
-
-    const current = formik.values.loginusers || [];
-    if (!current.includes(commissionerName)) {
-      formik.setFieldValue("loginusers", [...current, commissionerName]);
-    }
-  };
-
-  // حذف مفوض من loginusers
-  const handleRemoveCommissioner = (name) => {
-    const current = formik.values.loginusers || [];
-    formik.setFieldValue(
-      "loginusers",
-      current.filter((u) => u !== name)
-    );
-  };
-
-  const handleAddLoginAccount = () => {
-    if (!loginForm.name || !loginForm.phone || !loginForm.authorizationFile) {
-      toast.error("من فضلك أكمل كل الحقول");
-      return;
-    }
-
-    const current = formik.values.login_accounts || [];
-    formik.setFieldValue("login_accounts", [...current, loginForm]);
-
-    // reset
-    setLoginForm({ name: "", phone: "", authorizationFile: null });
-    setShowLoginForm(false);
-  };
-
-  // ✅ حذف حساب
-  const handleRemoveLoginAccount = (idx) => {
-    const current = formik.values.login_accounts || [];
-    formik.setFieldValue(
-      "login_accounts",
-      current.filter((_, i) => i !== idx)
-    );
-  };
+  const modalMsg = (
+    <>
+      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
+      <p className="text-sm lg:text-base">
+        أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
+        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية ...
+      </p>
+    </>
+  );
 
   return (
     <>
       <Toaster />
+
       {/* اختيار المجموعة */}
       <MainInput
         label="هل تنتمي شركتك إلى مجموعة شركات؟"
@@ -161,11 +110,15 @@ const Step6Company = ({ formik, getError }) => {
       {/* زر إضافة مجموعة جديدة */}
       <button
         type="button"
-        className="mt-4 flex items-center gap-1 text-sm text-primary"
+        className="mt-4 flex items-center gap-1 text-primary cursor-pointer"
         onClick={() => setShowAddGroupInput(!showAddGroupInput)}
       >
-        <FaCirclePlus className="text-2xl" />
-        إضافة مجموعة جديدة
+        <FaCirclePlus
+          className={`text-2xl ${
+            showAddGroupInput ? "rotate-45" : ""
+          } duration-200`}
+        />
+        {showAddGroupInput ? "ازالة المجموعة" : "إضافة مجموعة جديدة"}
       </button>
 
       {showAddGroupInput && (
@@ -187,124 +140,9 @@ const Step6Company = ({ formik, getError }) => {
         </div>
       )}
 
-      {/* اختيار المفوضين */}
-      <div className="mt-6">
-        <MainInput
-          label="اختر المفوضين المرتبطين"
-          id="commissioners_select"
-          type="select"
-          value=""
-          onChange={handleCommissionerSelect}
-          options={[
-            { label: "اختر مفوض", value: "" },
-            ...formik.values.commissioners.map((c) => ({
-              label: c.full_name,
-              value: c.full_name, // 👈 بدل index إلى full_name
-            })),
-          ]}
-          icon={<FaUserTie />}
-        />
-
-        {/* عرض المفوضين المختارين */}
-        <div className="mt-4 flex flex-wrap gap-2">
-          {(formik.values.loginusers || []).map((name, idx) => (
-            <div
-              key={idx}
-              className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2"
-            >
-              <span>{name}</span>
-              <button
-                type="button"
-                className="text-error-100 text-2xl cursor-pointer"
-                onClick={() => handleRemoveCommissioner(name)}
-              >
-                <IoCloseCircleOutline />
-              </button>
-            </div>
-          ))}
-        </div>
-
-        {formik.errors.loginusers && formik.touched.loginusers && (
-          <div className="text-error-100 text-sm mt-1">
-            {formik.errors.loginusers}
-          </div>
-        )}
-      </div>
-
-      {/* ✅ إضافة حساب تسجيل دخول جديد */}
-      <div className="mt-4">
-        <button
-          type="button"
-          onClick={() => setShowLoginForm(!showLoginForm)}
-          className="flex items-center gap-1 text-sm text-primary"
-        >
-          <FaCirclePlus className="text-xl" />
-          إضافة حساب تسجيل دخول جديد
-        </button>
-
-        {showLoginForm && (
-          <div className="mt-4 baseWhiteContainer space-y-3">
-            <MainInput
-              label="الاسم"
-              id={"login_name"}
-              type="text"
-              value={loginForm.name}
-              onChange={(e) =>
-                setLoginForm((prev) => ({ ...prev, name: e.target.value }))
-              }
-            />
-            <PhoneInput formik={formik} name="login_phone" combineValue />
-            <div>
-              <label className="block text-sm font-medium mb-1">
-                ملف خطاب التفويض
-              </label>
-              <input
-                type="file"
-                accept=".pdf,image/*"
-                className="whiteContainer"
-                onChange={(e) =>
-                  setLoginForm((prev) => ({
-                    ...prev,
-                    authorizationFile: e.target.files[0] || null,
-                  }))
-                }
-              />
-            </div>
-            <button
-              type="button"
-              onClick={handleAddLoginAccount}
-              className="bg-secondary text-white py-2 px-4 rounded-lg cursor-pointer"
-            >
-              إضافة
-            </button>
-          </div>
-        )}
-
-        {/* ✅ عرض الحسابات المضافة */}
-        <div className="mt-4 space-y-2">
-          {(formik.values.login_accounts || []).map((acc, idx) => (
-            <div
-              key={idx}
-              className="p-2 border rounded-lg bg-white flex items-center justify-between"
-            >
-              <div>
-                <p className="font-semibold">{acc.name}</p>
-                <p className="text-sm">{acc.phone}</p>
-                <p className="text-xs text-gray-500">
-                  {acc.authorizationFile?.name}
-                </p>
-              </div>
-              <button
-                type="button"
-                onClick={() => handleRemoveLoginAccount(idx)}
-                className="text-error-100 text-xl"
-              >
-                <IoCloseCircleOutline />
-              </button>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* 👇 هنا استخدام الكمبوننتات الجديدة */}
+      <Step6CompanyCommissioner formik={formik} getError={getError} />
+      <Step6CompanyLoginAccounts formik={formik} />
 
       {/* Checkbox سياسة الخصوصية */}
       <label className="flex items-center gap-2 mt-6">
@@ -322,7 +160,7 @@ const Step6Company = ({ formik, getError }) => {
           <button
             type="button"
             onClick={() => setOpenModal(true)}
-            className="text-primary font-semibold cursor-pointer"
+            className="text-primary font-semibold cursor-pointer underline"
           >
             الخصوصية و شروط استخدام ضمانة
           </button>{" "}

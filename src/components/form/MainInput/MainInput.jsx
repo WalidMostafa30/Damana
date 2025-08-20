@@ -82,8 +82,8 @@ const MainInput = ({
             disabled={disabled}
             className={commonInputClasses}
           >
-            {options.map((option) => (
-              <option key={option.value} value={option.value}>
+            {options.map((option, idx) => (
+              <option key={`${option.value}-${idx}`} value={option.value}>
                 {option.label}
               </option>
             ))}

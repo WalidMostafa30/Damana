@@ -106,8 +106,8 @@ const Step2 = ({ formData, setFormData, configData }) => {
 
       if (data.transfer_commission > 0) {
         newDetails.splice(4, 0, {
-          label: "ضمانة فورية",
-          value: "نعم",
+          label: "عموله التحويل العاجل",
+          value: `${formatNumber(data.transfer_commission)} دينار أردني`,
         });
       }
       setFormData({
