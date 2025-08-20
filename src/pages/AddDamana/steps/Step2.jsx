@@ -80,18 +80,18 @@ const Step2 = ({ formData, setFormData, configData }) => {
                   data.commission_value / 2
                 )} دينار على المشتري`,
         },
-        {
-          label: "كود الخصم",
-          value: formik.values.code || "-",
-        },
-        {
-          label: "نسبة الخصم",
-          value: data.discount
-            ? `${formatNumber(data.discount)}${
-                data.discount_type === "percentage" ? "%" : " دينار"
-              }`
-            : "-",
-        },
+        // {
+        //   label: "كود الخصم",
+        //   value: formik.values.code || "-",
+        // },
+        // {
+        //   label: "نسبة الخصم",
+        //   value: data.discount
+        //     ? `${formatNumber(data.discount)}${
+        //         data.discount_type === "percentage" ? "%" : " دينار"
+        //       }`
+        //     : "-",
+        // },
         {
           label: "سعر الضمانة الكلي",
           value: `${formatNumber(
@@ -104,12 +104,26 @@ const Step2 = ({ formData, setFormData, configData }) => {
         },
       ];
 
+      if (data.discount && data.discount > 0) {
+        newDetails.splice(2, 0, {
+          label: "كود الخصم",
+          value: formik.values.code,
+        });
+        newDetails.splice(3, 0, {
+          label: "نسبة الخصم",
+          value: `${formatNumber(data.discount)}${
+            data.discount_type === "percentage" ? "%" : " دينار"
+          }`,
+        });
+      }
+
       if (data.transfer_commission > 0) {
         newDetails.splice(4, 0, {
           label: "عموله التحويل العاجل",
           value: `${formatNumber(data.transfer_commission)} دينار أردني`,
         });
       }
+
       setFormData({
         ...formData,
         broker_commission_value: data.broker_commission_value,
@@ -300,6 +314,17 @@ const Step2 = ({ formData, setFormData, configData }) => {
           <input
             type="radio"
             name="transfer_commission"
+            value="ACH"
+            checked={formik.values.transfer_commission === "ACH"}
+            onChange={formik.handleChange}
+            className="w-5 h-5 accent-primary"
+          />
+          بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
+        </label>
+        <label className="flex items-center gap-2">
+          <input
+            type="radio"
+            name="transfer_commission"
             value="RTGS"
             checked={formik.values.transfer_commission === "RTGS"}
             onChange={formik.handleChange}
@@ -307,17 +332,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
           />
           فورًا – بأسرع وقت ممكن (تُضاف {configData?.settings?.rtgs_fees}{" "}
           دنانير)
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="radio"
-            name="transfer_commission"
-            value="ACH"
-            checked={formik.values.transfer_commission === "ACH"}
-            onChange={formik.handleChange}
-            className="w-5 h-5 accent-primary"
-          />
-          بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
         </label>
       </div>
       {details.length > 0 && <DetailsCard data={details} />}

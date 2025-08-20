@@ -60,8 +60,8 @@ const DamanaCard = ({
           </div>
         </div>
 
-        <div className="flex flex-col items-center gap-2">
-          <Timer expiryDate={damana?.schedule_expired_at} />
+        <div className="flex flex-col items-center justify-end gap-2">
+          {damana?.schedule_expired_at && <Timer expiryDate={damana?.schedule_expired_at} />}
           {selectable ? (
             <span className="w-10 h-10 rounded-full border-2 border-primary p-1 flex items-center justify-center">
               {selected && (
