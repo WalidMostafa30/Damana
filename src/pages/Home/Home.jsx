@@ -1,4 +1,3 @@
-import { IoIosArrowDown } from "react-icons/io";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useEffect, useState } from "react";
@@ -14,7 +13,7 @@ import { getApplicationConfiguration } from "../../services/staticDataService";
 const Home = () => {
   const [selectedType, setSelectedType] = useState("sell"); // ⬅ type
   const [selectedStatus, setSelectedStatus] = useState(null); // ⬅ status
-  const [date, setDate] = useState(""); // ⬅ date filter
+  const [date, setDate] = useState(null); // ⬅ date filter
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -97,7 +96,7 @@ const Home = () => {
             <input
               type="date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={(e) => setDate(e.target.value || null)}
               placeholder="تاريخ الضمانة"
               className="bg-transparent cursor-pointer outline-none homeLink filter"
             />

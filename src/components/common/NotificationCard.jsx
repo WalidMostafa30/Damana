@@ -28,7 +28,11 @@ const NotificationCard = ({ notification, header = false }) => {
       <Avatar name={notification.data?.title} size="lg" />
 
       <div className="space-y-2 flex-1">
-        <p className={`text-neutral-800 flex-1 ${!header && "lg:text-xl"}`}>
+        <p
+          className={`text-neutral-800 flex-1 ${!header && "lg:text-xl"} ${
+            header && "line-clamp-3"
+          }`}
+        >
           <span className="font-bold text-primary">
             {notification.data?.title}
           </span>{" "}

@@ -48,7 +48,7 @@ export const fetchDamanat = async ({ pageParam = 1, queryKey }) => {
       type,
       status,
       created_at: date,
-      page: pageParam,
+      page: pageParam, 
     },
   });
 

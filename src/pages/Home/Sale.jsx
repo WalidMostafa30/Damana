@@ -8,9 +8,14 @@ const Sale = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
       next={fetchNextPage}
       hasMore={hasNextPage}
       loader={<p className="text-center p-4">تحميل المزيد...</p>}
-      endMessage={<p className="text-center p-4">لا يوجد عناصر أخرى</p>}
+      endMessage={
+        data.length !== 0 && (
+          <p className="text-center p-4">لا يوجد عناصر أخرى</p>
+        )
+      }
+      style={{ overflow: "hidden" }}
     >
-      <DamanaList data={data} />
+      <DamanaList data={data} addDamanaText />
       {isFetchingNextPage && (
         <p className="text-center p-4">جاري تحميل المزيد...</p>
       )}

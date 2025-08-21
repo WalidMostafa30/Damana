@@ -37,7 +37,7 @@ const FAQ = () => {
           <li key={question.id} className="border-b border-neutral-200">
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex items-center justify-between p-4 text-lg font-medium cursor-pointer"
+              className="w-full flex items-start justify-between p-4 text-lg font-semibold cursor-pointer"
             >
               {question.title}
               <IoIosArrowDown
@@ -49,10 +49,10 @@ const FAQ = () => {
 
             <div
               className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                openIndex === index ? "max-h-40" : "max-h-0"
+                openIndex === index ? "max-h-[500px]" : "max-h-0"
               }`}
             >
-              <p className="p-4 text-neutral-600">{question.description}</p>
+              <p className="p-4 pt-0 text-neutral-600">{question.description}</p>
             </div>
           </li>
         ))}

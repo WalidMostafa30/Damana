@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
@@ -8,6 +8,8 @@ import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
 import LoadingSection from "../../components/layout/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
 import DamanaList from "../../components/common/DamanaList";
+import InfiniteScroll from "react-infinite-scroll-component";
+import FormError from "../../components/form/FormError/";
 
 const steps = [
   {
@@ -31,13 +33,19 @@ const RemoveDamana = () => {
   const [errorMsg, setErrorMsg] = useState("");
 
   const {
-    data: allDamanat = [],
-    isLoading,
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
     isError,
     error,
-  } = useQuery({
+    isLoading,
+  } = useInfiniteQuery({
     queryKey: ["damanat", "cancellable"],
-    queryFn: () => fetchDamanat(null, "cancellable"),
+    queryFn: ({ pageParam = 1 }) =>
+      fetchDamanat({ pageParam, queryKey: ["damanat", "cancellable"] }),
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
   });
 
   const cancelDamanaMutation = useMutation({
@@ -93,21 +101,25 @@ const RemoveDamana = () => {
       )}
 
       {!isLoading && step === 0 && (
-        <>
+        <InfiniteScroll
+          dataLength={data?.pages.flatMap((p) => p.data).length || 0}
+          next={fetchNextPage}
+          hasMore={hasNextPage}
+          loader={<p className="text-center p-4">تحميل المزيد...</p>}
+          endMessage={<p className="text-center p-4">لا يوجد عناصر أخرى</p>}
+          style={{ overflow: "hidden" }}
+        >
           <DamanaList
-            data={allDamanat}
-            loading={isLoading}
-            error={error}
+            data={data?.pages.flatMap((p) => p.data) || []}
             selectable
             selectedIds={selectedDamanat}
             onSelect={toggleSelect}
           />
-          {selectedDamanat.length > 0 && (
-            <button onClick={() => setStep(1)} className="mainBtn">
-              متابعة
-            </button>
-          )}
-        </>
+        </InfiniteScroll>
+      )}
+
+      {isFetchingNextPage && (
+        <p className="text-center p-4">جاري تحميل المزيد...</p>
       )}
 
       {step === 1 && (

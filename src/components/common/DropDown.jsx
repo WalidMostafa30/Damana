@@ -33,7 +33,7 @@ const DropDown = ({ isOpen, onClose, buttonRef, children }) => {
         transform origin-top
         ${
           isOpen
-            ? "opacity-100 scale-100 max-h-[500px]"
+            ? "opacity-100 scale-100 max-h-[600px]"
             : "opacity-0 scale-95 max-h-0"
         }
       `}
