@@ -1,8 +1,24 @@
+import CommissionCard from "./Cards/CommissionCard";
+import DashboardTable from "./Cards/DashboardTable";
+import RevenueTrendCard from "./Cards/RevenueTrendCard";
+import SalesPurchaseTransactionsCard from "./Cards/SalesPurchaseTransactionsCard";
+
 const FinancialDashboard = () => {
   return (
-    <div>
-      <h1>Financial Dashboard</h1>
-    </div>
+    <>
+      <div>
+        <SalesPurchaseTransactionsCard />
+        <SalesPurchaseTransactionsCard />
+        <SalesPurchaseTransactionsCard />
+      </div>
+
+      <div>
+        <RevenueTrendCard />
+        <CommissionCard />
+      </div>
+
+      <DashboardTable />
+    </>
   );
 };
 

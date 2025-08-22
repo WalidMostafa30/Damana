@@ -74,7 +74,7 @@ const router = createBrowserRouter([
         path: "/damanaty/*",
         element: <Home />,
       },
-      { path: "dashboard", element: <Dashboard /> },
+      { path: "/dashboard/*", element: <Dashboard /> },
       { path: "add-damana", element: <AddDamana /> },
       { path: "damana/:id", element: <DamanaDetails /> },
       { path: "payment-options", element: <PaymentOptions /> },

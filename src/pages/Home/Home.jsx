@@ -42,9 +42,13 @@ const Home = () => {
   ];
 
   useEffect(() => {
-    // لو دخل /damanaty من غير تحديد، يروح على /sale
     if (pathname === "/damanaty") {
       navigate("/damanaty/sale", { replace: true });
+      setSelectedType("sell");
+    } else if (pathname.includes("/sale")) {
+      setSelectedType("sell");
+    } else if (pathname.includes("/purchase")) {
+      setSelectedType("buy");
     }
   }, [pathname, navigate]);
 
@@ -82,7 +86,7 @@ const Home = () => {
             </button>
 
             <select
-              className="bg-transparent outline-none homeLink filter"
+              className="filterBtn"
               value={selectedStatus || ""}
               onChange={(e) => setSelectedStatus(e.target.value || null)}
             >
@@ -98,7 +102,7 @@ const Home = () => {
               value={date}
               onChange={(e) => setDate(e.target.value || null)}
               placeholder="تاريخ الضمانة"
-              className="bg-transparent cursor-pointer outline-none homeLink filter"
+              className="filterBtn"
             />
           </div>
 

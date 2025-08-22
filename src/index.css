@@ -75,7 +75,7 @@ html {
 
 @layer {
   body {
-    @apply bg-white text-neutrals-800 font-['cairo'];
+    @apply bg-base-white text-neutrals-800 font-['cairo'];
   }
 
   .pageContainer {
@@ -83,11 +83,11 @@ html {
   }
 
   .whiteContainer {
-    @apply p-4 lg:p-6 rounded-2xl shadow-xl border border-neutral-200 bg-white;
+    @apply p-4 lg:p-6 rounded-2xl shadow-lg border border-neutral-200 bg-white;
   }
 
   .baseWhiteContainer {
-    @apply p-4 lg:p-6 rounded-2xl shadow-xl border border-neutral-200 bg-base-white;
+    @apply p-4 lg:p-6 rounded-2xl shadow-lg border border-neutral-200 bg-base-white;
   }
 
   .mainBtn {
@@ -139,7 +139,7 @@ html {
   }
 
   .homeLink {
-    @apply lg:text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl flex-1 text-center 
+    @apply lg:text-lg p-2 text-neutral-500 border border-neutral-300 rounded-t-xl text-center 
     cursor-pointer duration-200 flex items-center justify-center gap-2;
 
     &.active-sale {
@@ -150,8 +150,13 @@ html {
       @apply bg-secondary border-secondary text-white;
     }
 
-    &.filter{
-      @apply bg-white rounded-xl;
+    &.active-filter {
+      @apply bg-primary border-primary text-white;
     }
+  }
+
+  .filterBtn {
+    @apply bg-white lg:text-lg p-2 text-neutral-500 border border-neutral-300 rounded-xl text-center 
+    cursor-pointer duration-200 flex items-center justify-center gap-2 outline-0;
   }
 }
