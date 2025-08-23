@@ -1,6 +1,4 @@
-import { IoMdTime } from "react-icons/io";
 import PageTitle from "../../components/common/PageTitle";
-import Avatar from "../../components/common/Avatar";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   fetchNotifications,

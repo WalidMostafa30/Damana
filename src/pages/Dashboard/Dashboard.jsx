@@ -13,11 +13,13 @@ const Dashboard = () => {
     status: "all",
     commission: "all",
     company: "all",
-    dateRange: {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
-    },
+    dateRange: null, // 👈 في البداية مفيش تاريخ
+  });
+
+  const [tempRange, setTempRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: "selection",
   });
 
   const [showPicker, setShowPicker] = useState(false);
@@ -60,27 +62,35 @@ const Dashboard = () => {
           <option value="inactive">غير نشط</option>
         </select>
 
+        {/* زرار التاريخ */}
         <button
           className="filterBtn w-full h-full"
           onClick={() => setShowPicker(true)}
         >
-          {filters.dateRange.startDate.toLocaleDateString()} -{" "}
-          {filters.dateRange.endDate.toLocaleDateString()}
+          {filters.dateRange
+            ? `${filters.dateRange.startDate.toLocaleDateString()} - ${filters.dateRange.endDate.toLocaleDateString()}`
+            : "اختر التاريخ"}
         </button>
 
-        {/* Fullscreen Modal for mobile */}
+        {/* مودال التاريخ */}
         {showPicker && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto">
               <DateRange
                 editableDateInputs={true}
                 moveRangeOnFirstSelection={false}
-                ranges={[filters.dateRange]}
+                ranges={[tempRange]}
                 className="w-full"
-                onChange={(item) => handleChange("dateRange", item.selection)}
+                onChange={(item) => setTempRange(item.selection)}
               />
 
-              <button className="mt-2 mainBtn" onClick={closePicker}>
+              <button
+                className="mt-2 mainBtn"
+                onClick={() => {
+                  handleChange("dateRange", tempRange); // 👈 هنا بنسجل التاريخ بعد الضغط
+                  closePicker();
+                }}
+              >
                 تم
               </button>
             </div>
@@ -132,6 +142,7 @@ const Dashboard = () => {
           لوحه المعلومات المالية
         </button>
       </div>
+
       {pathname.includes("operational") && (
         <OperationalDashboard filters={filters} />
       )}

@@ -1,29 +1,44 @@
-import { QueryClient, useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { markNotificationRead } from "../../services/notificationsService";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
 import Avatar from "./Avatar";
 import { IoMdTime } from "react-icons/io";
 
-const NotificationCard = ({ notification, header = false }) => {
-  const markReadMutation = useMutation({
-    mutationFn: markNotificationRead,
-    onSuccess: () => QueryClient.invalidateQueries(["notifications"]),
-  });
-
+const NotificationCard = ({
+  notification,
+  header = false,
+  onClose = () => {},
+}) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
+  const [isRead, setIsRead] = useState(!!notification.read_at);
+
+  const markReadMutation = useMutation({
+    mutationFn: markNotificationRead,
+    onSuccess: () => {
+      setIsRead(true);
+      queryClient.invalidateQueries(["notifications"]);
+    },
+  });
+
   const handleNotificationClick = () => {
-    markReadMutation.mutate({ id: notification.id });
-    if (notification.data?.serial_number)
+    if (!isRead) {
+      markReadMutation.mutate({ id: notification.id });
+    }
+    if (notification.data?.serial_number) {
       navigate(`/damana/${notification.data?.vehicle_trans_id}`);
+    }
+    if (onClose) onClose();
   };
+
   return (
     <div
       key={notification.id}
-      className={`flex gap-4 p-4 cursor-pointer not-last:border-b border-neutral-300 ${
-        notification.read_at ? "" : "bg-secondary/20 hover:bg-secondary/30"
-      } ${markReadMutation.isSuccess ? "!bg-white" : ""}`}
       onClick={handleNotificationClick}
+      className={`flex gap-4 p-4 cursor-pointer not-last:border-b border-neutral-300
+        ${isRead ? "bg-white" : "bg-secondary/20 hover:bg-secondary/30"}`}
     >
       <Avatar name={notification.data?.title} size="lg" />
 

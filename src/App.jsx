@@ -23,7 +23,9 @@ function App() {
     <main>
       <TopHeader />
       <Header />
-      <Outlet />
+      <div className="min-h-[calc(100dvh-156px)] lg:min-h-[calc(100vh-228px)]">
+        <Outlet />
+      </div>
       <Footer />
     </main>
   );

@@ -1,49 +1,74 @@
 import {
-  Bar,
   BarChart,
-  CartesianGrid,
-  ResponsiveContainer,
-  Tooltip,
+  Bar,
   XAxis,
   YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+  Legend,
+  LabelList,
+  Cell,
 } from "recharts";
 
-const barData = [
-  { name: "القطاع الأول", value: 345, color: "#60a5fa" },
-  { name: "القطاع الثاني", value: 280, color: "#34d399" },
-  { name: "القطاع الثالث", value: 420, color: "#fbbf24" },
+const data = [
+  { name: "بيع غير مملوك", value: 34, color: "#aedcf9" },
+  { name: "شراء", value: 18, color: "#0e7ac0" },
+  { name: "بيع", value: 48, color: "#15b097" },
 ];
+
+// ✅ Legend مخصص
+const CustomLegend = () => {
+  return (
+    <ul className="flex gap-4 justify-center mt-4">
+      {data.map((entry, index) => (
+        <li key={`item-${index}`} className="flex items-center gap-2">
+          <span
+            style={{
+              display: "inline-block",
+              width: 12,
+              height: 12,
+              backgroundColor: entry.color,
+              borderRadius: "3px",
+            }}
+          ></span>
+          <span>{entry.name}</span>
+        </li>
+      ))}
+    </ul>
+  );
+};
 
 const TransactionsByTypeCard = () => {
   return (
     <div className="whiteContainer lg:col-span-4">
       <h3 className="text-lg font-semibold mb-4">توزيع المعاملات حسب النوع</h3>
-
-      <ResponsiveContainer width="100%" height={250}>
-        <BarChart data={barData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis
-            dataKey="name"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-          />
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "white",
-              border: "1px solid #e5e7eb",
-              borderRadius: "8px",
-              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-            }}
-          />
-          <Bar dataKey="value" fill="#60a5fa" radius={[4, 4, 0, 0]} />
-        </BarChart>
-      </ResponsiveContainer>
+      <div dir="ltr">
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart
+            data={data}
+            barSize={80}
+            margin={{ top: 20, right: 20, left: 20, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="name" />
+            <YAxis />
+            <Tooltip />
+            <Legend content={<CustomLegend />} />
+            <Bar dataKey="value" radius={[6, 6, 0, 0]}>
+              <LabelList
+                dataKey="value"
+                position="top"
+                formatter={(val) => `${val}%`}
+                style={{ fill: "#0b1c47", fontWeight: "bold" }}
+              />
+              {data.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={entry.color} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

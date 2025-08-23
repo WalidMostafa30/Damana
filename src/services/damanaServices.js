@@ -41,21 +41,22 @@ export const fetchDamanaDetails = async (id) => {
 };
 
 export const fetchDamanat = async ({ pageParam = 1, queryKey }) => {
-  const [, type, status, date] = queryKey;
+  const [, type, status, dateRange] = queryKey;
 
   const { data } = await api.get("/vehicle-transfers/list", {
     params: {
       type,
       status,
-      created_at: date,
-      page: pageParam, 
+      created_at_from: dateRange?.created_at_from,
+      created_at_to: dateRange?.created_at_to,
+      page: pageParam,
     },
   });
 
   return {
     data: data?.data || [],
     nextPage: pageParam + 1,
-    hasMore: (data?.data?.length || 0) > 0, // لو مفيش داتا يبقى خلاص
+    hasMore: (data?.data?.length || 0) > 0,
   };
 };
 

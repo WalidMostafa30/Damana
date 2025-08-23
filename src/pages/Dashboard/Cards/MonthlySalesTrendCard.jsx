@@ -1,64 +1,53 @@
 import {
-  CartesianGrid,
-  Line,
   LineChart,
-  ResponsiveContainer,
-  Tooltip,
+  Line,
   XAxis,
   YAxis,
+  Tooltip,
+  CartesianGrid,
+  ResponsiveContainer,
+  Legend,
 } from "recharts";
 
-const lineData = [
-  { month: "يناير", value: 35 },
-  { month: "فبراير", value: 28 },
-  { month: "مارس", value: 45 },
-  { month: "أبريل", value: 32 },
-  { month: "مايو", value: 55 },
-  { month: "يونيو", value: 42 },
-  { month: "يوليو", value: 65 },
-  { month: "أغسطس", value: 48 },
-  { month: "سبتمبر", value: 38 },
-  { month: "أكتوبر", value: 52 },
-  { month: "نوفمبر", value: 45 },
-  { month: "ديسمبر", value: 58 },
+const data = [
+  { month: "يناير", value: 42 },
+  { month: "فبراير", value: 92 },
+  { month: "مارس", value: 52 },
+  { month: "ابريل", value: 57 },
+  { month: "مايو", value: 15 },
+  { month: "يونيو", value: 57 },
+  { month: "يوليو", value: 11 },
+  { month: "اغسطس", value: 41 },
+  { month: "سبتمبر", value: 20 },
+  { month: "اكتوبر", value: 32 },
+  { month: "نوفمبر", value: 17 },
+  { month: "ديسمبر", value: 69 },
 ];
+
 const MonthlySalesTrendCard = () => {
   return (
     <div className="whiteContainer lg:col-span-4">
-      <h3 className="text-lg font-semibold mb-4">أداء المبيعات الشهري</h3>
-
-      <ResponsiveContainer height={300}>
-        <LineChart data={lineData}>
-          <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-          <XAxis
-            dataKey="month"
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-          />
-          <YAxis
-            axisLine={false}
-            tickLine={false}
-            tick={{ fontSize: 12, fill: "#6b7280" }}
-          />
-          <Tooltip
-            contentStyle={{
-              backgroundColor: "white",
-              border: "1px solid #e5e7eb",
-              borderRadius: "8px",
-              boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)",
-            }}
-          />
-          <Line
-            type="monotone"
-            dataKey="value"
-            stroke="#3b82f6"
-            strokeWidth={3}
-            dot={{ fill: "#3b82f6", strokeWidth: 2, r: 5 }}
-            activeDot={{ r: 7, stroke: "#3b82f6", strokeWidth: 2 }}
-          />
-        </LineChart>
-      </ResponsiveContainer>
+      <h3 className="text-lg font-semibold mb-4">اتجاه المبيعات الشهري</h3>
+      <div dir="ltr">
+        <ResponsiveContainer width="100%" height={350}>
+          <LineChart data={data}>
+            <CartesianGrid strokeDasharray="3 3" stroke="#e0e0e0" />
+            <XAxis dataKey="month" />
+            <YAxis width="100%" />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="value"
+              name="اتجاه المبيعات"
+              stroke="#3391cd"
+              strokeWidth={2}
+              dot={{ r: 6, fill: "#3391cd", strokeWidth: 2, stroke: "#fff" }}
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 };

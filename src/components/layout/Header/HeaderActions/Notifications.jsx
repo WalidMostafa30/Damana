@@ -1,5 +1,3 @@
-import { IoMdTime } from "react-icons/io";
-import Avatar from "../../../common/Avatar";
 import { Link } from "react-router-dom";
 import { SlBell } from "react-icons/sl";
 import NotificationCard from "../../../common/NotificationCard";
@@ -17,7 +15,12 @@ const Notifications = ({ notifications, isLoading, onClose }) => {
     <>
       <div>
         {notifications?.slice(0, 3).map((notification) => (
-          <NotificationCard key={notification.id} notification={notification} header />
+          <NotificationCard
+            key={notification.id}
+            notification={notification}
+            header
+            onClose={onClose}
+          />
         ))}
       </div>
 

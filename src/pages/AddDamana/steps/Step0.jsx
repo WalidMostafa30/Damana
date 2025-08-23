@@ -133,7 +133,7 @@ const Step0 = ({ goNext, formData, setFormData }) => {
           src="https://qa.edamana.live/assets/images/car_lmage.png"
           alt="car"
           loading="lazy"
-          className="w-32 md:w-64 h-auto object-cover rounded-lg shadow-md"
+          className="w-32 md:w-64"
         />
       </div>
 
