@@ -2,6 +2,7 @@ import DamanaCard from "./DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
 import LoadingSection from "../layout/Loading/LoadingSection";
+import FormError from "../form/FormError";
 
 const DamanaList = ({
   data = [],
@@ -16,9 +17,9 @@ const DamanaList = ({
 
   if (error)
     return (
-      <p className="text-center text-red-500 p-4">
-        حدث خطأ في التحميل :{error?.response?.data?.error_msg}
-      </p>
+      <FormError
+        errorMsg={error?.response?.data?.error_msg || "حدث خطأ اثناء التحميل"}
+      />
     );
 
   if (!data || data.length === 0)

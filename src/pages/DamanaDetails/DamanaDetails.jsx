@@ -7,6 +7,7 @@ import LoadingPage from "../../components/layout/Loading/LoadingPage";
 import Timer from "../../components/common/Timer";
 import { CiCalendarDate } from "react-icons/ci";
 import CopyToClipboard from "../../components/common/CopyToClipboard";
+import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
 
 const DamanaDetails = () => {
   const { id } = useParams();
@@ -110,6 +111,14 @@ const DamanaDetails = () => {
     </h3>
   );
 
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "-";
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
+
   return (
     <article className="pageContainer relative">
       {/* {isDisabled ? (
@@ -173,6 +182,58 @@ const DamanaDetails = () => {
         <div>
           {pageTitle("بيانات المركبة")}
           <DetailsCard data={vehicleData} col={2} />
+        </div>
+
+        {/* بيانات الضمانة */}
+        <div>
+          {pageTitle("بيانات الضمانة")}
+          <DetailsCard
+            data={[
+              {
+                label: "قيمة المركبة",
+                value: `${formatNumber(damana?.vehicle_price)} دينار أردني`,
+              },
+              {
+                label: "عمولة الضمانة",
+                value: `${formatNumber(
+                  damana?.commission_value_before_discount
+                )} دينار`,
+              },
+              { label: "كود الخصم", value: damana?.code || "-" },
+              {
+                label: "نسبة الخصم",
+                value: damana?.discount
+                  ? `${formatNumber(damana?.discount)}${
+                      damana?.discount_type === "percentage" ? "%" : " دينار"
+                    }`
+                  : "-",
+              },
+              {
+                label: "العمولة بعد الخصم",
+                value: `${formatNumber(damana?.commission_value)} دينار`,
+              },
+              {
+                label: "سعر الضمانة الكلي",
+                value: `${formatNumber(
+                  damana?.vehicle_price_with_commission
+                )} دينار أردني`,
+              },
+              {
+                label: "سعر الضمانة الكلي كتابة",
+                value: `${toArabicWord(
+                  Number(damana?.vehicle_price_with_commission)
+                )} دينار أردني فقط`,
+              },
+              // {
+              //   label: "المستحق للبائع",
+              //   value: `${damana?.due_to_seller} دينار`,
+              // },
+              // {
+              //   label: "المخصوم من المشتري",
+              //   value: `${damana?.deduction_from_buyer} دينار`,
+              // },
+            ]}
+          />
         </div>
 
         {/* أزرار التحكم */}

@@ -9,6 +9,7 @@ import LoadingPage from "../components/layout/Loading/LoadingPage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import GuestRoute from "../components/ProtectedRoute/GuestRoute";
 import CheckAuthRoute from "../components/ProtectedRoute/CheckAuthRoute";
+import UnifiedProtectedRoute from "../components/ProtectedRoute/UnifiedProtectedRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
@@ -130,17 +131,17 @@ const router = createBrowserRouter([
   {
     path: "register-otp",
     element: (
-      <GuestRoute>
+      <UnifiedProtectedRoute>
         <RegisterOTP />
-      </GuestRoute>
+      </UnifiedProtectedRoute>
     ),
   },
   {
     path: "complete-register",
     element: (
-      <GuestRoute>
+      <UnifiedProtectedRoute>
         <CompleteRegister />
-      </GuestRoute>
+      </UnifiedProtectedRoute>
     ),
   },
 

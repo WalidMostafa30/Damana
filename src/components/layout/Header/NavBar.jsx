@@ -18,7 +18,7 @@ const NavBar = ({ openNav, setOpenNav }) => {
       >
         ضماناتي
       </NavLink>
-      {/* {profile?.account_type === "company" && (
+      {profile?.account_type === "company" && (
         <NavLink
           onClick={() => setOpenNav(false)}
           to="/dashboard"
@@ -26,7 +26,7 @@ const NavBar = ({ openNav, setOpenNav }) => {
         >
           لوحة التحكم
         </NavLink>
-      )} */}
+      )}
       <NavLink
         onClick={() => setOpenNav(false)}
         to="/add-damana"

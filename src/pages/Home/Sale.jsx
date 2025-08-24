@@ -1,7 +1,14 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import DamanaList from "../../components/common/DamanaList";
 
-const Sale = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
+const Sale = ({
+  data,
+  fetchNextPage,
+  hasNextPage,
+  isFetchingNextPage,
+  loading,
+  error,
+}) => {
   return (
     <InfiniteScroll
       dataLength={data.length}
@@ -15,7 +22,7 @@ const Sale = ({ data, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
       }
       style={{ overflow: "hidden" }}
     >
-      <DamanaList data={data} addDamanaText />
+      <DamanaList data={data} addDamanaText loading={loading} error={error}/>
       {isFetchingNextPage && (
         <p className="text-center p-4">جاري تحميل المزيد...</p>
       )}

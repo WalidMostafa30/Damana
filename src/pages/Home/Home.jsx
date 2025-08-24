@@ -34,23 +34,29 @@ const Home = () => {
   const navigate = useNavigate();
 
   // جلب البيانات
-  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
-    useInfiniteQuery({
-      queryKey: [
-        "damanat",
-        selectedType,
-        selectedStatus,
-        dateRange
-          ? {
-              created_at_from: dateRange.startDate.toISOString().split("T")[0],
-              created_at_to: dateRange.endDate.toISOString().split("T")[0],
-            }
-          : null, // 👈 لو مفيش تاريخ مش هيتبعت
-      ],
-      queryFn: fetchDamanat,
-      getNextPageParam: (lastPage) =>
-        lastPage.hasMore ? lastPage.nextPage : undefined,
-    });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    isLoading,
+    error,
+  } = useInfiniteQuery({
+    queryKey: [
+      "damanat",
+      selectedType,
+      selectedStatus,
+      dateRange
+        ? {
+            created_at_from: dateRange.startDate.toISOString().split("T")[0],
+            created_at_to: dateRange.endDate.toISOString().split("T")[0],
+          }
+        : null, // 👈 لو مفيش تاريخ مش هيتبعت
+    ],
+    queryFn: fetchDamanat,
+    getNextPageParam: (lastPage) =>
+      lastPage.hasMore ? lastPage.nextPage : undefined,
+  });
 
   // جلب الكونفيج
   const { data: configData } = useQuery({
@@ -170,6 +176,8 @@ const Home = () => {
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
+              loading={isLoading}
+              error={error}
             />
           )}
           {pathname.includes("/purchase") && (
@@ -178,6 +186,8 @@ const Home = () => {
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
               isFetchingNextPage={isFetchingNextPage}
+              loading={isLoading}
+              error={error}
             />
           )}
         </section>
