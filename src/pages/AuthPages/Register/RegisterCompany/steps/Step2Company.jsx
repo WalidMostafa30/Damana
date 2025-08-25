@@ -149,7 +149,7 @@ const Step2Company = ({ formik, getError }) => {
               icon={<GrMoney />}
             />
 
-            {/* <MainInput
+            <MainInput
               label="رقم الهاتف"
               placeholder={"رقم الهاتف"}
               id={`commissioners.${index}.phone`}
@@ -160,12 +160,12 @@ const Step2Company = ({ formik, getError }) => {
                 formik.setFieldValue(`commissioners.${index}.phone`, phone)
               }
               error={getError(`commissioners.${index}.phone`)}
-            /> */}
-            <PhoneInput
+            />
+            {/* <PhoneInput
               formik={formik}
               name={`commissioners.${index}.phone`}
               combineValue={true}
-            />
+            /> */}
 
             <MainInput
               label="البريد الإلكتروني"
@@ -298,7 +298,7 @@ const Step2Company = ({ formik, getError }) => {
             icon={<GrMoney />}
           />
 
-          {/* <MainInput
+          <MainInput
             label="رقم الهاتف"
             placeholder="رقم الهاتف"
             type="tel"
@@ -309,12 +309,12 @@ const Step2Company = ({ formik, getError }) => {
               formik.setFieldValue("managementCommissioners.phone", phone)
             }
             error={getError("managementCommissioners.phone")}
-          /> */}
-          <PhoneInput
+          />
+          {/* <PhoneInput
             formik={formik}
             name="managementCommissioners.phone"
             combineValue={true}
-          />
+          /> */}
 
           <MainInput
             label="البريد الإلكتروني"

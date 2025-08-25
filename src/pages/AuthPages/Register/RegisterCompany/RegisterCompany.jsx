@@ -164,10 +164,11 @@ const stepSchemas = [
       [true],
       "يجب الموافقة على الإقرار قبل المتابعة"
     ),
-    login_commissioners: Yup.array()
-      .of(Yup.string().required("الاسم مطلوب"))
-      .min(1, "يجب اختيار مفوض واحد على الأقل"),
-    login_accounts: Yup.array().of(Yup.object({})),
+    // login_commissioners: Yup.array()
+    //   .of(Yup.string().required("الاسم مطلوب"))
+    //   .min(1, "يجب اختيار مفوض واحد على الأقل"),
+    // login_accounts: Yup.array().of(Yup.object({})),
+    login_accounts: Yup.object(),
   }),
 ];
 
@@ -267,8 +268,9 @@ const RegisterCompany = () => {
       acknowledgement: false,
       group_id: {},
       accept_policy_terms: false,
-      login_commissioners: [],
-      login_accounts: [],
+      // login_commissioners: [],
+      // login_accounts: [],
+      login_accounts: {},
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,

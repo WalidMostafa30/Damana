@@ -79,7 +79,7 @@ const Step1Company = ({ formik, getError }) => {
               icon={<FaEarthAsia />}
             />
 
-            {/* <MainInput
+            <MainInput
               label="رقم الهاتف"
               type="tel"
               id={`partners.${index}.phone`}
@@ -90,12 +90,12 @@ const Step1Company = ({ formik, getError }) => {
                 formik.setFieldValue(`partners.${index}.phone`, phone)
               }
               error={getError(`partners.${index}.phone`)}
-            /> */}
-            <PhoneInput
+            />
+            {/* <PhoneInput
               formik={formik}
               name={`partners.${index}.phone`}
               combineValue={true}
-            />
+            /> */}
 
             <MainInput
               label="البريد الإلكتروني"

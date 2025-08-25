@@ -141,7 +141,7 @@ const Step6Company = ({ formik, getError }) => {
       )}
 
       {/* 👇 هنا استخدام الكمبوننتات الجديدة */}
-      <Step6CompanyCommissioner formik={formik} getError={getError} />
+      {/* <Step6CompanyCommissioner formik={formik} getError={getError} /> */}
       <Step6CompanyLoginAccounts formik={formik} />
 
       {/* Checkbox سياسة الخصوصية */}

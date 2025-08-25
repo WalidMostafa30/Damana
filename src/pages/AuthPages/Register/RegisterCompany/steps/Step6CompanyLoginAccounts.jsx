@@ -4,7 +4,6 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdCloudUpload } from "react-icons/md";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 
-// ---------------- Main Component -----------------
 const Step6CompanyLoginAccounts = ({ formik }) => {
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [tempLogin, setTempLogin] = useState({
@@ -14,7 +13,7 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
   });
   const [errors, setErrors] = useState({});
 
-  const login_accounts = formik.values.login_accounts || [];
+  const login_accounts = formik.values.login_accounts || {};
 
   const validate = () => {
     let newErrors = {};
@@ -33,37 +32,35 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
 
   const handleAddLogin = () => {
     if (validate()) {
-      formik.setFieldValue("login_accounts", [...login_accounts, tempLogin]);
-      // فضي الفورم
+      formik.setFieldValue("login_accounts", tempLogin); // ✅ يخزن حساب واحد بس
       setTempLogin({
         login_name: "",
         login_phone: "",
         authorizationFile: null,
       });
       setErrors({});
-      setShowLoginForm(false); // إغلاق الفورم بعد الإضافة
+      setShowLoginForm(false); // ✅ يقفل الفورم بعد الإضافة
     }
   };
 
-  const removeLogin = (index) => {
-    const updated = login_accounts.filter((_, i) => i !== index);
-    formik.setFieldValue("login_accounts", updated);
+  const removeLogin = () => {
+    formik.setFieldValue("login_accounts", []); // ✅ يمسح الحساب
+    setShowLoginForm(false); // يرجع يقدر يضيف تاني
   };
 
   return (
     <div className="mt-4">
-      <button
-        type="button"
-        className="mb-4 flex items-center gap-1 text-primary cursor-pointer"
-        onClick={() => setShowLoginForm(!showLoginForm)}
-      >
-        <FaCirclePlus
-          className={`text-2xl ${
-            showLoginForm ? "rotate-45" : ""
-          } duration-200`}
-        />
-        {showLoginForm ? "ازالة حساب تسجيل دخول" : "إضافة حساب تسجيل دخول جديد"}
-      </button>
+      {/* الزرار يظهر فقط لو مفيش حساب مضاف */}
+      {!login_accounts.length && !showLoginForm && (
+        <button
+          type="button"
+          className="mb-4 flex items-center gap-1 text-primary cursor-pointer"
+          onClick={() => setShowLoginForm(true)}
+        >
+          <FaCirclePlus className="text-2xl" />
+          إضافة حساب تسجيل دخول جديد
+        </button>
+      )}
 
       {showLoginForm && (
         <div className="mb-6 baseWhiteContainer">
@@ -114,27 +111,20 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
         </div>
       )}
 
-      {/* عرض الحسابات اللي اتضافت */}
+      {/* عرض الحساب الوحيد */}
       {login_accounts.length > 0 && (
         <div className="mt-4">
-          <p className="font-bold mb-2">الحسابات المضافة:</p>
+          <p className="font-bold mb-2">الحساب المضاف:</p>
 
-          <div className="flex flex-wrap gap-2">
-            {login_accounts.map((acc, i) => (
-              <div
-                key={i}
-                className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2"
-              >
-                <span>{acc.login_name}</span>
-                <button
-                  type="button"
-                  className="text-error-100 text-2xl cursor-pointer"
-                  onClick={() => removeLogin(i)}
-                >
-                  <IoCloseCircleOutline />
-                </button>
-              </div>
-            ))}
+          <div className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2">
+            <span>{login_accounts[0].login_name}</span>
+            <button
+              type="button"
+              className="text-error-100 text-2xl cursor-pointer"
+              onClick={removeLogin}
+            >
+              <IoCloseCircleOutline />
+            </button>
           </div>
         </div>
       )}
