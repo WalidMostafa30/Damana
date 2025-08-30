@@ -2,7 +2,12 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
-import { LuCopy, LuCopyCheck, LuHandCoins } from "react-icons/lu";
+import {
+  LuChevronDown,
+  LuCopy,
+  LuCopyCheck,
+  LuHandCoins,
+} from "react-icons/lu";
 import { CiDiscount1 } from "react-icons/ci";
 import { FaMoneyBillWave } from "react-icons/fa";
 import DetailsCard from "../../../components/common/DetailsCard";
@@ -35,6 +40,7 @@ const formatNumber = (num) => {
 
 const Step2 = ({ formData, setFormData, configData }) => {
   const [errorMsg, setErrorMsg] = useState("");
+  const [showCoupon, setShowCoupon] = useState(false);
   const [couponErrorMsg, setCouponErrorMsg] = useState("");
   const [couponServer, setCouponServer] = useState(null);
   const [details, setDetails] = useState([]);
@@ -248,44 +254,74 @@ const Step2 = ({ formData, setFormData, configData }) => {
           error={getError("commission_on")}
         />
       </div>
-      {/* كود الخصم */}
-      <div>
-        <p className="lg:text-lg font-bold mb-2">هل تمتلك كود خصم؟</p>
-        <div className="flex flex-col gap-2 lg:w-1/2">
-          <MainInput
-            label="كود الخصم"
-            type="text"
-            name="code"
-            id="code"
-            placeholder="ادخل كود الخصم"
-            icon={<CiDiscount1 />}
-            value={formik.values.code}
-            onChange={(e) => {
-              formik.handleChange(e);
-              setCouponServer(null);
-            }}
-            onBlur={formik.handleBlur}
-            error={getError("code")}
+
+      {/* 🟢 كود الخصم */}
+      <div className="md:w-1/2">
+        <button
+          type="button"
+          className="flex justify-between items-center w-full cursor-pointer"
+          onClick={() => setShowCoupon(!showCoupon)}
+        >
+          <p className="lg:text-lg font-bold">هل تمتلك كود خصم؟</p>
+          <LuChevronDown
+            className={`text-xl transition-transform duration-300 ${
+              showCoupon ? "rotate-180" : ""
+            }`}
           />
+        </button>
 
-          {couponServer?.discount && (
-            <p className="text-success font-bold">
-              حصلت على خصم {couponServer.discount}
-              {couponServer.discount_type === "percentage" ? "%" : " دينار"}
-            </p>
-          )}
-          <FormError errorMsg={couponErrorMsg} />
-
-          {formik.values.code && (
-            <FormBtn
-              title="تحقق"
-              type="button"
-              loading={couponMutation.isPending}
-              onClick={() => couponMutation.mutate(formik.values.code)}
+        {/* الجزء القابل للطي */}
+        <div
+          className={`transition-all duration-500 overflow-hidden ${
+            showCoupon ? "max-h-[500px] mt-3" : "max-h-0"
+          }`}
+        >
+          <div className="flex flex-col gap-2 p-1">
+            <MainInput
+              label="كود الخصم"
+              type="text"
+              name="code"
+              id="code"
+              placeholder="ادخل كود الخصم"
+              icon={<CiDiscount1 />}
+              value={formik.values.code}
+              onChange={(e) => {
+                formik.handleChange(e);
+                setCouponServer(null);
+              }}
+              onBlur={formik.handleBlur}
+              error={getError("code")}
             />
-          )}
+
+            {/* ✅ رسائل الأنيميشن */}
+            <div
+              className={`transition-all duration-500 overflow-hidden ${
+                couponServer?.discount || couponErrorMsg
+                  ? "max-h-20"
+                  : "max-h-0"
+              }`}
+            >
+              {couponServer?.discount && (
+                <p className="text-success font-bold">
+                  حصلت على خصم {couponServer.discount}
+                  {couponServer.discount_type === "percentage" ? "%" : " دينار"}
+                </p>
+              )}
+              <FormError errorMsg={couponErrorMsg} />
+            </div>
+
+            {formik.values.code && (
+              <FormBtn
+                title="تحقق"
+                type="button"
+                loading={couponMutation.isPending}
+                onClick={() => couponMutation.mutate(formik.values.code)}
+              />
+            )}
+          </div>
         </div>
       </div>
+
       {/* صرف ضمانة */}
       <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
       <div className="space-y-2">

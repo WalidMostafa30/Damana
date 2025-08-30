@@ -15,11 +15,12 @@ import AuthLayout from "../../../../components/common/AuthLayout";
 import get from "lodash.get";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useMutation } from "@tanstack/react-query";
 import { registerCompany } from "../../../../services/authService";
 import BackStepBtn from "../../../../components/form/BackStepBtn";
+import { isValid } from "iban";
 
 const steps = [
   "القسم الاول: بيانات الشركة",
@@ -112,7 +113,11 @@ const stepSchemas = [
   // Step 4
   Yup.object({
     bank_id: Yup.string().required("اسم البنك مطلوب"),
-    iban: Yup.string().required("رقم الايبان مطلوب"),
+    iban: Yup.string()
+      .test("iban-check", "رقم الايبان غير صالح", (value) =>
+        isValid(value || "")
+      )
+      .required("رقم الايبان مطلوب"),
     currency: Yup.string().required("العملة مطلوبة"),
     clik_name: Yup.string(),
   }),
@@ -176,6 +181,8 @@ const RegisterCompany = () => {
   const [step, setStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
+
+  const navigate = useNavigate();
 
   const mutation = useMutation({
     mutationFn: registerCompany,
@@ -361,9 +368,14 @@ const RegisterCompany = () => {
 
       <ActionModal
         openModal={openModal}
-        setOpenModal={setOpenModal}
-        closeBtn
         msg="تم ارسال طلبك الى الادارة ، سيتم مراجعته واستكمال باقي الخطوات"
+        primaryBtn={{
+          text: "الذهاب الى تسجيل الدخول",
+          action: () => {
+            setOpenModal(false);
+            navigate("/login");
+          },
+        }}
       />
     </AuthLayout>
   );

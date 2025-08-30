@@ -3,7 +3,6 @@ import MainInput from "../../components/form/MainInput/MainInput";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { FaRegEdit } from "react-icons/fa";
-import { CiBank } from "react-icons/ci";
 import { useSelector } from "react-redux";
 import { useMutation } from "@tanstack/react-query";
 import { completeRegister } from "../../services/authService";
@@ -12,7 +11,9 @@ import FormBtn from "../../components/form/FormBtn";
 import { GoFileBinary } from "react-icons/go";
 import { SiBitcoin } from "react-icons/si";
 import { IoIdCardSharp } from "react-icons/io5";
+import { IoMdCode } from "react-icons/io";
 import BankSelect from "../../components/form/BankSelect";
+import { isValid } from "iban";
 
 const BankInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -34,14 +35,17 @@ const BankInfo = () => {
     },
   });
 
-  // 🟢 الفاليديشن بعد التعديل
+  // 🟢 الفاليديشن مع الـ 5 حقول
   const bankSchema = Yup.object({
     bank_id: Yup.string().required("اسم البنك مطلوب"),
     iban: Yup.string()
-      .matches(/^[A-Z0-9]+$/, "رقم الايبان يجب أن يكون حروف وأرقام فقط")
+      .test("iban-check", "رقم الايبان غير صالح", (value) =>
+        isValid(value || "")
+      )
       .required("رقم الايبان البنكي مطلوب"),
+    swift_code: Yup.string().required("رقم السويفت مطلوب"),
     currency: Yup.string().required("العملة مطلوبة"),
-    clik_name: Yup.string().required("اسم كليك مطلوب"),
+    clik_name: Yup.string(), // هنا خفيف/اختياري
   });
 
   // 🟢 Formik بنفس أسماء الـ API
@@ -50,6 +54,7 @@ const BankInfo = () => {
     initialValues: {
       bank_id: userBank.bank_id || "",
       iban: userBank.iban || "",
+      swift_code: userBank.swift_code || "",
       currency: userBank.currency || "",
       clik_name: userBank.clik_name || "",
     },
@@ -85,6 +90,10 @@ const BankInfo = () => {
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {/* 🟢 البنك */}
+          <BankSelect formik={formik} disabled={!isEditing} />
+
+          {/* 🟢 IBAN */}
           <MainInput
             label="رقم الحساب الدولي (IBAN)"
             id="iban"
@@ -96,6 +105,21 @@ const BankInfo = () => {
             icon={<GoFileBinary />}
             disabled={!isEditing}
           />
+
+          {/* 🟢 SWIFT Code */}
+          <MainInput
+            label="رقم السويفت (SWIFT Code)"
+            id="swift_code"
+            name="swift_code"
+            placeholder="مثال: NBEGEGCXXXX"
+            value={formik.values.swift_code}
+            onChange={formik.handleChange}
+            error={getError("swift_code")}
+            icon={<IoMdCode />}
+            disabled={!isEditing}
+          />
+
+          {/* 🟢 العملة */}
           <MainInput
             type="select"
             label="العملة"
@@ -107,18 +131,17 @@ const BankInfo = () => {
             icon={<SiBitcoin />}
             disabled={!isEditing}
             options={[
-              {
-                value: "",
-                label: "اختر العمله",
-              },
+              { value: "", label: "اختر العمله" },
               ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
                 value: c,
                 label: c,
               })),
             ]}
           />
+
+          {/* 🟢 CLIQ */}
           <MainInput
-            label="اسم المستخدم (CLIQ)"
+            label="اسم المستخدم (CLIQ) (اختياري)"
             id="clik_name"
             name="clik_name"
             placeholder="مثال: user@bank.com"
@@ -128,8 +151,6 @@ const BankInfo = () => {
             disabled={!isEditing}
             icon={<IoIdCardSharp />}
           />
-
-          <BankSelect formik={formik} disabled={!isEditing} />
         </div>
 
         <FormError errorMsg={errorMsg} />

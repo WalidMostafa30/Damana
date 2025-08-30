@@ -3,7 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import MainInput from "./MainInput/MainInput";
 import { CiBank } from "react-icons/ci";
 
-const BankSelect = ({ formik, name = "bank_id", setSwiftCode, disabled }) => {
+const BankSelect = ({ formik, name = "bank_id",  disabled }) => {
   const { data: banksData, isLoading: loadingBanks } = useQuery({
     queryKey: ["banks"],
     queryFn: getBanks,
@@ -15,9 +15,9 @@ const BankSelect = ({ formik, name = "bank_id", setSwiftCode, disabled }) => {
 
   const handleChange = (e) => {
     formik.handleChange(e);
-    if (setSwiftCode) {
-      const selectedBank = banks.find((b) => b.id === Number(e.target.value));
-      setSwiftCode(selectedBank?.swift_code || "");
+    const selectedBank = banks.find((b) => b.id === Number(e.target.value));
+    if (selectedBank) {
+      formik.setFieldValue("swift_code", selectedBank.swift_code || "");
     }
   };
 

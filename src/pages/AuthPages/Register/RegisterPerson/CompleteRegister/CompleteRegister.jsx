@@ -24,6 +24,7 @@ export default function CompleteRegister() {
     currency: "",
     clik_name: "",
     bank_id: "",
+    swift_code: "",
     address_building_number: "",
     address_street_name: "",
     address_country_id: "",

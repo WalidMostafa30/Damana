@@ -1,6 +1,8 @@
 import { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+import { dropdownVariants } from "../../animations/dropdownV";
 
-const DropDown = ({ isOpen, onClose, buttonRef, children }) => {
+const DropDown = ({ onClose, buttonRef, children }) => {
   const dropdownRef = useRef(null);
 
   useEffect(() => {
@@ -15,32 +17,23 @@ const DropDown = ({ isOpen, onClose, buttonRef, children }) => {
       }
     };
 
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
-    } else {
-      document.removeEventListener("mousedown", handleClickOutside);
-    }
-
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isOpen, onClose, buttonRef]);
+  }, [onClose, buttonRef]);
 
   return (
-    <div
+    <motion.div
       ref={dropdownRef}
-      className={`absolute top-[calc(100%+10px)] end-0 rounded-lg overflow-hidden shadow-lg z-30 transition-all duration-300 ease-in-out
-        transform origin-top
-        ${
-          isOpen
-            ? "opacity-100 scale-100 max-h-[600px]"
-            : "opacity-0 scale-95 max-h-0"
-        }
-      `}
-      style={{ pointerEvents: isOpen ? "auto" : "none" }}
+      variants={dropdownVariants}
+      initial="hidden"
+      animate="visible"
+      exit="exit"
+      className="absolute top-[calc(100%+10px)] end-0 rounded-lg overflow-hidden shadow-lg z-30 origin-top"
     >
       {children}
-    </div>
+    </motion.div>
   );
 };
 

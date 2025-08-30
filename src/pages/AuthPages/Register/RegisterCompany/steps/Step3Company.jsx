@@ -1,31 +1,17 @@
-import { BsBank } from "react-icons/bs";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import { IoIdCardSharp } from "react-icons/io5";
 import { GoFileBinary } from "react-icons/go";
 import { IoMdCode } from "react-icons/io";
 import { SiBitcoin } from "react-icons/si";
-import { FaEarthAsia } from "react-icons/fa6";
 import BankSelect from "../../../../../components/form/BankSelect";
-import { useState } from "react";
 
 const Step3Company = ({ formik, getError }) => {
-  const [swiftCode, setSwiftCode] = useState("");
   return (
     <>
       <p className="text-primary text-lg font-bold">بيانات الحساب البنكي</p>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {/* <MainInput
-          label="اسم البنك"
-          id="bank_id"
-          name="bank_id"
-          placeholder="مثال: البنك الأهلي"
-          value={formik.values.bank_id}
-          onChange={formik.handleChange}
-          error={getError("bank_id")}
-          icon={<BsBank />}
-        /> */}
-        <BankSelect formik={formik} setSwiftCode={setSwiftCode} />
+        <BankSelect formik={formik} />
 
         <MainInput
           label="رقم الحساب الدولي (IBAN)"
@@ -43,11 +29,10 @@ const Step3Company = ({ formik, getError }) => {
           id="swift_code"
           name="swift_code"
           placeholder="مثال: NBEGEGCXXXX"
-          value={swiftCode}
+          value={formik.values.swift_code}
           onChange={formik.handleChange}
           error={getError("swift_code")}
           icon={<IoMdCode />}
-          disabled
         />
 
         <MainInput
@@ -60,10 +45,7 @@ const Step3Company = ({ formik, getError }) => {
           error={getError("currency")}
           icon={<SiBitcoin />}
           options={[
-            {
-              value: "",
-              label: "اختر العمله",
-            },
+            { value: "", label: "اختر العمله" },
             ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
               value: c,
               label: c,
@@ -81,17 +63,6 @@ const Step3Company = ({ formik, getError }) => {
           error={getError("clik_name")}
           icon={<IoIdCardSharp />}
         />
-
-        {/* <MainInput
-          label="اسم المصرح بالبيانات"
-          id="info_name"
-          name="info_name"
-          placeholder="مثال: أحمد علي"
-          value={formik.values.info_name}
-          onChange={formik.handleChange}
-          error={getError("info_name")}
-          icon={<IoIdCardSharp />}
-        /> */}
       </div>
     </>
   );

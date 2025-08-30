@@ -10,6 +10,7 @@ import ActionModal from "../../components/modals/ActionModal";
 import DamanaList from "../../components/common/DamanaList";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FormError from "../../components/form/FormError/";
+import FormBtn from "../../components/form/FormBtn";
 
 const steps = [
   {
@@ -41,9 +42,9 @@ const RemoveDamana = () => {
     error,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["damanat", "cancellable"],
-    queryFn: ({ pageParam = 1 }) =>
-      fetchDamanat({ pageParam, queryKey: ["damanat", "cancellable"] }),
+    queryKey: ["damanat", null, "cancellable"],
+    queryFn: ({ pageParam = 1, queryKey }) =>
+      fetchDamanat({ pageParam, queryKey }),
     getNextPageParam: (lastPage) =>
       lastPage.hasMore ? lastPage.nextPage : undefined,
   });
@@ -120,6 +121,10 @@ const RemoveDamana = () => {
 
       {isFetchingNextPage && (
         <p className="text-center p-4">جاري تحميل المزيد...</p>
+      )}
+
+      {step === 0 && selectedDamanat.length > 0 && (
+        <FormBtn title="التالى" onClick={() => setStep(1)} variant="primary" />
       )}
 
       {step === 1 && (
