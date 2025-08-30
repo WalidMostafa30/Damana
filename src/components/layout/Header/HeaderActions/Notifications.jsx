@@ -27,7 +27,7 @@ const Notifications = ({ notifications, isLoading, onClose }) => {
       <Link
         onClick={onClose}
         to="/notifications"
-        className="text-primary text-sm font-bold p-2 lg:p-4 flex items-center gap-1 cursor-pointer"
+        className="text-primary text-sm font-bold p-2 lg:p-4 flex items-center gap-1 cursor-pointer border-t border-neutral-300 hover:bg-secondary/10"
       >
         <SlBell className="text-xl" />
         رؤيه كل الاشعارات

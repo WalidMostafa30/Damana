@@ -62,7 +62,7 @@ const HeaderActions = ({ setOpenNav }) => {
               buttonRef={notificationBtnRef}
             >
               <div className="bg-white w-72 lg:w-96">
-                <h3 className="lg:text-lg text-neutral-800 font-bold p-2 lg:p-4">
+                <h3 className="lg:text-lg text-neutral-800 font-bold p-2 lg:p-4 border-b border-neutral-300">
                   الاشعارات
                 </h3>
 
