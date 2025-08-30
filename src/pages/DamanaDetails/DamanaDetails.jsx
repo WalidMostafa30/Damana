@@ -3,7 +3,7 @@ import ActionsSection from "./ActionsSection";
 import { useParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { fetchDamanaDetails } from "../../services/damanaServices";
-import LoadingPage from "../../components/layout/Loading/LoadingPage";
+import LoadingPage from "../../components/Loading/LoadingPage";
 import Timer from "../../components/common/Timer";
 import { CiCalendarDate } from "react-icons/ci";
 import CopyToClipboard from "../../components/common/CopyToClipboard";

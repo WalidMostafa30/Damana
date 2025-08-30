@@ -1,4 +1,4 @@
-import Loader from "../layout/Loading/Loader";
+import Loader from "../Loading/Loader";
 import Modal from "./Modal";
 
 const LoadingModal = ({ openModal }) => {

@@ -1,7 +1,7 @@
 import { Navigate, useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { checkAuth } from "../../services/authService";
-import LoadingPage from "../layout/Loading/LoadingPage";
+import LoadingPage from "../Loading/LoadingPage";
 import DisActivePage from "../../pages/NotFound/DisActivePage";
 import { useDispatch } from "react-redux";
 import { closeLogoutModal } from "../../store/modalsSlice/logoutModalSlice";

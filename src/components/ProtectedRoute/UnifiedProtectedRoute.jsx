@@ -2,7 +2,7 @@ import { Navigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { checkAuth } from "../../services/authService";
 import { useQuery } from "@tanstack/react-query";
-import LoadingPage from "../layout/Loading/LoadingPage";
+import LoadingPage from "../Loading/LoadingPage";
 
 export default function UnifiedProtectedRoute({ children }) {
   const token = Cookies.get("token");

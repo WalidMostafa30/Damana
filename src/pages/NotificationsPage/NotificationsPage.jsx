@@ -5,7 +5,7 @@ import {
   markAllNotificationsRead,
   deleteAllNotifications,
 } from "../../services/notificationsService";
-import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import LoadingSection from "../../components/Loading/LoadingSection";
 import NotificationCard from "../../components/common/NotificationCard";
 
 const NotificationsPage = () => {

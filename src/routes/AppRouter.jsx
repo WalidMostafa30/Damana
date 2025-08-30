@@ -5,7 +5,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import App from "../App";
-import LoadingPage from "../components/layout/Loading/LoadingPage";
+import LoadingPage from "../components/Loading/LoadingPage";
 import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import GuestRoute from "../components/ProtectedRoute/GuestRoute";
 import CheckAuthRoute from "../components/ProtectedRoute/CheckAuthRoute";

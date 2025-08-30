@@ -1,7 +1,7 @@
 import DamanaCard from "./DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
-import LoadingSection from "../layout/Loading/LoadingSection";
+import LoadingSection from "../Loading/LoadingSection";
 import FormError from "../form/FormError";
 
 const DamanaList = ({

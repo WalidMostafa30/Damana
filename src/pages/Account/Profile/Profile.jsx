@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import Avatar from "../../../components/common/Avatar";
-import LoadingSection from "../../../components/layout/Loading/LoadingSection";
+import LoadingSection from "../../../components/Loading/LoadingSection";
 import MobileSteps1 from "./MobileSteps/MobileSteps1";
 import MobileSteps2 from "./MobileSteps/MobileSteps2";
 import BackStepBtn from "../../../components/form/BackStepBtn";

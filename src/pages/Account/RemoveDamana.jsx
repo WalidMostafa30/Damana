@@ -5,7 +5,7 @@ import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
 import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
-import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import LoadingSection from "../../components/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
 import DamanaList from "../../components/common/DamanaList";
 import InfiniteScroll from "react-infinite-scroll-component";

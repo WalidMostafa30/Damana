@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPage } from "../../services/staticDataService";
-import LoadingSection from "../../components/layout/Loading/LoadingSection";
+import LoadingSection from "../../components/Loading/LoadingSection";
 
 const Terms = () => {
   const {
