@@ -10,6 +10,7 @@ const data = [homeBanner, homeBanner, homeBanner];
 const HomeSlider = () => {
   return (
     <Swiper
+      dir="ltr"
       spaceBetween={10}
       slidesPerView={1}
       autoplay={{ delay: 4000 }}

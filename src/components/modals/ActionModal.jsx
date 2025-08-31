@@ -1,7 +1,7 @@
-import successIcon from "./icons/correct-icon.png";
-import errorIcon from "./icons/error-icon.png";
-import warningIcon from "./icons/warning-icon.png";
-import protectIcon from "./icons/protect-icon.png";
+import successIcon from "../../assets/icons/correct-icon.png";
+import errorIcon from "../../assets/icons/error-icon.png";
+import warningIcon from "../../assets/icons/warning-icon.png";
+import protectIcon from "../../assets/icons/protect-icon.png";
 import Modal from "./Modal";
 
 const ActionModal = ({

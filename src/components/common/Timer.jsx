@@ -39,13 +39,13 @@ const Timer = ({ expiryDate, onFinish }) => {
   const seconds = remaining % 60;
 
   return (
-    <div className="flex items-center gap-1 text-xl font-bold">
-      {/* ثواني */}
+    <div className="flex items-center gap-1 text-xl font-bold" dir="ltr">
+      {/* ساعات */}
       <div className="flex flex-col items-center gap-1">
         <span className="p-2 rounded-lg text-primary bg-secondary/20">
-          {String(seconds).padStart(2, "0")}
+          {String(hours).padStart(2, "0")}
         </span>
-        <p className="text-sm text-neutral-500">ثانية</p>
+        <p className="text-sm text-neutral-500">ساعة</p>
       </div>
 
       <span className="mb-6">:</span>
@@ -60,12 +60,12 @@ const Timer = ({ expiryDate, onFinish }) => {
 
       <span className="mb-6">:</span>
 
-      {/* ساعات */}
+      {/* ثواني */}
       <div className="flex flex-col items-center gap-1">
         <span className="p-2 rounded-lg text-primary bg-secondary/20">
-          {String(hours).padStart(2, "0")}
+          {String(seconds).padStart(2, "0")}
         </span>
-        <p className="text-sm text-neutral-500">ساعة</p>
+        <p className="text-sm text-neutral-500">ثانية</p>
       </div>
     </div>
   );

@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import i18n from "../../i18n";
 
 const initialState = {
-  lang: localStorage.getItem("lang") || "en",
+  lang: localStorage.getItem("lang") || "ar",
 };
 
 const languageSlice = createSlice({
@@ -13,6 +13,7 @@ const languageSlice = createSlice({
       state.lang = action.payload;
       i18n.changeLanguage(action.payload); // يغير لغة i18next
       localStorage.setItem("lang", action.payload); // يخزن اللغة
+      window.location.reload(); // يعيد تحميل الصفحة لتطبيق التغييرات
     },
   },
 });

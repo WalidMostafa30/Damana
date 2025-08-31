@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { store } from "../store/store";
 
 const api = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
@@ -9,18 +10,25 @@ const api = axios.create({
     Accept: "application/json",
     "X-Nonce": import.meta.env.VITE_X_NONCE,
     "X-Signature": import.meta.env.VITE_X_SIGNATURE,
-    lang: "en",
   },
 });
 
+// ⬇️ request interceptor
 api.interceptors.request.use((config) => {
   const token = Cookies.get("token");
+
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
   }
+
+  // ✅ جيب اللغة من Redux state
+  const lang = store.getState().language.lang || "ar";
+  config.headers.lang = lang;
+
   return config;
 });
 
+// ⬇️ response interceptor
 api.interceptors.response.use(
   (res) => res,
   (err) => {

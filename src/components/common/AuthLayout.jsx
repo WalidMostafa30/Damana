@@ -2,8 +2,11 @@ import logoImg from "../../assets/images/logo.png";
 import favLogo from "../../assets/images/fav-logo.png";
 import bannerImg from "../../assets/images/banner-img.png";
 import mainImg from "../../assets/images/main-img.png";
+import LanguageSwitcher from "./LanguageSwitcher";
+import { useSelector } from "react-redux";
 
 const AuthLayout = ({ children }) => {
+  const { lang } = useSelector((state) => state.language);
   return (
     <section className="min-h-screen flex justify-between bg-base-white">
       <div className="flex-1 p-4 flex items-center justify-center relative xl:bg-none">
@@ -15,12 +18,15 @@ const AuthLayout = ({ children }) => {
         />
         <div className="absolute inset-0 bg-primary/50 xl:bg-transparent" />
         <div className="w-full h-full max-w-4xl mx-auto p-6 bg-base-white rounded-2xl relative z-[1]">
-          <img
-            src={favLogo}
-            alt="logo"
-            loading="lazy"
-            className="mb-4 xl:mb-8 w-20 lg:w-32"
-          />
+          <div className="flex justify-between items-center">
+            <img
+              src={favLogo}
+              alt="logo"
+              loading="lazy"
+              className="mb-4 xl:mb-8 w-20 lg:w-32"
+            />
+            <LanguageSwitcher />
+          </div>
           {children}
         </div>
       </div>
@@ -30,7 +36,9 @@ const AuthLayout = ({ children }) => {
           src={mainImg}
           loading="lazy"
           alt="main background"
-          className="absolute inset-0 w-full h-full object-cover object-right"
+          className={`absolute inset-0 w-full h-full object-cover object-right ${
+            lang === "en" ? "scale-x-[-1]" : ""
+          }`}
         />
         <img
           src={logoImg}
