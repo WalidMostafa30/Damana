@@ -33,9 +33,9 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
     mobile: Yup.string()
       .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
       .required("رقم الهاتف مطلوب"),
-    // email: Yup.string()
-    //   .email("البريد الالكتروني غير صالح")
-    //   .required("البريد الالكتروني مطلوب"),
+    email: Yup.string()
+      .email("البريد الالكتروني غير صالح")
+      .required("البريد الالكتروني مطلوب"),
   });
 
   const formik = useFormik({
@@ -63,6 +63,10 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
     },
   });
 
+  const getError = (fieldName) => {
+    return formik.touched[fieldName] && formik.errors[fieldName];
+  };
+
   useEffect(() => {
     if (!profile) return;
 
@@ -76,13 +80,13 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
   return (
     <div>
       <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
-        رقم الهاتف
+        رقم الهاتف و البريد الالكتروني
       </h3>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4 max-w-md">
         <PhoneInput formik={formik} disabled={!isEditing} />
 
-        {/* <MainInput
+        <MainInput
             type="email"
             id="email"
             placeholder="yasmin@example.com"
@@ -93,7 +97,7 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
             onBlur={formik.handleBlur}
             error={getError("email")}
             disabled={!isEditing}
-          /> */}
+          />
 
         <FormError errorMsg={errorMsg} />
         {showEditBtn && isEditing && (

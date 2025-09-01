@@ -1,5 +1,6 @@
 {
   "loading": "Loading...",
+  "edit": "Edit",
 
   "components": {
     "common": {
@@ -75,7 +76,280 @@
   },
 
   "pages": {
-    "home": {},
-    "notFound": {}
+    "account": {
+      "profile": {
+        "mobileStep1": {
+          "mobile_email_title": "Phone number and email",
+          "mobile_required": "Phone number is required",
+          "mobile_min_length": "Phone number must be at least 9 digits",
+          "email_required": "Email is required",
+          "email_invalid": "Invalid email address",
+          "error_default": "An error occurred while sending",
+          "error_no_change": "Phone number has not changed",
+          "send_otp": "Send verification code",
+          "email_placeholder": "yasmin@example.com",
+          "email_label": "Email"
+        },
+        "mobileStep2": {
+          "otp_enter_code": "Enter the 5-digit code",
+          "otp_incorrect": "Invalid verification code",
+          "otp_fill_all": "Please enter all 5 digits",
+          "otp_can_resend": "You can now resend the code",
+          "otp_not_received": "Didn't receive the code?",
+          "otp_resend": "Resend",
+          "otp_confirm": "Confirm code",
+          "otp_success": "Phone number changed successfully",
+          "otp_back_profile": "Back to profile"
+        }
+      },
+      "account": {
+        "title": "Profile",
+        "subtitle": "Here you can view and edit your profile information",
+        "nav": {
+          "profile": "Profile",
+          "bank_info": "Bank Information",
+          "address": "Address",
+          "remove_damana": "Cancel Guarantee",
+          "support": "Support",
+          "password": "Change Password",
+          "terms": "Terms & Conditions"
+        }
+      },
+      "address": {
+        "title": "Address",
+        "edit": "Edit",
+        "building_number": "Building Number",
+        "building_number_required": "Building number is required",
+        "street_name": "Street Name",
+        "street_name_required": "Street name is required",
+        "country": "Country",
+        "country_required": "Country is required",
+        "city": "City",
+        "city_required": "City is required",
+        "save": "Save",
+        "success": "Address updated successfully ✅",
+        "error": "An error occurred while updating"
+      },
+      "bank_info": {
+        "title": "Bank Information",
+        "edit": "Edit",
+        "bank_required": "Bank name is required",
+        "iban": "International Bank Account Number (IBAN)",
+        "iban_placeholder": "Example: SA4420000001234567891234",
+        "iban_invalid": "Invalid IBAN number",
+        "iban_required": "IBAN is required",
+        "swift": "SWIFT Code",
+        "swift_placeholder": "Example: NBEGEGCXXXX",
+        "swift_required": "SWIFT code is required",
+        "currency": "Currency",
+        "currency_required": "Currency is required",
+        "currency_select": "Select currency",
+        "cliq": "CLIQ Username (Optional)",
+        "cliq_placeholder": "Example: user@bank.com",
+        "save": "Save",
+        "success": "Bank information updated successfully ✅",
+        "error": "An error occurred while updating"
+      },
+      "password": {
+        "title": "Change Password",
+        "old_password": "Old Password",
+        "new_password": "New Password",
+        "confirm_password": "Confirm Password",
+        "placeholder": "••••••••••",
+        "note": "The password must contain numbers, letters, and symbols, and be at least 8 characters long",
+        "strength": {
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "label": "Password Strength"
+        },
+        "save": "Save",
+        "success": "Password changed successfully ✅",
+        "error": "An error occurred while changing the password",
+        "validations": {
+          "old_password_required": "Old password is required",
+          "new_password_required": "New password is required",
+          "min_length": "Password must be at least 8 characters long",
+          "uppercase": "Must contain at least one uppercase letter",
+          "number": "Must contain at least one number",
+          "symbol": "Must contain at least one special character",
+          "confirm_required": "Password confirmation is required",
+          "confirm_mismatch": "Passwords do not match"
+        }
+      },
+      "remove_damana": {
+        "steps": [
+          {
+            "title": "Request Guarantee Cancellation",
+            "description": "You can request to cancel the guarantee you created. Select the guarantee, explain the reason for cancellation, and support will respond to you as soon as possible."
+          },
+          {
+            "title": "Confirm Guarantee Cancellation",
+            "description": "The principal amount will be refunded minus the cancellation fee if the system admin approves the cancellation."
+          }
+        ],
+        "load_more": "Load more...",
+        "no_more": "No more items",
+        "loading_more": "Loading more...",
+        "next": "Next",
+        "reason_label": "Reason for cancellation",
+        "reason_required": "Please provide a reason for cancellation",
+        "warning": "Warning: The cancellation fee of 5 Dinars will be deducted",
+        "continue": "Continue with guarantee",
+        "confirm": "Confirm guarantee cancellation",
+        "loading": "Loading...",
+        "success_msg": "The cancellation form has been sent to the system admin. You will be contacted as soon as possible.",
+        "go_to_damanat": "Go to guarantees page",
+        "errors": {
+          "load": "An error occurred while loading",
+          "cancel": "An error occurred while cancelling"
+        }
+      },
+      "support": {
+        "title": "Support",
+        "description": "You can contact support and report any issue you face by explaining it in the box and sending it. You will receive a reply as soon as possible.",
+        "messageLabel": "Message",
+        "messageRequired": "Message is required",
+        "submit": "Send"
+      },
+      "terms": {
+        "error": "An error occurred while loading the terms and conditions"
+      }
+    },
+
+    "addDamana": {
+      "title": "New Guarantee Request",
+      "subtitle": "Start by creating a new guarantee for the vehicle you want to sell",
+      "steps": [
+        "Basic Information",
+        "Parties Information",
+        "Guarantee Information"
+      ],
+      "step0": {
+        "title": "Registration Information",
+        "isOwnerLabel": "Are you the owner?",
+        "yes": "Yes",
+        "no": "No",
+        "registrationNumber": {
+          "label": "Vehicle Registration Number",
+          "placeholder": "Enter the vehicle registration number",
+          "required": "Vehicle registration number is required"
+        },
+        "ownerNationalNumber": {
+          "label": "Owner National Number",
+          "placeholder": "Enter the national number",
+          "required": "Owner national number is required"
+        },
+        "ownerFullMobile": {
+          "required": "Owner phone number is required"
+        },
+        "agreementText": "By clicking on \"Verify Vehicle Information\", you agree to",
+        "agreementLink": "(Authorize eDamana to share my information)",
+        "modalTitle": "Authorization to Share Data",
+        "modalPrimaryBtn": "I agree to the terms and continue",
+        "submit": "Verify Vehicle Information",
+        "errorMsg": "An error occurred while submitting",
+        "isOwnerRequired": "Owner selection is required"
+      },
+      "step1": {
+        "title": "Guarantee Parties Information",
+        "buyer": {
+          "sectionTitle": "Buyer",
+          "nationalNumber": {
+            "label": "National Number",
+            "placeholder": "Enter national number",
+            "required": "Buyer national number is required"
+          },
+          "phone": {
+            "label": "Phone Number",
+            "placeholder": "Enter phone number",
+            "required": "Buyer phone number is required"
+          }
+        },
+        "owner": {
+          "sectionTitle": "Owner",
+          "nationalNumber": {
+            "label": "National Number",
+            "placeholder": "Enter national number"
+          },
+          "phone": {
+            "label": "Phone Number",
+            "placeholder": "96269077885+"
+          }
+        },
+        "vehicle": {
+          "sectionTitle": "Vehicle Information",
+          "registrationNumber": "Registration Number",
+          "plate": "Plate Number & Code",
+          "vehicleType": "Vehicle Type",
+          "vehicleClass": "Class",
+          "color": "Color",
+          "chassisNumber": "Chassis Number",
+          "manufactureYear": "Manufacture Year",
+          "licenseExpiry": "License Expiry Date",
+          "licensingCenter": "Licensing Center",
+          "engineNumber": "Engine Number",
+          "engineCapacity": "Engine Capacity",
+          "loadCapacity": "Load Capacity",
+          "netWeight": "Net Weight",
+          "cargoCapacity": "Cargo Capacity",
+          "estimatedValue": "Estimated Value",
+          "registrationType": "Registration Type",
+          "vehicleClassification": "Vehicle Classification"
+        },
+        "submit": "Next",
+        "errorMsg": "An error occurred while submitting"
+      },
+      "step2": {
+        "title": "Guarantee Information",
+        "vehiclePrice": {
+          "label": "Vehicle Price",
+          "placeholder": "Enter vehicle price",
+          "required": "Vehicle price is required"
+        },
+        "commissionOn": {
+          "label": "Select Commission",
+          "placeholder": "Select commission",
+          "required": "Commission selection is required",
+          "options": {
+            "buyer": "Buyer",
+            "seller": "Seller",
+            "equally": "Equally (50% Buyer / 50% Seller)"
+          }
+        },
+        "discount": {
+          "toggle": "Do you have a discount code?",
+          "label": "Discount Code",
+          "placeholder": "Enter discount code",
+          "invalid": "Invalid discount code",
+          "success": "You got a discount of {{value}}{{unit}}",
+          "btn": "Check"
+        },
+        "transfer": {
+          "title": "Guarantee Transfer",
+          "required": "Transfer type is required",
+          "options": {
+            "ACH": "Standard – arrives same or next day (Free)",
+            "RTGS": "Instant – as soon as possible (Extra {{fees}} JOD)"
+          }
+        },
+        "details": {
+          "vehiclePrice": "Vehicle Price",
+          "commission": "Guarantee Commission",
+          "total": "Total Guarantee Price",
+          "dueToSeller": "Due to Seller",
+          "discountCode": "Discount Code",
+          "discountValue": "Discount Value",
+          "transferCommission": "Instant Transfer Commission"
+        },
+        "submit": "Submit Guarantee",
+        "errorMsg": "An error occurred while creating the guarantee",
+        "success": {
+          "msg": "Guarantee created successfully. Guarantee Number",
+          "btn": "Go to Guarantee Page"
+        }
+      }
+    }
+    
   }
 }

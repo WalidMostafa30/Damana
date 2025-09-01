@@ -1,5 +1,6 @@
 {
   "loading": "جاري التحميل...",
+  "edit": "تعديل",
 
   "components": {
     "common": {
@@ -76,13 +77,274 @@
 
   "pages": {
     "account": {
-      "account": "الحساب",
-      "profile": "الملف الشخصي",
-      "terms": "الشروط والأحكام",
-      "support": "الدعم",
-      "bankInfo": "بيانات البنك",
-      "password": "كلمة المرور",
-      "removeDamana": "حذف ضمانة"
+      "profile": {
+        "mobileStep1": {
+          "mobile_email_title": "رقم الهاتف و البريد الالكتروني",
+          "mobile_required": "رقم الهاتف مطلوب",
+          "mobile_min_length": "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل",
+          "email_required": "البريد الالكتروني مطلوب",
+          "email_invalid": "البريد الالكتروني غير صالح",
+          "error_default": "حدث خطأ أثناء الإرسال",
+          "error_no_change": "رقم الهاتف لم يتغير",
+          "send_otp": "ارسال كود التحقق",
+          "email_placeholder": "yasmin@example.com",
+          "email_label": "البريد الالكتروني"
+        },
+        "mobileStep2": {
+          "otp_enter_code": "أدخل الكود المكون من 5 أرقام",
+          "otp_incorrect": "رمز التحقق غير صحيح",
+          "otp_fill_all": "من فضلك أدخل جميع الأرقام الخمسة",
+          "otp_can_resend": "يمكنك الآن إعادة إرسال الكود",
+          "otp_not_received": "لم يصل الكود؟",
+          "otp_resend": "إعادة الإرسال",
+          "otp_confirm": "تأكيد الكود",
+          "otp_success": "تم تغيير الرقم بنجاح",
+          "otp_back_profile": "رجوع إلى الملف الشخصي"
+        }
+      },
+      "account": {
+        "title": "الملف الشخصي",
+        "subtitle": "هنا يمكنك الاطلاع على بيانات ملفك الشخصي وتعديل البيانات التي تريدها",
+        "nav": {
+          "profile": "الملف الشخصي",
+          "bank_info": "البيانات البنكية",
+          "address": "العنوان",
+          "remove_damana": "الغاء ضمانة",
+          "support": "الدعم",
+          "password": "تعديل كلمة المرور",
+          "terms": "الشروط والأحكام"
+        }
+      },
+      "address": {
+        "title": "العنوان",
+        "edit": "تعديل",
+        "building_number": "رقم البناية",
+        "building_number_required": "رقم البناية مطلوب",
+        "street_name": "اسم الشارع",
+        "street_name_required": "اسم الشارع مطلوب",
+        "country": "الدولة",
+        "country_required": "الدولة مطلوبة",
+        "city": "المدينة",
+        "city_required": "المدينة مطلوبة",
+        "save": "حفظ",
+        "success": "تم تعديل العنوان بنجاح ✅",
+        "error": "حدث خطأ أثناء التعديل"
+      },
+      "bank_info": {
+        "title": "البيانات البنكية",
+        "edit": "تعديل",
+        "bank_required": "اسم البنك مطلوب",
+        "iban": "رقم الحساب الدولي (IBAN)",
+        "iban_placeholder": "مثال: SA4420000001234567891234",
+        "iban_invalid": "رقم الايبان غير صالح",
+        "iban_required": "رقم الايبان البنكي مطلوب",
+        "swift": "رقم السويفت (SWIFT Code)",
+        "swift_placeholder": "مثال: NBEGEGCXXXX",
+        "swift_required": "رقم السويفت مطلوب",
+        "currency": "العملة",
+        "currency_required": "العملة مطلوبة",
+        "currency_select": "اختر العمله",
+        "cliq": "اسم المستخدم (CLIQ) (اختياري)",
+        "cliq_placeholder": "مثال: user@bank.com",
+        "save": "حفظ",
+        "success": "تم تعديل البيانات البنكية بنجاح ✅",
+        "error": "حدث خطأ أثناء التعديل"
+      },
+      "password": {
+        "title": "تغيير كلمة المرور",
+        "old_password": "كلمة المرور القديمة",
+        "new_password": "كلمة المرور الجديدة",
+        "confirm_password": "تأكيد كلمة المرور",
+        "placeholder": "••••••••••",
+        "note": "يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف",
+        "strength": {
+          "weak": "ضعيفة",
+          "medium": "متوسطة",
+          "strong": "قوية",
+          "label": "قوة كلمة المرور"
+        },
+        "save": "حفظ",
+        "success": "تم تغيير كلمة المرور بنجاح ✅",
+        "error": "حدث خطأ أثناء تغيير كلمة المرور",
+        "validations": {
+          "old_password_required": "كلمة المرور القديمة مطلوبة",
+          "new_password_required": "كلمة المرور مطلوبة",
+          "min_length": "كلمة المرور يجب أن لا تقل عن 8 حروف",
+          "uppercase": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+          "number": "يجب أن تحتوي على رقم واحد على الأقل",
+          "symbol": "يجب أن تحتوي على رمز خاص واحد على الأقل",
+          "confirm_required": "تأكيد كلمة المرور مطلوب",
+          "confirm_mismatch": "كلمتا المرور غير متطابقتين"
+        }
+      },
+      "remove_damana": {
+        "steps": [
+          {
+            "title": "طلب الغاء ضمانة",
+            "description": "يمكنك طلب الغاء الضمانة التي انشاتها ، اختار الضمانة ومن ثم اشرح سبب الالغاء وسيتم الرد عليك من قبل الدعم بأسرع وقت ممكن"
+          },
+          {
+            "title": "تأكيد الغاء ضمانة",
+            "description": "سيتم ارجاع المبلغ الاساسي مخصوم منه عمولة الغاء الضمانة في حال موافقة مدير النظام على عملية الالغاء"
+          }
+        ],
+        "load_more": "تحميل المزيد...",
+        "no_more": "لا يوجد عناصر أخرى",
+        "loading_more": "جاري تحميل المزيد...",
+        "next": "التالى",
+        "reason_label": "سبب الغاء الضمانة",
+        "reason_required": "من فضلك اكتب سبب الإلغاء",
+        "warning": "تحذير: سيتم خصم العمولة الخاصة بالغاء الضمانة التي قيمتها 5 دنانير",
+        "continue": "الاستمرار فى الضمانة",
+        "confirm": "تأكيد الغاء الضمانة",
+        "loading": "جاري التحميل...",
+        "success_msg": "تم ارسال فورم الالغاء الى مدير النظام, سيتم التواصل معك في اقرب وقت ممكن.",
+        "go_to_damanat": "الذهاب الى صفحه الضمانات",
+        "errors": {
+          "load": "حدث خطأ اثناء التحميل",
+          "cancel": "حدث خطأ اثناء الإلغاء"
+        }
+      },
+      "support": {
+        "title": "الدعم",
+        "description": "يمكنك محادثة الدعم واخبارهم باي مشكلة تواجهك من خلال شرحها في الصندوق وارسالها وسيتم الرد عليك باقرب وقت",
+        "messageLabel": "الرسالة",
+        "messageRequired": "الرسالة مطلوبة",
+        "submit": "ارسال"
+      },
+      "terms": {
+        "error": "حدث خطاء اثناء تحميل الشروط والاحكام"
+      }
+    },
+
+    "addDamana": {
+      "title": "طلب ضمانة جديدة",
+      "subtitle": "ابداء بإنشاء ضمانة جديدة للمركبة التي تود ببيعها",
+      "steps": ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"],
+      "step0": {
+        "title": "بيانات التسجيل",
+        "isOwnerLabel": "هل أنت المالك؟",
+        "yes": "نعم",
+        "no": "لا",
+        "registrationNumber": {
+          "label": "رقم تسجيل المركبة",
+          "placeholder": "ادخل رقم تسجيل المركبة",
+          "required": "رقم تسجيل المركبة مطلوب"
+        },
+        "ownerNationalNumber": {
+          "label": "الرقم الوطني للمالك",
+          "placeholder": "ادخل الرقم الوطني",
+          "required": "الرقم الوطني للمالك مطلوب"
+        },
+        "ownerFullMobile": {
+          "required": "رقم هاتف المالك مطلوب"
+        },
+        "agreementText": "عند الضغط على \"تحقق من معلومات المركبة\" ، فإنك توافق على",
+        "agreementLink": "(تفويض eDamana بمشاركة معلوماتي)",
+        "modalTitle": "تفويض بمشاركة البيانات",
+        "modalPrimaryBtn": "أوافق على الشروط و المتابعة",
+        "submit": "تحقق من معلومات المركبة",
+        "errorMsg": "حدث خطأ أثناء الإرسال",
+        "isOwnerRequired": "اختيار المالك مطلوب"
+      },
+      "step1": {
+        "title": "بيانات أطراف الضمانة",
+        "buyer": {
+          "sectionTitle": "المشتري",
+          "nationalNumber": {
+            "label": "الرقم الوطني",
+            "placeholder": "ادخل الرقم الوطني",
+            "required": "الرقم الوطني للمشتري مطلوب"
+          },
+          "phone": {
+            "label": "رقم الهاتف",
+            "placeholder": "ادخل رقم الهاتف",
+            "required": "رقم هاتف المشتري مطلوب"
+          }
+        },
+        "owner": {
+          "sectionTitle": "المالك",
+          "nationalNumber": {
+            "label": "الرقم الوطني",
+            "placeholder": "ادخل الرقم الوطني"
+          },
+          "phone": {
+            "label": "رقم الهاتف",
+            "placeholder": "96269077885+"
+          }
+        },
+        "vehicle": {
+          "sectionTitle": "بيانات المركبة",
+          "registrationNumber": "رقم التسجيل",
+          "plate": "رقم اللوحة والرمز",
+          "vehicleType": "نوع المركبة",
+          "vehicleClass": "الصنف",
+          "color": "لون المركبة",
+          "chassisNumber": "رقم الشاصي",
+          "manufactureYear": "سنة الصنع",
+          "licenseExpiry": "تاريخ انتهاء الرخصة",
+          "licensingCenter": "مركز الترخيص",
+          "engineNumber": "رقم المحرك",
+          "engineCapacity": "سعة المحرك",
+          "loadCapacity": "الحمولة",
+          "netWeight": "الوزن القائم",
+          "cargoCapacity": "الوزن الصافي",
+          "estimatedValue": "قيمة المركبة التقديرية",
+          "registrationType": "صفة التسجيل",
+          "vehicleClassification": "تصنيف المركبة"
+        },
+        "submit": "التالي",
+        "errorMsg": "حدث خطأ أثناء الإرسال"
+      },
+      "step2": {
+        "title": "بيانات الضمانة",
+        "vehiclePrice": {
+          "label": "قيمة المركبة",
+          "placeholder": "ادخل قيمة المركبة",
+          "required": "قيمة المركبة مطلوبة"
+        },
+        "commissionOn": {
+          "label": "اختر العمولة",
+          "placeholder": "اختر العمولة",
+          "required": "اختيار عمولة ضمانة مطلوب",
+          "options": {
+            "buyer": "على المشتري",
+            "seller": "البائع",
+            "equally": "مناصفة 50% على المشتري و 50% على البائع"
+          }
+        },
+        "discount": {
+          "toggle": "هل تمتلك كود خصم؟",
+          "label": "كود الخصم",
+          "placeholder": "ادخل كود الخصم",
+          "invalid": "كود الخصم غير صالح",
+          "success": "حصلت على خصم {{value}}{{unit}}",
+          "btn": "تحقق"
+        },
+        "transfer": {
+          "title": "صرف ضمانة",
+          "required": "اختيار نوع التحويل مطلوب",
+          "options": {
+            "ACH": "بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)",
+            "RTGS": "فورًا – بأسرع وقت ممكن (تُضاف {{fees}} دنانير)"
+          }
+        },
+        "details": {
+          "vehiclePrice": "قيمة المركبة",
+          "commission": "عمولة الضمانة",
+          "total": "سعر الضمانة الكلي",
+          "dueToSeller": "المستحق للبائع",
+          "discountCode": "كود الخصم",
+          "discountValue": "نسبة الخصم",
+          "transferCommission": "عموله التحويل العاجل"
+        },
+        "submit": "ارسال ضمانه",
+        "errorMsg": "حدث خطأ أثناء إنشاء الضمانة",
+        "success": {
+          "msg": "تم إنشاء الضمانة بنجاح رقم الضمانة",
+          "btn": "اذهب الى صفحة الضمانه"
+        }
+      }
     }
   }
 }

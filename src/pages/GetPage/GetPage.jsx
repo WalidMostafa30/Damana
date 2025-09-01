@@ -1,5 +1,4 @@
 import { useParams } from "react-router-dom";
-import PageTitle from "../../components/common/PageTitle";
 import { getPage } from "../../services/staticDataService";
 import { useQuery } from "@tanstack/react-query";
 import LoadingPage from "../../components/Loading/LoadingPage";

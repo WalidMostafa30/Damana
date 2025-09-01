@@ -124,25 +124,6 @@ const Address = () => {
           />
 
           {/* الدولة */}
-          {/* <MainInput
-            id="address_country_name"
-            type="select"
-            placeholder="اسم الدولة"
-            label="اسم الدولة"
-            error={getError("address_country_id")}
-            value={formik.values.address_country_id}
-            onChange={handleCountryChange}
-            onBlur={formik.handleBlur}
-            disabled={!isEditing || loadingCountries}
-            icon={<CiBank />}
-            options={[
-              { value: "", label: "اختر الدولة" },
-              ...countries.map((country) => ({
-                value: country.id,
-                label: country.name,
-              })),
-            ]}
-          /> */}
           <CountrySelect
             formik={formik}
             name="address_country_id"
