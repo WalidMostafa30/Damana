@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 
 const AuthLayout = ({ children }) => {
   const { lang } = useSelector((state) => state.language);
+
   return (
     <section className="min-h-screen flex justify-between bg-base-white">
       <div className="flex-1 p-4 flex items-center justify-center relative xl:bg-none">

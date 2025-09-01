@@ -1,5 +1,81 @@
 {
-  "welcome": "Welcome to our app",
-  "language": "Language",
-  "change_to_ar": "Change to Arabic"
+  "loading": "Loading...",
+
+  "components": {
+    "common": {
+      "damanaCard": {
+        "guaranteeNumber": "Guarantee Number",
+        "plateNumber": "Plate Number",
+        "seller": "Seller",
+        "price": "JOD",
+        "show": "Show",
+        "date": "Date"
+      },
+      "damanaList": {
+        "errorLoading": "An error occurred while loading",
+        "noData": "No guarantees available",
+        "noDataWithLink": "No guarantees available yet. You can start now from here:",
+        "newRequest": "Request a new guarantee"
+      },
+      "timer": {
+        "hours": "Hours",
+        "minutes": "Minutes",
+        "seconds": "Seconds"
+      }
+    },
+
+    "form": {
+      "backStepBtn": "Go Back",
+      "bankSelect": {
+        "branchName": "Branch Name",
+        "selectBank": "Select Bank"
+      },
+      "countrySelect": {
+        "placeholder": "Country name",
+        "label": "Country name",
+        "select": "Select country"
+      },
+      "phoneInput": {
+        "label": "Phone number",
+        "placeholder": "+96269077885"
+      }
+    },
+
+    "layout": {
+      "footer": {
+        "privacyPolicy": "Privacy Policy",
+        "termsAndConditions": "Terms & Conditions",
+        "aboutUs": "About Us"
+      },
+      "navbar": {
+        "myGuarantees": "My Guarantees",
+        "dashboard": "Dashboard",
+        "startGuarantee": "Start Guarantee",
+        "paymentOptions": "Payment Options",
+        "contactUs": "Contact Us"
+      },
+      "headerActions": {
+        "notifications": "Notifications",
+        "profile": "Profile",
+        "logout": "Logout"
+      },
+      "notifications": {
+        "noNotifications": "No notifications",
+        "viewAll": "View all notifications"
+      }
+    },
+
+    "protectedRoutes": {
+      "checkAuthRoute": {
+        "sessionEnded": "Session Ended",
+        "sessionExpired": "Login session has expired, please log in again.",
+        "goToLogin": "Go to login page"
+      }
+    }
+  },
+
+  "pages": {
+    "home": {},
+    "notFound": {}
+  }
 }

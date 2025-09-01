@@ -1,5 +1,6 @@
 import { CiCalendarDate, CiUser } from "react-icons/ci";
 import { PiCertificate } from "react-icons/pi";
+import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import Timer from "./Timer";
 import CopyToClipboard from "./CopyToClipboard";
@@ -53,7 +54,7 @@ const DamanaCard = ({
           </div>
 
           <div className="flex items-center gap-1 text-sm lg:text-base">
-            <CiCalendarDate className="text-2xl" />
+            <FaMoneyBill1Wave className="text-2xl" />
             <p>{`${damana?.vehicle_price} دينار أردني`}</p>
           </div>
           <div className="flex items-center gap-1 text-sm lg:text-base">

@@ -1,5 +1,88 @@
 {
-  "welcome": "مرحباً بك في تطبيقنا",
-  "language": "اللغة",
-  "change_to_ar": "تغيير للإنجليزية"
+  "loading": "جاري التحميل...",
+
+  "components": {
+    "common": {
+      "damanaCard": {
+        "guaranteeNumber": "رقم الضمانة",
+        "plateNumber": "رقم اللوحة",
+        "seller": "البائع",
+        "price": "دينار أردني",
+        "show": "عرض",
+        "date": "التاريخ"
+      },
+      "damanaList": {
+        "errorLoading": "حدث خطأ اثناء التحميل",
+        "noData": "لا توجد ضمانات حالية",
+        "noDataWithLink": "لا توجد ضمانات حالية بعد. يمكنك البدء الآن من هنا:",
+        "newRequest": "طلب ضمانة جديدة"
+      },
+      "timer": {
+        "hours": "ساعة",
+        "minutes": "دقيقة",
+        "seconds": "ثانية"
+      }
+    },
+
+    "form": {
+      "backStepBtn": "الرجوع للخلف",
+      "bankSelect": {
+        "branchName": "اسم الفرع",
+        "selectBank": "اختر البنك"
+      },
+      "countrySelect": {
+        "placeholder": "اسم البلد",
+        "label": "اسم البلد",
+        "select": "اختر البلد"
+      },
+      "phoneInput": {
+        "label": "رقم الهاتف",
+        "placeholder": "96269077885+"
+      }
+    },
+
+    "layout": {
+      "footer": {
+        "privacyPolicy": "سياسة الخصوصية",
+        "termsAndConditions": "الشروط والأحكام",
+        "aboutUs": "من نحن"
+      },
+      "navbar": {
+        "myGuarantees": "ضماناتي",
+        "dashboard": "لوحة التحكم",
+        "startGuarantee": "بدء ضمانة",
+        "paymentOptions": "خيارات الدفع",
+        "contactUs": "اتصل بنا"
+      },
+      "headerActions": {
+        "notifications": "الإشعارات",
+        "profile": "الملف الشخصي",
+        "logout": "تسجيل الخروج"
+      },
+      "notifications": {
+        "noNotifications": "لا يوجد اشعارات",
+        "viewAll": "رؤية كل الاشعارات"
+      }
+    },
+
+    "protectedRoutes": {
+      "checkAuthRoute": {
+        "sessionEnded": "انتهت الجلسة",
+        "sessionExpired": "انتهت صلاحية تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.",
+        "goToLogin": "الذهاب الى صفحه تسجيل الدخول"
+      }
+    }
+  },
+
+  "pages": {
+    "account": {
+      "account": "الحساب",
+      "profile": "الملف الشخصي",
+      "terms": "الشروط والأحكام",
+      "support": "الدعم",
+      "bankInfo": "بيانات البنك",
+      "password": "كلمة المرور",
+      "removeDamana": "حذف ضمانة"
+    }
+  }
 }

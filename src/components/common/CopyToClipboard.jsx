@@ -17,7 +17,7 @@ const CopyToClipboard = ({ text, className = "" }) => {
     <span
       className={`font-bold text-primary text-lg cursor-pointer underline flex items-center gap-2 ${className}`}
       onClick={handleCopy}
-      title="اضغط للنسخ"
+      title="Copy to clipboard"
     >
       {text}
       {copied ? <LuCopyCheck /> : <LuCopy />}
