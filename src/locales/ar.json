@@ -345,6 +345,253 @@
           "btn": "اذهب الى صفحة الضمانه"
         }
       }
+    },
+
+    "forgotPassword": {
+      "title": "هل نسيت كلمة المرور ؟",
+      "breadcrumbs": {
+        "home": "ضمانة",
+        "page": "إستعادة كلمة المرور"
+      },
+      "loginText": "هل تمتلك حساب بالفعل؟",
+      "loginLink": "تسجيل دخول",
+
+      "checkMobile": {
+        "description": "يمكنك اعاده تعين كلمة المرور الخاصه بك من خلال الهاتف أو البريد الإلكتروني",
+        "labels": {
+          "mobile": "رقم الهاتف",
+          "email": "البريد الإلكتروني"
+        },
+        "placeholders": {
+          "mobile": "96269077885+",
+          "email": "أدخل بريدك الإلكتروني"
+        },
+        "buttons": {
+          "sendCode": "ارسال كود التحقق",
+          "useEmail": "استخدام البريد الإلكتروني؟",
+          "useMobile": "استخدام رقم الهاتف؟"
+        },
+        "errors": {
+          "mobileRequired": "رقم الهاتف مطلوب",
+          "mobileMin": "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل",
+          "emailRequired": "البريد الإلكتروني مطلوب",
+          "emailInvalid": "البريد الإلكتروني غير صالح",
+          "serverError": "حدث خطأ أثناء الإرسال"
+        }
+      },
+
+      "otp": {
+        "instruction": "أدخل الكود المكون من 5 أرقام",
+        "timer": {
+          "resendAllowed": "يمكنك الآن إعادة إرسال الكود"
+        },
+        "resend": {
+          "question": "لم يصل الكود؟",
+          "button": "إعادة الإرسال"
+        },
+        "button": {
+          "confirm": "تأكيد الكود"
+        },
+        "errors": {
+          "invalid": "رمز التحقق غير صحيح",
+          "incomplete": "من فضلك أدخل جميع الأرقام الخمسة"
+        }
+      },
+
+      "resetPassword": {
+        "labels": {
+          "password": "كلمة المرور",
+          "confirmPassword": "تأكيد كلمة المرور"
+        },
+        "placeholders": {
+          "password": "••••••••••",
+          "confirmPassword": "••••••••••"
+        },
+        "notes": "يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف",
+        "strength": {
+          "weak": "ضعيفة",
+          "medium": "متوسطة",
+          "strong": "قوية",
+          "label": "قوة كلمة المرور"
+        },
+        "button": {
+          "confirm": "تأكيد"
+        },
+        "messages": {
+          "success": "تم تغيير كلمة المرور بنجاح ✅",
+          "error": "حدث خطأ أثناء إعادة التعيين"
+        },
+        "errors": {
+          "passwordRequired": "كلمة المرور مطلوبة",
+          "passwordMin": "كلمة المرور يجب أن لا تقل عن 8 حروف",
+          "passwordUppercase": "يجب أن تحتوي على حرف كبير واحد على الأقل",
+          "passwordNumber": "يجب أن تحتوي على رقم واحد على الأقل",
+          "passwordSpecial": "يجب أن تحتوي على رمز خاص واحد على الأقل",
+          "confirmPasswordRequired": "تأكيد كلمة المرور مطلوب",
+          "passwordsMismatch": "كلمتا المرور غير متطابقتين"
+        }
+      }
+    },
+
+    "login": {
+      "title": "أهلاً في ضمانة!",
+      "breadcrumbs": {
+        "home": "ضمانة",
+        "page": "تسجيل الدخول"
+      },
+      "labels": {
+        "mobile": "رقم الهاتف",
+        "password": "كلمة المرور",
+        "rememberMe": "تذكرني"
+      },
+      "placeholders": {
+        "mobile": "96269077885+",
+        "password": "••••••••••"
+      },
+      "links": {
+        "forgotPassword": "نسيت كلمة المرور؟",
+        "registerPerson": "إنشئ حساب فرديا",
+        "registerCompany": "طلب انضمام"
+      },
+      "buttons": {
+        "login": "تسجيل الدخول"
+      },
+      "errors": {
+        "mobileRequired": "رقم الهاتف مطلوب",
+        "mobileMin": "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل",
+        "passwordRequired": "كلمة المرور مطلوبة",
+        "passwordMin": "كلمة المرور يجب أن تكون 6 أحرف على الأقل",
+        "serverError": "حدث خطأ أثناء تسجيل الدخول"
+      },
+      "registerText": "ليس لديك حساب؟",
+      "companyNote": "ان كنت تمثل شركة"
+    },
+
+    "damanaDetails": {
+      "loading": "جار التحميل...",
+      "loadError": "فشل في تحميل البيانات",
+      "status": "الحالة",
+      "guaranteeNumber": "رقم الضمانة",
+      "plateAndCode": "رقم الترميز واللوحة",
+      "createdAt": "تاريخ الإنشاء",
+      "sellerInfo": "بيانات البائع",
+      "buyerInfo": "بيانات المشتري",
+      "vehicleInfo": "بيانات المركبة",
+      "damanaInfo": "بيانات الضمانة",
+      "fields": {
+        "name": "الاسم",
+        "phone": "رقم الهاتف",
+        "nationalId": "الرقم الوطني",
+        "plateNumber": "رقم اللوحة والترميز",
+        "vehicleType": "نوع المركبة",
+        "category": "الصنف",
+        "color": "لون المركبة",
+        "chassisNumber": "رقم الشاصي",
+        "registrationNumber": "رقم التسجيل",
+        "registrationDate": "تاريخ التسجيل",
+        "manufactureYear": "تاريخ الصنع",
+        "licenseExpiry": "تاريخ انتهاء الرخصة",
+        "licensingCenter": "مركز الترخيص",
+        "engineNumber": "رقم المحرك",
+        "loadCapacity": "الحمولة",
+        "registrationType": "صفة التسجيل",
+        "country": "الدولة",
+        "vehicleClassification": "تصنيف المركبة",
+        "engineCapacity": "سعة المحرك",
+        "vehiclePrice": "قيمة المركبة",
+        "commissionBeforeDiscount": "عمولة الضمانة",
+        "discountCode": "كود الخصم",
+        "discount": "نسبة الخصم",
+        "commissionAfterDiscount": "العمولة بعد الخصم",
+        "totalPrice": "سعر الضمانة الكلي",
+        "totalPriceInWords": "سعر الضمانة الكلي كتابة"
+      },
+      "currency": "دينار أردني",
+      "only": "فقط",
+      "inactiveMessage": "هذه الضمانة غير نشطة أو محظورة. لا يمكن إجراء أي إجراءات عليها"
+    },
+
+    "actionsSection": {
+      "toast": {
+        "statusUpdated": "تم تحديث الحالة بنجاح",
+        "error": "حدث خطأ",
+        "serverError": "فشل الاتصال بالخادم",
+        "releaseRequested": "تم طلب صرف الضمانة بنجاح",
+        "cancelled": "تم إلغاء العملية"
+      },
+      "confirm": {
+        "accept": "هل تريد تأكيد الضمانة؟",
+        "reject": "هل تريد رفض الضمانة؟",
+        "release": "هل تريد صرف الضمانة؟\n\nيجب إكمال إجراءات التنازل أولاً وإلا قد تُفرض رسوم إضافية."
+      },
+      "cancelRequest": {
+        "pending": "تم طلب إلغاء الضمانة بانتظار الموافقة",
+        "approved": "تمت الموافقة على طلب إلغاء الضمانة",
+        "rejected": "تم رفض طلب الإلغاء: {{reason}}"
+      },
+      "buttons": {
+        "accept": "تأكيد الضمانة",
+        "reject": "رفض الضمانة",
+        "release": "طلب صرف الضمانة"
+      },
+      "timer": {
+        "allowed": "مسموح الآن بطلب الصرف ✅",
+        "countdown": "{{minutes}}:{{seconds}} ⏳"
+      }
+    },
+
+    "home": {
+      "title": "ضماناتى",
+      "subtitle": "هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.",
+      "sellGuarantees": "ضمانات البيع",
+      "buyGuarantees": "ضمانات الشراء",
+      "all": "الكل",
+      "selectDate": "اختر التاريخ",
+      "confirm": "تم",
+      "welcomeTitle": "مرحبًا بك في ضمانة!",
+      "welcomeSubtitle": "يمكنك بدء ضمانة جديدة بالضغط على الزر أدناه",
+      "newRequest": "طلب ضمانة جديدة"
+    },
+
+    "faq": {
+      "title": "الأسئلة الشائعة"
+    },
+
+    "purchase_sale": {
+      "loadMore": "تحميل المزيد...",
+      "noMoreItems": "لا يوجد عناصر أخرى",
+      "loadingMore": "جاري تحميل المزيد..."
+    },
+
+    "getPage": {
+      "error": "حدث خطأ أثناء تحميل الصفحة"
+    },
+
+    "notFound": {
+      "title": "404",
+      "subtitle": "عذرًا، الصفحة غير موجودة!",
+      "description": "الصفحة التي تبحث عنها قد تم نقلها أو لا توجد.",
+      "homeBtn": "الصفحة الرئيسية"
+    },
+
+    "disActive": {
+      "logoutBtn": "تسجيل الخروج"
+    },
+
+    "notificationsPage": {
+      "title": "الاشعارات",
+      "subtitle": "هنا جميع الاشعارات الخاصة بك التي تحتوي على كافة معلوماتك وحالات ضماناتك",
+      "markAllRead": "تحديد الكل كمقروء",
+      "deleteAll": "حذف الكل",
+      "noNotifications": "لا توجد إشعارات حالياً",
+      "error": "حدث خطأ أثناء تحميل الإشعارات"
+    },
+
+    "paymentOptions": {
+      "title": "خيارات الدفع",
+      "subtitle": "هنا لديك طرق الدفع المتاحة ، يمكنك اختيار الطريقة التي تناسبك",
+      "error": "حدث خطأ",
+      "noData": "لا توجد بيانات متاحة"
     }
   }
 }

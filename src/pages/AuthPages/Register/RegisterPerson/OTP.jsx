@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   checkOtpRegister,
   checkOtpRegisterFlow2,
@@ -193,16 +193,6 @@ const Otp = () => {
         title="تأكيد الكود"
         loading={checkOtpMutation.isPending}
       />
-
-      <p className="text-center font-semibold text-sm lg:text-base mt-4">
-        هل تمتلك حساب بالفعل؟{" "}
-        <Link
-          to="/login"
-          className="text-secondary hover:brightness-50 transition-colors"
-        >
-          تسجيل دخول
-        </Link>
-      </p>
 
       <ActionModal
         openModal={openModal}

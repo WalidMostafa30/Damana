@@ -349,7 +349,253 @@
           "btn": "Go to Guarantee Page"
         }
       }
+    },
+
+    "forgotPassword": {
+      "title": "Forgot your password?",
+      "breadcrumbs": {
+        "home": "Dhamanah",
+        "page": "Password Recovery"
+      },
+      "loginText": "Already have an account?",
+      "loginLink": "Login",
+
+      "checkMobile": {
+        "description": "You can reset your password using either your phone number or your email address.",
+        "labels": {
+          "mobile": "Phone Number",
+          "email": "Email"
+        },
+        "placeholders": {
+          "mobile": "+96269077885",
+          "email": "Enter your email"
+        },
+        "buttons": {
+          "sendCode": "Send Verification Code",
+          "useEmail": "Use Email?",
+          "useMobile": "Use Phone Number?"
+        },
+        "errors": {
+          "mobileRequired": "Phone number is required",
+          "mobileMin": "Phone number must contain at least 9 digits",
+          "emailRequired": "Email is required",
+          "emailInvalid": "Invalid email address",
+          "serverError": "An error occurred while sending"
+        }
+      },
+
+      "otp": {
+        "instruction": "Enter the 5-digit code",
+        "timer": {
+          "resendAllowed": "You can now resend the code"
+        },
+        "resend": {
+          "question": "Didn't receive the code?",
+          "button": "Resend"
+        },
+        "button": {
+          "confirm": "Confirm Code"
+        },
+        "errors": {
+          "invalid": "Invalid verification code",
+          "incomplete": "Please enter all five digits"
+        }
+      },
+
+      "resetPassword": {
+        "labels": {
+          "password": "Password",
+          "confirmPassword": "Confirm Password"
+        },
+        "placeholders": {
+          "password": "••••••••••",
+          "confirmPassword": "••••••••••"
+        },
+        "notes": "Password must contain numbers, letters, special characters, and be at least 8 characters long",
+        "strength": {
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong",
+          "label": "Password Strength"
+        },
+        "button": {
+          "confirm": "Confirm"
+        },
+        "messages": {
+          "success": "Password changed successfully ✅",
+          "error": "An error occurred during reset"
+        },
+        "errors": {
+          "passwordRequired": "Password is required",
+          "passwordMin": "Password must be at least 8 characters long",
+          "passwordUppercase": "Must contain at least one uppercase letter",
+          "passwordNumber": "Must contain at least one number",
+          "passwordSpecial": "Must contain at least one special character",
+          "confirmPasswordRequired": "Confirm password is required",
+          "passwordsMismatch": "Passwords do not match"
+        }
+      }
+    },
+
+    "login": {
+      "title": "Welcome to Dhamanah!",
+      "breadcrumbs": {
+        "home": "Dhamanah",
+        "page": "Login"
+      },
+      "labels": {
+        "mobile": "Phone Number",
+        "password": "Password",
+        "rememberMe": "Remember Me"
+      },
+      "placeholders": {
+        "mobile": "+96269077885",
+        "password": "••••••••••"
+      },
+      "links": {
+        "forgotPassword": "Forgot your password?",
+        "registerPerson": "Create a personal account",
+        "registerCompany": "Join as a company"
+      },
+      "buttons": {
+        "login": "Login"
+      },
+      "errors": {
+        "mobileRequired": "Phone number is required",
+        "mobileMin": "Phone number must contain at least 9 digits",
+        "passwordRequired": "Password is required",
+        "passwordMin": "Password must be at least 6 characters",
+        "serverError": "An error occurred during login"
+      },
+      "registerText": "Don’t have an account?",
+      "companyNote": "if you represent a company"
+    },
+
+    "damanaDetails": {
+      "loading": "Loading...",
+      "loadError": "Failed to load data",
+      "status": "Status",
+      "guaranteeNumber": "Guarantee Number",
+      "plateAndCode": "Plate & Code",
+      "createdAt": "Created At",
+      "sellerInfo": "Seller Information",
+      "buyerInfo": "Buyer Information",
+      "vehicleInfo": "Vehicle Information",
+      "damanaInfo": "Guarantee Information",
+      "fields": {
+        "name": "Name",
+        "phone": "Phone Number",
+        "nationalId": "National ID",
+        "plateNumber": "Plate & Code",
+        "vehicleType": "Vehicle Type",
+        "category": "Category",
+        "color": "Color",
+        "chassisNumber": "Chassis Number",
+        "registrationNumber": "Registration Number",
+        "registrationDate": "Registration Date",
+        "manufactureYear": "Year of Manufacture",
+        "licenseExpiry": "License Expiry Date",
+        "licensingCenter": "Licensing Center",
+        "engineNumber": "Engine Number",
+        "loadCapacity": "Load Capacity",
+        "registrationType": "Registration Type",
+        "country": "Country",
+        "vehicleClassification": "Vehicle Classification",
+        "engineCapacity": "Engine Capacity",
+        "vehiclePrice": "Vehicle Price",
+        "commissionBeforeDiscount": "Guarantee Commission",
+        "discountCode": "Discount Code",
+        "discount": "Discount",
+        "commissionAfterDiscount": "Commission After Discount",
+        "totalPrice": "Total Guarantee Price",
+        "totalPriceInWords": "Total Price in Words"
+      },
+      "currency": "Jordanian Dinar",
+      "only": "only",
+      "inactiveMessage": "This guarantee is inactive or blocked. No actions can be performed on it"
+    },
+
+    "actionsSection": {
+      "toast": {
+        "statusUpdated": "Status updated successfully",
+        "error": "An error occurred",
+        "serverError": "Failed to connect to server",
+        "releaseRequested": "Guarantee release requested successfully",
+        "cancelled": "Operation cancelled"
+      },
+      "confirm": {
+        "accept": "Do you want to accept the guarantee?",
+        "reject": "Do you want to reject the guarantee?",
+        "release": "Do you want to release the guarantee?\n\nYou must complete the transfer procedures first, otherwise extra fees may apply."
+      },
+      "cancelRequest": {
+        "pending": "A cancellation request has been submitted, awaiting approval",
+        "approved": "The cancellation request has been approved",
+        "rejected": "The cancellation request was rejected: {{reason}}"
+      },
+      "buttons": {
+        "accept": "Accept Guarantee",
+        "reject": "Reject Guarantee",
+        "release": "Request Guarantee Release"
+      },
+      "timer": {
+        "allowed": "Release request is now allowed ✅",
+        "countdown": "{{minutes}}:{{seconds}} ⏳"
+      }
+    },
+
+    "getPage": {
+      "error": "An error occurred while loading the page"
+    },
+
+    "home": {
+      "title": "My Guarantees",
+      "subtitle": "Here you can find all your guarantees with their full details.",
+      "sellGuarantees": "Sell Guarantees",
+      "buyGuarantees": "Purchase Guarantees",
+      "all": "All",
+      "selectDate": "Select Date",
+      "confirm": "Confirm",
+      "welcomeTitle": "Welcome to Dhamana!",
+      "welcomeSubtitle": "You can start a new guarantee by clicking the button below",
+      "newRequest": "New Guarantee Request"
+    },
+
+    "faq": {
+      "title": "Frequently Asked Questions"
+    },
+
+    "purchase_sale": {
+      "loadMore": "Load more...",
+      "noMoreItems": "No more items",
+      "loadingMore": "Loading more..."
+    },
+
+    "notFound": {
+      "title": "404",
+      "subtitle": "Sorry, the page was not found!",
+      "description": "The page you are looking for may have been moved or does not exist.",
+      "homeBtn": "Home"
+    },
+
+    "disActive": {
+      "logoutBtn": "Logout"
+    },
+
+    "notificationsPage": {
+      "title": "Notifications",
+      "subtitle": "Here are all your notifications containing your information and warranty statuses",
+      "markAllRead": "Mark all as read",
+      "deleteAll": "Delete all",
+      "noNotifications": "No notifications available",
+      "error": "An error occurred while loading notifications"
+    },
+
+    "paymentOptions": {
+      "title": "Payment Options",
+      "subtitle": "Here are the available payment methods, you can choose the one that suits you",
+      "error": "An error occurred",
+      "noData": "No data available"
     }
-    
   }
 }

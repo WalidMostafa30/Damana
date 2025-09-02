@@ -74,7 +74,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
       </p>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
-        {/* <MainInput
+        <MainInput
             type="tel"
             id="mobile"
             name="mobile"
@@ -98,7 +98,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
             }}
             onBlur={formik.handleBlur}
             error={formik.touched.mobile && formik.errors.mobile}
-          /> */}
+          />
         {method === "mobile" ? (
           <PhoneInput formik={formik} />
         ) : (
@@ -121,7 +121,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
         <FormBtn title="ارسال كود التحقق" loading={mutation.isPending} />
       </form>
 
-      {/* <button
+      <button
         onClick={toggleMethod}
         className="mainBtn light mt-4"
         type="button"
@@ -129,7 +129,7 @@ const CheckMobile = ({ goNext, setParentData }) => {
         {method === "mobile"
           ? "استخدام البريد الإلكتروني؟"
           : "استخدام رقم الهاتف؟"}
-      </button> */}
+      </button>
     </>
   );
 };

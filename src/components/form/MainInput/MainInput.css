@@ -8,3 +8,20 @@
   border-right: 1px solid #ccc;
   padding-left: 0!important;
 }
+
+.custom-select {
+  appearance: none; /* يخفي شكل النظام الافتراضي */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+
+  background-color: #fff;
+  cursor: pointer;
+  padding-right: 2.5rem; /* مساحة للسهم */
+}
+
+.custom-select option {
+  font-size: 1rem;
+  padding: 0.75rem 1rem; /* نفس مساحة السيلكت */
+  background: #fff;
+  cursor: pointer;
+}

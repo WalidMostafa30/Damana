@@ -87,16 +87,6 @@ export default function Step0({ formData, setFormData, setStep }) {
         />
 
         <MainInput
-          id="national_number"
-          label="الرقم الوطني"
-          name="national_number"
-          placeholder="123456789"
-          value={formik.values.national_number}
-          onChange={formik.handleChange}
-          error={getError("national_number")}
-        />
-
-        <MainInput
           id="nationality_type"
           type="select"
           label="نوع الجنسية"
@@ -108,9 +98,19 @@ export default function Step0({ formData, setFormData, setStep }) {
           options={[
             { value: "", label: "اختر نوع الجنسية" },
             { value: "jordanian", label: "أردني" },
-            { value: "sons", label: "أبناء" },
+            { value: "sons", label: "أبناء اردنيات" },
             { value: "non", label: "غير أردني" },
           ]}
+        />
+
+        <MainInput
+          id="national_number"
+          label="الرقم الوطني"
+          name="national_number"
+          placeholder="123456789"
+          value={formik.values.national_number}
+          onChange={formik.handleChange}
+          error={getError("national_number")}
         />
 
         {/* <MainInput
