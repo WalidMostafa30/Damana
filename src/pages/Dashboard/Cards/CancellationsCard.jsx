@@ -19,7 +19,6 @@ const renderCustomizedLabel = ({
   midAngle,
   innerRadius,
   outerRadius,
-  // percent,
   index,
 }) => {
   const RADIAN = Math.PI / 180;

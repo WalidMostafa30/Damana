@@ -471,6 +471,490 @@
       "companyNote": "if you represent a company"
     },
 
+    "registerCompany": {
+      "pageTitle": "Welcome to Damana!",
+      "breadcrumbs": {
+        "home": "Damana",
+        "companyRegistration": "Company Registration Request"
+      },
+      "steps": [
+        "Section 1: Company Information",
+        "Section 2: Owners/Partners Information",
+        "Section 3: Authorized Signatories and Management",
+        "Section 4: Bank Account Information",
+        "Section 5: Required Documents",
+        "Section 6: Declaration and Commitment",
+        "Final Step: Group Selection"
+      ],
+      "buttons": {
+        "next": "Next",
+        "finish": "Finish"
+      },
+      "links": {
+        "alreadyHaveAccount": "Already have an account?",
+        "login": "Login"
+      },
+      "modal": {
+        "successMessage": "Your request has been sent to management, it will be reviewed and the remaining steps will be completed",
+        "goToLogin": "Go to Login"
+      },
+      "validation": {
+        "required": "Field is required",
+        "invalidEmail": "Invalid email",
+        "minOnePartner": "At least one partner must be added",
+        "bankNameRequired": "Bank name is required",
+        "ibanRequired": "IBAN number is required",
+        "invalidIban": "Invalid IBAN number",
+        "currencyRequired": "Currency is required",
+        "commercialRegisterRequired": "Commercial register file is required",
+        "memorandumRequired": "Memorandum of association file is required",
+        "licenseRequired": "License or lease contract file is required",
+        "identityRequired": "Identity document for signatories is required",
+        "unsupportedFileFormat": "Unsupported file format. Only images and PDF are allowed.",
+        "acknowledgeRequired": "Must agree to the declaration before proceeding",
+        "termsRequired": "Must agree to the declaration before proceeding"
+      },
+      "errors": {
+        "registrationError": "An error occurred during registration"
+      }
+    },
+
+    "fileUploadSection": {
+      "title": "Download file, fill it out and upload (Excel or CSV)",
+      "step1": {
+        "title": "Step 1: Download Template",
+        "description": "Use the file to enter data correctly",
+        "downloadTemplate": "Download Data Template"
+      },
+      "step2": {
+        "title": "Step 2: Upload File",
+        "description": "Drag the file here or click to select it from your device",
+        "uploadText": "Drag file here or click to select it"
+      }
+    },
+
+    "step0Company": {
+      "fields": {
+        "arName": {
+          "label": "Company Name in Arabic",
+          "placeholder": "Arab Company"
+        },
+        "enName": {
+          "label": "Company Name in English",
+          "placeholder": "Example: Arab Company"
+        },
+        "commercialArName": {
+          "label": "Commercial Name in Arabic",
+          "placeholder": "Example: Golden Store"
+        },
+        "commercialEnName": {
+          "label": "Commercial Name in English",
+          "placeholder": "Example: Golden Store"
+        },
+        "registrationType": {
+          "label": "Registration Type / Legal Form",
+          "options": {
+            "establishment": "Establishment",
+            "jointStock": "Joint Stock Company",
+            "limitedLiability": "Limited Liability Company"
+          }
+        },
+        "countryRegistration": {
+          "label": "Country of Registration / Company Nationality",
+          "placeholder": "Country of Registration / Company Nationality"
+        },
+        "registrationAuthority": {
+          "label": "Registration Authority",
+          "placeholder": "Ministry of Industry"
+        },
+        "commercialRegistrationNumber": {
+          "label": "Registration Number",
+          "placeholder": "123456"
+        },
+        "registrationDate": {
+          "label": "Registration Date"
+        },
+        "nationalNumber": {
+          "label": "National Establishment Number",
+          "placeholder": "0987654321"
+        },
+        "websiteUrl": {
+          "label": "Website",
+          "placeholder": "www.example.com"
+        },
+        "licenseNumber": {
+          "label": "Professional License Number",
+          "placeholder": "555555"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "King Abdullah Street, Riyadh"
+        },
+        "email": {
+          "label": "Company Official Email",
+          "placeholder": "info@company.com"
+        },
+        "taxNumber": {
+          "label": "Tax Number",
+          "placeholder": "123456789"
+        },
+        "capitalEquity": {
+          "label": "Capital",
+          "placeholder": "100000"
+        },
+        "signedName": {
+          "label": "Authorized Signatory Name",
+          "placeholder": "Authorized Signatory Name"
+        }
+      },
+      "capitalInWords": "Jordanian Dinars"
+    },
+
+    "step1Company": {
+      "partnerTitle": "Partner Data",
+      "addPartner": "Add New Partner",
+      "removePartner": "Remove Partner",
+      "fields": {
+        "fullName": {
+          "label": "Full Name",
+          "placeholder": "Example: Mohammed Ahmed Ali Youssef"
+        },
+        "nationality": {
+          "label": "Nationality",
+          "placeholder": "Example: Egyptian"
+        },
+        "nationalPassportNumber": {
+          "label": "National ID / Passport Number",
+          "placeholder": "Example: A123456789"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Example: Nile Street, Cairo"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Example: 01012345678"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Example: owner@example.com"
+        }
+      }
+    },
+
+    "step2Company": {
+      "delegationText": {
+        "label": "Delegation text as it appears in the commercial register"
+      },
+      "commissionerTitle": "Commissioner Data",
+      "addCommissioner": "Add New Commissioner",
+      "removeCommissioner": "Remove Commissioner",
+      "managementCommissionersTitle": "Management Commissioners",
+      "fields": {
+        "fullName": {
+          "label": "Full Name",
+          "placeholder": "Full Name"
+        },
+        "nationality": {
+          "label": "Nationality",
+          "placeholder": "Nationality"
+        },
+        "nationalPassportNumber": {
+          "label": "National ID / Passport Number",
+          "placeholder": "National ID / Passport Number"
+        },
+        "job": {
+          "label": "Job",
+          "placeholder": "Job"
+        },
+        "address": {
+          "label": "Address",
+          "placeholder": "Address"
+        },
+        "type": {
+          "label": "Delegation Type",
+          "placeholder": "Delegation Type"
+        },
+        "topCommissioner": {
+          "label": "Top Commissioner",
+          "placeholder": "Top Commissioner"
+        },
+        "commissionerPermissions": {
+          "label": "Commissioner Permissions",
+          "placeholder": "Commissioner Permissions"
+        },
+        "phone": {
+          "label": "Phone Number",
+          "placeholder": "Phone Number"
+        },
+        "email": {
+          "label": "Email",
+          "placeholder": "Email"
+        },
+        "delegationPermissions": {
+          "label": "Delegation Permissions",
+          "placeholder": "Delegation Permissions"
+        }
+      }
+    },
+
+    "Step3Company": {
+      "title": "Bank Account Details",
+      "bankSelect": {
+        "label": "Bank Name"
+      },
+      "iban": {
+        "label": "International Account Number (IBAN)",
+        "placeholder": "Example: SA4420000001234567891234"
+      },
+      "swift_code": {
+        "label": "SWIFT Code",
+        "placeholder": "Example: NBEGEGCXXXX"
+      },
+      "currency": {
+        "label": "Currency",
+        "defaultOption": "Choose currency",
+        "options": {
+          "JOD": "JOD",
+          "SAR": "SAR",
+          "USD": "USD",
+          "EUR": "EUR"
+        }
+      },
+      "clik_name": {
+        "label": "CLIQ Username (Optional)",
+        "placeholder": "Example: user@bank.com"
+      }
+    },
+
+    "Step4Company": {
+      "fileInput": {
+        "dragDropText": "Drag file here or click to select",
+        "fileUploaded": "📄 {{fileName}}"
+      },
+      "fileLabels": {
+        "commercial_register": "Recent copy of commercial register",
+        "memorandum_association": "Copy of memorandum of association",
+        "professional_license": "Copy of professional license and/or certified lease contract",
+        "identity_document": "Identity proof for authorized signatories"
+      }
+    },
+
+    "Step5Company": {
+      "title": "Declaration and Commitment",
+      "acknowledgement": {
+        "label": "I hereby declare and commit that all the data and documents provided above are true and accurate. I also undertake to update this data immediately upon any change, and I agree to comply with all the terms and conditions of the \"Damana\" platform."
+      }
+    },
+
+    "Step6Company": {
+      "groupQuestion": "Does your company belong to a group of companies?",
+      "selectPlaceholder": "Choose a group",
+      "loading": "Loading...",
+      "addGroup": {
+        "show": "Add new group",
+        "hide": "Remove group",
+        "inputPlaceholder": "Enter group name",
+        "addButton": "Add",
+        "adding": "Adding..."
+      },
+      "privacyPolicy": {
+        "label": "Agree to the",
+        "linkText": "privacy policy and terms of use of Damana"
+      },
+      "modal": {
+        "title": "Authorization for Data Sharing",
+        "content": "I, the undersigned, in my personal capacity as a customer of Damana, hereby declare and agree to allow Arab Bank and Damana Company to inquire about personal data...",
+        "agreeButton": "I agree to the terms and proceed",
+        "backButton": "Back"
+      },
+      "errors": {
+        "groupRequired": "Please enter the group name"
+      }
+    },
+
+    "Step6CompanyLoginAccounts": {
+      "addButton": "Add new login account",
+      "formTitle": "New account details",
+      "nameLabel": "Name",
+      "phoneLabel": "Phone number",
+      "authorizationFileLabel": "Authorization letter file",
+      "addAccountButton": "Add",
+      "addedAccountTitle": "Added account:",
+      "removeButton": "Remove",
+      "fileInput": {
+        "dragDropText": "Drag file here or click to select",
+        "fileUploaded": "📄 {{fileName}}"
+      },
+      "errors": {
+        "nameRequired": "Name is required",
+        "phoneRequired": "Phone number is required",
+        "fileRequired": "Authorization file is required"
+      }
+    },
+
+    "RegisterPerson": {
+      "title": "Welcome to Damana!",
+      "breadcrumbs": {
+        "home": "Damana",
+        "register": "Create new account"
+      },
+      "heading": "Verify your identity",
+      "subheading": "To be able to create a transaction in Damana and use the application features, verify your identity and bank data",
+      "form": {
+        "name": "Name",
+        "name_placeholder": "Username",
+        "phone": "Phone",
+        "email": "Email",
+        "email_placeholder": "example@email.com",
+        "password": "Password",
+        "password_placeholder": "••••••••••",
+        "confirm_password": "Confirm password",
+        "password_note": "Password must contain numbers, letters and symbols and be at least 8 characters",
+        "password_strength": "Password strength",
+        "strength_labels": {
+          "weak": "Weak",
+          "medium": "Medium",
+          "strong": "Strong"
+        },
+        "terms_label": "Agree to the",
+        "terms_link": "Privacy Policy and Terms of Use of Damana",
+        "submit": "Create account",
+        "login_text": "Already have an account?",
+        "login_link": "Login"
+      },
+      "validation": {
+        "name_required": "Name is required",
+        "name_min": "Name must be at least 3 characters",
+        "email_required": "Email is required",
+        "email_valid": "Please enter a valid email",
+        "phone_required": "Phone number is required",
+        "phone_min": "Phone number must contain at least 9 digits",
+        "password_required": "Password is required",
+        "password_min": "Password must be at least 8 characters",
+        "password_uppercase": "Must contain at least one uppercase letter",
+        "password_digit": "Must contain at least one digit",
+        "password_special": "Must contain at least one special character",
+        "confirm_password_required": "Password confirmation is required",
+        "confirm_password_match": "Passwords do not match",
+        "terms_required": "You must agree to the terms before registering"
+      },
+      "modal": {
+        "title": "Data Sharing Authorization",
+        "content": "I, the undersigned, in my personal capacity as a customer of Damana, declare and agree to the Arab Bank and Damana Company inquiring about personal data...",
+        "agree": "I agree to the terms and proceed",
+        "back": "Back"
+      },
+      "errors": {
+        "general": "An error occurred during registration"
+      }
+    },
+
+    "Otp": {
+      "title": "Verification Code",
+      "breadcrumb": "Verification Code",
+      "instruction": "Enter the 5-digit code",
+      "resend_timer": "You can now resend the code",
+      "resend_prompt": "Didn't receive the code?",
+      "resend_button": "Resend",
+      "submit_button": "Confirm Code",
+      "errors": {
+        "incomplete": "Please enter all 5 digits",
+        "send_failed": "Failed to send verification code",
+        "invalid": "Invalid verification code",
+        "general": "An error occurred"
+      },
+      "modal": {
+        "title": "You already have a registered account",
+        "login_button": "Login",
+        "forgot_password_button": "Reset Password"
+      }
+    },
+
+    "CompleteRegister": {
+      "title": "Welcome to Damana!",
+      "breadcrumb": "Create new account",
+      "steps": ["Your personal data", "Bank data", "Residential address"]
+    },
+
+    "Step0": {
+      "form": {
+        "dob": "Date of Birth",
+        "nationality_type": "Nationality Type",
+        "nationality_type_placeholder": "Choose nationality type",
+        "nationality_options": {
+          "jordanian": "Jordanian",
+          "sons": "Sons of Jordanians",
+          "non": "Non-Jordanian"
+        },
+        "national_number": "National Number",
+        "national_number_placeholder": "123456789",
+        "country": "Country Name",
+        "country_placeholder": "Choose country",
+        "document_id": "ID Number",
+        "document_id_placeholder": "123456",
+        "next_button": "Next"
+      },
+      "validation": {
+        "dob_required": "Date of birth is required",
+        "national_number_required": "National number is required",
+        "nationality_type_required": "Nationality type is required",
+        "country_required": "Country is required",
+        "document_id_required": "ID number is required"
+      },
+      "errors": {
+        "general": "An error occurred"
+      }
+    },
+
+    "Step1": {
+      "form": {
+        "bank": "Bank Name",
+        "iban": "International Bank Account Number (IBAN)",
+        "iban_placeholder": "Example: SA4420000001234567891234",
+        "swift_code": "SWIFT Code",
+        "swift_code_placeholder": "Example: NBEGEGCXXXX",
+        "currency": "Currency",
+        "currency_placeholder": "Choose currency",
+        "clik_name": "CLIQ Username (Optional)",
+        "clik_name_placeholder": "Example: user@bank.com",
+        "next_button": "Next"
+      },
+      "validation": {
+        "bank_required": "Bank name is required",
+        "iban_required": "IBAN number is required",
+        "iban_invalid": "Invalid IBAN number",
+        "swift_code_required": "SWIFT code is required",
+        "currency_required": "Currency is required"
+      },
+      "errors": {
+        "general": "An error occurred"
+      }
+    },
+
+    "Step2": {
+      "form": {
+        "address_building_number": "Building Number",
+        "address_building_number_placeholder": "123",
+        "address_street_name": "Street Name",
+        "address_street_name_placeholder": "Street name",
+        "address_country_id": "Country Name",
+        "address_country_id_placeholder": "Choose country",
+        "address_city_town": "City",
+        "address_city_town_placeholder": "City name",
+        "finish_button": "Finish"
+      },
+      "validation": {
+        "address_building_number_required": "Building number is required",
+        "address_street_name_required": "Street name is required",
+        "address_country_id_required": "Country is required",
+        "address_city_town_required": "City is required"
+      },
+      "errors": {
+        "general": "An error occurred"
+      }
+    },
+
     "damanaDetails": {
       "loading": "Loading...",
       "loadError": "Failed to load data",
@@ -513,6 +997,27 @@
       "currency": "Jordanian Dinar",
       "only": "only",
       "inactiveMessage": "This guarantee is inactive or blocked. No actions can be performed on it"
+    },
+
+    "dashboard": {
+      "pageTitle": "Main Dashboard",
+      "subtitle": "Operational and financial dashboard for the group of companies",
+      "status": "Status",
+      "status_all": "All",
+      "status_active": "Active",
+      "status_inactive": "Inactive",
+      "date_picker": "Select Date",
+      "commission": "Commission Amount",
+      "commission_all": "All",
+      "commission_high": "High",
+      "commission_medium": "Medium",
+      "company": "Company",
+      "company_all": "All",
+      "company1": "Company 1",
+      "company2": "Company 2",
+      "confirm_button": "Confirm",
+      "operational_tab": "Operational Dashboard",
+      "financial_tab": "Financial Dashboard"
     },
 
     "actionsSection": {
