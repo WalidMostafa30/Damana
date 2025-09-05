@@ -6,10 +6,12 @@ import MobileSteps1 from "./MobileSteps/MobileSteps1";
 import MobileSteps2 from "./MobileSteps/MobileSteps2";
 import BackStepBtn from "../../../components/form/BackStepBtn";
 import { FaRegEdit } from "react-icons/fa";
+import { useTranslation } from "react-i18next";
 
 const Profile = () => {
   const [isEditing, setIsEditing] = useState(false);
   const { profile, loading } = useSelector((state) => state.profile);
+  const { t } = useTranslation();
 
   const [newPhoneNumber, setNewPhoneNumber] = useState({
     mobile: "",
@@ -50,7 +52,7 @@ const Profile = () => {
             }`}
           >
             <FaRegEdit />
-            تعديل
+            {t("edit")}
           </button>
         )}
       </div>

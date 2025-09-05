@@ -148,7 +148,7 @@ const DamanaDetails = () => {
           <div className="flex items-center gap-2">
             <CiCalendarDate className="text-2xl" />
             <p className="text-primary font-bold">
-              {new Date(damana?.created_at).toLocaleDateString("ar-EG")}
+              {new Date(damana?.created_at).toLocaleDateString("en-GB")}
             </p>
           </div>
           <Timer expiryDate={damana?.schedule_expired_at} />

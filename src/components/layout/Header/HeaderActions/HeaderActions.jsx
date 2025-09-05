@@ -13,6 +13,7 @@ import Notifications from "./Notifications";
 import { logoutUser } from "../../../../services/authService";
 import LoadingModal from "../../../modals/LoadingModal";
 import { AnimatePresence } from "framer-motion";
+import { useTranslation } from "react-i18next";
 
 const HeaderActions = ({ setOpenNav }) => {
   const [openNotification, setOpenNotification] = useState(false);
@@ -22,6 +23,7 @@ const HeaderActions = ({ setOpenNav }) => {
   const profileBtnRef = useRef(null);
 
   const { profile } = useSelector((state) => state.profile);
+  const { t } = useTranslation();
 
   // جلب الإشعارات
   const { data: notifications, isLoading } = useQuery({
@@ -63,7 +65,7 @@ const HeaderActions = ({ setOpenNav }) => {
             >
               <div className="bg-white w-72 lg:w-96">
                 <h3 className="lg:text-lg text-neutral-800 font-bold p-2 lg:p-4 border-b border-neutral-300">
-                  الاشعارات
+                  {t("components.layout.headerActions.notifications")}
                 </h3>
 
                 <Notifications
@@ -106,14 +108,14 @@ const HeaderActions = ({ setOpenNav }) => {
                   className="flex items-center gap-2 font-bold p-2 lg:p-3 lg:text-lg border border-primary bg-primary/10 text-primary rounded-lg cursor-pointer"
                 >
                   <FaUserAlt className="text-lg lg:text-2xl" />
-                  الملف الشخصي
+                  {t("components.layout.headerActions.profile")}
                 </Link>
                 <button
                   onClick={() => logoutMutation.mutate()}
                   className="w-full flex items-center gap-2 font-bold p-2 lg:p-3 lg:text-lg border border-error-200 bg-error-200/10 text-error-200 rounded-lg cursor-pointer"
                 >
                   <RiLogoutBoxRFill className="text-lg lg:text-2xl" />
-                  تسجيل الخروج
+                  {t("components.layout.headerActions.logout")}
                 </button>
               </div>
             </DropDown>

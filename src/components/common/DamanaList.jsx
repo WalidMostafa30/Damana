@@ -1,6 +1,7 @@
 import DamanaCard from "./DamanaCard";
 import noDataImg from "../../assets/images/No data-pana 1.png";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import LoadingSection from "../Loading/LoadingSection";
 import FormError from "../form/FormError";
 
@@ -13,12 +14,15 @@ const DamanaList = ({
   onSelect,
   addDamanaText = false,
 }) => {
+  const { t } = useTranslation();
+  const tr = (key) => t(`components.common.damanaList.${key}`);
+
   if (loading) return <LoadingSection />;
 
   if (error)
     return (
       <FormError
-        errorMsg={error?.response?.data?.error_msg || "حدث خطأ اثناء التحميل"}
+        errorMsg={error?.response?.data?.error_msg || tr("errorLoading")}
       />
     );
 
@@ -28,13 +32,13 @@ const DamanaList = ({
         <img src={noDataImg} alt="no data" loading="lazy" className="w-96" />
         {addDamanaText ? (
           <p className="text-lg">
-            لا توجد ضمانات حالية بعد. يمكنك البدء الآن من هنا:{" "}
+            {tr("noDataWithLink")}{" "}
             <Link to="/add-damana" className="text-primary font-bold">
-              طلب ضمانة جديدة
+              {tr("newRequest")}
             </Link>
           </p>
         ) : (
-          <p className="text-lg">لا توجد ضمانات حالية</p>
+          <p className="text-lg">{tr("noData")}</p>
         )}
       </div>
     );

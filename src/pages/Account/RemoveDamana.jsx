@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
@@ -9,23 +10,14 @@ import LoadingSection from "../../components/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
 import DamanaList from "../../components/common/DamanaList";
 import InfiniteScroll from "react-infinite-scroll-component";
-import FormError from "../../components/form/FormError/";
+import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 
-const steps = [
-  {
-    title: "طلب الغاء ضمانة",
-    description:
-      "يمكنك طلب الغاء الضمانة التي انشاتها ، اختار الضمانة ومن ثم اشرح سبب الالغاء وسيتم الرد عليك من قبل الدعم بأسرع وقت ممكن",
-  },
-  {
-    title: "تأكيد الغاء ضمانة",
-    description:
-      "سيتم ارجاع المبلغ الاساسي مخصوم منه عمولة الغاء الضمانة في حال موافقة مدير النظام على عملية الالغاء",
-  },
-];
-
 const RemoveDamana = () => {
+  const { t } = useTranslation();
+
+  const steps = t("pages.account.remove_damana.steps", { returnObjects: true });
+
   const [step, setStep] = useState(0);
   const [selectedDamanat, setSelectedDamanat] = useState([]);
   const [reason, setReason] = useState("");
@@ -33,30 +25,23 @@ const RemoveDamana = () => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isError,
-    error,
-    isLoading,
-  } = useInfiniteQuery({
-    queryKey: ["damanat", null, "cancellable"],
-    queryFn: ({ pageParam = 1, queryKey }) =>
-      fetchDamanat({ pageParam, queryKey }),
-    getNextPageParam: (lastPage) =>
-      lastPage.hasMore ? lastPage.nextPage : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage, isError, error, isLoading } =
+    useInfiniteQuery({
+      queryKey: ["damanat", null, "cancellable"],
+      queryFn: ({ pageParam = 1, queryKey }) =>
+        fetchDamanat({ pageParam, queryKey }),
+      getNextPageParam: (lastPage) =>
+        lastPage.hasMore ? lastPage.nextPage : undefined,
+    });
 
   const cancelDamanaMutation = useMutation({
     mutationFn: cancelDamana,
-    onSuccess: () => {
-      setOpenModal(true);
-    },
-    onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ اثناء الإلغاء");
-    },
+    onSuccess: () => setOpenModal(true),
+    onError: (error) =>
+      setErrorMsg(
+        error?.response?.data?.error_msg ||
+          t("pages.account.remove_damana.errors.cancel")
+      ),
   });
 
   const toggleSelect = (id) => {
@@ -67,15 +52,11 @@ const RemoveDamana = () => {
 
   const handleConfirmCancel = () => {
     if (!reason.trim()) {
-      setReasonError("من فضلك اكتب سبب الإلغاء");
+      setReasonError(t("pages.account.remove_damana.reason_required"));
       return;
     }
     setReasonError("");
-
-    cancelDamanaMutation.mutate({
-      ids: selectedDamanat,
-      reason,
-    });
+    cancelDamanaMutation.mutate({ ids: selectedDamanat, reason });
   };
 
   const resetAndBack = () => {
@@ -97,7 +78,10 @@ const RemoveDamana = () => {
       {isLoading && <LoadingSection />}
       {isError && (
         <FormError
-          errorMsg={error?.response?.data?.error_msg || "حدث خطأ اثناء التحميل"}
+          errorMsg={
+            error?.response?.data?.error_msg ||
+            t("pages.account.remove_damana.errors.load")
+          }
         />
       )}
 
@@ -106,8 +90,16 @@ const RemoveDamana = () => {
           dataLength={data?.pages.flatMap((p) => p.data).length || 0}
           next={fetchNextPage}
           hasMore={hasNextPage}
-          loader={<p className="text-center p-4">تحميل المزيد...</p>}
-          endMessage={<p className="text-center p-4">لا يوجد عناصر أخرى</p>}
+          loader={
+            <p className="text-center p-4">
+              {t("pages.account.remove_damana.load_more")}
+            </p>
+          }
+          endMessage={
+            <p className="text-center p-4">
+              {t("pages.account.remove_damana.no_more")}
+            </p>
+          }
           style={{ overflow: "hidden" }}
         >
           <DamanaList
@@ -119,18 +111,18 @@ const RemoveDamana = () => {
         </InfiniteScroll>
       )}
 
-      {isFetchingNextPage && (
-        <p className="text-center p-4">جاري تحميل المزيد...</p>
-      )}
-
       {step === 0 && selectedDamanat.length > 0 && (
-        <FormBtn title="التالى" onClick={() => setStep(1)} variant="primary" />
+        <FormBtn
+          title={t("pages.account.remove_damana.next")}
+          onClick={() => setStep(1)}
+          variant="primary"
+        />
       )}
 
       {step === 1 && (
         <div className="space-y-4">
           <MainInput
-            label="سبب الغاء الضمانة"
+            label={t("pages.account.remove_damana.reason_label")}
             type="textarea"
             value={reason}
             onChange={(e) => setReason(e.target.value)}
@@ -138,13 +130,14 @@ const RemoveDamana = () => {
           />
           <p className="text-error-100 text-lg flex items-center gap-1">
             <IoWarningOutline className="text-2xl" />
-            تحذير: سيتم خصم العمولة الخاصة بالغاء الضمانة التي قيمتها 5 دنانير
+            {t("pages.account.remove_damana.warning")}
           </p>
+
           {errorMsg && <FormError errorMsg={errorMsg} />}
 
           <div className="flex flex-col md:flex-row items-center gap-4">
             <button onClick={resetAndBack} className="mainBtn min-w-[250px]">
-              الاستمرار فى الضمانة
+              {t("pages.account.remove_damana.continue")}
             </button>
             <button
               onClick={handleConfirmCancel}
@@ -154,8 +147,8 @@ const RemoveDamana = () => {
               disabled={cancelDamanaMutation.isPending}
             >
               {cancelDamanaMutation.isPending
-                ? "جاري التحميل..."
-                : "تاكيد الغاء الضمانة"}
+                ? t("pages.account.remove_damana.loading")
+                : t("pages.account.remove_damana.confirm")}
             </button>
           </div>
         </div>
@@ -163,12 +156,10 @@ const RemoveDamana = () => {
 
       <ActionModal
         openModal={openModal}
-        msg={
-          "تم ارسال فورم الالغاء الى مدير النظام, سيتم التواصل معك في اقرب وقت ممكن."
-        }
+        msg={t("pages.account.remove_damana.success_msg")}
         icon="success"
         primaryBtn={{
-          text: "الذهاب الى صفحه الضمانات",
+          text: t("pages.account.remove_damana.go_to_damanat"),
           action: () => {
             setOpenModal(false);
             resetAndBack();

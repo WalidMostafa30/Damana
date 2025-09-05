@@ -6,8 +6,10 @@ import DisActivePage from "../../pages/NotFound/DisActivePage";
 import { useDispatch } from "react-redux";
 import { closeLogoutModal } from "../../store/modalsSlice/logoutModalSlice";
 import ActionModal from "../modals/ActionModal";
+import { useTranslation } from "react-i18next";
 
 export default function CheckAuthRoute({ children }) {
+  const { t } = useTranslation();
   const { data, isLoading, error } = useQuery({
     queryKey: ["checkAuth"],
     queryFn: checkAuth,
@@ -24,13 +26,17 @@ export default function CheckAuthRoute({ children }) {
         openModal={true}
         msg={
           <>
-            <h2 className="text-xl font-bold">انتهت الجلسة</h2>
-            <p>انتهت صلاحية تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.</p>
+            <h2 className="text-xl font-bold">
+              {t("components.protectedRoutes.checkAuthRoute.sessionEnded")}
+            </h2>
+            <p>
+              {t("components.protectedRoutes.checkAuthRoute.sessionExpired")}
+            </p>
           </>
         }
         icon="warning"
         primaryBtn={{
-          text: "الذهاب الى صفحه تسجيل الدخول",
+          text: t("components.protectedRoutes.checkAuthRoute.goToLogin"),
           action: () => {
             dispatch(closeLogoutModal());
             navigate("/login");

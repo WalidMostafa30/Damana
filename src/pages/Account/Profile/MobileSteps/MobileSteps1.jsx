@@ -6,8 +6,12 @@ import * as Yup from "yup";
 import PhoneInput from "../../../../components/form/PhoneInput";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
+import MainInput from "../../../../components/form/MainInput/MainInput";
+import { GoMail } from "react-icons/go";
+import { useTranslation } from "react-i18next";
 
 const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const [showEditBtn, setShowEditBtn] = useState(false);
 
@@ -25,17 +29,20 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
       goNext();
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
+      setErrorMsg(
+        error?.response?.data?.error_msg ||
+          t("pages.account.profile.mobileStep1.error_default")
+      );
     },
   });
 
   const profileSchema = Yup.object({
     mobile: Yup.string()
-      .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
-      .required("رقم الهاتف مطلوب"),
+      .min(9, t("pages.account.profile.mobileStep1.mobile_min_length"))
+      .required(t("pages.account.profile.mobileStep1.mobile_required")),
     email: Yup.string()
-      .email("البريد الالكتروني غير صالح")
-      .required("البريد الالكتروني مطلوب"),
+      .email(t("pages.account.profile.mobileStep1.email_invalid"))
+      .required(t("pages.account.profile.mobileStep1.email_required")),
   });
 
   const formik = useFormik({
@@ -43,19 +50,18 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
     initialValues: {
       mobile: profile?.mobile,
       country_code: profile?.country_code || "+962",
+      email: profile?.email || "",
     },
     validationSchema: profileSchema,
     onSubmit: (values) => {
-      // تحقق لو الرقم ما اتغيرش
       if (
         values.mobile === profile?.mobile &&
         values.country_code === profile?.country_code
       ) {
-        setErrorMsg("رقم الهاتف لم يتغير");
-        return; // وقف التنفيذ
+        setErrorMsg(t("pages.account.profile.mobileStep1.error_no_change"));
+        return;
       }
 
-      // لو الرقم مختلف ابعت OTP
       mutationOTP.mutate({
         mobile: values.mobile,
         country_code: values.country_code,
@@ -63,9 +69,8 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
     },
   });
 
-  const getError = (fieldName) => {
-    return formik.touched[fieldName] && formik.errors[fieldName];
-  };
+  const getError = (fieldName) =>
+    formik.touched[fieldName] && formik.errors[fieldName];
 
   useEffect(() => {
     if (!profile) return;
@@ -80,28 +85,31 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
   return (
     <div>
       <h3 className="text-lg lg:text-2xl font-bold text-primary mb-2">
-        رقم الهاتف و البريد الالكتروني
+        {t("pages.account.profile.mobileStep1.mobile_email_title")}
       </h3>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4 max-w-md">
         <PhoneInput formik={formik} disabled={!isEditing} />
 
         <MainInput
-            type="email"
-            id="email"
-            placeholder="yasmin@example.com"
-            label="البريد الالكتروني"
-            icon={<GoMail />}
-            value={formik.values.email}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            error={getError("email")}
-            disabled={!isEditing}
-          />
+          type="email"
+          id="email"
+          placeholder={t("pages.account.profile.mobileStep1.email_placeholder")}
+          label={t("pages.account.profile.mobileStep1.email_label")}
+          icon={<GoMail />}
+          value={formik.values.email}
+          onChange={formik.handleChange}
+          onBlur={formik.handleBlur}
+          error={getError("email")}
+          disabled={!isEditing}
+        />
 
         <FormError errorMsg={errorMsg} />
         {showEditBtn && isEditing && (
-          <FormBtn title="ارسال كود التحقق" loading={mutationOTP.isPending} />
+          <FormBtn
+            title={t("pages.account.profile.mobileStep1.send_otp")}
+            loading={mutationOTP.isPending}
+          />
         )}
       </form>
     </div>

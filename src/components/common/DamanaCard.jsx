@@ -2,6 +2,7 @@ import { CiCalendarDate, CiUser } from "react-icons/ci";
 import { PiCertificate } from "react-icons/pi";
 import { FaMoneyBill1Wave } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 import Timer from "./Timer";
 import CopyToClipboard from "./CopyToClipboard";
 
@@ -11,7 +12,8 @@ const DamanaCard = ({
   selected = false,
   onSelect = () => {},
 }) => {
-  console.log(damana);
+  const { t } = useTranslation();
+  const tr = (key) => t(`components.common.damanaCard.${key}`);
 
   return (
     <div
@@ -33,33 +35,41 @@ const DamanaCard = ({
       </h3>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
-        <div className="grid xl:grid-cols-2 gap-2">
-          <p className="lg:text-lg text-primary font-bold xl:col-span-2 flex items-center gap-1">
-            رقم الضمانة: <CopyToClipboard text={damana?.serial_number} />
+        <div className="grid 2xl:grid-cols-2 gap-2">
+          <p className="lg:text-lg text-primary font-bold 2xl:col-span-2 flex items-center gap-1">
+            {tr("guaranteeNumber")}:{" "}
+            <CopyToClipboard text={damana?.serial_number} />
           </p>
 
-          <div className="flex items-center gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-base">
             <PiCertificate className="text-2xl" />
             <p>
-              <span>رقم اللوحة</span> :{" "}
+              <span>{tr("plateNumber")}</span> :{" "}
               <span className="font-bold">{damana?.plate_number_code}</span>
             </p>
           </div>
-          <div className="flex items-center gap-1 text-sm lg:text-base">
+
+          <div className="flex items-start gap-1 text-sm lg:text-base">
             <CiUser className="text-2xl" />
             <p>
-              <span>البائع</span> :{" "}
+              <span>{tr("seller")}</span> :{" "}
               <span className="font-bold">{damana?.seller?.name}</span>
             </p>
           </div>
 
-          <div className="flex items-center gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-base">
             <FaMoneyBill1Wave className="text-2xl" />
-            <p>{`${damana?.vehicle_price} دينار أردني`}</p>
+            <p>
+              {damana?.vehicle_price} {tr("price")}
+            </p>
           </div>
-          <div className="flex items-center gap-1 text-sm lg:text-base">
+
+          <div className="flex items-start gap-1 text-sm lg:text-base">
             <CiCalendarDate className="text-2xl" />
-            <p>{new Date(damana?.created_at).toLocaleDateString("ar-EG")}</p>
+            <p>
+              <span>{tr("date")}: </span>
+              {new Date(damana?.created_at).toLocaleDateString("en-GB")}
+            </p>
           </div>
         </div>
 
@@ -75,7 +85,7 @@ const DamanaCard = ({
             </span>
           ) : (
             <Link to={`/damana/${damana?.id}`} className="mainBtn w-full">
-              عرض
+              {tr("show")}
             </Link>
           )}
         </div>

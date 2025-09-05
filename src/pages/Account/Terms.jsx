@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { getPage } from "../../services/staticDataService";
 import LoadingSection from "../../components/Loading/LoadingSection";
+import { useTranslation } from "react-i18next";
 
 const Terms = () => {
   const {
@@ -13,13 +14,13 @@ const Terms = () => {
     keepPreviousData: true,
   });
 
+  const { t } = useTranslation();
+
   if (isLoading) return <LoadingSection />;
 
   if (isError)
     return (
-      <div className="p-4 text-center">
-        حدث خطاء اثناء تحميل الشروط والاحكام
-      </div>
+      <div className="p-4 text-center">{t("pages.account.terms.error")} </div>
     );
 
   return (

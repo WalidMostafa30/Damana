@@ -56,7 +56,7 @@ const NotificationCard = ({
 
         <p className="text-neutral-500 lg:text-lg flex items-center gap-1">
           <IoMdTime />
-          {new Date(notification.created_at).toLocaleString("ar-EG", {
+          {new Date(notification.created_at).toLocaleString("en-GB", {
             dateStyle: "short",
             timeStyle: "short",
           })}

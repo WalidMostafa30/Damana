@@ -34,29 +34,23 @@ const Home = () => {
   const navigate = useNavigate();
 
   // جلب البيانات
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    error,
-  } = useInfiniteQuery({
-    queryKey: [
-      "damanat",
-      selectedType,
-      selectedStatus,
-      dateRange
-        ? {
-            created_at_from: dateRange.startDate.toISOString().split("T")[0],
-            created_at_to: dateRange.endDate.toISOString().split("T")[0],
-          }
-        : null, // 👈 لو مفيش تاريخ مش هيتبعت
-    ],
-    queryFn: fetchDamanat,
-    getNextPageParam: (lastPage) =>
-      lastPage.hasMore ? lastPage.nextPage : undefined,
-  });
+  const { data, fetchNextPage, hasNextPage, isLoading, error } =
+    useInfiniteQuery({
+      queryKey: [
+        "damanat",
+        selectedType,
+        selectedStatus,
+        dateRange
+          ? {
+              created_at_from: dateRange.startDate.toISOString().split("T")[0],
+              created_at_to: dateRange.endDate.toISOString().split("T")[0],
+            }
+          : null, // 👈 لو مفيش تاريخ مش هيتبعت
+      ],
+      queryFn: fetchDamanat,
+      getNextPageParam: (lastPage) =>
+        lastPage.hasMore ? lastPage.nextPage : undefined,
+    });
 
   // جلب الكونفيج
   const { data: configData } = useQuery({
@@ -86,15 +80,15 @@ const Home = () => {
   }, [pathname, navigate]);
 
   return (
-    <section className="pageContainer grid grid-cols-1 lg:grid-cols-3 gap-8">
-      <div className="col-span-1 lg:col-span-2 space-y-4">
+    <section className="pageContainer grid grid-cols-1 xl:grid-cols-3 gap-8">
+      <div className="col-span-1 xl:col-span-2 space-y-4">
         <PageTitle
           title="ضماناتى"
           subtitle="هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها."
         />
 
         <section className="baseWhiteContainer space-y-4">
-          <div className="grid grid-cols-2 xl:grid-cols-4 gap-2 lg:gap-4">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
             {/* نوع الضمانة */}
             <button
               onClick={() => {
@@ -139,8 +133,8 @@ const Home = () => {
             >
               {dateRange
                 ? `${dateRange.startDate.toLocaleDateString(
-                    "ar-EG"
-                  )} - ${dateRange.endDate.toLocaleDateString("ar-EG")}`
+                    "en-GB"
+                  )} - ${dateRange.endDate.toLocaleDateString("en-GB")}`
                 : "اختر التاريخ"}
             </button>
           </div>
@@ -148,7 +142,10 @@ const Home = () => {
           {/* مودال اختيار التاريخ */}
           {showPicker && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-              <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto">
+              <div
+                className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto"
+                dir="ltr"
+              >
                 <DateRange
                   editableDateInputs={true}
                   moveRangeOnFirstSelection={false}
@@ -175,7 +172,6 @@ const Home = () => {
               data={data?.pages.flatMap((page) => page.data) || []}
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
               loading={isLoading}
               error={error}
             />
@@ -185,7 +181,6 @@ const Home = () => {
               data={data?.pages.flatMap((page) => page.data) || []}
               fetchNextPage={fetchNextPage}
               hasNextPage={hasNextPage}
-              isFetchingNextPage={isFetchingNextPage}
               loading={isLoading}
               error={error}
             />

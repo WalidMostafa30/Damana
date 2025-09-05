@@ -7,10 +7,13 @@ import Step2 from "./steps/Step2";
 import BackStepBtn from "../../components/form/BackStepBtn";
 import { useQuery } from "@tanstack/react-query";
 import { getApplicationConfiguration } from "../../services/staticDataService";
-
-const steps = ["المعلومات الأساسية", "بيانات الأطراف", "بيانات الضمانة"];
+// ✅ استدعاء الترجمة
+import { useTranslation } from "react-i18next";
 
 export default function AddDamana() {
+  const { t } = useTranslation();
+  const steps = t("pages.addDamana.steps", { returnObjects: true });
+
   const [step, setStep] = useState(0);
 
   const { data: configData } = useQuery({
@@ -18,22 +21,14 @@ export default function AddDamana() {
     queryFn: getApplicationConfiguration,
   });
 
-  console.log("configData:", configData);
-
-  // ✅ البيانات المشتركة بين الخطوات
   const [formData, setFormData] = useState({
-    // Step0
     registration_number: "",
     is_owner: true,
     owner_national_number: "",
     owner_full_mobile: "",
-
-    // Step1
     buyer_national_number: "",
     buyer_full_mobile: "",
     buyerCountryCode: "",
-
-    // Step2
     vehicle_price: "",
     commission_on: "",
     code: "",
@@ -50,8 +45,8 @@ export default function AddDamana() {
   return (
     <section className="pageContainer space-y-4">
       <PageTitle
-        title="طلب ضمانة جديدة"
-        subtitle="ابداء بإنشاء ضمانة جديدة للمركبة التي تود ببيعها"
+        title={t("pages.addDamana.title")}
+        subtitle={t("pages.addDamana.subtitle")}
       />
 
       <section className="whiteContainer grid grid-cols-1 lg:grid-cols-4 gap-4">

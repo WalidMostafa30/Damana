@@ -2,14 +2,10 @@ import { useState, useEffect } from "react";
 import { useFormik } from "formik";
 import { useMutation } from "@tanstack/react-query";
 import * as Yup from "yup";
-import {
-  LuChevronDown,
-  LuCopy,
-  LuCopyCheck,
-  LuHandCoins,
-} from "react-icons/lu";
+import { LuChevronDown, LuHandCoins } from "react-icons/lu";
 import { CiDiscount1 } from "react-icons/ci";
 import { FaMoneyBillWave } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import {
@@ -20,25 +16,12 @@ import {
 import FormBtn from "../../../components/form/FormBtn";
 import FormError from "../../../components/form/FormError";
 import ActionModal from "../../../components/modals/ActionModal";
-import { useNavigate } from "react-router-dom";
 import LoadingModal from "../../../components/modals/LoadingModal";
 import CopyToClipboard from "../../../components/common/CopyToClipboard";
-
-const commission_on_options = [
-  { value: "buyer", label: "على المشتري" },
-  { value: "seller", label: "البائع" },
-  { value: "equally", label: "مناصفة 50% على المشتري و 50% على البائع" },
-];
-
-const formatNumber = (num) => {
-  if (num === null || num === undefined || num === "") return "-";
-  return new Intl.NumberFormat("en-US", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  }).format(num);
-};
+import { useTranslation } from "react-i18next";
 
 const Step2 = ({ formData, setFormData, configData }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const [showCoupon, setShowCoupon] = useState(false);
   const [couponErrorMsg, setCouponErrorMsg] = useState("");
@@ -49,7 +32,30 @@ const Step2 = ({ formData, setFormData, configData }) => {
 
   const navigate = useNavigate();
 
-  // تحقق الكوبون
+  const commission_on_options = [
+    {
+      value: "buyer",
+      label: t("pages.addDamana.step2.commissionOn.options.buyer"),
+    },
+    {
+      value: "seller",
+      label: t("pages.addDamana.step2.commissionOn.options.seller"),
+    },
+    {
+      value: "equally",
+      label: t("pages.addDamana.step2.commissionOn.options.equally"),
+    },
+  ];
+
+  const formatNumber = (num) => {
+    if (num === null || num === undefined || num === "") return "-";
+    return new Intl.NumberFormat("en-US", {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(num);
+  };
+
+  // ✅ تحقق الكوبون
   const couponMutation = useMutation({
     mutationFn: async (code) => await checkCoupon(code),
     onSuccess: (data) => {
@@ -59,52 +65,57 @@ const Step2 = ({ formData, setFormData, configData }) => {
     onError: (error) => {
       setCouponServer(null);
       setCouponErrorMsg(
-        error?.response?.data?.error_msg || "كود الخصم غير صالح"
+        error?.response?.data?.error_msg ||
+          t("pages.addDamana.step2.discount.invalid")
       );
     },
   });
 
-  // API حساب العمولة
+  // ✅ حساب العمولة
   const commissionMutation = useMutation({
     mutationFn: async (payload) => await getCommission(payload),
     onSuccess: (data) => {
       const newDetails = [
         {
-          label: "قيمة المركبة",
+          label: t("pages.addDamana.step2.details.vehiclePrice"),
           value: `${formatNumber(data.vehicle_price)} دينار أردني`,
         },
         {
-          label: "عمولة الضمانة",
+          label: t("pages.addDamana.step2.details.commission"),
           value:
             formik.values.commission_on === "buyer"
-              ? `${formatNumber(data.commission_value)} دينار على المشتري`
+              ? `${formatNumber(data.commission_value)} دينار ${t(
+                  "pages.addDamana.step2.commissionOn.options.buyer"
+                )}`
               : formik.values.commission_on === "seller"
-              ? `${formatNumber(data.commission_value)} دينار على البائع`
-              : `${formatNumber(
-                  data.commission_value / 2
-                )} دينار على البائع و ${formatNumber(
-                  data.commission_value / 2
-                )} دينار على المشتري`,
+              ? `${formatNumber(data.commission_value)} دينار ${t(
+                  "pages.addDamana.step2.commissionOn.options.seller"
+                )}`
+              : `${formatNumber(data.commission_value / 2)} دينار ${t(
+                  "pages.addDamana.step2.commissionOn.options.seller"
+                )} و ${formatNumber(data.commission_value / 2)} دينار ${t(
+                  "pages.addDamana.step2.commissionOn.options.buyer"
+                )}`,
         },
         {
-          label: "سعر الضمانة الكلي",
+          label: t("pages.addDamana.step2.details.total"),
           value: `${formatNumber(
             data.vehicle_price_with_commission
           )} دينار أردني`,
         },
         {
-          label: "المستحق للبائع",
+          label: t("pages.addDamana.step2.details.dueToSeller"),
           value: `${formatNumber(data.due_to_seller)} دينار أردني`,
         },
       ];
 
       if (data.discount && data.discount > 0) {
         newDetails.splice(2, 0, {
-          label: "كود الخصم",
+          label: t("pages.addDamana.step2.details.discountCode"),
           value: formik.values.code,
         });
         newDetails.splice(3, 0, {
-          label: "نسبة الخصم",
+          label: t("pages.addDamana.step2.details.discountValue"),
           value: `${formatNumber(data.discount)}${
             data.discount_type === "percentage" ? "%" : " دينار"
           }`,
@@ -113,7 +124,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
 
       if (data.transfer_commission > 0) {
         newDetails.splice(4, 0, {
-          label: "عموله التحويل العاجل",
+          label: t("pages.addDamana.step2.details.transferCommission"),
           value: `${formatNumber(data.transfer_commission)} دينار أردني`,
         });
       }
@@ -126,7 +137,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
     },
   });
 
-  // إرسال طلب إنشاء الضمانة
+  // ✅ إرسال طلب إنشاء الضمانة
   const createVehicleTransferMutation = useMutation({
     mutationFn: async (payload) => await createVehicleTransfer(payload),
     onSuccess: (data) => {
@@ -135,7 +146,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
     },
     onError: (error) => {
       setErrorMsg(
-        error?.response?.data?.error_msg || "حدث خطأ أثناء إنشاء الضمانة"
+        error?.response?.data?.error_msg || t("pages.addDamana.step2.errorMsg")
       );
     },
   });
@@ -149,19 +160,22 @@ const Step2 = ({ formData, setFormData, configData }) => {
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
-      vehicle_price: Yup.string().required("قيمة المركبة مطلوبة"),
-      commission_on: Yup.string().required("اختيار عمولة ضمانة مطلوب"),
-      transfer_commission: Yup.string().required("اختيار نوع التحويل مطلوب"),
+      vehicle_price: Yup.string().required(
+        t("pages.addDamana.step2.vehiclePrice.required")
+      ),
+      commission_on: Yup.string().required(
+        t("pages.addDamana.step2.commissionOn.required")
+      ),
+      transfer_commission: Yup.string().required(
+        t("pages.addDamana.step2.transfer.required")
+      ),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
 
-      setFormData((prev) => ({
-        ...prev,
-        ...values,
-      }));
+      setFormData((prev) => ({ ...prev, ...values }));
 
-      const payload = {
+      createVehicleTransferMutation.mutate({
         registration_number: formData.registration_number,
         buyer_national_number: formData.buyer_national_number,
         buyer_full_mobile: formData.buyer_full_mobile,
@@ -173,17 +187,13 @@ const Step2 = ({ formData, setFormData, configData }) => {
         owner_national_number: formData.owner_national_number,
         owner_full_mobile: formData.owner_full_mobile,
         broker_commission_value: formData.broker_commission_value,
-      };
-
-      createVehicleTransferMutation.mutate(payload);
-      console.log("📤 إرسال طلب إنشاء الضمانة:", payload);
+      });
     },
   });
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  // 🟢 دالة تشغيل حساب العمولة
   const triggerCommission = (extra = {}) => {
     if (formik.values.vehicle_price && formik.values.commission_on) {
       commissionMutation.mutate({
@@ -196,13 +206,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
     }
   };
 
-  // vehicle_price → عند الانتهاء من الكتابة فقط
-  const handleVehiclePriceBlur = (e) => {
-    formik.handleBlur(e);
-    triggerCommission();
-  };
-
-  // commission_on أو transfer_commission → عند أي تغيير
   useEffect(() => {
     if (
       formik.values.commission_on &&
@@ -213,7 +216,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
     }
   }, [formik.values.commission_on, formik.values.transfer_commission]);
 
-  // الكوبون لو اتأكد صح → نفذ الحساب
   useEffect(() => {
     if (couponServer) {
       triggerCommission({ code: couponServer.code });
@@ -223,29 +225,38 @@ const Step2 = ({ formData, setFormData, configData }) => {
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <h3 className="text-xl lg:text-2xl font-bold text-primary">
-        بيانات الضمانة
+        {t("pages.addDamana.step2.title")}
       </h3>
+
+      {/* سعر المركبة + العمولة */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
-          label="قيمة المركبة"
+          label={t("pages.addDamana.step2.vehiclePrice.label")}
+          placeholder={t("pages.addDamana.step2.vehiclePrice.placeholder")}
           id="vehicle_price"
-          placeholder="ادخل قيمة المركبة"
           type="number"
           name="vehicle_price"
           icon={<FaMoneyBillWave />}
           value={formik.values.vehicle_price}
           onChange={formik.handleChange}
-          onBlur={handleVehiclePriceBlur} // ✅ هنا التغيير
+          onBlur={(e) => {
+            formik.handleBlur(e);
+            triggerCommission();
+          }}
           error={getError("vehicle_price")}
         />
 
         <MainInput
-          label="اختر العمولة"
+          label={t("pages.addDamana.step2.commissionOn.label")}
+          placeholder={t("pages.addDamana.step2.commissionOn.placeholder")}
           type="select"
           id="commission_on"
           name="commission_on"
           options={[
-            { value: "", label: "اختر العمولة" },
+            {
+              value: "",
+              label: t("pages.addDamana.step2.commissionOn.placeholder"),
+            },
             ...commission_on_options,
           ]}
           icon={<LuHandCoins />}
@@ -255,14 +266,16 @@ const Step2 = ({ formData, setFormData, configData }) => {
         />
       </div>
 
-      {/* 🟢 كود الخصم */}
+      {/* كود الخصم */}
       <div className="md:w-1/2">
         <button
           type="button"
           className="flex justify-between items-center w-full cursor-pointer"
           onClick={() => setShowCoupon(!showCoupon)}
         >
-          <p className="lg:text-lg font-bold">هل تمتلك كود خصم؟</p>
+          <p className="lg:text-lg font-bold">
+            {t("pages.addDamana.step2.discount.toggle")}
+          </p>
           <LuChevronDown
             className={`text-xl transition-transform duration-300 ${
               showCoupon ? "rotate-180" : ""
@@ -270,7 +283,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
           />
         </button>
 
-        {/* الجزء القابل للطي */}
         <div
           className={`transition-all duration-500 overflow-hidden ${
             showCoupon ? "max-h-[500px] mt-3" : "max-h-0"
@@ -278,11 +290,11 @@ const Step2 = ({ formData, setFormData, configData }) => {
         >
           <div className="flex flex-col gap-2 p-1">
             <MainInput
-              label="كود الخصم"
+              label={t("pages.addDamana.step2.discount.label")}
+              placeholder={t("pages.addDamana.step2.discount.placeholder")}
               type="text"
               name="code"
               id="code"
-              placeholder="ادخل كود الخصم"
               icon={<CiDiscount1 />}
               value={formik.values.code}
               onChange={(e) => {
@@ -293,7 +305,6 @@ const Step2 = ({ formData, setFormData, configData }) => {
               error={getError("code")}
             />
 
-            {/* ✅ رسائل الأنيميشن */}
             <div
               className={`transition-all duration-500 overflow-hidden ${
                 couponServer?.discount || couponErrorMsg
@@ -303,8 +314,13 @@ const Step2 = ({ formData, setFormData, configData }) => {
             >
               {couponServer?.discount && (
                 <p className="text-success font-bold">
-                  حصلت على خصم {couponServer.discount}
-                  {couponServer.discount_type === "percentage" ? "%" : " دينار"}
+                  {t("pages.addDamana.step2.discount.success", {
+                    value: couponServer.discount,
+                    unit:
+                      couponServer.discount_type === "percentage"
+                        ? "%"
+                        : " دينار",
+                  })}
                 </p>
               )}
               <FormError errorMsg={couponErrorMsg} />
@@ -312,7 +328,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
 
             {formik.values.code && (
               <FormBtn
-                title="تحقق"
+                title={t("pages.addDamana.step2.discount.btn")}
                 type="button"
                 loading={couponMutation.isPending}
                 onClick={() => couponMutation.mutate(formik.values.code)}
@@ -322,8 +338,10 @@ const Step2 = ({ formData, setFormData, configData }) => {
         </div>
       </div>
 
-      {/* صرف ضمانة */}
-      <h3 className="text-xl lg:text-2xl font-bold text-primary">صرف ضمانة</h3>
+      {/* صرف الضمانة */}
+      <h3 className="text-xl lg:text-2xl font-bold text-primary">
+        {t("pages.addDamana.step2.transfer.title")}
+      </h3>
       <div className="space-y-2">
         <label className="flex items-center gap-2">
           <input
@@ -334,7 +352,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
             onChange={formik.handleChange}
             className="w-5 h-5 accent-primary"
           />
-          بشكل اعتيادي – يوصل بنفس اليوم أو اللي بعده (مجانًا)
+          {t("pages.addDamana.step2.transfer.options.ACH")}
         </label>
         <label className="flex items-center gap-2">
           <input
@@ -345,15 +363,18 @@ const Step2 = ({ formData, setFormData, configData }) => {
             onChange={formik.handleChange}
             className="w-5 h-5 accent-primary"
           />
-          فورًا – بأسرع وقت ممكن (تُضاف {configData?.settings?.rtgs_fees}{" "}
-          دنانير)
+          {t("pages.addDamana.step2.transfer.options.RTGS", {
+            fees: configData?.settings?.rtgs_fees,
+          })}
         </label>
       </div>
+
       {details.length > 0 && <DetailsCard data={details} />}
       <FormError errorMsg={errorMsg} />
+
       {details.length > 0 && (
         <FormBtn
-          title="ارسال ضمانه"
+          title={t("pages.addDamana.step2.submit")}
           loading={createVehicleTransferMutation.isPending}
         />
       )}
@@ -363,7 +384,9 @@ const Step2 = ({ formData, setFormData, configData }) => {
         setOpenModal={setOpenModal}
         msg={
           <>
-            <p className="text-center">تم إنشاء الضمانة بنجاح رقم الضمانة </p>
+            <p className="text-center">
+              {t("pages.addDamana.step2.success.msg")}
+            </p>
             <CopyToClipboard
               text={damanaData?.serial_number}
               className="!text-success-200 !texl-xl"
@@ -372,7 +395,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
         }
         icon="success"
         primaryBtn={{
-          text: "اذهب الى صفحة الضمانه",
+          text: t("pages.addDamana.step2.success.btn"),
           action: () => navigate(`/damana/${damanaData?.id}`),
         }}
       />

@@ -10,8 +10,10 @@ import { completeRegister } from "../../services/authService";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import CountrySelect from "../../components/form/CountrySelect";
+import { useTranslation } from "react-i18next";
 
 const Address = () => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -19,33 +21,34 @@ const Address = () => {
   const { profile } = useSelector((state) => state.profile);
   const userAddress = profile || {};
 
-  // 🟢 جلب الدول
-  // const { data: countriesData, isLoading: loadingCountries } = useQuery({
-  //   queryKey: ["countries"],
-  //   queryFn: getCountries,
-  // });
-  // const countries = countriesData?.data || [];
-
   // 🟢 Mutation
   const mutation = useMutation({
     mutationFn: completeRegister,
-    onSuccess: (data) => {
-      console.log("completeRegister data", data);
-
-      alert("تم تعديل العنوان بنجاح ✅");
+    onSuccess: () => {
+      alert(t("pages.account.address.success"));
       setIsEditing(false);
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء التعديل");
+      setErrorMsg(
+        error?.response?.data?.error_msg || t("pages.account.address.error")
+      );
     },
   });
 
   // 🟢 الفاليديشن
   const addressSchema = Yup.object({
-    address_building_number: Yup.string().required("رقم البناية مطلوب"),
-    address_street_name: Yup.string().required("اسم الشارع مطلوب"),
-    address_country_id: Yup.string().required("الدولة مطلوبة"),
-    address_city_town: Yup.string().required("المدينة مطلوبة"),
+    address_building_number: Yup.string().required(
+      t("pages.account.address.building_number_required")
+    ),
+    address_street_name: Yup.string().required(
+      t("pages.account.address.street_name_required")
+    ),
+    address_country_id: Yup.string().required(
+      t("pages.account.address.country_required")
+    ),
+    address_city_town: Yup.string().required(
+      t("pages.account.address.city_required")
+    ),
   });
 
   // 🟢 Formik
@@ -61,7 +64,6 @@ const Address = () => {
     validationSchema: addressSchema,
     onSubmit: (values) => {
       setErrorMsg("");
-
       mutation.mutate({
         form_type: "address",
         address: {
@@ -80,7 +82,9 @@ const Address = () => {
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <h3 className="text-lg lg:text-2xl text-primary font-bold">العنوان</h3>
+        <h3 className="text-lg lg:text-2xl text-primary font-bold">
+          {t("pages.account.address.title")}
+        </h3>
 
         <button
           type="button"
@@ -90,7 +94,7 @@ const Address = () => {
           }`}
         >
           <FaRegEdit />
-          تعديل
+          {t("pages.account.address.edit")}
         </button>
       </div>
 
@@ -100,8 +104,8 @@ const Address = () => {
           <MainInput
             id="address_building_number"
             type="text"
-            placeholder="رقم البناية"
-            label="رقم البناية"
+            placeholder={t("pages.account.address.building_number")}
+            label={t("pages.account.address.building_number")}
             icon={<CiBank />}
             disabled={!isEditing}
             error={getError("address_building_number")}
@@ -113,8 +117,8 @@ const Address = () => {
           {/* اسم الشارع */}
           <MainInput
             id="address_street_name"
-            placeholder="اسم الشارع"
-            label="اسم الشارع"
+            placeholder={t("pages.account.address.street_name")}
+            label={t("pages.account.address.street_name")}
             icon={<CiBank />}
             disabled={!isEditing}
             error={getError("address_street_name")}
@@ -134,8 +138,8 @@ const Address = () => {
           {/* المدينة */}
           <MainInput
             id="address_city_town"
-            placeholder="المدينة"
-            label="المدينة"
+            placeholder={t("pages.account.address.city")}
+            label={t("pages.account.address.city")}
             icon={<CiBank />}
             disabled={!isEditing}
             error={getError("address_city_town")}
@@ -149,7 +153,7 @@ const Address = () => {
 
         {isEditing && (
           <FormBtn
-            title="حفظ"
+            title={t("pages.account.address.save")}
             loading={mutation.isPending}
             className="lg:col-span-2"
           />

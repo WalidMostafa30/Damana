@@ -7,32 +7,78 @@ import DetailsCard from "../../../components/common/DetailsCard";
 import MainInput from "../../../components/form/MainInput/MainInput";
 import FormBtn from "../../../components/form/FormBtn";
 import PhoneInput from "../../../components/form/PhoneInput";
+import { useTranslation } from "react-i18next";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
 
-  // ✅ بيانات تفاصيل المركبة
   const data = [
-    { label: "رقم التسجيل", value: formData.registration_number },
     {
-      label: "رقم اللوحة والرمز",
+      label: t("pages.addDamana.step1.vehicle.registrationNumber"),
+      value: formData.registration_number,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.plate"),
       value: `${formData.plate_number || "-"} - ${formData.plate_code || "-"}`,
     },
-    { label: "نوع المركبة", value: formData.vehicle_type },
-    { label: "الصنف", value: formData.vehicle_class },
-    { label: "لون المركبة", value: formData.color },
-    { label: "رقم الشاصي", value: formData.chassis_number },
-    { label: "سنة الصنع", value: formData.manufacture_year },
-    { label: "تاريخ انتهاء الرخصة", value: formData.license_expiry_date },
-    { label: "مركز الترخيص", value: formData.licensing_center },
-    { label: "رقم المحرك", value: formData.engine_number },
-    { label: "سعة المحرك", value: formData.engine_capacity },
-    { label: "الحمولة", value: formData.load_capacity },
-    { label: "الوزن القائم", value: formData.net_weight },
-    { label: "الوزن الصافي", value: formData.cargo_capacity },
-    { label: "قيمة المركبة التقديرية", value: formData.estimated_value },
-    { label: "صفة التسجيل", value: formData.registration_type },
-    { label: "تصنيف المركبة", value: formData.vehicle_classification },
+    {
+      label: t("pages.addDamana.step1.vehicle.vehicleType"),
+      value: formData.vehicle_type,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.vehicleClass"),
+      value: formData.vehicle_class,
+    },
+    { label: t("pages.addDamana.step1.vehicle.color"), value: formData.color },
+    {
+      label: t("pages.addDamana.step1.vehicle.chassisNumber"),
+      value: formData.chassis_number,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.manufactureYear"),
+      value: formData.manufacture_year,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.licenseExpiry"),
+      value: formData.license_expiry_date,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.licensingCenter"),
+      value: formData.licensing_center,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.engineNumber"),
+      value: formData.engine_number,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.engineCapacity"),
+      value: formData.engine_capacity,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.loadCapacity"),
+      value: formData.load_capacity,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.netWeight"),
+      value: formData.net_weight,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.cargoCapacity"),
+      value: formData.cargo_capacity,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.estimatedValue"),
+      value: formData.estimated_value,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.registrationType"),
+      value: formData.registration_type,
+    },
+    {
+      label: t("pages.addDamana.step1.vehicle.vehicleClassification"),
+      value: formData.vehicle_classification,
+    },
   ];
 
   const mutation = useMutation({
@@ -44,14 +90,14 @@ const Step1 = ({ goNext, formData, setFormData }) => {
         ...prev,
         buyer_national_number: formik.values.buyer_national_number,
         buyer_full_mobile: formik.values.buyer_full_mobile,
-        // buyerCountryCode: formik.values.buyerCountryCode,
       }));
-
       setErrorMsg("");
       goNext();
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
+      setErrorMsg(
+        error?.response?.data?.error_msg || t("pages.addDamana.step1.errorMsg")
+      );
     },
   });
 
@@ -59,20 +105,18 @@ const Step1 = ({ goNext, formData, setFormData }) => {
     initialValues: {
       buyer_national_number: formData.buyer_national_number || "",
       buyer_full_mobile: formData.buyer_full_mobile || "",
-      // buyerCountryCode: formData.buyerCountryCode || "",
     },
     validationSchema: Yup.object({
       buyer_national_number: Yup.string().required(
-        "الرقم الوطني للمشتري مطلوب"
+        t("pages.addDamana.step1.buyer.nationalNumber.required")
       ),
-      buyer_full_mobile: Yup.string().required("رقم هاتف المشتري مطلوب"),
+      buyer_full_mobile: Yup.string().required(
+        t("pages.addDamana.step1.buyer.phone.required")
+      ),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
-      mutation.mutate({
-        ...formData,
-        ...values,
-      });
+      mutation.mutate({ ...formData, ...values });
     },
   });
 
@@ -88,16 +132,18 @@ const Step1 = ({ goNext, formData, setFormData }) => {
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <h3 className="text-xl lg:text-2xl font-bold text-primary">
-        بيانات أطراف الضمانة
+        {t("pages.addDamana.step1.title")}
       </h3>
 
       <div>
-        {pageTitle("المشتري")}
+        {pageTitle(t("pages.addDamana.step1.buyer.sectionTitle"))}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MainInput
             id="buyer_national_number"
-            label="الرقم الوطني"
-            placeholder="ادخل الرقم الوطني"
+            label={t("pages.addDamana.step1.buyer.nationalNumber.label")}
+            placeholder={t(
+              "pages.addDamana.step1.buyer.nationalNumber.placeholder"
+            )}
             name="buyer_national_number"
             value={formik.values.buyer_national_number}
             onChange={formik.handleChange}
@@ -112,12 +158,14 @@ const Step1 = ({ goNext, formData, setFormData }) => {
 
       {!formData.is_owner && (
         <div>
-          {pageTitle("المالك")}
+          {pageTitle(t("pages.addDamana.step1.owner.sectionTitle"))}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MainInput
               id="owner_national_number"
-              label="الرقم الوطني"
-              placeholder="ادخل الرقم الوطني"
+              label={t("pages.addDamana.step1.owner.nationalNumber.label")}
+              placeholder={t(
+                "pages.addDamana.step1.owner.nationalNumber.placeholder"
+              )}
               name="owner_national_number"
               value={formData.owner_national_number}
               icon={<LuCircleUserRound />}
@@ -128,8 +176,8 @@ const Step1 = ({ goNext, formData, setFormData }) => {
               type="tel"
               id="owner_full_mobile"
               name="owner_full_mobile"
-              placeholder="96269077885+"
-              label="رقم الهاتف"
+              placeholder={t("pages.addDamana.step1.owner.phone.placeholder")}
+              label={t("pages.addDamana.step1.owner.phone.label")}
               value={formData.owner_full_mobile}
               disabled
             />
@@ -138,13 +186,16 @@ const Step1 = ({ goNext, formData, setFormData }) => {
       )}
 
       <div>
-        {pageTitle("بيانات المركبة")}
+        {pageTitle(t("pages.addDamana.step1.vehicle.sectionTitle"))}
         <DetailsCard data={data} col={2} blur={!formData.is_owner} />
       </div>
 
       {errorMsg && <div className="text-error-200">{errorMsg}</div>}
 
-      <FormBtn title="التالي" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.addDamana.step1.submit")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 };

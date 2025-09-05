@@ -14,8 +14,10 @@ import { IoIdCardSharp } from "react-icons/io5";
 import { IoMdCode } from "react-icons/io";
 import BankSelect from "../../components/form/BankSelect";
 import { isValid } from "iban";
+import { useTranslation } from "react-i18next";
 
 const BankInfo = () => {
+  const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
 
@@ -27,25 +29,31 @@ const BankInfo = () => {
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
-      alert("تم تعديل البيانات البنكية بنجاح ✅");
+      alert(t("pages.account.bank_info.success"));
       setIsEditing(false);
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء التعديل");
+      setErrorMsg(
+        error?.response?.data?.error_msg || t("pages.account.bank_info.error")
+      );
     },
   });
 
   // 🟢 الفاليديشن مع الـ 5 حقول
   const bankSchema = Yup.object({
-    bank_id: Yup.string().required("اسم البنك مطلوب"),
+    bank_id: Yup.string().required(t("pages.account.bank_info.bank_required")),
     iban: Yup.string()
-      .test("iban-check", "رقم الايبان غير صالح", (value) =>
+      .test("iban-check", t("pages.account.bank_info.iban_invalid"), (value) =>
         isValid(value || "")
       )
-      .required("رقم الايبان البنكي مطلوب"),
-    swift_code: Yup.string().required("رقم السويفت مطلوب"),
-    currency: Yup.string().required("العملة مطلوبة"),
-    clik_name: Yup.string(), // هنا خفيف/اختياري
+      .required(t("pages.account.bank_info.iban_required")),
+    swift_code: Yup.string().required(
+      t("pages.account.bank_info.swift_required")
+    ),
+    currency: Yup.string().required(
+      t("pages.account.bank_info.currency_required")
+    ),
+    clik_name: Yup.string(),
   });
 
   // 🟢 Formik بنفس أسماء الـ API
@@ -63,7 +71,7 @@ const BankInfo = () => {
       setErrorMsg("");
       mutation.mutate({
         form_type: "bank",
-        bank: values, // بنفس الأسماء
+        bank: values,
       });
     },
   });
@@ -74,7 +82,7 @@ const BankInfo = () => {
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
         <h3 className="text-lg lg:text-2xl text-primary font-bold">
-          البيانات البنكية
+          {t("pages.account.bank_info.title")}
         </h3>
 
         <button
@@ -84,7 +92,7 @@ const BankInfo = () => {
           }`}
         >
           <FaRegEdit />
-          تعديل
+          {t("pages.account.bank_info.edit")}
         </button>
       </div>
 
@@ -95,10 +103,10 @@ const BankInfo = () => {
 
           {/* 🟢 IBAN */}
           <MainInput
-            label="رقم الحساب الدولي (IBAN)"
+            label={t("pages.account.bank_info.iban")}
             id="iban"
             name="iban"
-            placeholder="مثال: SA4420000001234567891234"
+            placeholder={t("pages.account.bank_info.iban_placeholder")}
             value={formik.values.iban}
             onChange={formik.handleChange}
             error={getError("iban")}
@@ -108,10 +116,10 @@ const BankInfo = () => {
 
           {/* 🟢 SWIFT Code */}
           <MainInput
-            label="رقم السويفت (SWIFT Code)"
+            label={t("pages.account.bank_info.swift")}
             id="swift_code"
             name="swift_code"
-            placeholder="مثال: NBEGEGCXXXX"
+            placeholder={t("pages.account.bank_info.swift_placeholder")}
             value={formik.values.swift_code}
             onChange={formik.handleChange}
             error={getError("swift_code")}
@@ -122,7 +130,7 @@ const BankInfo = () => {
           {/* 🟢 العملة */}
           <MainInput
             type="select"
-            label="العملة"
+            label={t("pages.account.bank_info.currency")}
             id="currency"
             name="currency"
             value={formik.values.currency}
@@ -131,7 +139,10 @@ const BankInfo = () => {
             icon={<SiBitcoin />}
             disabled={!isEditing}
             options={[
-              { value: "", label: "اختر العمله" },
+              {
+                value: "",
+                label: t("pages.account.bank_info.currency_select"),
+              },
               ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
                 value: c,
                 label: c,
@@ -141,10 +152,10 @@ const BankInfo = () => {
 
           {/* 🟢 CLIQ */}
           <MainInput
-            label="اسم المستخدم (CLIQ) (اختياري)"
+            label={t("pages.account.bank_info.cliq")}
             id="clik_name"
             name="clik_name"
-            placeholder="مثال: user@bank.com"
+            placeholder={t("pages.account.bank_info.cliq_placeholder")}
             value={formik.values.clik_name}
             onChange={formik.handleChange}
             error={getError("clik_name")}
@@ -157,7 +168,7 @@ const BankInfo = () => {
 
         {isEditing && (
           <FormBtn
-            title="حفظ"
+            title={t("pages.account.bank_info.save")}
             loading={mutation.isPending}
             className="lg:col-span-2"
           />

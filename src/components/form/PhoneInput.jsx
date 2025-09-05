@@ -1,4 +1,5 @@
 import MainInput from "./MainInput/MainInput";
+import { useTranslation } from "react-i18next";
 
 const PhoneInput = ({
   formik,
@@ -7,6 +8,8 @@ const PhoneInput = ({
   combineValue = false,
   disabled = false,
 }) => {
+  const { t } = useTranslation();
+
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
@@ -15,9 +18,9 @@ const PhoneInput = ({
       type="tel"
       id={name}
       name={name}
-      placeholder="96269077885+"
+      placeholder={t("components.form.phoneInput.placeholder")}
       disabled={disabled}
-      label="رقم الهاتف"
+      label={t("components.form.phoneInput.label")}
       value={
         combineValue
           ? formik.values[name]

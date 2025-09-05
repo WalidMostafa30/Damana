@@ -11,11 +11,14 @@ import FormBtn from "../../../components/form/FormBtn";
 import { checkByRegN } from "../../../services/damanaServices";
 import PhoneInput from "../../../components/form/PhoneInput";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const Step0 = ({ goNext, formData, setFormData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { profile } = useSelector((state) => state.profile);
+
+  const { t } = useTranslation();
 
   const mutation = useMutation({
     mutationFn: async (payload) => {
@@ -44,24 +47,26 @@ const Step0 = ({ goNext, formData, setFormData }) => {
     initialValues: formData,
     enableReinitialize: true,
     validationSchema: Yup.object({
-      registration_number: Yup.string().required("رقم تسجيل المركبة مطلوب"),
+      registration_number: Yup.string().required(
+        t("pages.addDamana.step0.registrationNumber.required")
+      ),
       is_owner: Yup.boolean()
-        .oneOf([true, false], "اختيار المالك مطلوب")
-        .required("اختيار المالك مطلوب"),
+        .oneOf([true, false], t("pages.addDamana.step0.isOwnerRequired"))
+        .required(t("pages.addDamana.step0.isOwnerRequired")),
       owner_national_number: Yup.string().when("is_owner", {
         is: false,
-        then: (schema) => schema.required("الرقم الوطني للمالك مطلوب"),
-        otherwise: (schema) => schema.notRequired(),
+        then: (schema) =>
+          schema.required(
+            t("pages.addDamana.step0.ownerNationalNumber.required")
+          ),
       }),
       owner_full_mobile: Yup.string().when("is_owner", {
         is: false,
-        then: (schema) => schema.required("رقم هاتف المالك مطلوب"),
-        otherwise: (schema) => schema.notRequired(),
+        then: (schema) =>
+          schema.required(t("pages.addDamana.step0.ownerFullMobile.required")),
       }),
     }),
     onSubmit: (values) => {
-      console.log("Submitting values:", values);
-
       setErrorMsg("");
       setFormData((prev) => ({ ...prev, ...values }));
       mutation.mutate(values);
@@ -94,11 +99,15 @@ const Step0 = ({ goNext, formData, setFormData }) => {
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="flex justify-between gap-4">
         <div className="flex flex-col gap-4">
-          <h3 className="text-2xl font-bold text-primary">بيانات التسجيل</h3>
+          <h3 className="text-2xl font-bold text-primary">
+            {t("pages.addDamana.step0.title")}
+          </h3>
 
           {profile?.account_type === "company" && (
             <div>
-              <label className="block mb-2 font-semibold">هل أنت المالك؟</label>
+              <label className="block mb-2 font-semibold">
+                {t("pages.addDamana.step0.isOwnerLabel")}
+              </label>
               <div className="flex gap-4">
                 <label className="flex items-center gap-2">
                   <input
@@ -108,7 +117,7 @@ const Step0 = ({ goNext, formData, setFormData }) => {
                     onChange={() => formik.setFieldValue("is_owner", true)}
                     className="w-5 h-5 accent-primary cursor-pointer"
                   />
-                  نعم
+                  {t("pages.addDamana.step0.yes")}
                 </label>
 
                 <label className="flex items-center gap-2">
@@ -119,7 +128,7 @@ const Step0 = ({ goNext, formData, setFormData }) => {
                     onChange={() => formik.setFieldValue("is_owner", false)}
                     className="w-5 h-5 accent-primary cursor-pointer"
                   />
-                  لا
+                  {t("pages.addDamana.step0.no")}
                 </label>
               </div>
               {getError("is_owner") && (
@@ -140,8 +149,10 @@ const Step0 = ({ goNext, formData, setFormData }) => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           id={"registration_number"}
-          label="رقم تسجيل المركبه"
-          placeholder="ادخل رقم تسجيل المركبه"
+          label={t("pages.addDamana.step0.registrationNumber.label")}
+          placeholder={t(
+            "pages.addDamana.step0.registrationNumber.placeholder"
+          )}
           name="registration_number"
           type="number"
           value={formik.values.registration_number}
@@ -155,9 +166,11 @@ const Step0 = ({ goNext, formData, setFormData }) => {
           formik.values.is_owner === false && (
             <>
               <MainInput
-                label="الرقم الوطني للمالك"
+                label={t("pages.addDamana.step0.ownerNationalNumber.label")}
                 id={"owner_national_number"}
-                placeholder="ادخل الرقم الوطني"
+                placeholder={t(
+                  "pages.addDamana.step0.ownerNationalNumber.placeholder"
+                )}
                 name="owner_national_number"
                 type="number"
                 value={formik.values.owner_national_number}
@@ -176,14 +189,13 @@ const Step0 = ({ goNext, formData, setFormData }) => {
           )}
       </div>
 
-      {/* Agreement */}
       <p className="font-semibold">
-        عند الضغط على "تحقق من معلومات المركبة" ، فانك توافق على
+        {t("pages.addDamana.step0.agreementText")}{" "}
         <span
           onClick={() => setOpenModal(true)}
           className="underline text-secondary cursor-pointer ms-1"
         >
-          (تفويض eDamana بمشاركة معلوماتي)
+          {t("pages.addDamana.step0.agreementLink")}
         </span>
       </p>
 
@@ -194,16 +206,16 @@ const Step0 = ({ goNext, formData, setFormData }) => {
         msg={modalMsg}
         icon="protect"
         primaryBtn={{
-          text: "أوافق على الشروط و المتابعه",
-          action: () => {
-            setOpenModal(false);
-          },
+          text: t("pages.addDamana.step0.modalPrimaryBtn"),
+          action: () => setOpenModal(false),
         }}
       />
 
       <FormError errorMsg={errorMsg} />
-
-      <FormBtn title="تحقق من معلومات المركبه" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.addDamana.step0.submit")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 };

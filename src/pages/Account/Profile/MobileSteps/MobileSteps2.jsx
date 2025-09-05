@@ -4,18 +4,20 @@ import {
   changeMobileCheckOTP,
   changeMobileSendOTP,
 } from "../../../../services/authService";
+import { useTranslation } from "react-i18next";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import ActionModal from "../../../../components/modals/ActionModal";
 
 const MobileSteps2 = ({ newPhoneNumber = {} }) => {
+  const { t } = useTranslation();
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Mutation
+  // Mutation للتحقق من الكود
   const mutation = useMutation({
     mutationFn: changeMobileCheckOTP,
     onSuccess: (data) => {
@@ -24,11 +26,13 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
     },
     onError: (error) => {
       setErrorMessage(
-        error?.response?.data?.error_msg || "رمز التحقق غير صحيح"
+        error?.response?.data?.error_msg ||
+          t("pages.account.profile.mobileStep2.otp_incorrect")
       );
     },
   });
 
+  // العد التنازلي
   useEffect(() => {
     if (timer === 0) {
       setCanResend(true);
@@ -69,7 +73,7 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
   const handleSubmit = () => {
     const fullCode = otp.join("");
     if (fullCode.length < 5) {
-      setErrorMessage("من فضلك أدخل جميع الأرقام الخمسة");
+      setErrorMessage(t("pages.account.profile.mobileStep2.otp_fill_all"));
       return;
     }
 
@@ -88,7 +92,12 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
 
   return (
     <div className="max-w-md">
-      <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
+      {/* العنوان */}
+      <p className="text-neutral-500 mb-4">
+        {t("pages.account.profile.mobileStep2.otp_enter_code")}
+      </p>
+
+      {/* إدخال الكود */}
       <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
@@ -112,16 +121,22 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
         })}
       </div>
 
+      {/* المؤقت */}
       <div className="text-center text-neutral-600 mb-3">
         {timer > 0 ? (
           <span>{formatTime(timer)}</span>
         ) : (
-          <span className="text-success-200">يمكنك الآن إعادة إرسال الكود</span>
+          <span className="text-success-200">
+            {t("pages.account.profile.mobileStep2.otp_can_resend")}
+          </span>
         )}
       </div>
 
+      {/* إعادة الإرسال */}
       <div className="text-center font-semibold mb-6">
-        <span className="text-neutral-500">لم يصل الكود؟ </span>
+        <span className="text-neutral-500">
+          {t("pages.account.profile.mobileStep2.otp_not_received")}{" "}
+        </span>
         <button
           onClick={handleResend}
           disabled={!canResend}
@@ -131,28 +146,30 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
               : "text-neutral-400 cursor-not-allowed"
           }`}
         >
-          إعادة الإرسال
+          {t("pages.account.profile.mobileStep2.otp_resend")}
         </button>
       </div>
 
+      {/* رسالة خطأ */}
       <div className="mb-4">
         <FormError errorMsg={errorMessage} />
       </div>
+
+      {/* زر تأكيد الكود */}
       <FormBtn
         onClick={handleSubmit}
-        title="تأكيد الكود"
+        title={t("pages.account.profile.mobileStep2.otp_confirm")}
         loading={mutation.isPending}
       />
 
+      {/* المودال بعد النجاح */}
       <ActionModal
         openModal={mutation.isSuccess}
-        msg={"تم تغيير الرقم بنجاح"}
+        msg={t("pages.account.profile.mobileStep2.otp_success")}
         icon="success"
         primaryBtn={{
-          text: "رجوع إلى الملف الشخصي",
-          action: () => {
-            window.location.reload();
-          },
+          text: t("pages.account.profile.mobileStep2.otp_back_profile"),
+          action: () => window.location.reload(),
         }}
       />
     </div>

@@ -1,13 +1,17 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 const Timer = ({ expiryDate, onFinish }) => {
+  const { t } = useTranslation();
+  const tr = (key) => t(`components.common.timer.${key}`);
+
   const [remaining, setRemaining] = useState(0);
 
   useEffect(() => {
     if (!expiryDate) return;
 
     const targetTime = new Date(expiryDate).getTime();
-    let timerId; // ✅ تعريف قبل الاستخدام
+    let timerId;
 
     const updateRemaining = () => {
       const now = new Date().getTime();
@@ -20,7 +24,7 @@ const Timer = ({ expiryDate, onFinish }) => {
       }
     };
 
-    updateRemaining(); // تحديث أول مرة
+    updateRemaining();
     timerId = setInterval(updateRemaining, 1000);
 
     console.log("🕒 expiryDate:", expiryDate);
@@ -45,7 +49,7 @@ const Timer = ({ expiryDate, onFinish }) => {
         <span className="p-2 rounded-lg text-primary bg-secondary/20">
           {String(hours).padStart(2, "0")}
         </span>
-        <p className="text-sm text-neutral-500">ساعة</p>
+        <p className="text-sm text-neutral-500">{tr("hours")}</p>
       </div>
 
       <span className="mb-6">:</span>
@@ -55,7 +59,7 @@ const Timer = ({ expiryDate, onFinish }) => {
         <span className="p-2 rounded-lg text-primary bg-secondary/20">
           {String(minutes).padStart(2, "0")}
         </span>
-        <p className="text-sm text-neutral-500">دقيقة</p>
+        <p className="text-sm text-neutral-500">{tr("minutes")}</p>
       </div>
 
       <span className="mb-6">:</span>
@@ -65,7 +69,7 @@ const Timer = ({ expiryDate, onFinish }) => {
         <span className="p-2 rounded-lg text-primary bg-secondary/20">
           {String(seconds).padStart(2, "0")}
         </span>
-        <p className="text-sm text-neutral-500">ثانية</p>
+        <p className="text-sm text-neutral-500">{tr("seconds")}</p>
       </div>
     </div>
   );

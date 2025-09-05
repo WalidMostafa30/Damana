@@ -1,6 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import MainInput from "./MainInput/MainInput";
 import { getCountries } from "../../services/staticDataService";
+import { useTranslation } from "react-i18next";
 
 export default function CountrySelect({
   name,
@@ -8,6 +9,8 @@ export default function CountrySelect({
   disabled,
   combineValue = false,
 }) {
+  const { t } = useTranslation();
+
   const { data: countriesData, isLoading: loadingCountries } = useQuery({
     queryKey: ["countries"],
     queryFn: getCountries,
@@ -31,14 +34,19 @@ export default function CountrySelect({
     <MainInput
       id={name}
       type="select"
-      placeholder="اسم البلد"
-      label="اسم البلد"
+      placeholder={t("components.form.countrySelect.placeholder")}
+      label={t("components.form.countrySelect.label")}
       error={getError(name)}
       value={formik.values[name]}
       onChange={combineValue ? handleCountryChange : formik.handleChange}
       disabled={disabled || loadingCountries}
       options={[
-        { value: "", label: "اختر البلد" },
+        {
+          value: "",
+          label: loadingCountries
+            ? t("loading")
+            : t("components.form.countrySelect.select"),
+        },
         ...countries.map((c) => ({ value: c.id, label: c.name })),
       ]}
     />

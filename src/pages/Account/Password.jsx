@@ -8,8 +8,11 @@ import { FaRegStickyNote } from "react-icons/fa";
 import MainInput from "../../components/form/MainInput/MainInput";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
+import { useTranslation } from "react-i18next";
 
 const ChangePassword = () => {
+  const { t } = useTranslation();
+
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
@@ -25,9 +28,11 @@ const ChangePassword = () => {
   };
 
   const getStrengthLabel = () => {
-    if (passwordStrength <= 1) return "ضعيفة";
-    if (passwordStrength === 2) return "متوسطة";
-    if (passwordStrength >= 3) return "قوية";
+    if (passwordStrength <= 1) return t("pages.account.password.strength.weak");
+    if (passwordStrength === 2)
+      return t("pages.account.password.strength.medium");
+    if (passwordStrength >= 3)
+      return t("pages.account.password.strength.strong");
   };
 
   const getStrengthColor = () => {
@@ -40,14 +45,14 @@ const ChangePassword = () => {
   const mutation = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      alert("تم تغيير كلمة المرور بنجاح ✅");
+      alert(t("pages.account.password.success"));
       formik.resetForm();
       setPasswordValue("");
       setPasswordStrength(0);
     },
     onError: (error) => {
       setErrorMsg(
-        error?.response?.data?.error_msg || "حدث خطأ أثناء تغيير كلمة المرور"
+        error?.response?.data?.error_msg || t("pages.account.password.error")
       );
     },
   });
@@ -60,16 +65,21 @@ const ChangePassword = () => {
       new_password_confirmation: "",
     },
     validationSchema: Yup.object({
-      old_password: Yup.string().required("كلمة المرور القديمة مطلوبة"),
+      old_password: Yup.string().required(
+        t("pages.account.password.validations.old_password_required")
+      ),
       new_password: Yup.string()
-        .required("كلمة المرور مطلوبة")
-        .min(8, "كلمة المرور يجب أن لا تقل عن 8 حروف")
-        .matches(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
-        .matches(/\d/, "يجب أن تحتوي على رقم واحد على الأقل")
-        .matches(/[\W_]/, "يجب أن تحتوي على رمز خاص واحد على الأقل"),
+        .required(t("pages.account.password.validations.new_password_required"))
+        .min(8, t("pages.account.password.validations.min_length"))
+        .matches(/[A-Z]/, t("pages.account.password.validations.uppercase"))
+        .matches(/\d/, t("pages.account.password.validations.number"))
+        .matches(/[\W_]/, t("pages.account.password.validations.symbol")),
       new_password_confirmation: Yup.string()
-        .required("تأكيد كلمة المرور مطلوب")
-        .oneOf([Yup.ref("new_password")], "كلمتا المرور غير متطابقتين"),
+        .required(t("pages.account.password.validations.confirm_required"))
+        .oneOf(
+          [Yup.ref("new_password")],
+          t("pages.account.password.validations.confirm_mismatch")
+        ),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
@@ -84,8 +94,8 @@ const ChangePassword = () => {
           type="password"
           id="old_password"
           name="old_password"
-          placeholder="••••••••••"
-          label="كلمة المرور القديمة"
+          placeholder={t("pages.account.password.placeholder")}
+          label={t("pages.account.password.old_password")}
           icon={<GoLock />}
           value={formik.values.old_password}
           onChange={formik.handleChange}
@@ -100,8 +110,8 @@ const ChangePassword = () => {
             type="password"
             id="new_password"
             name="new_password"
-            placeholder="••••••••••"
-            label="كلمة المرور الجديدة"
+            placeholder={t("pages.account.password.placeholder")}
+            label={t("pages.account.password.new_password")}
             icon={<GoLock />}
             value={formik.values.new_password}
             onChange={(e) => {
@@ -118,8 +128,8 @@ const ChangePassword = () => {
           type="password"
           id="new_password_confirmation"
           name="new_password_confirmation"
-          placeholder="••••••••••"
-          label="تأكيد كلمة المرور"
+          placeholder={t("pages.account.password.placeholder")}
+          label={t("pages.account.password.confirm_password")}
           icon={<GoLock />}
           value={formik.values.new_password_confirmation}
           onChange={formik.handleChange}
@@ -133,7 +143,7 @@ const ChangePassword = () => {
 
       <p className="flex gap-2 text-neutral-500 my-4 text-sm lg:text-base">
         <FaRegStickyNote className="text-xl" />
-        يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف
+        {t("pages.account.password.note")}
       </p>
 
       <div className="flex items-center gap-2">
@@ -151,14 +161,18 @@ const ChangePassword = () => {
             className="text-sm font-semibold"
             style={{ color: getStrengthColor() }}
           >
-            قوة كلمة المرور ( {getStrengthLabel()} )
+            {t("pages.account.password.strength.label")} ( {getStrengthLabel()}{" "}
+            )
           </p>
         )}
       </div>
 
       <FormError errorMsg={errorMsg} />
 
-      <FormBtn title="حفظ" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.account.password.save")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 };
