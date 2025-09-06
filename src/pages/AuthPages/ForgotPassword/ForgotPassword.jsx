@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../components/common/AuthLayout";
 import CheckMobile from "./steps/CheckMobile";
@@ -7,6 +8,7 @@ import ResetPassword from "./steps/ResetPassword";
 import { Link } from "react-router-dom";
 
 const ForgotPassword = () => {
+  const { t } = useTranslation(); // ✅ استخدم hook الترجمة
   const [step, setStep] = useState(1);
   const [data, setData] = useState({});
 
@@ -18,10 +20,10 @@ const ForgotPassword = () => {
   return (
     <AuthLayout>
       <AuthBreadcrumbs
-        title="هل نسيت كلمة المرور ؟"
+        title={t("pages.forgotPassword.title")}
         items={[
-          { label: "ضمانة", path: "/" },
-          { label: "إستعادة كلمة المرور" },
+          { label: t("pages.forgotPassword.breadcrumbs.home"), path: "/" },
+          { label: t("pages.forgotPassword.breadcrumbs.page") },
         ]}
       />
 
@@ -38,12 +40,12 @@ const ForgotPassword = () => {
       {step === 3 && <ResetPassword parentData={data} />}
 
       <p className="text-center font-semibold text-sm lg:text-base mt-4">
-        هل تمتلك حساب بالفعل؟{" "}
+        {t("pages.forgotPassword.loginText")}{" "}
         <Link
           to="/login"
           className="text-secondary hover:brightness-50 transition-colors"
         >
-          تسجيل دخول
+          {t("pages.forgotPassword.loginLink")}
         </Link>
       </p>
     </AuthLayout>

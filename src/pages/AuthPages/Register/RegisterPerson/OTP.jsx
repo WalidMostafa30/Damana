@@ -12,8 +12,10 @@ import FormBtn from "../../../../components/form/FormBtn";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../../components/common/AuthLayout";
 import ActionModal from "../../../../components/modals/ActionModal";
+import { useTranslation } from "react-i18next";
 
 const Otp = () => {
+  const { t } = useTranslation();
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
@@ -39,7 +41,7 @@ const Otp = () => {
     },
     onError: (error) => {
       setErrorMessage(
-        error?.response?.data?.error_msg || "فشل إرسال رمز التحقق"
+        error?.response?.data?.error_msg || t("pages.Otp.errors.send_failed")
       );
     },
   });
@@ -57,7 +59,7 @@ const Otp = () => {
     },
     onError: (error) => {
       setErrorMessage(
-        error?.response?.data?.error_msg || "رمز التحقق غير صحيح"
+        error?.response?.data?.error_msg || t("pages.Otp.errors.invalid")
       );
     },
   });
@@ -111,10 +113,9 @@ const Otp = () => {
   const handleSubmit = () => {
     const fullCode = otp.join("");
     if (fullCode.length < 5) {
-      setErrorMessage("من فضلك أدخل جميع الأرقام الخمسة");
+      setErrorMessage(t("pages.Otp.errors.incomplete"));
       return;
     }
-    console.log("الكود:", fullCode);
 
     const payload = { otp_code: fullCode };
 
@@ -130,14 +131,14 @@ const Otp = () => {
   return (
     <AuthLayout>
       <AuthBreadcrumbs
-        title="التحقق من رمز التحقق"
+        title={t("pages.Otp.title")}
         items={[
-          { label: "ضمانة", path: "/" },
-          { label: "التحقق من رمز التحقق" },
+          { label: t("pages.RegisterPerson.breadcrumbs.home"), path: "/" },
+          { label: t("pages.Otp.breadcrumb") },
         ]}
       />
 
-      <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
+      <p className="text-neutral-500 mb-4">{t("pages.Otp.instruction")}</p>
       <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
@@ -165,12 +166,16 @@ const Otp = () => {
         {timer > 0 ? (
           <span>{formatTime(timer)}</span>
         ) : (
-          <span className="text-success-200">يمكنك الآن إعادة إرسال الكود</span>
+          <span className="text-success-200">
+            {t("pages.Otp.resend_timer")}
+          </span>
         )}
       </div>
 
       <div className="text-center font-semibold mb-6">
-        <span className="text-neutral-500">لم يصل الكود؟ </span>
+        <span className="text-neutral-500">
+          {t("pages.Otp.resend_prompt")}{" "}
+        </span>
         <button
           onClick={handleResend}
           disabled={!canResend}
@@ -180,7 +185,7 @@ const Otp = () => {
               : "text-neutral-400 cursor-not-allowed"
           }`}
         >
-          إعادة الإرسال
+          {t("pages.Otp.resend_button")}
         </button>
       </div>
 
@@ -190,7 +195,7 @@ const Otp = () => {
 
       <FormBtn
         onClick={handleSubmit}
-        title="تأكيد الكود"
+        title={t("pages.Otp.submit_button")}
         loading={checkOtpMutation.isPending}
       />
 
@@ -198,10 +203,13 @@ const Otp = () => {
         openModal={openModal}
         setOpenModal={setOpenModal}
         icon="warning"
-        msg="لديك حساب مسجل مسبقا بالفعل"
-        primaryBtn={{ text: "تسجيل دخول", action: () => navigate("/login") }}
+        msg={t("pages.Otp.modal.title")}
+        primaryBtn={{
+          text: t("pages.Otp.modal.login_button"),
+          action: () => navigate("/login"),
+        }}
         lightBtn={{
-          text: "استعادة كلمة المرور",
+          text: t("pages.Otp.modal.forgot_password_button"),
           action: () => navigate("/forgot-password"),
         }}
       />

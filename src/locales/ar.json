@@ -995,27 +995,6 @@
       "inactiveMessage": "هذه الضمانة غير نشطة أو محظورة. لا يمكن إجراء أي إجراءات عليها"
     },
 
-    "dashboard": {
-      "pageTitle": "لوحة التحكم الرئيسية",
-      "subtitle": "لوحة التحكم التشغيلية والمالية الخاصة بجروب الشركات",
-      "status": "الحالة",
-      "status_all": "الكل",
-      "status_active": "نشط",
-      "status_inactive": "غير نشط",
-      "date_picker": "اختر التاريخ",
-      "commission": "مبلغ العمولة",
-      "commission_all": "الكل",
-      "commission_high": "مرتفع",
-      "commission_medium": "متوسط",
-      "company": "الشركة",
-      "company_all": "الكل",
-      "company1": "شركة 1",
-      "company2": "شركة 2",
-      "confirm_button": "تم",
-      "operational_tab": "لوحة المعلومات التشغيلية",
-      "financial_tab": "لوحة المعلومات المالية"
-    },
-
     "actionsSection": {
       "toast": {
         "statusUpdated": "تم تحديث الحالة بنجاح",
@@ -1045,6 +1024,31 @@
       }
     },
 
+    "dashboard": {
+      "pageTitle": "لوحة التحكم الرئيسية",
+      "subtitle": "لوحة التحكم التشغيلية والمالية الخاصة بجروب الشركات",
+      "status": "الحالة",
+      "status_all": "الكل",
+      "status_active": "نشط",
+      "status_inactive": "غير نشط",
+      "date_picker": "اختر التاريخ",
+      "commission": "مبلغ العمولة",
+      "commission_all": "الكل",
+      "commission_high": "مرتفع",
+      "commission_medium": "متوسط",
+      "company": "الشركة",
+      "company_all": "الكل",
+      "company1": "شركة 1",
+      "company2": "شركة 2",
+      "confirm_button": "تم",
+      "operational_tab": "لوحة المعلومات التشغيلية",
+      "financial_tab": "لوحة المعلومات المالية"
+    },
+
+    "getPage": {
+      "error": "حدث خطأ أثناء تحميل الصفحة"
+    },
+
     "home": {
       "title": "ضماناتى",
       "subtitle": "هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.",
@@ -1066,10 +1070,6 @@
       "loadMore": "تحميل المزيد...",
       "noMoreItems": "لا يوجد عناصر أخرى",
       "loadingMore": "جاري تحميل المزيد..."
-    },
-
-    "getPage": {
-      "error": "حدث خطأ أثناء تحميل الصفحة"
     },
 
     "notFound": {

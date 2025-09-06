@@ -3,15 +3,17 @@ import { useMutation } from "@tanstack/react-query";
 import { checkOtp } from "../../../../services/authService";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
+import { useTranslation } from "react-i18next";
 
 const Otp = ({ goNext, parentData, setParentData }) => {
+  const { t } = useTranslation();
   const inputsRef = useRef([]);
   const [otp, setOtp] = useState(["", "", "", "", ""]);
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // Mutation
+  // ✅ Mutation
   const mutation = useMutation({
     mutationFn: checkOtp,
     onSuccess: (data) => {
@@ -25,7 +27,8 @@ const Otp = ({ goNext, parentData, setParentData }) => {
     },
     onError: (error) => {
       setErrorMessage(
-        error?.response?.data?.error_msg || "رمز التحقق غير صحيح"
+        error?.response?.data?.error_msg ||
+          t("pages.forgotPassword.otp.errors.invalid")
       );
     },
   });
@@ -61,13 +64,13 @@ const Otp = ({ goNext, parentData, setParentData }) => {
     setTimer(60);
     setCanResend(false);
     setErrorMessage("");
-    console.log("تم إعادة إرسال الكود ✅");
+    console.log("✅ إعادة إرسال الكود");
   };
 
   const handleSubmit = () => {
     const fullCode = otp.join("");
     if (fullCode.length < 5) {
-      setErrorMessage("من فضلك أدخل جميع الأرقام الخمسة");
+      setErrorMessage(t("pages.forgotPassword.otp.errors.incomplete"));
       return;
     }
 
@@ -86,7 +89,11 @@ const Otp = ({ goNext, parentData, setParentData }) => {
 
   return (
     <>
-      <p className="text-neutral-500 mb-4">أدخل الكود المكون من 5 أرقام</p>
+      {/* ✅ Instruction */}
+      <p className="text-neutral-500 mb-4">
+        {t("pages.forgotPassword.otp.instruction")}
+      </p>
+
       <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
@@ -114,12 +121,16 @@ const Otp = ({ goNext, parentData, setParentData }) => {
         {timer > 0 ? (
           <span>{formatTime(timer)}</span>
         ) : (
-          <span className="text-success-200">يمكنك الآن إعادة إرسال الكود</span>
+          <span className="text-success-200">
+            {t("pages.forgotPassword.otp.timer.resendAllowed")}
+          </span>
         )}
       </div>
 
       <div className="text-center font-semibold mb-6">
-        <span className="text-neutral-500">لم يصل الكود؟ </span>
+        <span className="text-neutral-500">
+          {t("pages.forgotPassword.otp.resend.question")}{" "}
+        </span>
         <button
           onClick={handleResend}
           disabled={!canResend}
@@ -129,14 +140,14 @@ const Otp = ({ goNext, parentData, setParentData }) => {
               : "text-neutral-400 cursor-not-allowed"
           }`}
         >
-          إعادة الإرسال
+          {t("pages.forgotPassword.otp.resend.button")}
         </button>
       </div>
 
       <FormError errorMsg={errorMessage} />
       <FormBtn
         onClick={handleSubmit}
-        title="تأكيد الكود"
+        title={t("pages.forgotPassword.otp.button.confirm")}
         loading={mutation.isPending}
       />
     </>

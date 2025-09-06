@@ -7,8 +7,10 @@ import {
 } from "../../services/notificationsService";
 import LoadingSection from "../../components/Loading/LoadingSection";
 import NotificationCard from "../../components/common/NotificationCard";
+import { useTranslation } from "react-i18next";
 
 const NotificationsPage = () => {
+  const { t } = useTranslation();
   const queryClient = useQueryClient();
 
   // جلب الإشعارات
@@ -35,13 +37,13 @@ const NotificationsPage = () => {
 
   if (isLoading) return <LoadingSection />;
 
-  if (isError) return <p>حدث خطأ أثناء تحميل الإشعارات</p>;
+  if (isError) return <p>{t("pages.notificationsPage.error")}</p>;
 
   return (
     <section className="pageContainer space-y-4">
       <PageTitle
-        title="الاشعارات"
-        subtitle="هنا جميع الاشعارات الخاصة بك التي تحتوي على كافة معلوماتك وحالات ضماناتك"
+        title={t("pages.notificationsPage.title")}
+        subtitle={t("pages.notificationsPage.subtitle")}
       />
 
       {notifications?.length > 0 ? (
@@ -51,13 +53,13 @@ const NotificationsPage = () => {
               className="mainBtn !w-fit"
               onClick={() => markAllReadMutation.mutate()}
             >
-              تحديد الكل كمقروء
+              {t("pages.notificationsPage.markAllRead")}
             </button>
             <button
               className="mainBtn danger !w-fit"
               onClick={() => deleteAllMutation.mutate()}
             >
-              حذف الكل
+              {t("pages.notificationsPage.deleteAll")}
             </button>
           </div>
 
@@ -71,7 +73,9 @@ const NotificationsPage = () => {
           </div>
         </>
       ) : (
-        <p className="text-center text-2xl p-4">لا توجد إشعارات حالياً</p>
+        <p className="text-center text-2xl p-4">
+          {t("pages.notificationsPage.noNotifications")}
+        </p>
       )}
     </section>
   );

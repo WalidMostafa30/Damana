@@ -1,7 +1,11 @@
+import { useTranslation } from "react-i18next";
+
 const Step5Company = ({ formik, getError }) => {
+  const { t } = useTranslation();
+
   return (
     <div>
-      <p className="my-4 font-bold">إقرار وتعهد</p>
+      <p className="my-4 font-bold">{t("pages.Step5Company.title")}</p>
 
       <div className="flex items-start gap-2">
         <input
@@ -15,11 +19,10 @@ const Step5Company = ({ formik, getError }) => {
           className="h-10 w-10 border-gray-300 rounded focus:ring-primary-500 accent-primary"
         />
         <label htmlFor="acknowledgement" className="leading-6">
-          إقرار وتعهد بأن جميع البيانات والوثائق المقدمة أعلاه صحيحة ودقيقة. كما
-          أتعهد بتحديث هذه البيانات فور حدوث أي تغيير، وأوافق على الالتزام بجميع
-          الشروط والأحكام الخاصة في منصة "ضمانة".
+          {t("pages.Step5Company.acknowledgement.label")}
         </label>
       </div>
+
       {getError("acknowledgement") && (
         <p className="text-error-100 mt-2">{getError("acknowledgement")}</p>
       )}

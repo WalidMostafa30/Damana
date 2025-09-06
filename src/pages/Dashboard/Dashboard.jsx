@@ -7,13 +7,15 @@ import PageTitle from "../../components/common/PageTitle";
 import FinancialDashboard from "./FinancialDashboard";
 import OperationalDashboard from "./OperationalDashboard";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 const Dashboard = () => {
+  const { t } = useTranslation();
   const [filters, setFilters] = useState({
     status: "all",
     commission: "all",
     company: "all",
-    dateRange: null, // 👈 في البداية مفيش تاريخ
+    dateRange: null,
   });
 
   const [tempRange, setTempRange] = useState({
@@ -47,8 +49,8 @@ const Dashboard = () => {
   return (
     <article className="pageContainer space-y-4 lg:space-y-8">
       <PageTitle
-        title="لوحة التحكم الرئيسية"
-        subtitle="لوحة التحكم التشغيلية والمالية الخاصة بجروب الشركات"
+        title={t("pages.dashboard.pageTitle")}
+        subtitle={t("pages.dashboard.subtitle")}
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
@@ -57,22 +59,22 @@ const Dashboard = () => {
           value={filters.status}
           onChange={(e) => handleChange("status", e.target.value)}
         >
-          <option value="all">الحالة</option>
-          <option value="active">نشط</option>
-          <option value="inactive">غير نشط</option>
+          <option value="all">{t("pages.dashboard.status")}</option>
+          <option value="active">{t("pages.dashboard.status_active")}</option>
+          <option value="inactive">
+            {t("pages.dashboard.status_inactive")}
+          </option>
         </select>
 
-        {/* زرار التاريخ */}
         <button
           className="filterBtn w-full h-full"
           onClick={() => setShowPicker(true)}
         >
           {filters.dateRange
             ? `${filters.dateRange.startDate.toLocaleDateString()} - ${filters.dateRange.endDate.toLocaleDateString()}`
-            : "اختر التاريخ"}
+            : t("pages.dashboard.date_picker")}
         </button>
 
-        {/* مودال التاريخ */}
         {showPicker && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
             <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto">
@@ -87,11 +89,11 @@ const Dashboard = () => {
               <button
                 className="mt-2 mainBtn"
                 onClick={() => {
-                  handleChange("dateRange", tempRange); // 👈 هنا بنسجل التاريخ بعد الضغط
+                  handleChange("dateRange", tempRange);
                   closePicker();
                 }}
               >
-                تم
+                {t("pages.dashboard.confirm_button")}
               </button>
             </div>
           </div>
@@ -102,9 +104,11 @@ const Dashboard = () => {
           value={filters.commission}
           onChange={(e) => handleChange("commission", e.target.value)}
         >
-          <option value="all">مبلغ العمولة</option>
-          <option value="high">مرتفع</option>
-          <option value="medium">متوسط</option>
+          <option value="all">{t("pages.dashboard.commission")}</option>
+          <option value="high">{t("pages.dashboard.commission_high")}</option>
+          <option value="medium">
+            {t("pages.dashboard.commission_medium")}
+          </option>
         </select>
 
         <select
@@ -112,9 +116,9 @@ const Dashboard = () => {
           value={filters.company}
           onChange={(e) => handleChange("company", e.target.value)}
         >
-          <option value="all">الشركة</option>
-          <option value="company1">شركة 1</option>
-          <option value="company2">شركة 2</option>
+          <option value="all">{t("pages.dashboard.company")}</option>
+          <option value="company1">{t("pages.dashboard.company1")}</option>
+          <option value="company2">{t("pages.dashboard.company2")}</option>
         </select>
       </div>
 
@@ -128,7 +132,7 @@ const Dashboard = () => {
             selectedType === "operational" ? "active-filter" : ""
           }`}
         >
-          لوحة المعلومات التشغيلية
+          {t("pages.dashboard.operational_tab")}
         </button>
         <button
           onClick={() => {
@@ -139,7 +143,7 @@ const Dashboard = () => {
             selectedType === "financial" ? "active-filter" : ""
           }`}
         >
-          لوحه المعلومات المالية
+          {t("pages.dashboard.financial_tab")}
         </button>
       </div>
 

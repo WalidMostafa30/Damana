@@ -8,22 +8,25 @@ import FormBtn from "../../../../components/form/FormBtn";
 import { useMutation } from "@tanstack/react-query";
 import { checkMobile } from "../../../../services/authService";
 import PhoneInput from "../../../../components/form/PhoneInput";
+import { useTranslation } from "react-i18next";
 
 const CheckMobile = ({ goNext, setParentData }) => {
+  const { t } = useTranslation();
   const [method, setMethod] = useState("mobile");
   const [errorMsg, setErrorMsg] = useState("");
 
+  // ✅ Validation Schema مع الترجمة
   const validationSchema = Yup.object(
     method === "mobile"
       ? {
           mobile: Yup.string()
-            .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
-            .required("رقم الهاتف مطلوب"),
+            .min(9, t("pages.forgotPassword.checkMobile.errors.mobileMin"))
+            .required(t("pages.forgotPassword.checkMobile.errors.mobileRequired")),
         }
       : {
           email: Yup.string()
-            .email("البريد الإلكتروني غير صالح")
-            .required("البريد الإلكتروني مطلوب"),
+            .email(t("pages.forgotPassword.checkMobile.errors.emailInvalid"))
+            .required(t("pages.forgotPassword.checkMobile.errors.emailRequired")),
         }
   );
 
@@ -40,7 +43,9 @@ const CheckMobile = ({ goNext, setParentData }) => {
       goNext();
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء الإرسال");
+      setErrorMsg(
+        error?.response?.data?.error_msg || t("pages.forgotPassword.checkMobile.errors.serverError")
+      );
     },
   });
 
@@ -68,47 +73,24 @@ const CheckMobile = ({ goNext, setParentData }) => {
 
   return (
     <>
-      <p className="text-neutral-500 mb-4">
-        يمكنك اعاده تعين كلمة المرور الخاصه بك من خلال الهاتف أو البريد
-        الإلكتروني
-      </p>
+      {/* ✅ Description */}
+      <p className="text-neutral-500 mb-4">{t("pages.forgotPassword.checkMobile.description")}</p>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
-        <MainInput
-            type="tel"
-            id="mobile"
-            name="mobile"
-            placeholder="96269077885+"
-            label="رقم الهاتف"
-            value={`${formik.values.country_code?.replace("+", "") || ""}${
-              formik.values.mobile || ""
-            }`} // عرض الكود مع الرقم
-            onChange={(phone, country) => {
-              const countryCode = country?.dialCode
-                ? `+${country.dialCode}`
-                : "";
-
-              // الرقم بدون كود الدولة
-              const numberWithoutCode = country?.dialCode
-                ? phone.slice(country.dialCode.length)
-                : phone;
-
-              formik.setFieldValue("country_code", countryCode);
-              formik.setFieldValue("mobile", numberWithoutCode);
-            }}
-            onBlur={formik.handleBlur}
-            error={formik.touched.mobile && formik.errors.mobile}
-          />
         {method === "mobile" ? (
-          <PhoneInput formik={formik} />
+          <PhoneInput
+            formik={formik}
+            placeholder={t("pages.forgotPassword.checkMobile.placeholders.mobile")}
+            label={t("pages.forgotPassword.checkMobile.labels.mobile")}
+          />
         ) : (
           <MainInput
             id="email"
             name="email"
             type="text"
-            placeholder="أدخل بريدك الإلكتروني"
+            placeholder={t("pages.forgotPassword.checkMobile.placeholders.email")}
             icon={<CiMail />}
-            label="البريد الإلكتروني"
+            label={t("pages.forgotPassword.checkMobile.labels.email")}
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -118,7 +100,10 @@ const CheckMobile = ({ goNext, setParentData }) => {
 
         <FormError errorMsg={errorMsg} />
 
-        <FormBtn title="ارسال كود التحقق" loading={mutation.isPending} />
+        <FormBtn
+          title={t("pages.forgotPassword.checkMobile.buttons.sendCode")}
+          loading={mutation.isPending}
+        />
       </form>
 
       <button
@@ -127,8 +112,8 @@ const CheckMobile = ({ goNext, setParentData }) => {
         type="button"
       >
         {method === "mobile"
-          ? "استخدام البريد الإلكتروني؟"
-          : "استخدام رقم الهاتف؟"}
+          ? t("pages.forgotPassword.checkMobile.buttons.useEmail")
+          : t("pages.forgotPassword.checkMobile.buttons.useMobile")}
       </button>
     </>
   );

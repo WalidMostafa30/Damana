@@ -6,6 +6,7 @@ import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
 
+import { useTranslation } from "react-i18next";
 import PageTitle from "../../components/common/PageTitle";
 import HomeSlider from "./HomeSlider/HomeSlider";
 import Sale from "./Sale";
@@ -15,25 +16,20 @@ import FAQ from "./FAQ";
 import { getApplicationConfiguration } from "../../services/staticDataService";
 
 const Home = () => {
+  const { t } = useTranslation();
   const [selectedType, setSelectedType] = useState("sell");
   const [selectedStatus, setSelectedStatus] = useState(null);
-
-  // هنا التاريخ الأساسي هيبقى فاضى
   const [dateRange, setDateRange] = useState(null);
-
-  // هنا بس بنمسك الاختيار المؤقت (قبل ما يدوس تم)
   const [tempRange, setTempRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: "selection",
   });
-
   const [showPicker, setShowPicker] = useState(false);
 
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  // جلب البيانات
   const { data, fetchNextPage, hasNextPage, isLoading, error } =
     useInfiniteQuery({
       queryKey: [
@@ -45,21 +41,20 @@ const Home = () => {
               created_at_from: dateRange.startDate.toISOString().split("T")[0],
               created_at_to: dateRange.endDate.toISOString().split("T")[0],
             }
-          : null, // 👈 لو مفيش تاريخ مش هيتبعت
+          : null,
       ],
       queryFn: fetchDamanat,
       getNextPageParam: (lastPage) =>
         lastPage.hasMore ? lastPage.nextPage : undefined,
     });
 
-  // جلب الكونفيج
   const { data: configData } = useQuery({
     queryKey: ["applicationConfiguration"],
     queryFn: getApplicationConfiguration,
   });
 
   const damana_status_options = [
-    { value: "", label: "الكل" },
+    { value: "", label: t("pages.home.all") },
     ...(configData?.filer_statuses
       ? Object.entries(configData.filer_statuses).map(([key, value]) => ({
           value: key,
@@ -83,13 +78,12 @@ const Home = () => {
     <section className="pageContainer grid grid-cols-1 xl:grid-cols-3 gap-8">
       <div className="col-span-1 xl:col-span-2 space-y-4">
         <PageTitle
-          title="ضماناتى"
-          subtitle="هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها."
+          title={t("pages.home.title")}
+          subtitle={t("pages.home.subtitle")}
         />
 
         <section className="baseWhiteContainer space-y-4">
           <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
-            {/* نوع الضمانة */}
             <button
               onClick={() => {
                 setSelectedType("sell");
@@ -99,7 +93,7 @@ const Home = () => {
                 selectedType === "sell" ? "active-sale" : ""
               }`}
             >
-              ضمانات البيع
+              {t("pages.home.sellGuarantees")}
             </button>
             <button
               onClick={() => {
@@ -110,10 +104,9 @@ const Home = () => {
                 selectedType === "buy" ? "active-purchase" : ""
               }`}
             >
-              ضمانات الشراء
+              {t("pages.home.buyGuarantees")}
             </button>
 
-            {/* فلتر الحالة */}
             <select
               className="filterBtn"
               value={selectedStatus || ""}
@@ -126,7 +119,6 @@ const Home = () => {
               ))}
             </select>
 
-            {/* فلتر التاريخ */}
             <button
               className="filterBtn w-full h-full"
               onClick={() => setShowPicker(true)}
@@ -135,11 +127,10 @@ const Home = () => {
                 ? `${dateRange.startDate.toLocaleDateString(
                     "en-GB"
                   )} - ${dateRange.endDate.toLocaleDateString("en-GB")}`
-                : "اختر التاريخ"}
+                : t("pages.home.selectDate")}
             </button>
           </div>
 
-          {/* مودال اختيار التاريخ */}
           {showPicker && (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
               <div
@@ -151,22 +142,21 @@ const Home = () => {
                   moveRangeOnFirstSelection={false}
                   ranges={[tempRange]}
                   className="w-full"
-                  onChange={(item) => setTempRange(item.selection)} // 👈 يغير المؤقت بس
+                  onChange={(item) => setTempRange(item.selection)}
                 />
                 <button
                   className="mt-2 mainBtn"
                   onClick={() => {
-                    setDateRange(tempRange); // 👈 لما يدوس تم يتسجل التاريخ
+                    setDateRange(tempRange);
                     setShowPicker(false);
                   }}
                 >
-                  تم
+                  {t("pages.home.confirm")}
                 </button>
               </div>
             </div>
           )}
 
-          {/* عرض البيانات */}
           {pathname.includes("/sale") && (
             <Sale
               data={data?.pages.flatMap((page) => page.data) || []}
@@ -188,16 +178,17 @@ const Home = () => {
         </section>
       </div>
 
-      {/* Sidebar */}
       <aside className="space-y-8">
         <div className="whiteContainer text-center !p-8">
-          <h3 className="text-2xl font-bold mb-4">مرحبًا بك في ضمانة!</h3>
+          <h3 className="text-2xl font-bold mb-4">
+            {t("pages.home.welcomeTitle")}
+          </h3>
           <p className="text-lg text-neutral-500 mb-4">
-            يمكنك بدء ضمانة جديدة بالضغط على الزر أدناه
+            {t("pages.home.welcomeSubtitle")}
           </p>
           <Link to="/add-damana" className="mainBtn">
             <FaCirclePlus className="text-2xl" />
-            طلب ضمانة جديدة
+            {t("pages.home.newRequest")}
           </Link>
         </div>
 

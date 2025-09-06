@@ -3,8 +3,10 @@ import { FaCirclePlus } from "react-icons/fa6";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { MdCloudUpload } from "react-icons/md";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
+import { useTranslation } from "react-i18next";
 
 const Step6CompanyLoginAccounts = ({ formik }) => {
+  const { t } = useTranslation();
   const [showLoginForm, setShowLoginForm] = useState(false);
   const [tempLogin, setTempLogin] = useState({
     login_name: "",
@@ -18,13 +20,17 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
   const validate = () => {
     let newErrors = {};
     if (!tempLogin.login_name.trim()) {
-      newErrors.login_name = "الاسم مطلوب";
+      newErrors.login_name = t("pages.Step6CompanyLoginAccounts.errors.nameRequired");
     }
     if (!tempLogin.login_phone.trim()) {
-      newErrors.login_phone = "رقم الهاتف مطلوب";
+      newErrors.login_phone = t(
+        "pages.Step6CompanyLoginAccounts.errors.phoneRequired"
+      );
     }
     if (!tempLogin.authorizationFile) {
-      newErrors.authorizationFile = "ملف التفويض مطلوب";
+      newErrors.authorizationFile = t(
+        "pages.Step6CompanyLoginAccounts.errors.fileRequired"
+      );
     }
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -58,19 +64,19 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
           onClick={() => setShowLoginForm(true)}
         >
           <FaCirclePlus className="text-2xl" />
-          إضافة حساب تسجيل دخول جديد
+          {t("pages.Step6CompanyLoginAccounts.addButton")}
         </button>
       )}
 
       {showLoginForm && (
         <div className="mb-6 baseWhiteContainer">
           <p className="text-primary text-lg font-bold mb-4">
-            بيانات حساب جديد
+            {t("pages.Step6CompanyLoginAccounts.formTitle")}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MainInput
-              label="الاسم"
+              label={t("pages.Step6CompanyLoginAccounts.nameLabel")}
               value={tempLogin.login_name}
               onChange={(e) =>
                 setTempLogin({ ...tempLogin, login_name: e.target.value })
@@ -79,19 +85,18 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
             />
 
             <PhoneField
+              label={t("pages.Step6CompanyLoginAccounts.phoneLabel")}
               value={tempLogin.login_phone}
               onChange={(val) =>
                 setTempLogin({ ...tempLogin, login_phone: val })
               }
               combineValue
+              error={errors.login_phone}
             />
-            {errors.login_phone && (
-              <p className="text-error-100">{errors.login_phone}</p>
-            )}
 
             <div className="md:col-span-2">
               <FileInput
-                label="ملف خطاب التفويض"
+                label={t("pages.Step6CompanyLoginAccounts.authorizationFileLabel")}
                 value={tempLogin.authorizationFile}
                 onChange={(file) =>
                   setTempLogin({ ...tempLogin, authorizationFile: file })
@@ -106,7 +111,7 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
             onClick={handleAddLogin}
             className="px-4 py-2 bg-primary text-white rounded-lg mt-4 hover:brightness-90 cursor-pointer"
           >
-            إضافة
+            {t("pages.Step6CompanyLoginAccounts.addAccountButton")}
           </button>
         </div>
       )}
@@ -114,7 +119,9 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
       {/* عرض الحساب الوحيد */}
       {login_accounts.length > 0 && (
         <div className="mt-4">
-          <p className="font-bold mb-2">الحساب المضاف:</p>
+          <p className="font-bold mb-2">
+            {t("pages.Step6CompanyLoginAccounts.addedAccountTitle")}
+          </p>
 
           <div className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2">
             <span>{login_accounts[0].login_name}</span>
@@ -122,6 +129,7 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
               type="button"
               className="text-error-100 text-2xl cursor-pointer"
               onClick={removeLogin}
+              aria-label={t("pages.Step6CompanyLoginAccounts.removeButton")}
             >
               <IoCloseCircleOutline />
             </button>
@@ -136,6 +144,7 @@ export default Step6CompanyLoginAccounts;
 
 // ---------------- FileInput Component -----------------
 const FileInput = ({ label, value, onChange, error }) => {
+  const { t } = useTranslation();
   const [dragActive, setDragActive] = useState(false);
 
   const handleFiles = (files) => {
@@ -195,10 +204,15 @@ const FileInput = ({ label, value, onChange, error }) => {
           <MdCloudUpload className="mx-auto text-gray-400 text-5xl" />
           {!value ? (
             <p className="text-sm text-gray-500 mt-2">
-              اسحب الملف هنا أو اضغط لاختياره
+              {t("pages.Step6CompanyLoginAccounts.fileInput.dragDropText")}
             </p>
           ) : (
-            <p className="text-sm text-green-600 mt-2">📄 {value.name}</p>
+            <p className="text-sm text-green-600 mt-2">
+              📄{" "}
+              {t("pages.Step6CompanyLoginAccounts.fileInput.fileUploaded", {
+                fileName: value.name,
+              })}
+            </p>
           )}
         </label>
       </div>
@@ -213,13 +227,7 @@ import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { PiWarningCircleBold } from "react-icons/pi";
 
-const PhoneField = ({
-  label = "رقم الهاتف",
-  value,
-  onChange,
-  error,
-  disabled = false,
-}) => {
+const PhoneField = ({ label, value, onChange, error, disabled = false }) => {
   return (
     <div>
       {label && (

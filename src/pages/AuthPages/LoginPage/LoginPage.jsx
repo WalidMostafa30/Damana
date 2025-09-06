@@ -11,20 +11,23 @@ import FormError from "../../../components/form/FormError";
 import { useMutation } from "@tanstack/react-query";
 import { loginUser } from "../../../services/authService";
 import PhoneInput from "../../../components/form/PhoneInput";
-
-const loginSchema = Yup.object({
-  mobile: Yup.string()
-    .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل")
-    .required("رقم الهاتف مطلوب"),
-  password: Yup.string()
-    .min(6, "كلمة المرور يجب أن تكون 6 أحرف على الأقل")
-    .required("كلمة المرور مطلوبة"),
-  remember: Yup.boolean(),
-});
+import { useTranslation } from "react-i18next";
 
 const LoginPage = () => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const navigate = useNavigate();
+
+  // ✅ Validation Schema with translations
+  const loginSchema = Yup.object({
+    mobile: Yup.string()
+      .min(9, t("pages.login.errors.mobileMin"))
+      .required(t("pages.login.errors.mobileRequired")),
+    password: Yup.string()
+      .min(6, t("pages.login.errors.passwordMin"))
+      .required(t("pages.login.errors.passwordRequired")),
+    remember: Yup.boolean(),
+  });
 
   // React Query Mutation
   const mutation = useMutation({
@@ -34,7 +37,7 @@ const LoginPage = () => {
     },
     onError: (error) => {
       setErrorMsg(
-        error?.response?.data?.error_msg || "حدث خطأ أثناء تسجيل الدخول"
+        error?.response?.data?.error_msg || t("pages.login.errors.serverError")
       );
     },
   });
@@ -63,42 +66,25 @@ const LoginPage = () => {
   return (
     <AuthLayout>
       <AuthBreadcrumbs
-        title="أهلاً في ضمانة!"
-        items={[{ label: "ضمانة", path: "/" }, { label: "تسجيل الدخول" }]}
+        title={t("pages.login.title")}
+        items={[
+          { label: t("pages.login.breadcrumbs.home"), path: "/" },
+          { label: t("pages.login.breadcrumbs.page") },
+        ]}
       />
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
-        {/* <MainInput
-          type="tel"
-          id="mobile"
-          name="mobile"
-          placeholder="96269077885+"
-          label="رقم الهاتف"
-          value={`${formik.values.country_code?.replace("+", "")}${
-            formik.values.mobile
-          }`} // عرض الكود مع الرقم
-          onChange={(phone, country) => {
-            const countryCode = country?.dialCode ? `+${country.dialCode}` : "";
-
-            // الرقم بدون كود الدولة
-            const mobileWithoutCode = country?.dialCode
-              ? phone.slice(country.dialCode.length)
-              : phone;
-
-            formik.setFieldValue("country_code", countryCode);
-            formik.setFieldValue("mobile", mobileWithoutCode);
-          }}
-          onBlur={formik.handleBlur}
-          error={getError("mobile")}
-        /> */}
-        <PhoneInput formik={formik} />
+        <PhoneInput
+          formik={formik}
+          placeholder={t("pages.login.placeholders.mobile")}
+        />
 
         <MainInput
           type="password"
           id="password"
           name="password"
-          placeholder="••••••••••"
-          label="كلمة المرور"
+          placeholder={t("pages.login.placeholders.password")}
+          label={t("pages.login.labels.password")}
           icon={<GoLock />}
           value={formik.values.password}
           onChange={formik.handleChange}
@@ -115,33 +101,36 @@ const LoginPage = () => {
               onChange={formik.handleChange}
               className="w-4 h-4 rounded accent-primary"
             />
-            <span>تذكرني</span>
+            <span>{t("pages.login.labels.rememberMe")}</span>
           </label>
           <Link to="/forgot-password" className="hover:text-primary transition">
-            نسيت كلمة المرور؟
+            {t("pages.login.links.forgotPassword")}
           </Link>
         </div>
 
         <FormError errorMsg={errorMsg} />
 
-        <FormBtn title="تسجيل الدخول" loading={mutation.isPending} />
+        <FormBtn
+          title={t("pages.login.buttons.login")}
+          loading={mutation.isPending}
+        />
 
         <p className="text-center font-semibold text-sm lg:text-base">
-          ليس لديك حساب؟{" "}
+          {t("pages.login.registerText")}{" "}
           <Link
             to="/register-person"
             className="text-secondary hover:brightness-50 transition-colors"
           >
-            إنشئ حساب فرديا
+            {t("pages.login.links.registerPerson")}
           </Link>{" "}
-          أو قدم{" "}
+          {t("common.or")}{" "}
           <Link
             to="/register-company"
             className="text-secondary hover:brightness-50 transition-colors"
           >
-            طلب انضمام
+            {t("pages.login.links.registerCompany")}
           </Link>{" "}
-          ان كنت تمثل شركة
+          {t("pages.login.companyNote")}
         </p>
       </form>
     </AuthLayout>

@@ -2,8 +2,10 @@ import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../../components/common/PageTitle";
 import LoadingPage from "../../components/Loading/LoadingPage";
 import { getPaymentMethods } from "../../services/staticDataService";
+import { useTranslation } from "react-i18next";
 
 const PaymentOptions = () => {
+  const { t } = useTranslation();
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["paymentMethods"],
     queryFn: getPaymentMethods,
@@ -14,18 +16,20 @@ const PaymentOptions = () => {
   if (isError)
     return (
       <p className="text-center text-lg">
-        حدث خطأ: {error?.response?.data?.error_msg}
+        {t("pages.paymentOptions.error")}: {error?.response?.data?.error_msg}
       </p>
     );
 
   if (!data?.length)
-    return <p className="text-center text-lg">لا توجد بيانات متاحة</p>;
+    return (
+      <p className="text-center text-lg">{t("pages.paymentOptions.noData")}</p>
+    );
 
   return (
     <section className="pageContainer space-y-4">
       <PageTitle
-        title="خيارات الدفع"
-        subtitle="هنا لديك طرق الدفع المتاحة ، يمكنك اختيار الطريقة التي تناسبك"
+        title={t("pages.paymentOptions.title")}
+        subtitle={t("pages.paymentOptions.subtitle")}
       />
 
       <div className="space-y-4 baseWhiteContainer ">

@@ -999,27 +999,6 @@
       "inactiveMessage": "This guarantee is inactive or blocked. No actions can be performed on it"
     },
 
-    "dashboard": {
-      "pageTitle": "Main Dashboard",
-      "subtitle": "Operational and financial dashboard for the group of companies",
-      "status": "Status",
-      "status_all": "All",
-      "status_active": "Active",
-      "status_inactive": "Inactive",
-      "date_picker": "Select Date",
-      "commission": "Commission Amount",
-      "commission_all": "All",
-      "commission_high": "High",
-      "commission_medium": "Medium",
-      "company": "Company",
-      "company_all": "All",
-      "company1": "Company 1",
-      "company2": "Company 2",
-      "confirm_button": "Confirm",
-      "operational_tab": "Operational Dashboard",
-      "financial_tab": "Financial Dashboard"
-    },
-
     "actionsSection": {
       "toast": {
         "statusUpdated": "Status updated successfully",
@@ -1047,6 +1026,27 @@
         "allowed": "Release request is now allowed ✅",
         "countdown": "{{minutes}}:{{seconds}} ⏳"
       }
+    },
+
+    "dashboard": {
+      "pageTitle": "Main Dashboard",
+      "subtitle": "Operational and financial dashboard for the group of companies",
+      "status": "Status",
+      "status_all": "All",
+      "status_active": "Active",
+      "status_inactive": "Inactive",
+      "date_picker": "Select Date",
+      "commission": "Commission Amount",
+      "commission_all": "All",
+      "commission_high": "High",
+      "commission_medium": "Medium",
+      "company": "Company",
+      "company_all": "All",
+      "company1": "Company 1",
+      "company2": "Company 2",
+      "confirm_button": "Confirm",
+      "operational_tab": "Operational Dashboard",
+      "financial_tab": "Financial Dashboard"
     },
 
     "getPage": {

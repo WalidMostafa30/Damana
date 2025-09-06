@@ -1,7 +1,9 @@
 import { MdCloudUpload } from "react-icons/md";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
-const FileInput = ({ label, name, formik, error }) => {
+const FileInput = ({ labelKey, name, formik, error }) => {
+  const { t } = useTranslation();
   const [dragActive, setDragActive] = useState(false);
   const fileValue = formik.values[name];
 
@@ -33,7 +35,7 @@ const FileInput = ({ label, name, formik, error }) => {
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
-        {label}
+        {t(`pages.Step4Company.fileLabels.${labelKey}`)}
       </label>
 
       <div
@@ -49,7 +51,7 @@ const FileInput = ({ label, name, formik, error }) => {
           type="file"
           name={name}
           id={name}
-          accept=".pdf,image/*" // يسمح فقط بالصور و PDF
+          accept=".pdf,image/*"
           onChange={(event) => handleFiles(event.currentTarget.files)}
           className="hidden"
         />
@@ -61,10 +63,14 @@ const FileInput = ({ label, name, formik, error }) => {
           <MdCloudUpload className="mx-auto text-gray-400 text-5xl" />
           {!fileValue ? (
             <p className="text-sm text-gray-500 mt-2">
-              اسحب الملف هنا أو اضغط لاختياره
+              {t("pages.Step4Company.fileInput.dragDropText")}
             </p>
           ) : (
-            <p className="text-sm text-green-600 mt-2">📄 {fileValue.name}</p>
+            <p className="text-sm text-green-600 mt-2">
+              {t("pages.Step4Company.fileInput.fileUploaded", {
+                fileName: fileValue.name,
+              })}
+            </p>
           )}
         </label>
       </div>
@@ -78,28 +84,28 @@ const Step4Company = ({ formik, getError }) => {
   return (
     <div className="grid grid-cols-1 gap-4 mt-4">
       <FileInput
-        label="نسخة حديثة من السجل التجاري"
+        labelKey="commercial_register"
         name="file_commercial_register"
         formik={formik}
         error={getError("file_commercial_register")}
       />
 
       <FileInput
-        label="نسخة من عقد التأسيس"
+        labelKey="memorandum_association"
         name="file_memorandum_association"
         formik={formik}
         error={getError("file_memorandum_association")}
       />
 
       <FileInput
-        label="نسخة عن رخصة المزاولة و/أو نسخة عن عقد إيجار مصدق"
+        labelKey="professional_license"
         name="file_Professional_License_lease_contract"
         formik={formik}
         error={getError("file_Professional_License_lease_contract")}
       />
 
       <FileInput
-        label="إثبات الشخصية للمفوضين بالتوقيع"
+        labelKey="identity_document"
         name="file_identity_document_signatories"
         formik={formik}
         error={getError("file_identity_document_signatories")}

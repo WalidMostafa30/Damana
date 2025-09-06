@@ -6,9 +6,11 @@ import { LuFileDigit } from "react-icons/lu";
 import { BiShoppingBag } from "react-icons/bi";
 import { GrMoney } from "react-icons/gr";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
-import PhoneInput from "../../../../../components/form/PhoneInput";
+import { useTranslation } from "react-i18next";
 
 const Step2Company = ({ formik, getError }) => {
+  const { t } = useTranslation();
+
   const commissioners = formik.values.commissioners;
 
   const addCommissioner = () => {
@@ -37,7 +39,7 @@ const Step2Company = ({ formik, getError }) => {
     <>
       {/* نص التفويض */}
       <MainInput
-        label="نص التفويض كما هو في السجل التجاري"
+        label={t("pages.step2Company.delegationText.label")}
         id="commissioners_text"
         name="commissioners_text"
         type="textarea"
@@ -53,13 +55,13 @@ const Step2Company = ({ formik, getError }) => {
           className="mb-6 p-4 rounded-lg border border-neutral-300"
         >
           <p className="text-primary text-lg font-bold mb-4">
-            بيانات المفوض {index + 1}
+            {t("pages.step2Company.commissionerTitle", { index: index + 1 })}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MainInput
-              label="الاسم الرباعي"
-              placeholder={"الاسم الرباعي"}
+              label={t("pages.step2Company.fields.fullName.label")}
+              placeholder={t("pages.step2Company.fields.fullName.placeholder")}
               id={`commissioners.${index}.full_name`}
               name={`commissioners.${index}.full_name`}
               value={comm.full_name}
@@ -69,8 +71,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="الجنسية"
-              placeholder={"الجنسية"}
+              label={t("pages.step2Company.fields.nationality.label")}
+              placeholder={t("pages.step2Company.fields.nationality.placeholder")}
               id={`commissioners.${index}.nationality`}
               name={`commissioners.${index}.nationality`}
               value={comm.nationality}
@@ -80,8 +82,10 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="رقم الهوية / جواز السفر"
-              placeholder={"رقم الهوية / جواز السفر"}
+              label={t("pages.step2Company.fields.nationalPassportNumber.label")}
+              placeholder={t(
+                "pages.step2Company.fields.nationalPassportNumber.placeholder"
+              )}
               id={`commissioners.${index}.national_passport_number`}
               name={`commissioners.${index}.national_passport_number`}
               value={comm.national_passport_number}
@@ -93,8 +97,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="الوظيفة"
-              placeholder={"الوظيفة"}
+              label={t("pages.step2Company.fields.job.label")}
+              placeholder={t("pages.step2Company.fields.job.placeholder")}
               id={`commissioners.${index}.job`}
               name={`commissioners.${index}.job`}
               value={comm.job}
@@ -104,8 +108,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="العنوان"
-              placeholder={"العنوان"}
+              label={t("pages.step2Company.fields.address.label")}
+              placeholder={t("pages.step2Company.fields.address.placeholder")}
               id={`commissioners.${index}.address`}
               name={`commissioners.${index}.address`}
               value={comm.address}
@@ -115,8 +119,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="نوع التفويض"
-              placeholder={"نوع التفويض"}
+              label={t("pages.step2Company.fields.type.label")}
+              placeholder={t("pages.step2Company.fields.type.placeholder")}
               id={`commissioners.${index}.type`}
               name={`commissioners.${index}.type`}
               value={comm.type}
@@ -126,8 +130,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="أعلى مفوض"
-              placeholder={"أعلى مفوض"}
+              label={t("pages.step2Company.fields.topCommissioner.label")}
+              placeholder={t("pages.step2Company.fields.topCommissioner.placeholder")}
               id={`commissioners.${index}.top_commissioner`}
               name={`commissioners.${index}.top_commissioner`}
               value={comm.top_commissioner}
@@ -137,8 +141,10 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="صلاحيات المفوض"
-              placeholder={"صلاحيات المفوض"}
+              label={t("pages.step2Company.fields.commissionerPermissions.label")}
+              placeholder={t(
+                "pages.step2Company.fields.commissionerPermissions.placeholder"
+              )}
               id={`commissioners.${index}.commissioner_permissions`}
               name={`commissioners.${index}.commissioner_permissions`}
               value={comm.commissioner_permissions}
@@ -150,8 +156,8 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="رقم الهاتف"
-              placeholder={"رقم الهاتف"}
+              label={t("pages.step2Company.fields.phone.label")}
+              placeholder={t("pages.step2Company.fields.phone.placeholder")}
               id={`commissioners.${index}.phone`}
               name={`commissioners.${index}.phone`}
               type="tel"
@@ -161,15 +167,10 @@ const Step2Company = ({ formik, getError }) => {
               }
               error={getError(`commissioners.${index}.phone`)}
             />
-            {/* <PhoneInput
-              formik={formik}
-              name={`commissioners.${index}.phone`}
-              combineValue={true}
-            /> */}
 
             <MainInput
-              label="البريد الإلكتروني"
-              placeholder={"البريد الإلكتروني"}
+              label={t("pages.step2Company.fields.email.label")}
+              placeholder={t("pages.step2Company.fields.email.placeholder")}
               id={`commissioners.${index}.email`}
               name={`commissioners.${index}.email`}
               type="email"
@@ -180,8 +181,10 @@ const Step2Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="صلاحيات التفويض"
-              placeholder={"صلاحيات التفويض"}
+              label={t("pages.step2Company.fields.delegationPermissions.label")}
+              placeholder={t(
+                "pages.step2Company.fields.delegationPermissions.placeholder"
+              )}
               id={`commissioners.${index}.delegation_permissions`}
               name={`commissioners.${index}.delegation_permissions`}
               value={comm.delegation_permissions}
@@ -197,7 +200,7 @@ const Step2Company = ({ formik, getError }) => {
               onClick={() => removeCommissioner(index)}
               className="text-red-500 mt-2 text-sm"
             >
-              حذف المفوض
+              {t("pages.step2Company.removeCommissioner")}
             </button>
           )}
         </div>
@@ -209,17 +212,19 @@ const Step2Company = ({ formik, getError }) => {
         onClick={addCommissioner}
       >
         <CiCirclePlus className="text-2xl" />
-        إضافة مفوض جديد
+        {t("pages.step2Company.addCommissioner")}
       </p>
 
-      {/* مفوضي الإدارة (managementCommissioners) */}
+      {/* مفوضي الإدارة */}
       <div className="mt-8 p-4 rounded-lg border border-neutral-300">
-        <p className="text-primary text-lg font-bold mb-4">مفوضي الإدارة</p>
+        <p className="text-primary text-lg font-bold mb-4">
+          {t("pages.step2Company.managementCommissionersTitle")}
+        </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <MainInput
-            label="الاسم الرباعي"
-            placeholder="الاسم الرباعي"
+            label={t("pages.step2Company.fields.fullName.label")}
+            placeholder={t("pages.step2Company.fields.fullName.placeholder")}
             id="managementCommissioners.full_name"
             name="managementCommissioners.full_name"
             value={formik.values.managementCommissioners.full_name}
@@ -229,8 +234,8 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="الجنسية"
-            placeholder="الجنسية"
+            label={t("pages.step2Company.fields.nationality.label")}
+            placeholder={t("pages.step2Company.fields.nationality.placeholder")}
             id="managementCommissioners.nationality"
             name="managementCommissioners.nationality"
             value={formik.values.managementCommissioners.nationality}
@@ -240,8 +245,10 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="رقم الهوية / جواز السفر"
-            placeholder="رقم الهوية / جواز السفر"
+            label={t("pages.step2Company.fields.nationalPassportNumber.label")}
+            placeholder={t(
+              "pages.step2Company.fields.nationalPassportNumber.placeholder"
+            )}
             id="managementCommissioners.national_passport_number"
             name="managementCommissioners.national_passport_number"
             value={
@@ -253,8 +260,8 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="العنوان"
-            placeholder="العنوان"
+            label={t("pages.step2Company.fields.address.label")}
+            placeholder={t("pages.step2Company.fields.address.placeholder")}
             id="managementCommissioners.address"
             name="managementCommissioners.address"
             value={formik.values.managementCommissioners.address}
@@ -264,8 +271,8 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="نوع التفويض"
-            placeholder="نوع التفويض"
+            label={t("pages.step2Company.fields.type.label")}
+            placeholder={t("pages.step2Company.fields.type.placeholder")}
             id="managementCommissioners.type"
             name="managementCommissioners.type"
             value={formik.values.managementCommissioners.type}
@@ -275,8 +282,8 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="أعلى مفوض"
-            placeholder="أعلى مفوض"
+            label={t("pages.step2Company.fields.topCommissioner.label")}
+            placeholder={t("pages.step2Company.fields.topCommissioner.placeholder")}
             id="managementCommissioners.top_commissioner"
             name="managementCommissioners.top_commissioner"
             value={formik.values.managementCommissioners.top_commissioner}
@@ -286,8 +293,10 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="صلاحيات المفوض"
-            placeholder="صلاحيات المفوض"
+            label={t("pages.step2Company.fields.commissionerPermissions.label")}
+            placeholder={t(
+              "pages.step2Company.fields.commissionerPermissions.placeholder"
+            )}
             id="managementCommissioners.commissioner_permissions"
             name="managementCommissioners.commissioner_permissions"
             value={
@@ -299,8 +308,8 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="رقم الهاتف"
-            placeholder="رقم الهاتف"
+            label={t("pages.step2Company.fields.phone.label")}
+            placeholder={t("pages.step2Company.fields.phone.placeholder")}
             type="tel"
             id="managementCommissioners.phone"
             name="managementCommissioners.phone"
@@ -310,15 +319,10 @@ const Step2Company = ({ formik, getError }) => {
             }
             error={getError("managementCommissioners.phone")}
           />
-          {/* <PhoneInput
-            formik={formik}
-            name="managementCommissioners.phone"
-            combineValue={true}
-          /> */}
 
           <MainInput
-            label="البريد الإلكتروني"
-            placeholder="البريد الإلكتروني"
+            label={t("pages.step2Company.fields.email.label")}
+            placeholder={t("pages.step2Company.fields.email.placeholder")}
             type="email"
             id="managementCommissioners.email"
             name="managementCommissioners.email"
@@ -329,8 +333,10 @@ const Step2Company = ({ formik, getError }) => {
           />
 
           <MainInput
-            label="صلاحيات التفويض"
-            placeholder="صلاحيات التفويض"
+            label={t("pages.step2Company.fields.delegationPermissions.label")}
+            placeholder={t(
+              "pages.step2Company.fields.delegationPermissions.placeholder"
+            )}
             id="managementCommissioners.delegation_permissions"
             name="managementCommissioners.delegation_permissions"
             value={formik.values.managementCommissioners.delegation_permissions}

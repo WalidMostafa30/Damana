@@ -1,16 +1,21 @@
 import InfiniteScroll from "react-infinite-scroll-component";
 import DamanaList from "../../components/common/DamanaList";
+import { useTranslation } from "react-i18next";
 
 const Purchase = ({ data, fetchNextPage, hasNextPage, loading, error }) => {
+  const { t } = useTranslation();
+
   return (
     <InfiniteScroll
       dataLength={data.length}
       next={fetchNextPage}
       hasMore={hasNextPage}
-      loader={<p className="text-center p-4">جاري تحميل المزيد...</p>}
+      loader={
+        <p className="text-center p-4">{t("purchase_sale.loadingMore")}</p>
+      }
       endMessage={
         data.length !== 0 && (
-          <p className="text-center p-4">لا يوجد عناصر أخرى</p>
+          <p className="text-center p-4">{t("purchase_sale.noMoreItems")}</p>
         )
       }
       className="!overflow-hidden"

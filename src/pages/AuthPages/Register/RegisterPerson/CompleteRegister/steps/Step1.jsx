@@ -12,8 +12,10 @@ import { SiBitcoin } from "react-icons/si";
 import { IoIdCardSharp } from "react-icons/io5";
 import { IoMdCode } from "react-icons/io";
 import { isValid } from "iban";
+import { useTranslation } from "react-i18next";
 
 export default function Step1({ formData, setFormData, setStep }) {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState(null);
 
   const mutation = useMutation({
@@ -23,7 +25,9 @@ export default function Step1({ formData, setFormData, setStep }) {
       setStep((prev) => prev + 1);
     },
     onError: (err) => {
-      setErrorMsg(err?.response?.data?.error_msg || "حدث خطأ ما");
+      setErrorMsg(
+        err?.response?.data?.error_msg || t("pages.Step1.errors.general")
+      );
     },
   });
 
@@ -36,15 +40,19 @@ export default function Step1({ formData, setFormData, setStep }) {
       clik_name: formData.clik_name || "",
     },
     validationSchema: Yup.object({
-      bank_id: Yup.string().required("اسم البنك مطلوب"),
+      bank_id: Yup.string().required(t("pages.Step1.validation.bank_required")),
       iban: Yup.string()
-        .test("iban-check", "رقم الايبان غير صالح", (value) =>
+        .test("iban-check", t("pages.Step1.validation.iban_invalid"), (value) =>
           isValid(value || "")
         )
-        .required("رقم الايبان مطلوب"),
-      swift_code: Yup.string().required("رقم السويفت مطلوب"),
-      currency: Yup.string().required("العملة مطلوبة"),
-      clik_name: Yup.string(), // هنا اختياري زي Step3Company
+        .required(t("pages.Step1.validation.iban_required")),
+      swift_code: Yup.string().required(
+        t("pages.Step1.validation.swift_code_required")
+      ),
+      currency: Yup.string().required(
+        t("pages.Step1.validation.currency_required")
+      ),
+      clik_name: Yup.string(),
     }),
     onSubmit: (values) => {
       mutation.mutate({
@@ -69,10 +77,10 @@ export default function Step1({ formData, setFormData, setStep }) {
         <BankSelect formik={formik} />
 
         <MainInput
-          label="رقم الحساب الدولي (IBAN)"
+          label={t("pages.Step1.form.iban")}
           id="iban"
           name="iban"
-          placeholder="مثال: SA4420000001234567891234"
+          placeholder={t("pages.Step1.form.iban_placeholder")}
           value={formik.values.iban}
           onChange={formik.handleChange}
           error={getError("iban")}
@@ -80,10 +88,10 @@ export default function Step1({ formData, setFormData, setStep }) {
         />
 
         <MainInput
-          label="رقم السويفت (SWIFT Code)"
+          label={t("pages.Step1.form.swift_code")}
           id="swift_code"
           name="swift_code"
-          placeholder="مثال: NBEGEGCXXXX"
+          placeholder={t("pages.Step1.form.swift_code_placeholder")}
           value={formik.values.swift_code}
           onChange={formik.handleChange}
           error={getError("swift_code")}
@@ -92,7 +100,7 @@ export default function Step1({ formData, setFormData, setStep }) {
 
         <MainInput
           type="select"
-          label="العملة"
+          label={t("pages.Step1.form.currency")}
           id="currency"
           name="currency"
           value={formik.values.currency}
@@ -100,7 +108,7 @@ export default function Step1({ formData, setFormData, setStep }) {
           error={getError("currency")}
           icon={<SiBitcoin />}
           options={[
-            { value: "", label: "اختر العمله" },
+            { value: "", label: t("pages.Step1.form.currency_placeholder") },
             ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
               value: c,
               label: c,
@@ -109,10 +117,10 @@ export default function Step1({ formData, setFormData, setStep }) {
         />
 
         <MainInput
-          label="اسم المستخدم (CLIQ) (اختياري)"
+          label={t("pages.Step1.form.clik_name")}
           id="clik_name"
           name="clik_name"
-          placeholder="مثال: user@bank.com"
+          placeholder={t("pages.Step1.form.clik_name_placeholder")}
           value={formik.values.clik_name}
           onChange={formik.handleChange}
           error={getError("clik_name")}
@@ -122,7 +130,10 @@ export default function Step1({ formData, setFormData, setStep }) {
 
       <FormError errorMsg={errorMsg} />
 
-      <FormBtn title="التالي" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.Step1.form.next_button")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 }

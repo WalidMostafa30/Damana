@@ -5,7 +5,7 @@ import { FaRegFileAlt } from "react-icons/fa";
 import { IoLocationOutline } from "react-icons/io5";
 import { LuFileDigit } from "react-icons/lu";
 import { TbWorldWww } from "react-icons/tb";
-import { FaEarthAsia, FaMoneyBill1Wave } from "react-icons/fa6";
+import { FaEarthAsia } from "react-icons/fa6";
 import {
   MdOutlineDriveFileRenameOutline,
   MdOutlineMarkEmailUnread,
@@ -13,16 +13,19 @@ import {
 import { GiReceiveMoney } from "react-icons/gi";
 import PhoneInput from "../../../../../components/form/PhoneInput";
 import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
+import { useTranslation } from "react-i18next";
 
 const Step0Company = ({ formik, getError }) => {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
-          label="اسم الشركة باللغة العربية"
+          label={t("pages.step0Company.fields.arName.label")}
           id="ar_name"
           name="ar_name"
-          placeholder=" الشركة العربية"
+          placeholder={t("pages.step0Company.fields.arName.placeholder")}
           value={formik.values.ar_name}
           onChange={formik.handleChange}
           error={getError("ar_name")}
@@ -30,10 +33,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="اسم الشركة باللغة الإنجليزية"
+          label={t("pages.step0Company.fields.enName.label")}
           id="en_name"
           name="en_name"
-          placeholder="Example: Arab Company"
+          placeholder={t("pages.step0Company.fields.enName.placeholder")}
           value={formik.values.en_name}
           onChange={formik.handleChange}
           error={getError("en_name")}
@@ -41,10 +44,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="الاسم التجاري باللغة العربية"
+          label={t("pages.step0Company.fields.commercialArName.label")}
           id="commercial_ar_name"
           name="commercial_ar_name"
-          placeholder="مثال: المتجر الذهبي"
+          placeholder={t("pages.step0Company.fields.commercialArName.placeholder")}
           value={formik.values.commercial_ar_name}
           onChange={formik.handleChange}
           error={getError("commercial_ar_name")}
@@ -52,10 +55,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="الاسم التجاري باللغة الإنجليزية"
+          label={t("pages.step0Company.fields.commercialEnName.label")}
           id="commercial_en_name"
           name="commercial_en_name"
-          placeholder="Example: Golden Store"
+          placeholder={t("pages.step0Company.fields.commercialEnName.placeholder")}
           value={formik.values.commercial_en_name}
           onChange={formik.handleChange}
           error={getError("commercial_en_name")}
@@ -63,16 +66,34 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="نوع التسجيل / الشكل القانوني"
+          label={t("pages.step0Company.fields.registrationType.label")}
           type="select"
           id="registration_type_legal_form"
           name="registration_type_legal_form"
           options={[
-            { value: "مؤسسة", label: "مؤسسة" },
-            { value: "شركة مساهمة", label: "شركة مساهمة" },
             {
-              value: "شركة ذات مسؤولية محدودة",
-              label: "شركة ذات مسؤولية محدودة",
+              value: t(
+                "pages.step0Company.fields.registrationType.options.establishment"
+              ),
+              label: t(
+                "pages.step0Company.fields.registrationType.options.establishment"
+              ),
+            },
+            {
+              value: t(
+                "pages.step0Company.fields.registrationType.options.jointStock"
+              ),
+              label: t(
+                "pages.step0Company.fields.registrationType.options.jointStock"
+              ),
+            },
+            {
+              value: t(
+                "pages.step0Company.fields.registrationType.options.limitedLiability"
+              ),
+              label: t(
+                "pages.step0Company.fields.registrationType.options.limitedLiability"
+              ),
             },
           ]}
           value={formik.values.registration_type_legal_form}
@@ -82,8 +103,8 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="بلد التسجيل / جنسية الشركة"
-          placeholder={"بلد التسجيل / جنسية الشركة"}
+          label={t("pages.step0Company.fields.countryRegistration.label")}
+          placeholder={t("pages.step0Company.fields.countryRegistration.placeholder")}
           id="country_registration"
           name="country_registration"
           value={formik.values.country_registration}
@@ -93,10 +114,12 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="جهة التسجيل"
+          label={t("pages.step0Company.fields.registrationAuthority.label")}
           id="registration_authority"
           name="registration_authority"
-          placeholder="وزارة الصناعة"
+          placeholder={t(
+            "pages.step0Company.fields.registrationAuthority.placeholder"
+          )}
           value={formik.values.registration_authority}
           onChange={formik.handleChange}
           error={getError("registration_authority")}
@@ -104,10 +127,12 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="رقم التسجيل"
+          label={t("pages.step0Company.fields.commercialRegistrationNumber.label")}
           id="commercial_registration_number"
           name="commercial_registration_number"
-          placeholder="123456"
+          placeholder={t(
+            "pages.step0Company.fields.commercialRegistrationNumber.placeholder"
+          )}
           value={formik.values.commercial_registration_number}
           onChange={formik.handleChange}
           error={getError("commercial_registration_number")}
@@ -115,7 +140,7 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="تاريخ التسجيل"
+          label={t("pages.step0Company.fields.registrationDate.label")}
           id="registration_date"
           name="registration_date"
           type="date"
@@ -126,10 +151,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="الرقم الوطني للمنشأة"
+          label={t("pages.step0Company.fields.nationalNumber.label")}
           id="national_number"
           name="national_number"
-          placeholder="0987654321"
+          placeholder={t("pages.step0Company.fields.nationalNumber.placeholder")}
           value={formik.values.national_number}
           onChange={formik.handleChange}
           error={getError("national_number")}
@@ -137,10 +162,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="الموقع الإلكتروني"
+          label={t("pages.step0Company.fields.websiteUrl.label")}
           id="website_url"
           name="website_url"
-          placeholder="www.example.com"
+          placeholder={t("pages.step0Company.fields.websiteUrl.placeholder")}
           value={formik.values.website_url}
           onChange={formik.handleChange}
           error={getError("website_url")}
@@ -148,10 +173,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="رقم رخصة المهن"
+          label={t("pages.step0Company.fields.licenseNumber.label")}
           id="license_number"
           name="license_number"
-          placeholder="555555"
+          placeholder={t("pages.step0Company.fields.licenseNumber.placeholder")}
           value={formik.values.license_number}
           onChange={formik.handleChange}
           error={getError("license_number")}
@@ -159,10 +184,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="العنوان"
+          label={t("pages.step0Company.fields.address.label")}
           id="address"
           name="address"
-          placeholder="شارع الملك عبدالله، الرياض"
+          placeholder={t("pages.step0Company.fields.address.placeholder")}
           value={formik.values.address}
           onChange={formik.handleChange}
           error={getError("address")}
@@ -170,10 +195,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="البريد الإلكتروني الرسمي للشركة"
+          label={t("pages.step0Company.fields.email.label")}
           id="email"
           name="email"
-          placeholder="info@company.com"
+          placeholder={t("pages.step0Company.fields.email.placeholder")}
           type="email"
           value={formik.values.email}
           onChange={formik.handleChange}
@@ -194,10 +219,10 @@ const Step0Company = ({ formik, getError }) => {
         <PhoneInput formik={formik} name="phone" combineValue={true} />
 
         <MainInput
-          label="الرقم الضريبي"
+          label={t("pages.step0Company.fields.taxNumber.label")}
           id="tax_number"
           name="tax_number"
-          placeholder="123456789"
+          placeholder={t("pages.step0Company.fields.taxNumber.placeholder")}
           value={formik.values.tax_number}
           onChange={formik.handleChange}
           error={getError("tax_number")}
@@ -205,10 +230,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="رأس المال"
+          label={t("pages.step0Company.fields.capitalEquity.label")}
           id="capital_equity"
           name="capital_equity"
-          placeholder="100000"
+          placeholder={t("pages.step0Company.fields.capitalEquity.placeholder")}
           value={formik.values.capital_equity}
           onChange={formik.handleChange}
           error={getError("capital_equity")}
@@ -216,10 +241,10 @@ const Step0Company = ({ formik, getError }) => {
         />
 
         <MainInput
-          label="اسم المفوض بالتوقيع"
+          label={t("pages.step0Company.fields.signedName.label")}
           id="signed_name"
           name="signed_name"
-          placeholder="اسم المفوض بالتوقيع"
+          placeholder={t("pages.step0Company.fields.signedName.placeholder")}
           value={formik.values.signed_name}
           onChange={formik.handleChange}
           error={getError("signed_name")}
@@ -230,7 +255,8 @@ const Step0Company = ({ formik, getError }) => {
       {formik.values.capital_equity && (
         <p className="text-neutral-500 flex items-center gap-1 mt-3">
           <CgMailOpen className="text-2xl" />
-          {toArabicWord(formik.values.capital_equity)} دينار أردني
+          {toArabicWord(formik.values.capital_equity)}{" "}
+          {t("pages.step0Company.capitalInWords")}
         </p>
       )}
     </>

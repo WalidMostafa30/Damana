@@ -8,13 +8,15 @@ import { FaRegStickyNote } from "react-icons/fa";
 import MainInput from "../../../../components/form/MainInput/MainInput";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
+import { useTranslation } from "react-i18next";
 
 const ResetPassword = ({ parentData }) => {
+  const { t } = useTranslation();
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
 
-  // حساب قوة الباسورد
+  // ✅ حساب قوة الباسورد
   const calculatePasswordStrength = (password) => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -25,9 +27,12 @@ const ResetPassword = ({ parentData }) => {
   };
 
   const getStrengthLabel = () => {
-    if (passwordStrength <= 1) return "ضعيفة";
-    if (passwordStrength === 2) return "متوسطة";
-    if (passwordStrength >= 3) return "قوية";
+    if (passwordStrength <= 1)
+      return t("pages.forgotPassword.resetPassword.strength.weak");
+    if (passwordStrength === 2)
+      return t("pages.forgotPassword.resetPassword.strength.medium");
+    if (passwordStrength >= 3)
+      return t("pages.forgotPassword.resetPassword.strength.strong");
   };
 
   const getStrengthColor = () => {
@@ -37,21 +42,22 @@ const ResetPassword = ({ parentData }) => {
     return "transparent";
   };
 
-  // React Query Mutation
+  // ✅ Mutation
   const mutation = useMutation({
     mutationFn: resetPassword,
     onSuccess: () => {
-      alert("تم تغيير كلمة المرور بنجاح ✅");
-      // هنا ممكن تعمل إعادة توجيه لصفحة تسجيل الدخول
+      alert(t("pages.forgotPassword.resetPassword.messages.success"));
+      // ممكن هنا تعمل إعادة توجيه لصفحة تسجيل الدخول
     },
     onError: (error) => {
       setErrorMsg(
-        error?.response?.data?.error_msg || "حدث خطأ أثناء إعادة التعيين"
+        error?.response?.data?.error_msg ||
+          t("pages.forgotPassword.resetPassword.messages.error")
       );
     },
   });
 
-  // Formik + Yup
+  // ✅ Formik + Yup
   const formik = useFormik({
     initialValues: {
       new_password: "",
@@ -59,25 +65,34 @@ const ResetPassword = ({ parentData }) => {
     },
     validationSchema: Yup.object({
       new_password: Yup.string()
-        .required("كلمة المرور مطلوبة")
-        .min(8, "كلمة المرور يجب أن لا تقل عن 8 حروف")
-        .matches(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
-        .matches(/\d/, "يجب أن تحتوي على رقم واحد على الأقل")
-        .matches(/[\W_]/, "يجب أن تحتوي على رمز خاص واحد على الأقل"),
+        .required(
+          t("pages.forgotPassword.resetPassword.errors.passwordRequired")
+        )
+        .min(8, t("pages.forgotPassword.resetPassword.errors.passwordMin"))
+        .matches(
+          /[A-Z]/,
+          t("pages.forgotPassword.resetPassword.errors.passwordUppercase")
+        )
+        .matches(
+          /\d/,
+          t("pages.forgotPassword.resetPassword.errors.passwordNumber")
+        )
+        .matches(
+          /[\W_]/,
+          t("pages.forgotPassword.resetPassword.errors.passwordSpecial")
+        ),
       new_password_confirmation: Yup.string()
-        .required("تأكيد كلمة المرور مطلوب")
-        .oneOf([Yup.ref("new_password")], "كلمتا المرور غير متطابقتين"),
+        .required(
+          t("pages.forgotPassword.resetPassword.errors.confirmPasswordRequired")
+        )
+        .oneOf(
+          [Yup.ref("new_password")],
+          t("pages.forgotPassword.resetPassword.errors.passwordsMismatch")
+        ),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
       mutation.mutate({
-        uid: parentData.uid,
-        password_reset_token: parentData.password_reset_token,
-        new_password: values.new_password,
-        new_password_confirmation: values.new_password_confirmation,
-        otp_code: parentData.otp_code,
-      });
-      console.log({
         uid: parentData.uid,
         password_reset_token: parentData.password_reset_token,
         new_password: values.new_password,
@@ -94,8 +109,10 @@ const ResetPassword = ({ parentData }) => {
         type="password"
         id="new_password"
         name="new_password"
-        placeholder="••••••••••"
-        label="كلمة المرور"
+        placeholder={t(
+          "pages.forgotPassword.resetPassword.placeholders.password"
+        )}
+        label={t("pages.forgotPassword.resetPassword.labels.password")}
         icon={<GoLock />}
         value={formik.values.new_password}
         onChange={(e) => {
@@ -110,7 +127,7 @@ const ResetPassword = ({ parentData }) => {
       {/* ملاحظات كلمة المرور */}
       <p className="flex items-center gap-2 text-neutral-500">
         <FaRegStickyNote className="text-2xl" />
-        يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف
+        {t("pages.forgotPassword.resetPassword.notes")}
       </p>
 
       {/* مؤشر القوة */}
@@ -129,7 +146,8 @@ const ResetPassword = ({ parentData }) => {
             className="text-sm font-semibold"
             style={{ color: getStrengthColor() }}
           >
-            قوة كلمة المرور ( {getStrengthLabel()} )
+            {t("pages.forgotPassword.resetPassword.strength.label")} ({" "}
+            {getStrengthLabel()} )
           </p>
         )}
       </div>
@@ -139,8 +157,10 @@ const ResetPassword = ({ parentData }) => {
         type="password"
         id="new_password_confirmation"
         name="new_password_confirmation"
-        placeholder="••••••••••"
-        label="تأكيد كلمة المرور"
+        placeholder={t(
+          "pages.forgotPassword.resetPassword.placeholders.confirmPassword"
+        )}
+        label={t("pages.forgotPassword.resetPassword.labels.confirmPassword")}
         icon={<GoLock />}
         value={formik.values.new_password_confirmation}
         onChange={formik.handleChange}
@@ -155,7 +175,10 @@ const ResetPassword = ({ parentData }) => {
       <FormError errorMsg={errorMsg} />
 
       {/* زر التأكيد */}
-      <FormBtn title="تأكيد" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.forgotPassword.resetPassword.button.confirm")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 };

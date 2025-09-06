@@ -4,9 +4,10 @@ import { LuFileDigit } from "react-icons/lu";
 import { FaEarthAsia } from "react-icons/fa6";
 import { MdOutlineMarkEmailUnread } from "react-icons/md";
 import { BsBuildings } from "react-icons/bs";
-import PhoneInput from "../../../../../components/form/PhoneInput";
+import { useTranslation } from "react-i18next";
 
 const Step1Company = ({ formik, getError }) => {
+  const { t } = useTranslation();
   const partners = formik.values.partners;
 
   const addPartner = () => {
@@ -31,15 +32,15 @@ const Step1Company = ({ formik, getError }) => {
       {partners.map((partner, index) => (
         <div key={index} className="mb-6 p-4 rounded-lg">
           <p className="text-primary text-lg font-bold mb-4">
-            بيانات الشريك {index + 1}
+            {t("pages.step1Company.partnerTitle")} {index + 1}
           </p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MainInput
-              label="الاسم الرباعي"
+              label={t("pages.step1Company.fields.fullName.label")}
               id={`partners.${index}.full_name`}
               name={`partners.${index}.full_name`}
-              placeholder="مثال: محمد أحمد علي يوسف"
+              placeholder={t("pages.step1Company.fields.fullName.placeholder")}
               value={partner.full_name}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.full_name`)}
@@ -47,10 +48,10 @@ const Step1Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="الجنسية"
+              label={t("pages.step1Company.fields.nationality.label")}
               id={`partners.${index}.nationality`}
               name={`partners.${index}.nationality`}
-              placeholder="مثال: مصري"
+              placeholder={t("pages.step1Company.fields.nationality.placeholder")}
               value={partner.nationality}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.nationality`)}
@@ -58,10 +59,12 @@ const Step1Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="الرقم الوطني / رقم جواز السفر"
+              label={t("pages.step1Company.fields.nationalPassportNumber.label")}
               id={`partners.${index}.national_passport_number`}
               name={`partners.${index}.national_passport_number`}
-              placeholder="مثال: A123456789"
+              placeholder={t(
+                "pages.step1Company.fields.nationalPassportNumber.placeholder"
+              )}
               value={partner.national_passport_number}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.national_passport_number`)}
@@ -69,10 +72,10 @@ const Step1Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="العنوان"
+              label={t("pages.step1Company.fields.address.label")}
               id={`partners.${index}.address`}
               name={`partners.${index}.address`}
-              placeholder="مثال: شارع النيل، القاهرة"
+              placeholder={t("pages.step1Company.fields.address.placeholder")}
               value={partner.address}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.address`)}
@@ -80,28 +83,23 @@ const Step1Company = ({ formik, getError }) => {
             />
 
             <MainInput
-              label="رقم الهاتف"
+              label={t("pages.step1Company.fields.phone.label")}
               type="tel"
               id={`partners.${index}.phone`}
               name={`partners.${index}.phone`}
-              placeholder="مثال: 01012345678"
+              placeholder={t("pages.step1Company.fields.phone.placeholder")}
               value={partner.phone}
               onChange={(phone) =>
                 formik.setFieldValue(`partners.${index}.phone`, phone)
               }
               error={getError(`partners.${index}.phone`)}
             />
-            {/* <PhoneInput
-              formik={formik}
-              name={`partners.${index}.phone`}
-              combineValue={true}
-            /> */}
 
             <MainInput
-              label="البريد الإلكتروني"
+              label={t("pages.step1Company.fields.email.label")}
               id={`partners.${index}.email`}
               name={`partners.${index}.email`}
-              placeholder="مثال: owner@example.com"
+              placeholder={t("pages.step1Company.fields.email.placeholder")}
               value={partner.email}
               onChange={formik.handleChange}
               error={getError(`partners.${index}.email`)}
@@ -115,7 +113,7 @@ const Step1Company = ({ formik, getError }) => {
               onClick={() => removePartner(index)}
               className="text-red-500 mt-2 text-sm"
             >
-              حذف الشريك
+              {t("pages.step1Company.removePartner")}
             </button>
           )}
         </div>
@@ -126,7 +124,7 @@ const Step1Company = ({ formik, getError }) => {
         onClick={addPartner}
       >
         <CiCirclePlus className="text-2xl" />
-        اضافه شريك جديد
+        {t("pages.step1Company.addPartner")}
       </p>
     </>
   );

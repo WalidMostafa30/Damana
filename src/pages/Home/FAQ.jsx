@@ -3,12 +3,15 @@ import { getFAQ } from "../../services/staticDataService";
 import LoadingSection from "../../components/Loading/LoadingSection";
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
 const FAQ = () => {
   const [openIndex, setOpenIndex] = useState(null);
   const toggleFAQ = (index) => {
     setOpenIndex(openIndex === index ? null : index);
   };
+
+  const { t } = useTranslation();
 
   // جلب البيانات
   const {
@@ -30,7 +33,7 @@ const FAQ = () => {
   return (
     <div className="whiteContainer !p-0">
       <h3 className="text-2xl font-bold text-center p-4 text-primary border-b border-neutral-200">
-        الأسئلة الشائعة
+        {t("pages.faq.title")}{" "}
       </h3>
       <ul>
         {faqs?.map((question, index) => (

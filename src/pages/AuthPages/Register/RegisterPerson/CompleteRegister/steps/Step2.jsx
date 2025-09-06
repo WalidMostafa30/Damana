@@ -11,17 +11,11 @@ import { useState } from "react";
 import FormError from "../../../../../../components/form/FormError";
 import { useNavigate } from "react-router-dom";
 import CountrySelect from "../../../../../../components/form/CountrySelect";
+import { useTranslation } from "react-i18next";
 
 export default function Step2({ formData, setFormData }) {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState(null);
-
-  // // جلب الدول
-  // const { data: countriesData, isLoading: loadingCountries } = useQuery({
-  //   queryKey: ["countries"],
-  //   queryFn: getCountries,
-  // });
-  // const countries = countriesData?.data || [];
-
   const navigate = useNavigate();
 
   const mutation = useMutation({
@@ -31,7 +25,9 @@ export default function Step2({ formData, setFormData }) {
       navigate("/");
     },
     onError: (err) => {
-      setErrorMsg(err?.response?.data?.error_msg || "حدث خطأ ما");
+      setErrorMsg(
+        err?.response?.data?.error_msg || t("pages.Step2.errors.general")
+      );
     },
   });
 
@@ -43,20 +39,23 @@ export default function Step2({ formData, setFormData }) {
       address_city_town: formData.address_city_town || "",
     },
     validationSchema: Yup.object({
-      address_building_number: Yup.string().required("رقم البناية مطلوب"),
-      address_street_name: Yup.string().required("اسم الشارع مطلوب"),
-      address_country_id: Yup.string().required("البلد مطلوب"),
-      address_city_town: Yup.string().required("المدينة مطلوبة"),
+      address_building_number: Yup.string().required(
+        t("pages.Step2.validation.address_building_number_required")
+      ),
+      address_street_name: Yup.string().required(
+        t("pages.Step2.validation.address_street_name_required")
+      ),
+      address_country_id: Yup.string().required(
+        t("pages.Step2.validation.address_country_id_required")
+      ),
+      address_city_town: Yup.string().required(
+        t("pages.Step2.validation.address_city_town_required")
+      ),
     }),
     onSubmit: (values) => {
       mutation.mutate({
         form_type: "address",
-        address: {
-          address_building_number: values.address_building_number,
-          address_street_name: values.address_street_name,
-          address_country_id: values.address_country_id,
-          address_city_town: values.address_city_town,
-        },
+        address: { ...values },
       });
     },
   });
@@ -69,9 +68,11 @@ export default function Step2({ formData, setFormData }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <MainInput
           id="address_building_number"
-          label="رقم البناية"
+          label={t("pages.Step2.form.address_building_number")}
           name="address_building_number"
-          placeholder="123"
+          placeholder={t(
+            "pages.Step2.form.address_building_number_placeholder"
+          )}
           value={formik.values.address_building_number}
           onChange={formik.handleChange}
           error={getError("address_building_number")}
@@ -79,34 +80,20 @@ export default function Step2({ formData, setFormData }) {
         />
         <MainInput
           id="address_street_name"
-          label="اسم الشارع"
+          label={t("pages.Step2.form.address_street_name")}
           name="address_street_name"
-          placeholder="اسم الشارع"
+          placeholder={t("pages.Step2.form.address_street_name_placeholder")}
           value={formik.values.address_street_name}
           onChange={formik.handleChange}
           error={getError("address_street_name")}
           icon={<GiDoubleStreetLights />}
         />
-        {/* <MainInput
-          id="address_country_id"
-          type="select"
-          placeholder="اسم البلد"
-          label="اسم البلد"
-          error={getError("address_country_id")}
-          value={formik.values.address_country_id}
-          onChange={formik.handleChange}
-          disabled={loadingCountries}
-          options={[
-            { value: "", label: "اختر البلد" },
-            ...countries.map((c) => ({ value: c.id, label: c.name })),
-          ]}
-        /> */}
         <CountrySelect formik={formik} name="address_country_id" />
         <MainInput
           id="address_city_town"
-          label="المدينة"
+          label={t("pages.Step2.form.address_city_town")}
           name="address_city_town"
-          placeholder="اسم المدينة"
+          placeholder={t("pages.Step2.form.address_city_town_placeholder")}
           value={formik.values.address_city_town}
           onChange={formik.handleChange}
           error={getError("address_city_town")}
@@ -116,7 +103,10 @@ export default function Step2({ formData, setFormData }) {
 
       <FormError errorMsg={errorMsg} />
 
-      <FormBtn title="إنهاء" loading={mutation.isPending} />
+      <FormBtn
+        title={t("pages.Step2.form.finish_button")}
+        loading={mutation.isPending}
+      />
     </form>
   );
 }

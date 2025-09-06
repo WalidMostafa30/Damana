@@ -8,11 +8,12 @@ import Timer from "../../components/common/Timer";
 import { CiCalendarDate } from "react-icons/ci";
 import CopyToClipboard from "../../components/common/CopyToClipboard";
 import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
+import { useTranslation } from "react-i18next";
 
 const DamanaDetails = () => {
+  const { t } = useTranslation();
   const { id } = useParams();
 
-  // 🛠 جلب بيانات الضمانة
   const {
     data: damana,
     isLoading,
@@ -21,87 +22,90 @@ const DamanaDetails = () => {
   } = useQuery({
     queryKey: ["damana-details", id],
     queryFn: () => fetchDamanaDetails(id),
-    enabled: !!id, // يتأكد إن id موجود قبل ما يعمل الطلب
+    enabled: !!id,
   });
-  console.log("Damana Details:", damana);
 
   if (isLoading) return <LoadingPage />;
 
   if (isError)
     return (
       <p className="text-center text-red-500 p-4 text-xl">
-        فشل في تحميل البيانات: {error.message}
+        {t("pages.damanaDetails.loadError")}: {error.message}
       </p>
     );
 
   const vehicleData = [
     damana?.plate_number && {
-      label: "رقم اللوحة والترميز",
+      label: t("pages.damanaDetails.fields.plateNumber"),
       value: `${damana.plate_number}-${damana.plate_number}`,
     },
     damana?.vehicle_type && {
-      label: "نوع المركبة",
+      label: t("pages.damanaDetails.fields.vehicleType"),
       value: damana.vehicle_type,
     },
-    damana?.category && { label: "الصنف", value: damana.category },
-    damana?.color && { label: "لون المركبة", value: damana.color },
+    damana?.category && {
+      label: t("pages.damanaDetails.fields.category"),
+      value: damana.category,
+    },
+    damana?.color && {
+      label: t("pages.damanaDetails.fields.color"),
+      value: damana.color,
+    },
     damana?.chassis_number && {
-      label: "رقم الشاصي",
+      label: t("pages.damanaDetails.fields.chassisNumber"),
       value: damana.chassis_number,
     },
     damana?.registration_number && {
-      label: "رقم التسجيل",
+      label: t("pages.damanaDetails.fields.registrationNumber"),
       value: damana.registration_number,
     },
     damana?.registration_date && {
-      label: "تاريخ التسجيل",
+      label: t("pages.damanaDetails.fields.registrationDate"),
       value: damana.registration_date,
     },
     damana?.manufacture_year && {
-      label: "تاريخ الصنع",
+      label: t("pages.damanaDetails.fields.manufactureYear"),
       value: damana.manufacture_year,
     },
     damana?.license_expiry_date && {
-      label: "تاريخ انتهاء الرخصة",
+      label: t("pages.damanaDetails.fields.licenseExpiry"),
       value: damana.license_expiry_date,
     },
     damana?.licensing_center && {
-      label: "مركز الترخيص",
+      label: t("pages.damanaDetails.fields.licensingCenter"),
       value: damana.licensing_center,
     },
     damana?.engine_number && {
-      label: "رقم المحرك",
+      label: t("pages.damanaDetails.fields.engineNumber"),
       value: damana.engine_number,
     },
     damana?.load_capacity && {
-      label: "الحمولة",
+      label: t("pages.damanaDetails.fields.loadCapacity"),
       value: damana.load_capacity,
     },
     damana?.registration_type && {
-      label: "صفة التسجيل",
+      label: t("pages.damanaDetails.fields.registrationType"),
       value: damana.registration_type,
     },
     damana?.country_name && {
-      label: "الدولة",
+      label: t("pages.damanaDetails.fields.country"),
       value: damana.country_name,
     },
     damana?.vehicle_classification && {
-      label: "تصنيف المركبة",
+      label: t("pages.damanaDetails.fields.vehicleClassification"),
       value: damana.vehicle_classification,
     },
     damana?.engine_capacity && {
-      label: "سعة المحرك",
+      label: t("pages.damanaDetails.fields.engineCapacity"),
       value: damana.engine_capacity,
     },
   ].filter(Boolean);
-
-  // const isDisabled = damana?.is_expired || damana?.blocked;
 
   const pageTitle = (title, large = false, color = "var(--color-primary)") => (
     <h3
       className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
         large ? "text-lg lg:text-2xl" : "lg:text-xl !bg-primary"
-      } `}
+      }`}
       style={{
         backgroundColor:
           large && color ? `#${color}` : "var(--color-secondary)",
@@ -121,16 +125,8 @@ const DamanaDetails = () => {
 
   return (
     <article className="pageContainer relative">
-      {/* {isDisabled ? (
-        <section className="absolute z-30 top-0 left-0 w-full h-full bg-gray-500/50 flex items-center justify-center p-4">
-          <p className="whiteContainer text-xl text-center">
-            هذه الضمانة غير نشطة أو محظورة. لا يمكن إجراء أي إجراءات عليها
-          </p>
-        </section>
-      ) : null} */}
-
       {pageTitle(
-        damana?.status_translate || "جار التحميل...",
+        damana?.status_translate || t("pages.damanaDetails.loading"),
         true,
         damana?.status_color
       )}
@@ -138,11 +134,11 @@ const DamanaDetails = () => {
       <section className="baseWhiteContainer space-y-4">
         <div className="whiteContainer flex items-start lg:items-center justify-between flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
-            <p className="font-medium">رقم الضمانة:</p>
+            <p className="font-medium">{t("pages.damanaDetails.guaranteeNumber")}:</p>
             <CopyToClipboard text={damana?.serial_number} />
           </div>
           <div className="flex items-center gap-2">
-            <p className="font-medium">رقم الترميز واللوحة:</p>
+            <p className="font-medium">{t("pages.damanaDetails.plateAndCode")}:</p>
             <p className="text-primary font-bold">{`${damana?.plate_number}-${damana?.plate_number}`}</p>
           </div>
           <div className="flex items-center gap-2">
@@ -154,89 +150,103 @@ const DamanaDetails = () => {
           <Timer expiryDate={damana?.schedule_expired_at} />
         </div>
 
-        {/* بيانات البائع */}
         <div>
-          {pageTitle("بيانات البائع")}
+          {pageTitle(t("pages.damanaDetails.sellerInfo"))}
           <DetailsCard
             data={[
-              { label: "الاسم", value: damana?.seller?.name },
-              { label: "رقم الهاتف", value: damana?.seller?.full_mobile },
-              { label: "رقم الوطني", value: damana?.seller?.national_number },
+              {
+                label: t("pages.damanaDetails.fields.name"),
+                value: damana?.seller?.name,
+              },
+              {
+                label: t("pages.damanaDetails.fields.phone"),
+                value: damana?.seller?.full_mobile,
+              },
+              {
+                label: t("pages.damanaDetails.fields.nationalId"),
+                value: damana?.seller?.national_number,
+              },
             ]}
           />
         </div>
 
-        {/* بيانات المشتري */}
         <div>
-          {pageTitle("بيانات المشتري")}
+          {pageTitle(t("pages.damanaDetails.buyerInfo"))}
           <DetailsCard
             data={[
-              { label: "الاسم", value: damana?.buyer?.name },
-              { label: "رقم الهاتف", value: damana?.buyer?.full_mobile },
-              { label: "رقم الوطني", value: damana?.buyer?.national_number },
+              {
+                label: t("pages.damanaDetails.fields.name"),
+                value: damana?.buyer?.name,
+              },
+              {
+                label: t("pages.damanaDetails.fields.phone"),
+                value: damana?.buyer?.full_mobile,
+              },
+              {
+                label: t("pages.damanaDetails.fields.nationalId"),
+                value: damana?.buyer?.national_number,
+              },
             ]}
           />
         </div>
 
-        {/* بيانات المركبة */}
         <div>
-          {pageTitle("بيانات المركبة")}
+          {pageTitle(t("pages.damanaDetails.vehicleInfo"))}
           <DetailsCard data={vehicleData} col={2} />
         </div>
 
-        {/* بيانات الضمانة */}
         <div>
-          {pageTitle("بيانات الضمانة")}
+          {pageTitle(t("pages.damanaDetails.damanaInfo"))}
           <DetailsCard
             data={[
               {
-                label: "قيمة المركبة",
-                value: `${formatNumber(damana?.vehicle_price)} دينار أردني`,
+                label: t("pages.damanaDetails.fields.vehiclePrice"),
+                value: `${formatNumber(damana?.vehicle_price)} ${t(
+                  "pages.damanaDetails.currency"
+                )}`,
               },
               {
-                label: "عمولة الضمانة",
+                label: t("pages.damanaDetails.fields.commissionBeforeDiscount"),
                 value: `${formatNumber(
                   damana?.commission_value_before_discount
-                )} دينار`,
+                )} ${t("pages.damanaDetails.currency")}`,
               },
-              { label: "كود الخصم", value: damana?.code || "-" },
               {
-                label: "نسبة الخصم",
+                label: t("pages.damanaDetails.fields.discountCode"),
+                value: damana?.code || "-",
+              },
+              {
+                label: t("pages.damanaDetails.fields.discount"),
                 value: damana?.discount
                   ? `${formatNumber(damana?.discount)}${
-                      damana?.discount_type === "percentage" ? "%" : " دينار"
+                      damana?.discount_type === "percentage"
+                        ? "%"
+                        : ` ${t("pages.damanaDetails.currency")}`
                     }`
                   : "-",
               },
               {
-                label: "العمولة بعد الخصم",
-                value: `${formatNumber(damana?.commission_value)} دينار`,
+                label: t("pages.damanaDetails.fields.commissionAfterDiscount"),
+                value: `${formatNumber(damana?.commission_value)} ${t(
+                  "pages.damanaDetails.currency"
+                )}`,
               },
               {
-                label: "سعر الضمانة الكلي",
+                label: t("pages.damanaDetails.fields.totalPrice"),
                 value: `${formatNumber(
                   damana?.vehicle_price_with_commission
-                )} دينار أردني`,
+                )} ${t("pages.damanaDetails.currency")}`,
               },
               {
-                label: "سعر الضمانة الكلي كتابة",
+                label: t("pages.damanaDetails.fields.totalPriceInWords"),
                 value: `${toArabicWord(
                   Number(damana?.vehicle_price_with_commission)
-                )} دينار أردني فقط`,
+                )} ${t("pages.damanaDetails.currency")} ${t("pages.damanaDetails.only")}`,
               },
-              // {
-              //   label: "المستحق للبائع",
-              //   value: `${damana?.due_to_seller} دينار`,
-              // },
-              // {
-              //   label: "المخصوم من المشتري",
-              //   value: `${damana?.deduction_from_buyer} دينار`,
-              // },
             ]}
           />
         </div>
 
-        {/* أزرار التحكم */}
         <ActionsSection damana={damana} />
       </section>
     </article>

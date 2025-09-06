@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
@@ -7,9 +8,11 @@ import AuthLayout from "../../../../../components/common/AuthLayout";
 import AuthBreadcrumbs from "../../../../../components/common/AuthBreadcrumbs";
 import BackStepBtn from "../../../../../components/form/BackStepBtn";
 
-const steps = ["بياناتك الشخصية", "البيانات البنكية", "العنوان السكني"];
-
 export default function CompleteRegister() {
+  const { t } = useTranslation();
+
+  const steps = t("pages.CompleteRegister.steps", { returnObjects: true });
+
   const [step, setStep] = useState(0);
   const goBack = () => setStep((prev) => prev - 1);
 
@@ -33,8 +36,11 @@ export default function CompleteRegister() {
   return (
     <AuthLayout>
       <AuthBreadcrumbs
-        title="أهلاً في ضمانة!"
-        items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
+        title={t("pages.CompleteRegister.title")}
+        items={[
+          { label: t("pages.RegisterPerson.breadcrumbs.home"), path: "/" },
+          { label: t("pages.CompleteRegister.breadcrumb") },
+        ]}
       />
 
       <StepProgress steps={steps} currentStep={step} />

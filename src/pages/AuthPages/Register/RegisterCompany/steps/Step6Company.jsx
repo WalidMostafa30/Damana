@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { FaCirclePlus, FaPeopleGroup } from "react-icons/fa6";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import {
   createCompanyGroup,
@@ -12,6 +13,7 @@ import Step6CompanyCommissioner from "./Step6CompanyCommissioner";
 import Step6CompanyLoginAccounts from "./Step6CompanyLoginAccounts";
 
 const Step6Company = ({ formik, getError }) => {
+  const { t } = useTranslation();
   const [showAddGroupInput, setShowAddGroupInput] = useState(false);
   const [customGroupName, setCustomGroupName] = useState("");
   const [openModal, setOpenModal] = useState(false);
@@ -23,7 +25,10 @@ const Step6Company = ({ formik, getError }) => {
     queryFn: getCompanyGroups,
     select: (res) => res?.data || [],
     onError: (err) => {
-      toast(err?.response?.data?.error_msg || "حدث خطأ أثناء جلب المجموعات");
+      toast(
+        err?.response?.data?.error_msg ||
+          t("pages.Step6Company.errors.groupFetchError")
+      );
     },
   });
 
@@ -33,7 +38,7 @@ const Step6Company = ({ formik, getError }) => {
   const createGroupMutation = useMutation({
     mutationFn: createCompanyGroup,
     onSuccess: (res) => {
-      toast.success("تمت إضافة المجموعة بنجاح");
+      toast.success(t("pages.Step6Company.addGroup.successMessage"));
       if (res?.data) {
         formik.setFieldValue("group_id", {
           id: res.data.id,
@@ -46,14 +51,15 @@ const Step6Company = ({ formik, getError }) => {
     },
     onError: (err) => {
       toast.error(
-        err?.response?.data?.error_msg || "حدث خطأ أثناء إضافة المجموعة"
+        err?.response?.data?.error_msg ||
+          t("pages.Step6Company.addGroup.errorMessage")
       );
     },
   });
 
   const handleAddGroup = () => {
     if (!customGroupName.trim()) {
-      toast.error("من فضلك أدخل اسم المجموعة");
+      toast.error(t("pages.Step6Company.errors.groupRequired"));
       return;
     }
     createGroupMutation.mutate({ name: customGroupName });
@@ -76,11 +82,10 @@ const Step6Company = ({ formik, getError }) => {
 
   const modalMsg = (
     <>
-      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
-      <p className="text-sm lg:text-base">
-        أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
-        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية ...
-      </p>
+      <h3 className="text-lg lg:text-2xl font-bold">
+        {t("pages.Step6Company.modal.title")}
+      </h3>
+      <p className="text-sm lg:text-base">{t("pages.Step6Company.modal.content")}</p>
     </>
   );
 
@@ -90,7 +95,7 @@ const Step6Company = ({ formik, getError }) => {
 
       {/* اختيار المجموعة */}
       <MainInput
-        label="هل تنتمي شركتك إلى مجموعة شركات؟"
+        label={t("pages.Step6Company.groupQuestion")}
         id="group_id"
         type="select"
         name="group_id"
@@ -98,7 +103,12 @@ const Step6Company = ({ formik, getError }) => {
         onChange={handleSelectChange}
         error={getError("group_id")}
         options={[
-          { label: isLoading ? "جاري التحميل..." : "اختر مجموعة", value: "" },
+          {
+            label: isLoading
+              ? t("pages.Step6Company.loading")
+              : t("pages.Step6Company.selectPlaceholder"),
+            value: "",
+          },
           ...groups.map((group) => ({
             label: group.name,
             value: group.id,
@@ -118,7 +128,9 @@ const Step6Company = ({ formik, getError }) => {
             showAddGroupInput ? "rotate-45" : ""
           } duration-200`}
         />
-        {showAddGroupInput ? "ازالة المجموعة" : "إضافة مجموعة جديدة"}
+        {showAddGroupInput
+          ? t("pages.Step6Company.addGroup.hide")
+          : t("pages.Step6Company.addGroup.show")}
       </button>
 
       {showAddGroupInput && (
@@ -127,7 +139,7 @@ const Step6Company = ({ formik, getError }) => {
             type="text"
             value={customGroupName}
             onChange={(e) => setCustomGroupName(e.target.value)}
-            placeholder="ادخل اسم المجموعة"
+            placeholder={t("pages.Step6Company.addGroup.inputPlaceholder")}
           />
           <button
             type="button"
@@ -135,12 +147,14 @@ const Step6Company = ({ formik, getError }) => {
             disabled={createGroupMutation.isPending}
             className="bg-secondary text-white py-2 px-4 rounded-lg cursor-pointer"
           >
-            {createGroupMutation.isPending ? "جاري الإضافة..." : "إضافة"}
+            {createGroupMutation.isPending
+              ? t("pages.Step6Company.addGroup.adding")
+              : t("pages.Step6Company.addGroup.addButton")}
           </button>
         </div>
       )}
 
-      {/* 👇 هنا استخدام الكمبوننتات الجديدة */}
+      {/* 👇 كمبوننت الحسابات */}
       {/* <Step6CompanyCommissioner formik={formik} getError={getError} /> */}
       <Step6CompanyLoginAccounts formik={formik} />
 
@@ -156,13 +170,13 @@ const Step6Company = ({ formik, getError }) => {
           className="h-5 w-5 accent-primary focus:ring-primary"
         />
         <span>
-          الموافقة على سياسة{" "}
+          {t("pages.Step6Company.privacyPolicy.label")}{" "}
           <button
             type="button"
             onClick={() => setOpenModal(true)}
             className="text-primary font-semibold cursor-pointer underline"
           >
-            الخصوصية و شروط استخدام ضمانة
+            {t("pages.Step6Company.privacyPolicy.linkText")}
           </button>{" "}
         </span>
       </label>
@@ -177,13 +191,16 @@ const Step6Company = ({ formik, getError }) => {
         msg={modalMsg}
         icon="protect"
         primaryBtn={{
-          text: "أوافق على الشروط و المتابعه",
+          text: t("pages.Step6Company.modal.agreeButton"),
           action: () => {
             formik.setFieldValue("accept_policy_terms", true);
             setOpenModal(false);
           },
         }}
-        lightBtn={{ text: "العوده", action: () => setOpenModal(false) }}
+        lightBtn={{
+          text: t("pages.Step6Company.modal.backButton"),
+          action: () => setOpenModal(false),
+        }}
       />
     </>
   );

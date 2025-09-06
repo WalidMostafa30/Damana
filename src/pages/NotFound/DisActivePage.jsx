@@ -2,11 +2,14 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { logoutUser } from "../../services/authService";
+import { useTranslation } from "react-i18next";
 
 const DisActivePage = ({ msg }) => {
   const logoutMutation = useMutation({
     mutationFn: () => logoutUser(),
   });
+
+  const { t } = useTranslation();
   return (
     <article className="pageContainer flex items-center justify-center">
       <div className="flex flex-col items-center gap-4">
@@ -21,7 +24,7 @@ const DisActivePage = ({ msg }) => {
           onClick={() => logoutMutation.mutate()}
           className="mainBtn"
         >
-          تسجيل الخروج
+          {t("pages.disActive.logoutBtn")}{" "}
         </Link>
       </div>
     </article>

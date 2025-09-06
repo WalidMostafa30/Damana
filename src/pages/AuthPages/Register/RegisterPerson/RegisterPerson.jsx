@@ -15,8 +15,10 @@ import FormBtn from "../../../../components/form/FormBtn";
 import { registerPerson } from "../../../../services/authService";
 import PhoneInput from "../../../../components/form/PhoneInput";
 import ActionModal from "../../../../components/modals/ActionModal";
+import { useTranslation } from "react-i18next";
 
 const RegisterPerson = () => {
+  const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
@@ -24,7 +26,6 @@ const RegisterPerson = () => {
 
   const navigate = useNavigate();
 
-  // حساب قوة الباسورد
   const calculatePasswordStrength = (password) => {
     let strength = 0;
     if (password.length >= 8) strength++;
@@ -35,9 +36,12 @@ const RegisterPerson = () => {
   };
 
   const getStrengthLabel = () => {
-    if (passwordStrength <= 1) return "ضعيفة";
-    if (passwordStrength === 2) return "متوسطة";
-    if (passwordStrength >= 3) return "قوية";
+    if (passwordStrength <= 1)
+      return t("pages.RegisterPerson.form.strength_labels.weak");
+    if (passwordStrength === 2)
+      return t("pages.RegisterPerson.form.strength_labels.medium");
+    if (passwordStrength >= 3)
+      return t("pages.RegisterPerson.form.strength_labels.strong");
   };
 
   const getStrengthColor = () => {
@@ -47,7 +51,6 @@ const RegisterPerson = () => {
     return "transparent";
   };
 
-  // Mutation للتسجيل
   const registerMutation = useMutation({
     mutationFn: registerPerson,
     onSuccess: async (data, variables) => {
@@ -61,14 +64,17 @@ const RegisterPerson = () => {
       navigate("/register-otp", { state });
     },
     onError: (error) => {
-      setErrorMsg(error?.response?.data?.error_msg || "حدث خطأ أثناء التسجيل");
+      setErrorMsg(
+        error?.response?.data?.error_msg ||
+          t("pages.RegisterPerson.errors.general")
+      );
     },
   });
 
   const formik = useFormik({
     initialValues: {
       name: "",
-      email: "", // ✅ جديد
+      email: "",
       mobile: "",
       country_code: "",
       password: "",
@@ -77,33 +83,44 @@ const RegisterPerson = () => {
     },
     validationSchema: Yup.object({
       name: Yup.string()
-        .required("الاسم مطلوب")
-        .min(3, "الاسم يجب أن لا يقل عن 3 حروف"),
+        .required(t("pages.RegisterPerson.validation.name_required"))
+        .min(3, t("pages.RegisterPerson.validation.name_min")),
       email: Yup.string()
-        .required("البريد الإلكتروني مطلوب")
-        .email("يجب إدخال بريد إلكتروني صحيح"), // ✅ جديد
+        .required(t("pages.RegisterPerson.validation.email_required"))
+        .email(t("pages.RegisterPerson.validation.email_valid")),
       mobile: Yup.string()
-        .required("رقم الهاتف مطلوب")
-        .min(9, "رقم الهاتف يجب أن يحتوي على 9 أرقام على الأقل"),
+        .required(t("pages.RegisterPerson.validation.phone_required"))
+        .min(9, t("pages.RegisterPerson.validation.phone_min")),
       password: Yup.string()
-        .required("كلمة المرور مطلوبة")
-        .min(8, "كلمة المرور يجب ان تكون على الاقل 8 حروف")
-        .matches(/[A-Z]/, "يجب أن تحتوي على حرف كبير واحد على الأقل")
-        .matches(/\d/, "يجب أن تحتوي على رقم واحد على الأقل")
-        .matches(/[\W_]/, "يجب أن تحتوي على رمز خاص واحد على الأقل"),
+        .required(t("pages.RegisterPerson.validation.password_required"))
+        .min(8, t("pages.RegisterPerson.validation.password_min"))
+        .matches(
+          /[A-Z]/,
+          t("pages.RegisterPerson.validation.password_uppercase")
+        )
+        .matches(/\d/, t("pages.RegisterPerson.validation.password_digit"))
+        .matches(
+          /[\W_]/,
+          t("pages.RegisterPerson.validation.password_special")
+        ),
       password_confirmation: Yup.string()
-        .required("تأكيد كلمة المرور مطلوب")
-        .oneOf([Yup.ref("password"), null], "كلمة المرور غير متطابقة"),
+        .required(
+          t("pages.RegisterPerson.validation.confirm_password_required")
+        )
+        .oneOf(
+          [Yup.ref("password"), null],
+          t("pages.RegisterPerson.validation.confirm_password_match")
+        ),
       accept_policy_terms: Yup.bool().oneOf(
         [true],
-        "يجب الموافقة على الشروط قبل التسجيل"
+        t("pages.RegisterPerson.validation.terms_required")
       ),
     }),
     onSubmit: (values) => {
       setErrorMsg("");
       const payload = {
         name: values.name,
-        email: values.email, // ✅ جديد
+        email: values.email,
         mobile: values.mobile,
         country_code: values.country_code,
         password: values.password,
@@ -119,44 +136,43 @@ const RegisterPerson = () => {
   return (
     <AuthLayout>
       <AuthBreadcrumbs
-        title="أهلاً في ضمانة!"
-        items={[{ label: "ضمانة", path: "/" }, { label: "انشاء حساب جديد" }]}
+        title={t("pages.RegisterPerson.title")}
+        items={[
+          { label: t("pages.RegisterPerson.breadcrumbs.home"), path: "/" },
+          { label: t("pages.RegisterPerson.breadcrumbs.register") },
+        ]}
       />
 
       <div className="mb-8">
         <h3 className="text-xl lg:text-2xl font-bold mb-2 lg:mb-4">
-          اكد هويتك الشخصية
+          {t("pages.RegisterPerson.heading")}
         </h3>
         <p className="text-sm lg:text-base text-neutral-500">
-          حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد هويتك
-          وبيانات البنك الخاص بك
+          {t("pages.RegisterPerson.subheading")}
         </p>
       </div>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {/* الاسم */}
           <MainInput
-            label="الاسم"
+            label={t("pages.RegisterPerson.form.name")}
             id="name"
             name="name"
-            placeholder="اسم المستخدم"
+            placeholder={t("pages.RegisterPerson.form.name_placeholder")}
             value={formik.values.name}
             onChange={formik.handleChange}
             error={getError("name")}
             icon={<CiUser />}
           />
 
-          {/* الهاتف */}
           <PhoneInput formik={formik} />
 
-          {/* البريد الإلكتروني ✅ جديد */}
           <MainInput
-            label="البريد الإلكتروني"
+            label={t("pages.RegisterPerson.form.email")}
             id="email"
             name="email"
             type="email"
-            placeholder="example@email.com"
+            placeholder={t("pages.RegisterPerson.form.email_placeholder")}
             value={formik.values.email}
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -164,13 +180,12 @@ const RegisterPerson = () => {
             icon={<MdOutlineMarkEmailUnread />}
           />
 
-          {/* كلمة المرور */}
           <MainInput
             type="password"
             id="password"
             name="password"
-            placeholder="••••••••••"
-            label="كلمة المرور"
+            placeholder={t("pages.RegisterPerson.form.password_placeholder")}
+            label={t("pages.RegisterPerson.form.password")}
             icon={<GoLock />}
             value={formik.values.password}
             onChange={(e) => {
@@ -182,13 +197,12 @@ const RegisterPerson = () => {
             error={getError("password")}
           />
 
-          {/* تأكيد كلمة المرور */}
           <MainInput
             type="password"
             id="password_confirmation"
             name="password_confirmation"
-            placeholder="••••••••••"
-            label="تاكيد كلمة المرور"
+            placeholder={t("pages.RegisterPerson.form.password_placeholder")}
+            label={t("pages.RegisterPerson.form.confirm_password")}
             icon={<GoLock />}
             value={formik.values.password_confirmation}
             onChange={formik.handleChange}
@@ -197,13 +211,11 @@ const RegisterPerson = () => {
           />
         </div>
 
-        {/* ملاحظات كلمة المرور */}
         <p className="flex items-center gap-2 text-neutral-500">
           <FaRegStickyNote className="text-2xl" />
-          يجب أن تحتوى كلمة المرور على أرقام وأحرف ورموز ولا تقل عن 8 حروف
+          {t("pages.RegisterPerson.form.password_note")}
         </p>
 
-        {/* مؤشر القوة */}
         <div className="flex items-center gap-2 mt-2">
           <div className="h-2 w-1/2 rounded-full bg-neutral-200 overflow-hidden">
             <div
@@ -219,12 +231,12 @@ const RegisterPerson = () => {
               className="text-sm font-semibold"
               style={{ color: getStrengthColor() }}
             >
-              قوة كلمة المرور ( {getStrengthLabel()} )
+              {t("pages.RegisterPerson.form.password_strength")} ({" "}
+              {getStrengthLabel()} )
             </p>
           )}
         </div>
 
-        {/* Checkbox سياسة الخصوصية */}
         <label className="flex items-center gap-2 mt-6">
           <input
             type="checkbox"
@@ -236,13 +248,13 @@ const RegisterPerson = () => {
             className="h-5 w-5 accent-primary focus:ring-primary"
           />
           <span>
-            الموافقة على سياسة{" "}
+            {t("pages.RegisterPerson.form.terms_label")}{" "}
             <button
               type="button"
               onClick={() => setOpenModal(true)}
               className="text-primary font-semibold cursor-pointer underline"
             >
-              الخصوصية و شروط استخدام ضمانة
+              {t("pages.RegisterPerson.form.terms_link")}
             </button>{" "}
           </span>
         </label>
@@ -250,7 +262,6 @@ const RegisterPerson = () => {
           <p className="text-error-100">{getError("accept_policy_terms")}</p>
         )}
 
-        {/* مودال الشروط */}
         <ActionModal
           openModal={openModal}
           setOpenModal={setOpenModal}
@@ -258,38 +269,41 @@ const RegisterPerson = () => {
           msg={
             <>
               <h3 className="text-lg lg:text-2xl font-bold">
-                تفويض بمشاركة البيانات
+                {t("pages.RegisterPerson.modal.title")}
               </h3>
               <p className="text-sm lg:text-base">
-                أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق
-                على قيام البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية
-                ...
+                {t("pages.RegisterPerson.modal.content")}
               </p>
             </>
           }
           icon="protect"
           primaryBtn={{
-            text: "أوافق على الشروط و المتابعه",
+            text: t("pages.RegisterPerson.modal.agree"),
             action: () => {
               formik.setFieldValue("accept_policy_terms", true);
               setOpenModal(false);
             },
           }}
-          lightBtn={{ text: "العوده", action: () => setOpenModal(false) }}
+          lightBtn={{
+            text: t("pages.RegisterPerson.modal.back"),
+            action: () => setOpenModal(false),
+          }}
         />
 
-        {/* الأخطاء */}
         <FormError errorMsg={errorMsg} />
 
-        <FormBtn title="انشاء حساب" loading={registerMutation.isPending} />
+        <FormBtn
+          title={t("pages.RegisterPerson.form.submit")}
+          loading={registerMutation.isPending}
+        />
 
         <p className="text-center font-semibold text-sm lg:text-base">
-          هل تمتلك حساب بالفعل؟{" "}
+          {t("pages.RegisterPerson.form.login_text")}{" "}
           <Link
             to="/login"
             className="text-secondary hover:brightness-50 transition-colors"
           >
-            تسجيل دخول
+            {t("pages.RegisterPerson.form.login_link")}
           </Link>
         </p>
       </form>

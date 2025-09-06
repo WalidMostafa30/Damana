@@ -2,9 +2,12 @@ import { useParams } from "react-router-dom";
 import { getPage } from "../../services/staticDataService";
 import { useQuery } from "@tanstack/react-query";
 import LoadingPage from "../../components/Loading/LoadingPage";
+import { useTranslation } from "react-i18next";
 
 const GetPage = () => {
   const { page } = useParams();
+
+  const { t } = useTranslation();
 
   // جلب البيانات
   const {
@@ -21,7 +24,7 @@ const GetPage = () => {
   if (isError)
     return (
       <div className="pageContainer text-center text-xl">
-        حدث خطأ أثناء تحميل الصفحة
+        {t("pages.getPage.error")}
       </div>
     );
 
