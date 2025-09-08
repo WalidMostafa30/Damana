@@ -14,6 +14,7 @@ import { logoutUser } from "../../../../services/authService";
 import LoadingModal from "../../../modals/LoadingModal";
 import { AnimatePresence } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import LanguageSwitcher from "../../../common/LanguageSwitcher";
 
 const HeaderActions = ({ setOpenNav }) => {
   const [openNotification, setOpenNotification] = useState(false);
@@ -43,6 +44,8 @@ const HeaderActions = ({ setOpenNav }) => {
 
   return (
     <div className="flex items-center gap-4">
+      {/* LanguageSwitcher */}
+      <LanguageSwitcher header />
       {/* notification */}
       <div className="relative" ref={notificationBtnRef}>
         <SlBell
@@ -78,7 +81,6 @@ const HeaderActions = ({ setOpenNav }) => {
           )}
         </AnimatePresence>
       </div>
-
       {/* profile */}
       <div
         ref={profileBtnRef}

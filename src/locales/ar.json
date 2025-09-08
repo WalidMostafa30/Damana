@@ -464,6 +464,7 @@
         "serverError": "حدث خطأ أثناء تسجيل الدخول"
       },
       "registerText": "ليس لديك حساب؟",
+      "common.or": "او",
       "companyNote": "ان كنت تمثل شركة"
     },
 
@@ -849,6 +850,7 @@
     "Otp": {
       "title": "التحقق من رمز التحقق",
       "breadcrumb": "التحقق من رمز التحقق",
+      "subtitle": "لقد أرسلنا رمز التحقق إلى رقم ",
       "instruction": "أدخل الكود المكون من 5 أرقام",
       "resend_timer": "يمكنك الآن إعادة إرسال الكود",
       "resend_prompt": "لم يصل الكود؟",
@@ -883,7 +885,7 @@
           "sons": "أبناء اردنيات",
           "non": "غير أردني"
         },
-        "national_number": "الرقم الوطني",
+        "national_number": "الرقم الوطني / الرقم الشخصي",
         "national_number_placeholder": "123456789",
         "country": "اسم الدولة",
         "country_placeholder": "اختر الدولة",

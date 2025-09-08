@@ -15,6 +15,7 @@ import { IoMdCode } from "react-icons/io";
 import BankSelect from "../../components/form/BankSelect";
 import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const BankInfo = () => {
   const { t } = useTranslation();
@@ -29,7 +30,7 @@ const BankInfo = () => {
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
-      alert(t("pages.account.bank_info.success"));
+      toast.success(t("pages.account.bank_info.success"));
       setIsEditing(false);
     },
     onError: (error) => {

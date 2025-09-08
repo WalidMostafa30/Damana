@@ -1,9 +1,10 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   checkOtpRegister,
   checkOtpRegisterFlow2,
+  logoutUser,
   sendOtp,
   sendOtpFlow2,
 } from "../../../../services/authService";
@@ -13,6 +14,7 @@ import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../../components/common/AuthLayout";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useTranslation } from "react-i18next";
+import LoadingModal from "../../../../components/modals/LoadingModal";
 
 const Otp = () => {
   const { t } = useTranslation();
@@ -54,7 +56,8 @@ const Otp = () => {
       if (flow === 2) {
         setOpenModal(true);
       } else {
-        navigate("/complete-register");
+        // navigate("/complete-register");
+        navigate("/");
       }
     },
     onError: (error) => {
@@ -128,6 +131,13 @@ const Otp = () => {
     checkOtpMutation.mutate(payload);
   };
 
+  const logoutMutation = useMutation({
+    mutationFn: () => logoutUser(),
+    onSuccess: () => {
+      navigate("/login");
+    },
+  });
+
   return (
     <AuthLayout>
       <AuthBreadcrumbs
@@ -138,7 +148,14 @@ const Otp = () => {
         ]}
       />
 
+      <p className="text-neutral-500 mb-4">
+        {t("pages.Otp.subtitle")}{" "}
+        <span className="font-bold text-success-200">
+          {country_code + mobile}
+        </span>
+      </p>
       <p className="text-neutral-500 mb-4">{t("pages.Otp.instruction")}</p>
+
       <div className="flex justify-end gap-6 mb-2" dir="ltr">
         {otp.map((value, index) => {
           const isError = errorMessage && value === "";
@@ -199,6 +216,13 @@ const Otp = () => {
         loading={checkOtpMutation.isPending}
       />
 
+      <p
+        onClick={() => logoutMutation.mutate()}
+        className="text-secondary font-semibold text-center cursor-pointer mt-2"
+      >
+        {t("components.layout.headerActions.logout")}
+      </p>
+
       <ActionModal
         openModal={openModal}
         setOpenModal={setOpenModal}
@@ -213,6 +237,7 @@ const Otp = () => {
           action: () => navigate("/forgot-password"),
         }}
       />
+      <LoadingModal openModal={logoutMutation.isPending} />
     </AuthLayout>
   );
 };

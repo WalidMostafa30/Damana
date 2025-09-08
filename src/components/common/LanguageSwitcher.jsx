@@ -8,7 +8,7 @@ import flagEN from "../../assets/icons/flag-en.png";
 import LoadingModal from "../modals/LoadingModal";
 import { IoMdArrowDropdown } from "react-icons/io";
 
-const LanguageSwitcher = () => {
+const LanguageSwitcher = ({ header = false }) => {
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.language);
 
@@ -30,37 +30,58 @@ const LanguageSwitcher = () => {
   return (
     <div className="relative text-lg" ref={langBtnRef}>
       {/* الزرار */}
-      <div
-        onClick={() => setOpenMenu((prev) => !prev)}
-        className="flex items-center gap-2 cursor-pointer px-3 py-1 rounded-md bg-white border-2 border-secondary"
-      >
-        <img
-          src={lang === "ar" ? flagAR : flagEN}
-          alt="flag"
-          className="w-6"
-        />
-        <span>{lang === "ar" ? "العربية" : "English"}</span>
-        <IoMdArrowDropdown className="text-2xl" />
-      </div>
+      {header ? (
+        // ✅ شكل مختصر لو الهيدر
+        <div
+          onClick={() => setOpenMenu((prev) => !prev)}
+          className={`flex items-center gap-1 cursor-pointer ${
+            header ? "bg-transparent" : "bg-white"
+          }`}
+        >
+          <img
+            src={lang === "ar" ? flagAR : flagEN}
+            alt="flag"
+            className="w-5"
+          />
+          <span className="font-semibold uppercase">{lang}</span>{" "}
+          <IoMdArrowDropdown className="text-xl" />
+        </div>
+      ) : (
+        // ✅ الشكل العادي
+        <div
+          onClick={() => setOpenMenu((prev) => !prev)}
+          className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded-md border-2 border-secondary ${
+            header ? "bg-transparent" : "bg-white"
+          }`}
+        >
+          <img
+            src={lang === "ar" ? flagAR : flagEN}
+            alt="flag"
+            className="w-6"
+          />
+          <span>{lang === "ar" ? "العربية" : "English"}</span>
+          <IoMdArrowDropdown className="text-2xl" />
+        </div>
+      )}
 
       {/* القائمة */}
       <AnimatePresence>
         {openMenu && (
           <DropDown onClose={() => setOpenMenu(false)} buttonRef={langBtnRef}>
-            <div className="bg-white w-40 p-2 rounded-md shadow space-y-2">
+            <div className="bg-white w-40 p-2 rounded-md shadow space-y-2 !text-base-black">
               <button
                 onClick={() => handleChange("ar")}
                 className="flex items-center gap-2 w-full px-2 py-1 hover:bg-gray-100 rounded"
               >
-                <img src={flagAR} alt="ar" className="w-6" />
-                العربية
-              </button>
+                {" "}
+                <img src={flagAR} alt="ar" className="w-6" /> العربية{" "}
+              </button>{" "}
               <button
                 onClick={() => handleChange("en")}
                 className="flex items-center gap-2 w-full px-2 py-1 hover:bg-gray-100 rounded"
               >
-                <img src={flagEN} alt="en" className="w-6" />
-                English
+                {" "}
+                <img src={flagEN} alt="en" className="w-6" /> English{" "}
               </button>
             </div>
           </DropDown>

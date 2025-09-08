@@ -11,6 +11,7 @@ import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import CountrySelect from "../../components/form/CountrySelect";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const Address = () => {
   const { t } = useTranslation();
@@ -25,7 +26,7 @@ const Address = () => {
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
-      alert(t("pages.account.address.success"));
+      toast.success(t("pages.account.address.success"));
       setIsEditing(false);
     },
     onError: (error) => {

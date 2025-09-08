@@ -468,6 +468,7 @@
         "serverError": "An error occurred during login"
       },
       "registerText": "Don’t have an account?",
+      "common.or": "or",
       "companyNote": "if you represent a company"
     },
 
@@ -853,6 +854,7 @@
     "Otp": {
       "title": "Verification Code",
       "breadcrumb": "Verification Code",
+      "subtitle": "we sent a verification code to your phone number",
       "instruction": "Enter the 5-digit code",
       "resend_timer": "You can now resend the code",
       "resend_prompt": "Didn't receive the code?",

@@ -9,6 +9,7 @@ import MainInput from "../../components/form/MainInput/MainInput";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const ChangePassword = () => {
   const { t } = useTranslation();
@@ -45,7 +46,7 @@ const ChangePassword = () => {
   const mutation = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      alert(t("pages.account.password.success"));
+      toast.success(t("pages.account.password.success"));
       formik.resetForm();
       setPasswordValue("");
       setPasswordStrength(0);

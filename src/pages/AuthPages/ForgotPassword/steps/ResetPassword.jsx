@@ -9,6 +9,7 @@ import MainInput from "../../../../components/form/MainInput/MainInput";
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { useTranslation } from "react-i18next";
+import toast from "react-hot-toast";
 
 const ResetPassword = ({ parentData }) => {
   const { t } = useTranslation();
@@ -46,7 +47,7 @@ const ResetPassword = ({ parentData }) => {
   const mutation = useMutation({
     mutationFn: resetPassword,
     onSuccess: () => {
-      alert(t("pages.forgotPassword.resetPassword.messages.success"));
+      toast.success(t("pages.forgotPassword.resetPassword.messages.success"));
       // ممكن هنا تعمل إعادة توجيه لصفحة تسجيل الدخول
     },
     onError: (error) => {

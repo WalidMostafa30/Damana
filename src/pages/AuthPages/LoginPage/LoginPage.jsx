@@ -123,7 +123,7 @@ const LoginPage = () => {
           >
             {t("pages.login.links.registerPerson")}
           </Link>{" "}
-          {t("common.or")}{" "}
+          {t("pages.login.common.or")}{" "}
           <Link
             to="/register-company"
             className="text-secondary hover:brightness-50 transition-colors"

@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { checkOtp } from "../../../../services/authService";
+import { checkOtp, checkMobile } from "../../../../services/authService"; // ✅ استدعاء checkMobile
 import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { useTranslation } from "react-i18next";
@@ -13,7 +13,7 @@ const Otp = ({ goNext, parentData, setParentData }) => {
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
 
-  // ✅ Mutation
+  // ✅ Mutation للتحقق من الـ OTP
   const mutation = useMutation({
     mutationFn: checkOtp,
     onSuccess: (data) => {
@@ -29,6 +29,30 @@ const Otp = ({ goNext, parentData, setParentData }) => {
       setErrorMessage(
         error?.response?.data?.error_msg ||
           t("pages.forgotPassword.otp.errors.invalid")
+      );
+    },
+  });
+
+  // ✅ Mutation لإعادة إرسال الكود
+  const resendMutation = useMutation({
+    mutationFn: checkMobile,
+    onSuccess: (data) => {
+      // تحديث البيانات من جديد (مهم عشان نحصل على uid/token جديد)
+      setParentData((prev) => ({
+        ...prev,
+        uid: data.data.uid,
+        password_reset_token: data.data.password_reset_token,
+        otp_code: data.data.otp_code,
+      }));
+      setOtp(["", "", "", "", ""]);
+      setTimer(60);
+      setCanResend(false);
+      setErrorMessage("");
+    },
+    onError: (error) => {
+      setErrorMessage(
+        error?.response?.data?.error_msg ||
+          t("pages.forgotPassword.checkMobile.errors.serverError")
       );
     },
   });
@@ -60,11 +84,17 @@ const Otp = ({ goNext, parentData, setParentData }) => {
 
   const handleResend = () => {
     if (!canResend) return;
-    setOtp(["", "", "", "", ""]);
-    setTimer(60);
-    setCanResend(false);
-    setErrorMessage("");
-    console.log("✅ إعادة إرسال الكود");
+
+    // ✅ هنا بنعيد استدعاء checkMobile بنفس الداتا اللي المستخدم دخلها
+    const payload = parentData.email
+      ? { email: parentData.email, by: "email" }
+      : {
+          mobile: parentData.mobile,
+          country_code: parentData.country_code,
+          by: "mobile",
+        };
+
+    resendMutation.mutate(payload);
   };
 
   const handleSubmit = () => {
@@ -89,7 +119,12 @@ const Otp = ({ goNext, parentData, setParentData }) => {
 
   return (
     <>
-      {/* ✅ Instruction */}
+      <p className="text-neutral-500 mb-4">
+        {t("pages.Otp.subtitle")}{" "}
+        <span className="font-bold text-success-200">
+          {parentData.country_code + parentData.mobile}
+        </span>
+      </p>
       <p className="text-neutral-500 mb-4">
         {t("pages.forgotPassword.otp.instruction")}
       </p>
@@ -133,23 +168,28 @@ const Otp = ({ goNext, parentData, setParentData }) => {
         </span>
         <button
           onClick={handleResend}
-          disabled={!canResend}
+          disabled={!canResend || resendMutation.isPending}
           className={`${
             canResend
               ? "text-secondary cursor-pointer hover:underline"
               : "text-neutral-400 cursor-not-allowed"
           }`}
         >
-          {t("pages.forgotPassword.otp.resend.button")}
+          {resendMutation.isPending
+            ? t("pages.forgotPassword.otp.resend.loading")
+            : t("pages.forgotPassword.otp.resend.button")}
         </button>
       </div>
 
       <FormError errorMsg={errorMessage} />
-      <FormBtn
-        onClick={handleSubmit}
-        title={t("pages.forgotPassword.otp.button.confirm")}
-        loading={mutation.isPending}
-      />
+
+      <div className="mt-4">
+        <FormBtn
+          onClick={handleSubmit}
+          title={t("pages.forgotPassword.otp.button.confirm")}
+          loading={mutation.isPending}
+        />
+      </div>
     </>
   );
 };

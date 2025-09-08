@@ -50,9 +50,9 @@ export default function CheckAuthRoute({ children }) {
     return <Navigate to="/register-otp" replace />;
   }
 
-  if (data?.next_screen === "complete_register") {
-    return <Navigate to="/complete-register" replace />;
-  }
+  // if (data?.next_screen === "complete_register") {
+  //   return <Navigate to="/complete-register" replace />;
+  // }
 
   if (data?.next_screen === "dis_active") {
     return <DisActivePage msg={data?.dis_active_message} />;

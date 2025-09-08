@@ -11,11 +11,11 @@ const Purchase = ({ data, fetchNextPage, hasNextPage, loading, error }) => {
       next={fetchNextPage}
       hasMore={hasNextPage}
       loader={
-        <p className="text-center p-4">{t("purchase_sale.loadingMore")}</p>
+        <p className="text-center p-4">{t("pages.purchase_sale.loadingMore")}</p>
       }
       endMessage={
         data.length !== 0 && (
-          <p className="text-center p-4">{t("purchase_sale.noMoreItems")}</p>
+          <p className="text-center p-4">{t("pages.purchase_sale.noMoreItems")}</p>
         )
       }
       className="!overflow-hidden"

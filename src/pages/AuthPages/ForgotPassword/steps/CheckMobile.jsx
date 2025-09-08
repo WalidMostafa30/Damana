@@ -21,12 +21,16 @@ const CheckMobile = ({ goNext, setParentData }) => {
       ? {
           mobile: Yup.string()
             .min(9, t("pages.forgotPassword.checkMobile.errors.mobileMin"))
-            .required(t("pages.forgotPassword.checkMobile.errors.mobileRequired")),
+            .required(
+              t("pages.forgotPassword.checkMobile.errors.mobileRequired")
+            ),
         }
       : {
           email: Yup.string()
             .email(t("pages.forgotPassword.checkMobile.errors.emailInvalid"))
-            .required(t("pages.forgotPassword.checkMobile.errors.emailRequired")),
+            .required(
+              t("pages.forgotPassword.checkMobile.errors.emailRequired")
+            ),
         }
   );
 
@@ -38,13 +42,18 @@ const CheckMobile = ({ goNext, setParentData }) => {
         uid: data.data.uid,
         password_reset_token: data.data.password_reset_token,
         otp_code: data.data.otp_code,
+        mobile: formik.values.mobile,
+        country_code: formik.values.country_code,
+        email: formik.values.email,
+        by: method,
       }));
       setErrorMsg("");
       goNext();
     },
     onError: (error) => {
       setErrorMsg(
-        error?.response?.data?.error_msg || t("pages.forgotPassword.checkMobile.errors.serverError")
+        error?.response?.data?.error_msg ||
+          t("pages.forgotPassword.checkMobile.errors.serverError")
       );
     },
   });
@@ -74,13 +83,17 @@ const CheckMobile = ({ goNext, setParentData }) => {
   return (
     <>
       {/* ✅ Description */}
-      <p className="text-neutral-500 mb-4">{t("pages.forgotPassword.checkMobile.description")}</p>
+      <p className="text-neutral-500 mb-4">
+        {t("pages.forgotPassword.checkMobile.description")}
+      </p>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         {method === "mobile" ? (
           <PhoneInput
             formik={formik}
-            placeholder={t("pages.forgotPassword.checkMobile.placeholders.mobile")}
+            placeholder={t(
+              "pages.forgotPassword.checkMobile.placeholders.mobile"
+            )}
             label={t("pages.forgotPassword.checkMobile.labels.mobile")}
           />
         ) : (
@@ -88,7 +101,9 @@ const CheckMobile = ({ goNext, setParentData }) => {
             id="email"
             name="email"
             type="text"
-            placeholder={t("pages.forgotPassword.checkMobile.placeholders.email")}
+            placeholder={t(
+              "pages.forgotPassword.checkMobile.placeholders.email"
+            )}
             icon={<CiMail />}
             label={t("pages.forgotPassword.checkMobile.labels.email")}
             value={formik.values.email}

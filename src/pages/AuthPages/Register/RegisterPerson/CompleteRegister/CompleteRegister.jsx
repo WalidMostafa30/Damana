@@ -7,6 +7,10 @@ import StepProgress from "../../../../../components/common/StepProgress/StepProg
 import AuthLayout from "../../../../../components/common/AuthLayout";
 import AuthBreadcrumbs from "../../../../../components/common/AuthBreadcrumbs";
 import BackStepBtn from "../../../../../components/form/BackStepBtn";
+import { useMutation } from "@tanstack/react-query";
+import { logoutUser } from "../../../../../services/authService";
+import { useNavigate } from "react-router-dom";
+import LoadingModal from "../../../../../components/modals/LoadingModal";
 
 export default function CompleteRegister() {
   const { t } = useTranslation();
@@ -15,6 +19,7 @@ export default function CompleteRegister() {
 
   const [step, setStep] = useState(0);
   const goBack = () => setStep((prev) => prev - 1);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
     dob: "",
@@ -31,6 +36,13 @@ export default function CompleteRegister() {
     address_street_name: "",
     address_country_id: "",
     address_city_town: "",
+  });
+
+  const logoutMutation = useMutation({
+    mutationFn: () => logoutUser(),
+    onSuccess: () => {
+      navigate("/login");
+    },
   });
 
   return (
@@ -69,9 +81,18 @@ export default function CompleteRegister() {
         />
       )}
 
+      <p
+        onClick={() => logoutMutation.mutate()}
+        className="text-secondary font-semibold text-center cursor-pointer mt-2"
+      >
+        {t("components.layout.headerActions.logout")}
+      </p>
+
       <div className="mt-4">
         <BackStepBtn step={step} goBack={goBack} />
       </div>
+
+      <LoadingModal openModal={logoutMutation.isPending} />
     </AuthLayout>
   );
 }

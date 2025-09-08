@@ -32,7 +32,7 @@ const FAQ = () => {
 
   return (
     <div className="whiteContainer !p-0">
-      <h3 className="text-2xl font-bold text-center p-4 text-primary border-b border-neutral-200">
+      <h3 className="text-2xl font-bold p-4 text-primary border-b border-neutral-200">
         {t("pages.faq.title")}{" "}
       </h3>
       <ul>
@@ -40,9 +40,9 @@ const FAQ = () => {
           <li key={question.id} className="border-b border-neutral-200">
             <button
               onClick={() => toggleFAQ(index)}
-              className="w-full flex items-start justify-between p-4 text-lg font-semibold cursor-pointer"
+              className="w-full flex gap-2 justify-between p-4 text-lg font-semibold cursor-pointer"
             >
-              {question.title}
+              <span className="flex-1 text-start">{question.title}</span>
               <IoIosArrowDown
                 className={`transition-transform duration-300 ${
                   openIndex === index ? "rotate-180" : ""
