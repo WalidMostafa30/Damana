@@ -6,17 +6,7 @@
   justify-content: center;
   align-items: center;
   border-right: 1px solid #ccc;
-  padding-left: 0!important;
-}
-
-.custom-select {
-  appearance: none; /* يخفي شكل النظام الافتراضي */
-  -webkit-appearance: none;
-  -moz-appearance: none;
-
-  background-color: #fff;
-  cursor: pointer;
-  padding-right: 2.5rem; /* مساحة للسهم */
+  padding-left: 0 !important;
 }
 
 .custom-select option {

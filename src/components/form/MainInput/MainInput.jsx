@@ -122,10 +122,6 @@ const MainInput = ({
             ))}
           </select>
 
-          {/* سهم مخصص بدل السهم الافتراضي */}
-          <span className="pointer-events-none absolute top-1/2 -translate-y-1/2 right-3 text-neutral-500">
-            ▼
-          </span>
         </div>
         {commonError}
       </div>

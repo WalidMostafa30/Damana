@@ -12,8 +12,6 @@ export default function UnifiedProtectedRoute({ children }) {
     queryFn: checkAuth,
   });
 
-  console.log(data);
-
   if (isLoading) return <LoadingPage />;
 
   if (token && data?.next_screen === "normal") {

@@ -1,6 +1,10 @@
 {
   "loading": "Loading...",
   "edit": "Edit",
+  "update_damana_modal": {
+    "msg": "updated successfully",
+    "btn": "Ok"
+  },
 
   "components": {
     "common": {

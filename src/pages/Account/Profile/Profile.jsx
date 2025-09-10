@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import Avatar from "../../../components/common/Avatar";
 import LoadingSection from "../../../components/Loading/LoadingSection";
@@ -17,10 +17,6 @@ const Profile = () => {
     mobile: "",
     country_code: "",
   });
-
-  useEffect(() => {
-    console.log("📌 New phone number state:", newPhoneNumber);
-  }, [newPhoneNumber]);
 
   const [step, setStep] = useState(1);
 

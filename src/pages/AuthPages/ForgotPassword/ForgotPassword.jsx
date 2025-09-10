@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import AuthBreadcrumbs from "../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../components/common/AuthLayout";
@@ -11,11 +11,6 @@ const ForgotPassword = () => {
   const { t } = useTranslation(); // ✅ استخدم hook الترجمة
   const [step, setStep] = useState(1);
   const [data, setData] = useState({});
-
-  useEffect(() => {
-    console.clear();
-    console.log("data", data);
-  }, [data]);
 
   return (
     <AuthLayout>

@@ -20,8 +20,7 @@ const MobileSteps2 = ({ newPhoneNumber = {} }) => {
   // Mutation للتحقق من الكود
   const mutation = useMutation({
     mutationFn: changeMobileCheckOTP,
-    onSuccess: (data) => {
-      console.log("OTP verified successfully", data);
+    onSuccess: () => {
       setErrorMessage("");
     },
     onError: (error) => {

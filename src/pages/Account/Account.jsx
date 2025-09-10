@@ -1,9 +1,11 @@
 import { NavLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTitle from "../../components/common/PageTitle";
+import { useSelector } from "react-redux";
 
 const Account = () => {
   const { t } = useTranslation();
+  const { profile } = useSelector((state) => state.profile);
 
   return (
     <section className="pageContainer space-y-4">
@@ -20,12 +22,16 @@ const Account = () => {
             <NavLink to="/profile" end className="profileLink">
               {t("pages.account.account.nav.profile")}
             </NavLink>
-            <NavLink to="/profile/bank-info" className="profileLink">
-              {t("pages.account.account.nav.bank_info")}
-            </NavLink>
-            <NavLink to="/profile/address" className="profileLink">
-              {t("pages.account.account.nav.address")}
-            </NavLink>
+            {profile?.account_type !== "company" && (
+              <>
+                <NavLink to="/profile/bank-info" className="profileLink">
+                  {t("pages.account.account.nav.bank_info")}
+                </NavLink>
+                <NavLink to="/profile/address" className="profileLink">
+                  {t("pages.account.account.nav.address")}
+                </NavLink>
+              </>
+            )}
             <NavLink to="/profile/remove-damana" className="profileLink">
               {t("pages.account.account.nav.remove_damana")}
             </NavLink>

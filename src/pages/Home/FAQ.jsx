@@ -24,8 +24,6 @@ const FAQ = () => {
     keepPreviousData: true,
   });
 
-  console.log(faqs);
-
   if (isLoading) return <LoadingSection />;
 
   if (isError) return;

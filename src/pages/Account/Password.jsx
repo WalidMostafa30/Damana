@@ -9,7 +9,7 @@ import MainInput from "../../components/form/MainInput/MainInput";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import ActionModal from "../../components/modals/ActionModal";
 
 const ChangePassword = () => {
   const { t } = useTranslation();
@@ -17,6 +17,7 @@ const ChangePassword = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
   const [errorMsg, setErrorMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   // حساب قوة الباسورد
   const calculatePasswordStrength = (password) => {
@@ -46,7 +47,7 @@ const ChangePassword = () => {
   const mutation = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      toast.success(t("pages.account.password.success"));
+      setOpenModal(true);
       formik.resetForm();
       setPasswordValue("");
       setPasswordStrength(0);
@@ -173,6 +174,18 @@ const ChangePassword = () => {
       <FormBtn
         title={t("pages.account.password.save")}
         loading={mutation.isPending}
+      />
+
+      <ActionModal
+        openModal={openModal}
+        msg={t("update_damana_modal.msg")}
+        icon="success"
+        primaryBtn={{
+          text: t("update_damana_modal.btn"),
+          action: () => {
+            setOpenModal(false);
+          },
+        }}
       />
     </form>
   );

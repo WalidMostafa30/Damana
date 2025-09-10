@@ -15,7 +15,7 @@ const Header = () => {
         <div className="flex items-center gap-2">
           <span
             onClick={() => setOpenNav((prev) => !prev)}
-            className="text-3xl cursor-pointer block lg:hidden"
+            className="text-3xl cursor-pointer block xl:hidden"
           >
             {openNav ? <IoClose /> : <HiMenuAlt2 />}
           </span>
@@ -24,7 +24,7 @@ const Header = () => {
               src={logo}
               alt="logo"
               loading="lazy"
-              className="w-32 lg:w-40"
+              className="w-32 xl:w-40"
             />
           </Link>
         </div>

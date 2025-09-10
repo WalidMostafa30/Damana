@@ -95,8 +95,13 @@ const ActionsSection = ({ damana }) => {
 
   if (!profile) return null;
 
-  const isBuyer = damana?.buyer?.id === profile.id;
-  const isSeller = damana?.seller?.id === profile.id;
+  const isBuyer = damana?.buyer_company_id
+    ? damana.buyer_company_id === profile.company_id
+    : damana?.buyer?.id === profile.id;
+
+  const isSeller = damana?.seller_company_id
+    ? damana.seller_company_id === profile.company_id
+    : damana?.seller?.id === profile.id;
   const isDisabled = damana?.is_expired || damana?.blocked;
 
   return (

@@ -15,22 +15,30 @@ import { IoMdCode } from "react-icons/io";
 import BankSelect from "../../components/form/BankSelect";
 import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import ActionModal from "../../components/modals/ActionModal";
 
 const BankInfo = () => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
-  // 🟢 جلب بيانات البروفايل من الـ Redux
   const { profile } = useSelector((state) => state.profile);
-  const userBank = profile?.user_bank || {};
+
+  if (profile?.account_type === "company")
+    return <Navigate to="/profile" replace />;
+
+  const userBank =
+    (profile?.account_type === "company"
+      ? profile?.user_company?.user_bank
+      : profile?.user_bank) || {};
+  console.log(profile);
 
   // 🟢 Mutation للتعديل على البيانات البنكية
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
-      toast.success(t("pages.account.bank_info.success"));
+      setOpenModal(true);
       setIsEditing(false);
     },
     onError: (error) => {
@@ -86,15 +94,17 @@ const BankInfo = () => {
           {t("pages.account.bank_info.title")}
         </h3>
 
-        <button
-          onClick={() => setIsEditing((prev) => !prev)}
-          className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 lg:text-lg cursor-pointer ${
-            isEditing ? "bg-secondary/30 border-secondary/30" : ""
-          }`}
-        >
-          <FaRegEdit />
-          {t("pages.account.bank_info.edit")}
-        </button>
+        {profile?.account_type !== "company" && (
+          <button
+            onClick={() => setIsEditing((prev) => !prev)}
+            className={`border border-neutral-300 px-4 py-2 rounded-xl flex items-center gap-2 lg:text-lg cursor-pointer ${
+              isEditing ? "bg-secondary/30 border-secondary/30" : ""
+            }`}
+          >
+            <FaRegEdit />
+            {t("pages.account.bank_info.edit")}
+          </button>
+        )}
       </div>
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
@@ -175,6 +185,18 @@ const BankInfo = () => {
           />
         )}
       </form>
+
+      <ActionModal
+        openModal={openModal}
+        msg={t("update_damana_modal.msg")}
+        icon="success"
+        primaryBtn={{
+          text: t("update_damana_modal.btn"),
+          action: () => {
+            setOpenModal(false);
+          },
+        }}
+      />
     </>
   );
 };

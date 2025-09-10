@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import PageTitle from "../../components/common/PageTitle";
 import StepProgressCol from "../../components/common/StepProgress/StepProgressCol";
 import Step0 from "./steps/Step0";
@@ -7,7 +7,6 @@ import Step2 from "./steps/Step2";
 import BackStepBtn from "../../components/form/BackStepBtn";
 import { useQuery } from "@tanstack/react-query";
 import { getApplicationConfiguration } from "../../services/staticDataService";
-// ✅ استدعاء الترجمة
 import { useTranslation } from "react-i18next";
 
 export default function AddDamana() {
@@ -34,10 +33,6 @@ export default function AddDamana() {
     code: "",
     transfer_commission: "ACH",
   });
-
-  useEffect(() => {
-    console.log("📌 البيانات المشتركة بين الخطوات:", formData);
-  }, [formData]);
 
   const goNext = () => setStep((prev) => prev + 1);
   const goBack = () => setStep((prev) => prev - 1);

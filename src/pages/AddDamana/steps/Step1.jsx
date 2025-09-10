@@ -8,6 +8,7 @@ import MainInput from "../../../components/form/MainInput/MainInput";
 import FormBtn from "../../../components/form/FormBtn";
 import PhoneInput from "../../../components/form/PhoneInput";
 import { useTranslation } from "react-i18next";
+import FormError from "../../../components/form/FormError";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
   const { t } = useTranslation();
@@ -190,7 +191,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
         <DetailsCard data={data} col={2} blur={!formData.is_owner} />
       </div>
 
-      {errorMsg && <div className="text-error-200">{errorMsg}</div>}
+      <FormError errorMsg={errorMsg} />
 
       <FormBtn
         title={t("pages.addDamana.step1.submit")}

@@ -11,22 +11,28 @@ import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import CountrySelect from "../../components/form/CountrySelect";
 import { useTranslation } from "react-i18next";
-import toast from "react-hot-toast";
+import ActionModal from "../../components/modals/ActionModal";
+import { Navigate } from "react-router-dom";
 
 const Address = () => {
   const { t } = useTranslation();
   const [isEditing, setIsEditing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
 
   // 🟢 بيانات البروفايل
   const { profile } = useSelector((state) => state.profile);
+
+  if (profile?.account_type === "company")
+    return <Navigate to="/profile" replace />;
+
   const userAddress = profile || {};
 
   // 🟢 Mutation
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
-      toast.success(t("pages.account.address.success"));
+      setOpenModal(true);
       setIsEditing(false);
     },
     onError: (error) => {
@@ -160,6 +166,18 @@ const Address = () => {
           />
         )}
       </form>
+
+      <ActionModal
+        openModal={openModal}
+        msg={t("update_damana_modal.msg")}
+        icon="success"
+        primaryBtn={{
+          text: t("update_damana_modal.btn"),
+          action: () => {
+            setOpenModal(false);
+          },
+        }}
+      />
     </>
   );
 };

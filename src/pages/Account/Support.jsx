@@ -16,9 +16,7 @@ const Support = () => {
       message: "",
     },
     validationSchema: addressSchema,
-    onSubmit: (values) => {
-      console.log("Support form data:", values);
-    },
+    onSubmit: (values) => {},
   });
 
   const getError = (field) => formik.touched[field] && formik.errors[field];

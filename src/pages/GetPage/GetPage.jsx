@@ -28,7 +28,6 @@ const GetPage = () => {
       </div>
     );
 
-  console.log("Page Content:", pageContent);
 
   return (
     <article className="pageContainer">

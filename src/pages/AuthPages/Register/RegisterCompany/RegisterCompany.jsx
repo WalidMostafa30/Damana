@@ -301,7 +301,6 @@ const RegisterCompany = () => {
         const formData = new FormData();
         // 👇 هنا يتم تحويل جميع البيانات بشكل تلقائي
         buildFormData(formData, values);
-        console.log(formData);
         mutation.mutate(formData);
       }
     },

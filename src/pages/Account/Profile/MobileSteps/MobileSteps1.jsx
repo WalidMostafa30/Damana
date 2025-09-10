@@ -17,14 +17,13 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
 
   const mutationOTP = useMutation({
     mutationFn: changeMobileSendOTP,
-    onSuccess: (data) => {
+    onSuccess: () => {
       setNewPhoneNumber((prev) => ({
         ...prev,
         mobile: formik.values.mobile,
         country_code: formik.values.country_code,
       }));
       setErrorMsg("");
-      console.log("OTP sent successfully", data);
 
       goNext();
     },
@@ -88,21 +87,25 @@ const MobileSteps1 = ({ profile, setNewPhoneNumber, goNext, isEditing }) => {
         {t("pages.account.profile.mobileStep1.mobile_email_title")}
       </h3>
 
-      <form onSubmit={formik.handleSubmit} className="space-y-4 max-w-md">
-        <PhoneInput formik={formik} disabled={!isEditing} />
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <MainInput
+            type="email"
+            id="email"
+            placeholder={t(
+              "pages.account.profile.mobileStep1.email_placeholder"
+            )}
+            label={t("pages.account.profile.mobileStep1.email_label")}
+            icon={<GoMail />}
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={getError("email")}
+            disabled={!isEditing}
+          />
 
-        <MainInput
-          type="email"
-          id="email"
-          placeholder={t("pages.account.profile.mobileStep1.email_placeholder")}
-          label={t("pages.account.profile.mobileStep1.email_label")}
-          icon={<GoMail />}
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          onBlur={formik.handleBlur}
-          error={getError("email")}
-          disabled={!isEditing}
-        />
+          <PhoneInput formik={formik} disabled={!isEditing} />
+        </div>
 
         <FormError errorMsg={errorMsg} />
         {showEditBtn && isEditing && (

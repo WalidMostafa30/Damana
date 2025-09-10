@@ -25,6 +25,8 @@ const DamanaDetails = () => {
     enabled: !!id,
   });
 
+  console.log("📌 بيانات الضمانة:", damana);
+
   if (isLoading) return <LoadingPage />;
 
   if (isError)
@@ -134,11 +136,15 @@ const DamanaDetails = () => {
       <section className="baseWhiteContainer space-y-4">
         <div className="whiteContainer flex items-start lg:items-center justify-between flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
-            <p className="font-medium">{t("pages.damanaDetails.guaranteeNumber")}:</p>
+            <p className="font-medium">
+              {t("pages.damanaDetails.guaranteeNumber")}:
+            </p>
             <CopyToClipboard text={damana?.serial_number} />
           </div>
           <div className="flex items-center gap-2">
-            <p className="font-medium">{t("pages.damanaDetails.plateAndCode")}:</p>
+            <p className="font-medium">
+              {t("pages.damanaDetails.plateAndCode")}:
+            </p>
             <p className="text-primary font-bold">{`${damana?.plate_number}-${damana?.plate_number}`}</p>
           </div>
           <div className="flex items-center gap-2">
@@ -156,15 +162,21 @@ const DamanaDetails = () => {
             data={[
               {
                 label: t("pages.damanaDetails.fields.name"),
-                value: damana?.seller?.name,
+                value: damana?.seller_company
+                  ? damana?.seller_company.ar_name
+                  : damana?.seller?.name,
               },
               {
                 label: t("pages.damanaDetails.fields.phone"),
-                value: damana?.seller?.full_mobile,
+                value: damana?.seller_company
+                  ? damana?.seller_company.phone
+                  : damana?.seller?.full_mobile,
               },
               {
                 label: t("pages.damanaDetails.fields.nationalId"),
-                value: damana?.seller?.national_number,
+                value: damana?.seller_company
+                  ? damana?.seller_company.national_number
+                  : damana?.seller?.national_number,
               },
             ]}
           />
@@ -176,15 +188,21 @@ const DamanaDetails = () => {
             data={[
               {
                 label: t("pages.damanaDetails.fields.name"),
-                value: damana?.buyer?.name,
+                value: damana?.buyer_company
+                  ? damana?.buyer_company.ar_name
+                  : damana?.buyer?.name,
               },
               {
                 label: t("pages.damanaDetails.fields.phone"),
-                value: damana?.buyer?.full_mobile,
+                value: damana?.buyer_company
+                  ? damana?.buyer_company.phone
+                  : damana?.buyer?.full_mobile,
               },
               {
                 label: t("pages.damanaDetails.fields.nationalId"),
-                value: damana?.buyer?.national_number,
+                value: damana?.buyer_company
+                  ? damana?.buyer_company.national_number
+                  : damana?.buyer?.national_number,
               },
             ]}
           />
@@ -241,7 +259,9 @@ const DamanaDetails = () => {
                 label: t("pages.damanaDetails.fields.totalPriceInWords"),
                 value: `${toArabicWord(
                   Number(damana?.vehicle_price_with_commission)
-                )} ${t("pages.damanaDetails.currency")} ${t("pages.damanaDetails.only")}`,
+                )} ${t("pages.damanaDetails.currency")} ${t(
+                  "pages.damanaDetails.only"
+                )}`,
               },
             ]}
           />

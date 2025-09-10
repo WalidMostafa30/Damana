@@ -1,6 +1,10 @@
 {
   "loading": "جاري التحميل...",
   "edit": "تعديل",
+  "update_damana_modal": {
+    "msg": "تم تحديث البيانات بنجاح",
+    "btn": "حسنا"
+  },
 
   "components": {
     "common": {

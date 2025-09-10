@@ -38,9 +38,7 @@ const Otp = () => {
   // Mutation: إرسال OTP
   const sendOtpMutation = useMutation({
     mutationFn: sendOtpFn,
-    onSuccess: (data) => {
-      console.log("تم إرسال الكود ✅", data);
-    },
+
     onError: (error) => {
       setErrorMessage(
         error?.response?.data?.error_msg || t("pages.Otp.errors.send_failed")
@@ -51,8 +49,7 @@ const Otp = () => {
   // Mutation: التحقق من OTP
   const checkOtpMutation = useMutation({
     mutationFn: checkOtpFn,
-    onSuccess: (data) => {
-      console.log("OTP صحيح ✅", data);
+    onSuccess: () => {
       if (flow === 2) {
         setOpenModal(true);
       } else {
