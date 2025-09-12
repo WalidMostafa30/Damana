@@ -60,7 +60,7 @@ const Step3Company = ({ formik, getError }) => {
             { value: "", label: t("pages.Step3Company.currency.defaultOption") },
             ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
               value: c,
-              label: t(`Step3Company.currency.options.${c}`),
+              label: t(`pages.Step3Company.currency.options.${c}`),
             })),
           ]}
         />

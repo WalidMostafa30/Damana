@@ -75,6 +75,11 @@
         "sessionEnded": "انتهت الجلسة",
         "sessionExpired": "انتهت صلاحية تسجيل الدخول، يرجى تسجيل الدخول مرة أخرى.",
         "goToLogin": "الذهاب الى صفحه تسجيل الدخول"
+      },
+      "checkCompleteRegisterRoute": {
+        "completeRegisterTitle": "اكمل تسجيل بياناتك",
+        "completeRegisterMessage": "يرجى استكمال تسجيل بياناتك للمتابعة.",
+        "completeRegisterBtn": "اكمل التسجيل"
       }
     }
   },

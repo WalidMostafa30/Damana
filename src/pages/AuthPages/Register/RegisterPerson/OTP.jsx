@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   checkOtpRegister,
   checkOtpRegisterFlow2,
@@ -23,7 +23,10 @@ const Otp = () => {
   const [timer, setTimer] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
-  const [openModal, setOpenModal] = useState(false);
+  const [openModal, setOpenModal] = useState({
+    flow2Modal: false,
+    successModal: false,
+  });
   const navigate = useNavigate();
   const location = useLocation();
   const { flow = 1, mobile, country_code, ref_key } = location.state || {};
@@ -38,6 +41,9 @@ const Otp = () => {
   // Mutation: إرسال OTP
   const sendOtpMutation = useMutation({
     mutationFn: sendOtpFn,
+    onSuccess: (value) => {
+      console.log(value);
+    },
 
     onError: (error) => {
       setErrorMessage(
@@ -51,10 +57,9 @@ const Otp = () => {
     mutationFn: checkOtpFn,
     onSuccess: () => {
       if (flow === 2) {
-        setOpenModal(true);
+        setOpenModal({ ...openModal, flow2Modal: true });
       } else {
-        // navigate("/complete-register");
-        navigate("/");
+        setOpenModal({ ...openModal, successModal: true });
       }
     },
     onError: (error) => {
@@ -221,7 +226,7 @@ const Otp = () => {
       </p>
 
       <ActionModal
-        openModal={openModal}
+        openModal={openModal.flow2Modal}
         setOpenModal={setOpenModal}
         icon="warning"
         msg={t("pages.Otp.modal.title")}
@@ -232,6 +237,17 @@ const Otp = () => {
         lightBtn={{
           text: t("pages.Otp.modal.forgot_password_button"),
           action: () => navigate("/forgot-password"),
+        }}
+      />
+
+      <ActionModal
+        openModal={openModal.successModal}
+        setOpenModal={setOpenModal}
+        icon="warning"
+        msg={"تم التحقق بنجاح"}
+        primaryBtn={{
+          text: "الصفحة الرئيسية",
+          action: () => navigate("/"),
         }}
       />
       <LoadingModal openModal={logoutMutation.isPending} />

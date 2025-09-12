@@ -75,6 +75,11 @@
         "sessionEnded": "Session Ended",
         "sessionExpired": "Login session has expired, please log in again.",
         "goToLogin": "Go to login page"
+      },
+      "checkCompleteRegisterRoute": {
+        "completeRegisterTitle": "Complete Your Registration",
+        "completeRegisterMessage": "To access all features, please complete your registration by providing the required information.",
+        "completeRegisterBtn": "Complete Registration"
       }
     }
   },

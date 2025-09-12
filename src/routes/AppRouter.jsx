@@ -10,6 +10,7 @@ import ProtectedRoute from "../components/ProtectedRoute/ProtectedRoute";
 import GuestRoute from "../components/ProtectedRoute/GuestRoute";
 import CheckAuthRoute from "../components/ProtectedRoute/CheckAuthRoute";
 import UnifiedProtectedRoute from "../components/ProtectedRoute/UnifiedProtectedRoute";
+import CheckCompleteRegisterRoute from "../components/ProtectedRoute/CheckCompleteRegisterRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
@@ -76,7 +77,14 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       { path: "/dashboard/*", element: <Dashboard /> },
-      { path: "add-damana", element: <AddDamana /> },
+      {
+        path: "add-damana",
+        element: (
+          <CheckCompleteRegisterRoute>
+            <AddDamana />
+          </CheckCompleteRegisterRoute>
+        ),
+      },
       { path: "damana/:id", element: <DamanaDetails /> },
       { path: "payment-options", element: <PaymentOptions /> },
       { path: "page/:page", element: <GetPage /> },
@@ -131,7 +139,7 @@ const router = createBrowserRouter([
   {
     path: "register-otp",
     element: (
-      <UnifiedProtectedRoute>
+      <UnifiedProtectedRoute page="otp">
         <RegisterOTP />
       </UnifiedProtectedRoute>
     ),
@@ -139,7 +147,7 @@ const router = createBrowserRouter([
   {
     path: "complete-register",
     element: (
-      <UnifiedProtectedRoute>
+      <UnifiedProtectedRoute page="complete_register">
         <CompleteRegister />
       </UnifiedProtectedRoute>
     ),

@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { closeLogoutModal } from "../../store/modalsSlice/logoutModalSlice";
 import ActionModal from "../modals/ActionModal";
 import { useTranslation } from "react-i18next";
+import Cookies from "js-cookie";
 
 export default function CheckAuthRoute({ children }) {
   const { t } = useTranslation();
@@ -19,8 +20,7 @@ export default function CheckAuthRoute({ children }) {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingPage />;
-
-  if (error?.response?.data?.error_code === 401) {
+  if (error)
     return (
       <ActionModal
         openModal={true}
@@ -40,19 +40,15 @@ export default function CheckAuthRoute({ children }) {
           action: () => {
             dispatch(closeLogoutModal());
             navigate("/login");
+            Cookies.remove("token");
           },
         }}
       />
     );
-  }
 
   if (!data?.mobile_verified || data?.next_screen === "mobile_otp") {
     return <Navigate to="/register-otp" replace />;
   }
-
-  // if (data?.next_screen === "complete_register") {
-  //   return <Navigate to="/complete-register" replace />;
-  // }
 
   if (data?.next_screen === "dis_active") {
     return <DisActivePage msg={data?.dis_active_message} />;
