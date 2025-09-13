@@ -57,12 +57,9 @@ const RegisterPerson = () => {
       const state = {
         mobile: variables.mobile,
         country_code: variables.country_code,
-        flow: 1,
-        ref_key: "",
       };
+
       if (data?.error_code === 1101) {
-        state.mobile = variables.mobile;
-        state.country_code = variables.country_code;
         state.flow = 2;
         state.ref_key = data?.ref_key;
       }

@@ -53,9 +53,12 @@ const FAQ = () => {
                 openIndex === index ? "max-h-[500px]" : "max-h-0"
               }`}
             >
-              <p className="p-4 pt-0 text-neutral-600">
-                {question.description}
-              </p>
+              <div className="p-4 pt-0">
+                <div
+                  className="htmlContent"
+                  dangerouslySetInnerHTML={{ __html: question.description }}
+                />
+              </div>
             </div>
           </li>
         ))}

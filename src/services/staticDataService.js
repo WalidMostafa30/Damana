@@ -29,3 +29,18 @@ export const getPage = async (slug) => {
   const { data } = await api.get(`/pages/get-page/${slug}`);
   return data?.data || [];
 };
+
+export const getSlider = async () => {
+  const { data } = await api.get(`/static-data/slider`);
+  return data?.data || [];
+};
+
+export const getFAQPage = async () => {
+  const { data } = await api.get(`/static-data/faq/full`);
+  return data?.data || [];
+};
+
+export const getSamplesLinks = async () => {
+  const { data } = await api.get(`/samples-links`);
+  return data?.data || [];
+};

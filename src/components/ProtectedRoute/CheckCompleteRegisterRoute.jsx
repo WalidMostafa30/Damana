@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
-const CheckCompleteRegisterRoute = (children) => {
+const CheckCompleteRegisterRoute = ({children}) => {
   const { data, isLoading } = useQuery({
     queryKey: ["checkAuth"],
     queryFn: checkAuth,

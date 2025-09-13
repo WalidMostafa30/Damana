@@ -50,10 +50,10 @@ const NavBar = ({ openNav, setOpenNav }) => {
 
       <NavLink
         onClick={() => setOpenNav(false)}
-        to="/contact-us"
+        to="/faqs"
         className="navLink"
       >
-        {t("components.layout.navbar.contactUs")}
+        {t("components.layout.navbar.faqs")}
       </NavLink>
     </nav>
   );

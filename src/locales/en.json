@@ -57,7 +57,7 @@
         "dashboard": "Dashboard",
         "startGuarantee": "Start Guarantee",
         "paymentOptions": "Payment Options",
-        "contactUs": "Contact Us"
+        "faqs": "FAQs"
       },
       "headerActions": {
         "notifications": "Notifications",
@@ -540,7 +540,8 @@
         "title": "Step 2: Upload File",
         "description": "Drag the file here or click to select it from your device",
         "uploadText": "Drag file here or click to select it"
-      }
+      },
+      "selectedFile": "Selected File"
     },
 
     "step0Company": {
@@ -657,6 +658,11 @@
         "label": "Delegation text as it appears in the commercial register"
       },
       "commissionerTitle": "Commissioner Data",
+      "chooseCommissioners_type": "Choose Commissioners Input Method",
+      "commissioners_type": {
+        "form": "Manual Input",
+        "excel": "Upload File"
+      },
       "addCommissioner": "Add New Commissioner",
       "removeCommissioner": "Remove Commissioner",
       "managementCommissionersTitle": "Management Commissioners",

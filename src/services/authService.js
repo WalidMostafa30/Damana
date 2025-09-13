@@ -44,6 +44,15 @@ export const registerCompany = async (payload) => {
   return data;
 };
 
+export const registerCompanyFile = async (payload) => {
+  const { data } = await api.post("/auth/register/company/file", payload, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+};
+
 export const getCompanyGroups = async () => {
   const { data } = await api.get("/auth/register/company/groups");
   return data || [];
@@ -84,7 +93,6 @@ export const changeMobileCheckOTP = async (formData) => {
   );
   return data;
 };
-
 
 export const completeRegister = async (formData) => {
   const { data } = await api.post("/auth/complete-register", formData);

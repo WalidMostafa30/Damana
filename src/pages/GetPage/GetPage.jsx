@@ -28,11 +28,10 @@ const GetPage = () => {
       </div>
     );
 
-
   return (
     <article className="pageContainer">
       <div
-        className="htmlContent"
+        className="htmlContent whiteContainer"
         dangerouslySetInnerHTML={{ __html: pageContent?.content }}
       />
     </article>

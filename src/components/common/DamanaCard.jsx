@@ -15,6 +15,8 @@ const DamanaCard = ({
   const { t } = useTranslation();
   const tr = (key) => t(`components.common.damanaCard.${key}`);
 
+  console.log("DamanaCard ", damana);
+
   return (
     <div
       onClick={selectable ? onSelect : undefined}
@@ -53,7 +55,11 @@ const DamanaCard = ({
             <CiUser className="text-2xl" />
             <p>
               <span>{tr("seller")}</span> :{" "}
-              <span className="font-bold">{damana?.seller?.name}</span>
+              <span className="font-bold">
+                {damana?.seller_company
+                  ? damana?.seller_company.ar_name
+                  : damana?.seller?.name}
+              </span>
             </p>
           </div>
 

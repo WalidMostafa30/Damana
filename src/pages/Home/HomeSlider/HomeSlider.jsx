@@ -3,11 +3,27 @@ import { Pagination, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/pagination";
 import "./HomeSlider.css";
-import homeBanner from "../../../assets/images/home-banner.png";
-
-const data = [homeBanner, homeBanner, homeBanner];
+import { getSlider } from "../../../services/staticDataService";
+import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import LoadingSection from "../../../components/Loading/LoadingSection";
 
 const HomeSlider = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryFn: () => getSlider(),
+    queryKey: ["termsAndConditions"],
+    keepPreviousData: true,
+  });
+  const { t } = useTranslation();
+  console.log(data);
+
+  if (isLoading) return <LoadingSection />;
+
+  if (isError)
+    return (
+      <div className="p-4 text-center">{t("pages.account.terms.error")} </div>
+    );
+
   return (
     <Swiper
       dir="ltr"
@@ -20,13 +36,13 @@ const HomeSlider = () => {
       modules={[Autoplay, Pagination]}
       className="homeSlider"
     >
-      {data?.map((item, index) => (
-        <SwiperSlide key={index}>
+      {data?.map((item) => (
+        <SwiperSlide key={item.id}>
           <img
             loading="lazy"
-            src={item}
-            alt={index}
-            className="w-full h-full object-cover"
+            src={item.image_full_path}
+            alt={`slider ${item.id}`}
+            className="w-full h-full object-cover rounded-2xl"
           />
         </SwiperSlide>
       ))}

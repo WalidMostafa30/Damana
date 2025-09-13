@@ -17,11 +17,16 @@ import FormError from "../../../../components/form/FormError";
 import FormBtn from "../../../../components/form/FormBtn";
 import { Link, useNavigate } from "react-router-dom";
 import ActionModal from "../../../../components/modals/ActionModal";
-import { useMutation } from "@tanstack/react-query";
-import { registerCompany } from "../../../../services/authService";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import {
+  registerCompany,
+  registerCompanyFile,
+} from "../../../../services/authService";
 import BackStepBtn from "../../../../components/form/BackStepBtn";
 import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
+import { IoIosArrowDown } from "react-icons/io";
+import { getSamplesLinks } from "../../../../services/staticDataService";
 
 const FILE_SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -41,15 +46,21 @@ const RegisterCompany = () => {
   const steps = t("pages.registerCompany.steps", { returnObjects: true });
 
   const partnerYup = Yup.object({
-    full_name: Yup.string().required(t("pages.registerCompany.validation.required")),
+    full_name: Yup.string().required(
+      t("pages.registerCompany.validation.required")
+    ),
     nationality: Yup.string().required(
       t("pages.registerCompany.validation.required")
     ),
     national_passport_number: Yup.string().required(
       t("pages.registerCompany.validation.required")
     ),
-    address: Yup.string().required(t("pages.registerCompany.validation.required")),
-    phone: Yup.string().required(t("pages.registerCompany.validation.required")),
+    address: Yup.string().required(
+      t("pages.registerCompany.validation.required")
+    ),
+    phone: Yup.string().required(
+      t("pages.registerCompany.validation.required")
+    ),
     email: Yup.string()
       .email(t("pages.registerCompany.validation.invalidEmail"))
       .required(t("pages.registerCompany.validation.required")),
@@ -58,8 +69,12 @@ const RegisterCompany = () => {
   const stepSchemas = [
     // Step 1
     Yup.object({
-      ar_name: Yup.string().required(t("pages.registerCompany.validation.required")),
-      en_name: Yup.string().required(t("pages.registerCompany.validation.required")),
+      ar_name: Yup.string().required(
+        t("pages.registerCompany.validation.required")
+      ),
+      en_name: Yup.string().required(
+        t("pages.registerCompany.validation.required")
+      ),
       commercial_ar_name: Yup.string().required(
         t("pages.registerCompany.validation.required")
       ),
@@ -90,11 +105,15 @@ const RegisterCompany = () => {
       license_number: Yup.string().required(
         t("pages.registerCompany.validation.required")
       ),
-      address: Yup.string().required(t("pages.registerCompany.validation.required")),
+      address: Yup.string().required(
+        t("pages.registerCompany.validation.required")
+      ),
       email: Yup.string()
         .email(t("pages.registerCompany.validation.invalidEmail"))
         .required(t("pages.registerCompany.validation.required")),
-      phone: Yup.string().required(t("pages.registerCompany.validation.required")),
+      phone: Yup.string().required(
+        t("pages.registerCompany.validation.required")
+      ),
       tax_number: Yup.string().required(
         t("pages.registerCompany.validation.required")
       ),
@@ -118,7 +137,49 @@ const RegisterCompany = () => {
       commissioners_text: Yup.string().required(
         t("pages.registerCompany.validation.required")
       ),
-      commissioners: Yup.array().of(partnerYup),
+      commissioners_type: Yup.string()
+        .required("اختيار طريقة الإدخال مطلوب")
+        .oneOf(["form", "excel"], "طريقة الإدخال غير صحيحة"),
+      // commissioners: Yup.array().of(partnerYup),
+      commissioners: Yup.array().when("commissioners_type", {
+        is: "form",
+        then: (schema) =>
+          schema
+            .of(
+              Yup.object({
+                full_name: Yup.string().required("اسم المفوض مطلوب"),
+                nationality: Yup.string().required("الجنسية مطلوبة"),
+                national_passport_number: Yup.string().required(
+                  "الرقم القومي أو رقم الجواز مطلوب"
+                ),
+                job: Yup.string().required("الوظيفة مطلوبة"),
+                address: Yup.string().required("العنوان مطلوب"),
+                phone: Yup.string()
+                  .required("رقم الهاتف مطلوب")
+                  .matches(/^[0-9]+$/, "رقم الهاتف يجب أن يحتوي على أرقام فقط"),
+                email: Yup.string()
+                  .email("البريد الإلكتروني غير صالح")
+                  .required("البريد الإلكتروني مطلوب"),
+              })
+            )
+            .min(1, "يجب إضافة مفوض واحد على الأقل"),
+        otherwise: (schema) => schema.notRequired(),
+      }),
+
+      company_commissioner_file: Yup.mixed().when("commissioners_type", {
+        is: "excel",
+        then: (schema) =>
+          schema
+            .required("ملف التفويض مطلوب")
+            .test("fileType", "صيغة الملف غير مدعومة", (value) => {
+              if (!value) return false;
+              return [
+                "application/vnd.ms-excel",
+                "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+              ].includes(value.type);
+            }),
+        otherwise: (schema) => schema.notRequired(),
+      }),
       managementCommissioners: partnerYup,
     }),
 
@@ -143,7 +204,9 @@ const RegisterCompany = () => {
     // Step 5
     Yup.object({
       file_commercial_register: Yup.mixed()
-        .required(t("pages.registerCompany.validation.commercialRegisterRequired"))
+        .required(
+          t("pages.registerCompany.validation.commercialRegisterRequired")
+        )
         .test(
           "fileFormat",
           t("pages.registerCompany.validation.unsupportedFileFormat"),
@@ -246,6 +309,7 @@ const RegisterCompany = () => {
         },
       ],
       commissioners_text: "",
+      commissioners_type: "form",
       commissioners: [
         {
           full_name: "",
@@ -261,6 +325,7 @@ const RegisterCompany = () => {
           delegation_permissions: "",
         },
       ],
+      company_commissioner_file: null,
       managementCommissioners: {
         full_name: "",
         nationality: "",
@@ -312,6 +377,26 @@ const RegisterCompany = () => {
     return touched && error ? error : "";
   };
 
+  const { data } = useQuery({
+    queryFn: () => getSamplesLinks(),
+    queryKey: ["samplesLinks"],
+    keepPreviousData: true,
+  });
+
+  const fileUploadMutation = useMutation({
+    mutationFn: registerCompanyFile,
+    onSuccess: (res) => {
+      // هنا ممكن تحفظ اللينك أو ID في Formik
+      formik.setFieldValue("company_commissioner_file", res?.file_path || null);
+    },
+    onError: (err) => {
+      console.error("❌ Upload error:", err);
+    },
+  });
+
+  const companyExcelLink = data?.company_sample;
+  const commissionerExcelLink = data?.company_commissioner_sample;
+
   const renderStep = () => {
     switch (step) {
       case 0:
@@ -319,7 +404,13 @@ const RegisterCompany = () => {
       case 1:
         return <Step1Company formik={formik} getError={getError} />;
       case 2:
-        return <Step2Company formik={formik} getError={getError} />;
+        return (
+          <Step2Company
+            formik={formik}
+            getError={getError}
+            commissionerExcelLink={commissionerExcelLink}
+          />
+        );
       case 3:
         return <Step3Company formik={formik} getError={getError} />;
       case 4:
@@ -335,6 +426,8 @@ const RegisterCompany = () => {
 
   const goBack = () => setStep((prev) => prev - 1);
 
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
     <AuthLayout>
       <AuthBreadcrumbs
@@ -345,7 +438,38 @@ const RegisterCompany = () => {
         ]}
       />
 
-      {step === 0 && <FileUploadSection />}
+      {step === 0 && (
+        <div className="mb-8">
+          {/* زر فتح / إغلاق */}
+          <button
+            onClick={() => setIsOpen((prev) => !prev)}
+            className="w-full flex items-center justify-between py-4 font-bold text-secondary cursor-pointer hover:brightness-75 transition"
+          >
+            {t("pages.fileUploadSection.title")}
+            <IoIosArrowDown
+              className={`${isOpen ? "rotate-180" : ""} duration-300 text-2xl`}
+            />
+          </button>
+
+          {/* المحتوى القابل للفتح */}
+          <div
+            className={`transition-all ease-in-out duration-500 overflow-hidden ${
+              isOpen ? "max-h-[500px]" : "max-h-0"
+            }`}
+          >
+            <FileUploadSection
+              downloadLink={companyExcelLink}
+              value={formik.values.company_commissioner_file}
+              error={getError("company_commissioner_file")}
+              onChange={(file) => {
+                const formData = new FormData();
+                formData.append("company_file", file);
+                fileUploadMutation.mutate(formData);
+              }}
+            />
+          </div>
+        </div>
+      )}
 
       <StepProgress steps={steps} currentStep={step} />
 

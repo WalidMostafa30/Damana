@@ -57,7 +57,7 @@
         "dashboard": "لوحة التحكم",
         "startGuarantee": "بدء ضمانة",
         "paymentOptions": "خيارات الدفع",
-        "contactUs": "اتصل بنا"
+        "faqs": "الأسئلة الشائعة"
       },
       "headerActions": {
         "notifications": "الإشعارات",
@@ -536,7 +536,8 @@
         "title": "الخطوة الثانية: رفع الملف",
         "description": "اسحب الملف هنا أو اضغط لاختياره من الجهاز",
         "uploadText": "اسحب الملف هنا أو اضغط لاختياره"
-      }
+      },
+      "selectedFile": "الملف المختار"
     },
 
     "step0Company": {
@@ -653,6 +654,11 @@
         "label": "نص التفويض كما هو في السجل التجاري"
       },
       "commissionerTitle": "بيانات المفوض",
+      "chooseCommissioners_type": "اختر طريقة إدخال المفوضين",
+      "commissioners_type": {
+        "form": "إدخال يدوي",
+        "excel": "رفع ملف"
+      },
       "addCommissioner": "إضافة مفوض جديد",
       "removeCommissioner": "حذف المفوض",
       "managementCommissionersTitle": "مفوضي الإدارة",
@@ -1054,6 +1060,11 @@
       "confirm_button": "تم",
       "operational_tab": "لوحة المعلومات التشغيلية",
       "financial_tab": "لوحة المعلومات المالية"
+    },
+
+    "faqs-page": {
+      "title": "الاسئلة الشائعة",
+      "subtitle": "هنا تجد أكثر الأسئلة الشائعة التي قد تخطر في بالك"
     },
 
     "getPage": {
