@@ -5,7 +5,7 @@ import Header from "./components/layout/Header/Header";
 import Footer from "./components/layout/Footer/Footer";
 import TopHeader from "./components/layout/Header/TopHeader";
 import { useDispatch } from "react-redux";
-import { getProfileAct } from "./store/profile/profileAction";
+import { getProfileAct } from "./store/profile/profileSlice";
 
 function App() {
   const { pathname } = useLocation();

@@ -20,6 +20,7 @@ export default function CheckAuthRoute({ children }) {
   const navigate = useNavigate();
 
   if (isLoading) return <LoadingPage />;
+
   if (error)
     return (
       <ActionModal

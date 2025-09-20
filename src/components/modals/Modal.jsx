@@ -1,9 +1,16 @@
 import { createPortal } from "react-dom";
 import { IoClose } from "react-icons/io5";
+// eslint-disable-next-line no-unused-vars
 import { AnimatePresence, motion } from "framer-motion";
 import { backdropVariants, modalVariants } from "../../animations/modalV";
 
-const Modal = ({ openModal, setOpenModal, closeBtn = false, children }) => {
+const Modal = ({
+  openModal,
+  setOpenModal,
+  closeBtn = false,
+  size,
+  children,
+}) => {
   return createPortal(
     <AnimatePresence>
       {openModal && (
@@ -19,7 +26,13 @@ const Modal = ({ openModal, setOpenModal, closeBtn = false, children }) => {
             initial="hidden"
             animate="visible"
             exit="exit"
-            className="w-full max-h-full max-w-2xl p-4 pt-12 bg-white rounded-xl flex flex-col gap-4 relative overflow-y-auto"
+            className={`w-full max-h-full p-4 pt-12 bg-white rounded-xl flex flex-col gap-4 relative overflow-y-auto ${
+              size === "large"
+                ? "max-w-6xl"
+                : size === "small"
+                ? "max-w-xl"
+                : "max-w-2xl"
+            } `}
           >
             {closeBtn && (
               <span

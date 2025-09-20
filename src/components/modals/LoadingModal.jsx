@@ -3,7 +3,7 @@ import Modal from "./Modal";
 
 const LoadingModal = ({ openModal }) => {
   return (
-    <Modal openModal={openModal}>
+    <Modal openModal={openModal} size={"small"}>
       <Loader />
     </Modal>
   );

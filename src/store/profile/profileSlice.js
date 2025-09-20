@@ -1,11 +1,26 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { getProfileAct } from "./profileAction";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { getProfile } from "../../services/authService";
 
 const initialState = {
   profile: null,
   loading: false,
   error: null,
 };
+
+export const getProfileAct = createAsyncThunk(
+  "profile/getProfile",
+  async (_, { rejectWithValue }) => {
+    try {
+      const data = await getProfile();
+
+      return data;
+    } catch (error) {
+      return rejectWithValue(
+        error?.response?.data?.error_msg || "حدث خطأ أثناء جلب البيانات"
+      );
+    }
+  }
+);
 
 const profileSlice = createSlice({
   name: "profile",

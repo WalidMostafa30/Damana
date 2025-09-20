@@ -11,6 +11,7 @@ import ActionModal from "../../../../../components/modals/ActionModal";
 import toast, { Toaster } from "react-hot-toast";
 import Step6CompanyCommissioner from "./Step6CompanyCommissioner";
 import Step6CompanyLoginAccounts from "./Step6CompanyLoginAccounts";
+import { useSelector } from "react-redux";
 
 const Step6Company = ({ formik, getError }) => {
   const { t } = useTranslation();
@@ -80,12 +81,20 @@ const Step6Company = ({ formik, getError }) => {
     }
   };
 
+  const { data: appConfig } = useSelector((state) => state.appConfig);
+
   const modalMsg = (
     <>
       <h3 className="text-lg lg:text-2xl font-bold">
-        {t("pages.Step6Company.modal.title")}
+        {appConfig?.messages?.register_company_consent.title || ""}
       </h3>
-      <p className="text-sm lg:text-base">{t("pages.Step6Company.modal.content")}</p>
+      <div
+        className="htmlContent"
+        dangerouslySetInnerHTML={{
+          __html:
+            appConfig?.messages?.register_company_consent.consent_text || "",
+        }}
+      />
     </>
   );
 

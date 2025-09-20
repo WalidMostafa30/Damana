@@ -350,14 +350,20 @@ const RegisterCompany = () => {
       acknowledgement: false,
       group_id: {},
       accept_policy_terms: false,
-      // login_commissioners: [],
-      // login_accounts: [],
       login_accounts: {},
     },
     validationSchema: stepSchemas[step],
     validateOnBlur: true,
     onSubmit: (values) => {
       setErrorMsg("");
+
+      // ✅ هنا نفضي الـ commissioners لو نوع الإدخال Excel
+      if (values.commissioners_type === "excel") {
+        values.commissioners = null;
+      } else if (values.commissioners_type === "form") {
+        delete values.company_commissioner_file;
+      }
+
       if (step < steps.length - 1) {
         setStep((prev) => prev + 1);
         formik.setTouched({});

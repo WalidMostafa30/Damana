@@ -15,12 +15,12 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
   });
   const [errors, setErrors] = useState({});
 
-  const login_accounts = formik.values.login_accounts || {};
-
   const validate = () => {
     let newErrors = {};
     if (!tempLogin.login_name.trim()) {
-      newErrors.login_name = t("pages.Step6CompanyLoginAccounts.errors.nameRequired");
+      newErrors.login_name = t(
+        "pages.Step6CompanyLoginAccounts.errors.nameRequired"
+      );
     }
     if (!tempLogin.login_phone.trim()) {
       newErrors.login_phone = t(
@@ -50,23 +50,26 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
   };
 
   const removeLogin = () => {
-    formik.setFieldValue("login_accounts", []); // ✅ يمسح الحساب
+    formik.setFieldValue("login_accounts", {}); // ✅ يمسح الحساب
     setShowLoginForm(false); // يرجع يقدر يضيف تاني
   };
+
+  console.log(formik.values.login_accounts);
 
   return (
     <div className="mt-4">
       {/* الزرار يظهر فقط لو مفيش حساب مضاف */}
-      {!login_accounts.length && !showLoginForm && (
-        <button
-          type="button"
-          className="mb-4 flex items-center gap-1 text-primary cursor-pointer"
-          onClick={() => setShowLoginForm(true)}
-        >
-          <FaCirclePlus className="text-2xl" />
-          {t("pages.Step6CompanyLoginAccounts.addButton")}
-        </button>
-      )}
+      {Object.keys(formik.values.login_accounts).length === 0 &&
+        !showLoginForm && (
+          <button
+            type="button"
+            className="mb-4 flex items-center gap-1 text-primary cursor-pointer"
+            onClick={() => setShowLoginForm(true)}
+          >
+            <FaCirclePlus className="text-2xl" />
+            {t("pages.Step6CompanyLoginAccounts.addButton")}
+          </button>
+        )}
 
       {showLoginForm && (
         <div className="mb-6 baseWhiteContainer">
@@ -96,7 +99,9 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
 
             <div className="md:col-span-2">
               <FileInput
-                label={t("pages.Step6CompanyLoginAccounts.authorizationFileLabel")}
+                label={t(
+                  "pages.Step6CompanyLoginAccounts.authorizationFileLabel"
+                )}
                 value={tempLogin.authorizationFile}
                 onChange={(file) =>
                   setTempLogin({ ...tempLogin, authorizationFile: file })
@@ -117,17 +122,19 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
       )}
 
       {/* عرض الحساب الوحيد */}
-      {login_accounts.length > 0 && (
+      {Object.keys(formik.values.login_accounts).length > 0 && (
         <div className="mt-4">
           <p className="font-bold mb-2">
             {t("pages.Step6CompanyLoginAccounts.addedAccountTitle")}
           </p>
 
-          <div className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2">
-            <span>{login_accounts[0].login_name}</span>
+          <div className="p-2 rounded-lg bg-secondary/10 flex items-center gap-2 w-fit">
+            <p className="text-lg font-semibold">
+              {formik.values.login_accounts.login_name}
+            </p>
             <button
               type="button"
-              className="text-error-100 text-2xl cursor-pointer"
+              className="text-error-200 text-2xl cursor-pointer"
               onClick={removeLogin}
               aria-label={t("pages.Step6CompanyLoginAccounts.removeButton")}
             >

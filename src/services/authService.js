@@ -66,15 +66,15 @@ export const createCompanyGroup = async (payload) => {
   return data;
 };
 
-// export const getProfile = async () => {
-//   const { data } = await api.get("/auth/get-profile");
+export const getProfile = async () => {
+  const { data } = await api.get("/auth/get-profile");
 
-//   if (data?.data?.token) {
-//     Cookies.set("token", data?.data?.token);
-//   }
+  if (data?.data?.token) {
+    Cookies.set("token", data?.data?.token);
+  }
 
-//   return data?.data;
-// };
+  return data?.data || null;
+};
 
 export const changePassword = async (formData) => {
   const { data } = await api.post("/auth/change-password", formData);
@@ -151,6 +151,7 @@ export const sendAddressOrBankData = async (payload) => {
 
   return data;
 };
+
 export const checkAuth = async () => {
   const { data } = await api.get("/auth/check-auth");
 
@@ -159,4 +160,10 @@ export const checkAuth = async () => {
   }
 
   return data?.data;
+};
+
+export const sendSupportMessage = async (message) => {
+  const { data } = await api.post("/support-message", message);
+
+  return data;
 };

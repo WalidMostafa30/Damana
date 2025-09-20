@@ -1,70 +1,78 @@
-import { Toaster } from "react-hot-toast";
-import toast from "react-hot-toast";
 import { useSelector } from "react-redux";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { changeStatus, releaseRequest } from "../../services/damanaServices";
-import { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import Timer from "../../components/common/Timer";
+import { useState } from "react";
+import ActionModal from "../../components/modals/ActionModal";
+import LoadingModal from "../../components/modals/LoadingModal";
 
 const ActionsSection = ({ damana }) => {
   const { t } = useTranslation();
   const { profile } = useSelector((state) => state.profile);
+  const queryClient = useQueryClient();
 
-  const [releaseTimer, setReleaseTimer] = useState(null);
+  const [openModal, setOpenModal] = useState(false);
+  const [modalConfig, setModalConfig] = useState({
+    msg: "",
+    icon: "info",
+    primaryBtn: null,
+  });
 
-  useEffect(() => {
-    if (damana?.coming_request_release) {
-      const interval = setInterval(() => {
-        const now = new Date();
-        const releaseTime = new Date(damana.coming_request_release);
-        if (releaseTime < now) {
-          setReleaseTimer(t("pages.actionsSection.timer.allowed"));
-          clearInterval(interval);
-        } else {
-          const diff = releaseTime - now;
-          const minutes = Math.floor(diff / 1000 / 60);
-          const seconds = Math.floor((diff / 1000) % 60);
-          setReleaseTimer(
-            t("pages.actionsSection.timer.countdown", { minutes, seconds })
-          );
-        }
-      }, 1000);
-
-      return () => clearInterval(interval);
-    }
-  }, [damana?.coming_request_release, t]);
+  const openActionModal = ({ msg, icon = "info", primaryBtn = null }) => {
+    setModalConfig({ msg, icon, primaryBtn });
+    setOpenModal(true);
+  };
 
   const changeStatusMutation = useMutation({
     mutationFn: (status) => changeStatus({ id: damana.id, status }),
     onSuccess: (data) => {
+      // ✅ تحديث البيانات بعد النجاح
+      queryClient.invalidateQueries(["damana-details", damana.id]);
+
       if (data.status) {
-        toast.success(t("pages.actionsSection.toast.statusUpdated"));
-        window.location.reload();
+        openActionModal({
+          msg: t("pages.actionsSection.toast.statusUpdated"),
+          icon: "success",
+        });
       } else {
-        toast.error(
-          data.error_message || t("pages.actionsSection.toast.error")
-        );
+        openActionModal({
+          msg: data.error_message || t("pages.actionsSection.toast.error"),
+          icon: "error",
+        });
       }
     },
     onError: () => {
-      toast.error(t("pages.actionsSection.toast.serverError"));
+      openActionModal({
+        msg: t("pages.actionsSection.toast.serverError"),
+        icon: "error",
+      });
     },
   });
 
   const releaseRequestMutation = useMutation({
     mutationFn: () => releaseRequest({ id: damana.id }),
     onSuccess: (data) => {
+      // ✅ تحديث البيانات بعد النجاح
+      queryClient.invalidateQueries(["damana-details", damana.id]);
+
       if (data.status) {
-        toast.success(t("pages.actionsSection.toast.releaseRequested"));
-        window.location.reload();
+        openActionModal({
+          msg: t("pages.actionsSection.toast.releaseRequested"),
+          icon: "success",
+        });
       } else {
-        toast.error(
-          data.error_message || t("pages.actionsSection.toast.error")
-        );
+        openActionModal({
+          msg: data.error_message || t("pages.actionsSection.toast.error"),
+          icon: "error",
+        });
       }
     },
-    onError: () => {
-      toast.error(t("pages.actionsSection.toast.serverError"));
+    onError: (error) => {
+      openActionModal({
+        msg:error?.response?.data?.error_msg || t("pages.actionsSection.toast.serverError"),
+        icon: "error",
+      });
     },
   });
 
@@ -74,23 +82,30 @@ const ActionsSection = ({ damana }) => {
         ? t("pages.actionsSection.confirm.accept")
         : t("pages.actionsSection.confirm.reject");
 
-    if (!window.confirm(confirmMsg)) {
-      toast(t("pages.actionsSection.toast.cancelled"));
-      return;
-    }
-
-    changeStatusMutation.mutate(status);
+    openActionModal({
+      msg: confirmMsg,
+      icon: "protect",
+      primaryBtn: {
+        text:
+          status === "accepted"
+            ? t("pages.actionsSection.buttons.accept")
+            : t("pages.actionsSection.buttons.reject"),
+        action: () => changeStatusMutation.mutate(status),
+      },
+    });
   };
 
   const handleReleaseRequest = () => {
     const confirmMsg = t("pages.actionsSection.confirm.release");
 
-    if (!window.confirm(confirmMsg)) {
-      toast(t("pages.actionsSection.toast.cancelled"));
-      return;
-    }
-
-    releaseRequestMutation.mutate();
+    openActionModal({
+      msg: confirmMsg,
+      icon: "protect",
+      primaryBtn: {
+        text: t("pages.actionsSection.buttons.release"),
+        action: () => releaseRequestMutation.mutate(),
+      },
+    });
   };
 
   if (!profile) return null;
@@ -102,12 +117,15 @@ const ActionsSection = ({ damana }) => {
   const isSeller = damana?.seller_company_id
     ? damana.seller_company_id === profile.company_id
     : damana?.seller?.id === profile.id;
+
   const isDisabled = damana?.is_expired || damana?.blocked;
+
+  // ✅ لو أي Mutation شغالة نعرض مودال التحميل
+  const isLoading =
+    changeStatusMutation.isPending || releaseRequestMutation.isPending;
 
   return (
     <div className="mt-4 space-y-3">
-      <Toaster position="top-left" />
-
       {damana?.active_cancel_request && (
         <div className="p-3 rounded-xl bg-yellow-100 text-yellow-800 border border-yellow-400">
           {damana.active_cancel_request.cancelled_approved === null &&
@@ -146,9 +164,12 @@ const ActionsSection = ({ damana }) => {
 
       {isSeller && damana.status === "paid" && (
         <div className="space-y-2">
-          <div className="text-sm text-gray-600">
-            {releaseTimer && `⏱️ ${releaseTimer}`}
-          </div>
+          {damana?.coming_request_release && (
+            <div className="mx-auto w-max my-2">
+              <Timer expiryDate={damana.coming_request_release} />
+            </div>
+          )}
+
           <button
             disabled={isDisabled || !damana.can_request_release}
             onClick={handleReleaseRequest}
@@ -162,6 +183,23 @@ const ActionsSection = ({ damana }) => {
           </button>
         </div>
       )}
+
+      {/* مودال الأكشن */}
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        closeBtn
+        msg={modalConfig.msg}
+        icon={modalConfig.icon}
+        primaryBtn={modalConfig.primaryBtn}
+        lightBtn={{
+          text: t("pages.RegisterPerson.modal.back"),
+          action: () => setOpenModal(false),
+        }}
+      />
+
+      {/* مودال التحميل */}
+      <LoadingModal openModal={isLoading} />
     </div>
   );
 };

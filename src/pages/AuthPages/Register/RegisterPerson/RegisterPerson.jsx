@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import AuthBreadcrumbs from "../../../../components/common/AuthBreadcrumbs";
 import AuthLayout from "../../../../components/common/AuthLayout";
 import MainInput from "../../../../components/form/MainInput/MainInput";
@@ -16,6 +16,7 @@ import { registerPerson } from "../../../../services/authService";
 import PhoneInput from "../../../../components/form/PhoneInput";
 import ActionModal from "../../../../components/modals/ActionModal";
 import { useTranslation } from "react-i18next";
+import { getPage } from "../../../../services/staticDataService";
 
 const RegisterPerson = () => {
   const { t } = useTranslation();
@@ -134,6 +135,19 @@ const RegisterPerson = () => {
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
+
+  const { data: pageContent } = useQuery({
+    queryFn: () => getPage("full_terms_and_conditions"),
+    queryKey: ["page"],
+    keepPreviousData: true,
+  });
+
+  const modalMsg = (
+    <div
+      className="htmlContent"
+      dangerouslySetInnerHTML={{ __html: pageContent?.content }}
+    />
+  );
 
   return (
     <AuthLayout>
@@ -264,34 +278,6 @@ const RegisterPerson = () => {
           <p className="text-error-100">{getError("accept_policy_terms")}</p>
         )}
 
-        <ActionModal
-          openModal={openModal}
-          setOpenModal={setOpenModal}
-          closeBtn
-          msg={
-            <>
-              <h3 className="text-lg lg:text-2xl font-bold">
-                {t("pages.RegisterPerson.modal.title")}
-              </h3>
-              <p className="text-sm lg:text-base">
-                {t("pages.RegisterPerson.modal.content")}
-              </p>
-            </>
-          }
-          icon="protect"
-          primaryBtn={{
-            text: t("pages.RegisterPerson.modal.agree"),
-            action: () => {
-              formik.setFieldValue("accept_policy_terms", true);
-              setOpenModal(false);
-            },
-          }}
-          lightBtn={{
-            text: t("pages.RegisterPerson.modal.back"),
-            action: () => setOpenModal(false),
-          }}
-        />
-
         <FormError errorMsg={errorMsg} />
 
         <FormBtn
@@ -309,6 +295,26 @@ const RegisterPerson = () => {
           </Link>
         </p>
       </form>
+
+      <ActionModal
+        openModal={openModal}
+        setOpenModal={setOpenModal}
+        closeBtn
+        msg={modalMsg}
+        size="large"
+        icon="protect"
+        primaryBtn={{
+          text: t("pages.RegisterPerson.modal.agree"),
+          action: () => {
+            formik.setFieldValue("accept_policy_terms", true);
+            setOpenModal(false);
+          },
+        }}
+        lightBtn={{
+          text: t("pages.RegisterPerson.modal.back"),
+          action: () => setOpenModal(false),
+        }}
+      />
     </AuthLayout>
   );
 };

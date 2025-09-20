@@ -219,7 +219,8 @@
         "description": "You can contact support and report any issue you face by explaining it in the box and sending it. You will receive a reply as soon as possible.",
         "messageLabel": "Message",
         "messageRequired": "Message is required",
-        "submit": "Send"
+        "submit": "Send",
+        "success_msg": "Your message has been sent successfully. We will get back to you as soon as possible."
       },
       "terms": {
         "error": "An error occurred while loading the terms and conditions"
@@ -772,7 +773,9 @@
         "hide": "Remove group",
         "inputPlaceholder": "Enter group name",
         "addButton": "Add",
-        "adding": "Adding..."
+        "adding": "Adding...",
+        "successMessage": "Group added successfully",
+        "errorMessage": "An error occurred while adding the group"
       },
       "privacyPolicy": {
         "label": "Agree to the",
@@ -1080,7 +1083,9 @@
       "confirm": "Confirm",
       "welcomeTitle": "Welcome to Dhamana!",
       "welcomeSubtitle": "You can start a new guarantee by clicking the button below",
-      "newRequest": "New Guarantee Request"
+      "newRequest": "New Guarantee Request",
+      "completeRegisterSubtitle": "Complete your registration to start creating guarantees and enjoy all the features",
+      "completeRegisterRequestBtn": "Complete Registration"
     },
 
     "faq": {

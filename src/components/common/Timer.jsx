@@ -27,14 +27,6 @@ const Timer = ({ expiryDate, onFinish }) => {
     updateRemaining();
     timerId = setInterval(updateRemaining, 1000);
 
-    // console.log("🕒 expiryDate:", expiryDate);
-    // console.log("🕒 target:", new Date(expiryDate).toString());
-    // console.log("🕒 now:", new Date().toString());
-    // console.log(
-    //   "🕒 diff (seconds):",
-    //   (new Date(expiryDate).getTime() - Date.now()) / 1000
-    // );
-
     return () => clearInterval(timerId);
   }, [expiryDate, onFinish]);
 

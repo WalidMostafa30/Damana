@@ -76,22 +76,19 @@ const Step0 = ({ goNext, formData, setFormData }) => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
+  const { data: appConfig } = useSelector((state) => state.appConfig);
+
   const modalMsg = (
     <>
-      <h3 className="text-lg lg:text-2xl font-bold">تفويض بمشاركة البيانات</h3>
-      {/* <p className="text-sm lg:text-base">
-        أنا الموقع أدناه بصفتي الشخصية عميل لدى ضمانة , أصرح لكم وأوافق على قيام
-        البنك العربي وشركة ضمانة بالاستعلام عن البيانات الشخصية العائدة لي
-        ومعالجتها من خلال استخدام خدمات واجهة برمجة التطبيقات المفتوحة APIs
-        المتوفرة من خلال نظام الربط البيني الحكومي , لأغراض التحقق من ملكية
-        المركبة, كما أوافق على قيام البنك العربي بمعالجة بياناتي الشخصية بما
-        يشمل الاسم، تاريخ الميلاد، العنوان، ورقم هوية الأحوال المدنية الخاص بي
-        لأغراض تنفيذ الحوالات أو لأي غرض آخر لازم لغايات الامتثال بالقوانين
-        والأنظمة والتعليمات واللوائح المعمول بها في المملكة. يبقى هذا التفويض
-        مستمراً ومنتجا لأثاره دون قيد او شرط طيلة فترة عملية بيع المركبة، وذلك
-        ضمن نطاق الاستخدام القانوني المصرّح به ويخضع في جميع الأوقات للرقابة
-        الداخلية والتدقيق في البنك العربي
-      </p> */}
+      <h3 className="text-lg lg:text-2xl font-bold">
+        {appConfig?.messages.owner_modee_consent.title}
+      </h3>
+      <div
+        className="htmlContent"
+        dangerouslySetInnerHTML={{
+          __html: appConfig?.messages.owner_modee_consent.consent_text,
+        }}
+      />
     </>
   );
 

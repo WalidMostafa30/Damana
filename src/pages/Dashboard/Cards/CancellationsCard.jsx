@@ -7,40 +7,52 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const data = [
-  { name: "من طرف المشتري", value: 55, color: "#3f4c82" },
-  { name: "من طرف البائع", value: 30, color: "#1677c2" },
-  { name: "من طرف الادارة", value: 20, color: "#26c6da" },
-];
+const CancellationsCard = ({ data = {} }) => {
+  const theData = [
+    {
+      name: "من طرف المشتري",
+      value: data?.cancelledBuyerAvg,
+      color: "#3f4c82",
+    },
+    {
+      name: "من طرف البائع",
+      value: data?.cancelledSellerAvg,
+      color: "#1677c2",
+    },
+    {
+      name: "من طرف الادارة",
+      value: data?.cancelledAdminAvg,
+      color: "#26c6da",
+    },
+  ];
 
-const renderCustomizedLabel = ({
-  cx,
-  cy,
-  midAngle,
-  innerRadius,
-  outerRadius,
-  index,
-}) => {
-  const RADIAN = Math.PI / 180;
-  const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+  const renderCustomizedLabel = ({
+    cx,
+    cy,
+    midAngle,
+    innerRadius,
+    outerRadius,
+    index,
+  }) => {
+    const RADIAN = Math.PI / 180;
+    const radius = innerRadius + (outerRadius - innerRadius) * 0.5;
+    const x = cx + radius * Math.cos(-midAngle * RADIAN);
+    const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  return (
-    <text
-      x={x}
-      y={y}
-      fill="white"
-      textAnchor="middle"
-      dominantBaseline="central"
-      style={{ fontWeight: "bold", fontSize: "14px" }}
-    >
-      {`${data[index].name} ${data[index].value}%`}
-    </text>
-  );
-};
+    return (
+      <text
+        x={x}
+        y={y}
+        fill="white"
+        textAnchor="middle"
+        dominantBaseline="central"
+        style={{ fontWeight: "bold", fontSize: "14px" }}
+      >
+        {`${theData[index].name} ${theData[index].value}%`}
+      </text>
+    );
+  };
 
-const CancellationsCard = () => {
   return (
     <div className="whiteContainer lg:col-span-3">
       <h3 className="text-lg font-semibold mb-4">احصائيات الالغاء</h3>
@@ -48,7 +60,7 @@ const CancellationsCard = () => {
         <ResponsiveContainer>
           <PieChart>
             <Pie
-              data={data}
+              data={theData}
               cx="50%"
               cy="50%"
               labelLine={false}
@@ -56,7 +68,7 @@ const CancellationsCard = () => {
               outerRadius={100}
               dataKey="value"
             >
-              {data.map((entry, index) => (
+              {theData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>

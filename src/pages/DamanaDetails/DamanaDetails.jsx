@@ -178,7 +178,7 @@ const DamanaDetails = () => {
                   ? damana?.seller_company.national_number
                   : damana?.seller?.national_number,
               },
-            ]}
+            ].filter((item) => item.value)} // ← فلترة العناصر الفاضية
           />
         </div>
 
@@ -204,7 +204,7 @@ const DamanaDetails = () => {
                   ? damana?.buyer_company.national_number
                   : damana?.buyer?.national_number,
               },
-            ]}
+            ].filter((item) => item.value)} // ← فلترة العناصر الفاضية
           />
         </div>
 

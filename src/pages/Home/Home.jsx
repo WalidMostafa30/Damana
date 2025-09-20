@@ -1,5 +1,4 @@
-import { Link, useLocation, useNavigate } from "react-router-dom";
-import { FaCirclePlus } from "react-icons/fa6";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
 import { DateRange } from "react-date-range";
@@ -14,6 +13,7 @@ import Purchase from "./Purchase";
 import { fetchDamanat } from "../../services/damanaServices";
 import FAQ from "./FAQ";
 import { getApplicationConfiguration } from "../../services/staticDataService";
+import WelcomeComponent from "./WelcomeComponent";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -179,20 +179,10 @@ const Home = () => {
       </div>
 
       <aside className="space-y-8">
-        <div className="whiteContainer text-center !p-8">
-          <h3 className="text-2xl font-bold mb-4">
-            {t("pages.home.welcomeTitle")}
-          </h3>
-          <p className="text-lg text-neutral-500 mb-4">
-            {t("pages.home.welcomeSubtitle")}
-          </p>
-          <Link to="/add-damana" className="mainBtn">
-            <FaCirclePlus className="text-2xl" />
-            {t("pages.home.newRequest")}
-          </Link>
-        </div>
+        <WelcomeComponent />
 
         <HomeSlider />
+
         <FAQ />
       </aside>
     </section>

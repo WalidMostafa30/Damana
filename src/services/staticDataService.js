@@ -17,7 +17,7 @@ export const getPaymentMethods = async () => {
 
 export const getApplicationConfiguration = async () => {
   const { data } = await api.get("/application-configuration");
-  return data?.data;
+  return data?.data || {};
 };
 
 export const getFAQ = async () => {

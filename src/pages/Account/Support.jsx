@@ -1,13 +1,33 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import MainInput from "../../components/form/MainInput/MainInput";
-// لو عندك مكتبة i18n زي react-i18next
 import { useTranslation } from "react-i18next";
+import { useMutation } from "@tanstack/react-query";
+import { sendSupportMessage } from "../../services/authService";
+import FormError from "../../components/form/FormError";
+import FormBtn from "../../components/form/FormBtn";
+import { useState } from "react";
+import ActionModal from "../../components/modals/ActionModal";
 
 const Support = () => {
+  const [errMsg, setErrMsg] = useState("");
+  const [openModal, setOpenModal] = useState(false);
   const { t } = useTranslation();
 
-  const addressSchema = Yup.object({
+  // ✅ Mutation باستخدام React Query
+  const { mutate, isPending } = useMutation({
+    mutationFn: sendSupportMessage,
+    onSuccess: () => {
+      formik.resetForm();
+      setErrMsg("");
+      setOpenModal(true);
+    },
+    onError: (error) => {
+      setErrMsg(error?.response?.data?.error_msg || "An error occurred");
+    },
+  });
+
+  const schema = Yup.object({
     message: Yup.string().required(t("pages.account.support.messageRequired")),
   });
 
@@ -15,9 +35,9 @@ const Support = () => {
     initialValues: {
       message: "",
     },
-    validationSchema: addressSchema,
+    validationSchema: schema,
     onSubmit: (values) => {
-      console.log(values);
+      mutate({ message: values.message });
     },
   });
 
@@ -36,6 +56,7 @@ const Support = () => {
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <MainInput
           label={t("pages.account.support.messageLabel")}
+          id={"message"}
           type="textarea"
           name="message"
           value={formik.values.message}
@@ -44,10 +65,25 @@ const Support = () => {
           onBlur={formik.handleBlur}
         />
 
-        <button className="mainBtn" type="submit">
-          {t("pages.account.support.submit")}
-        </button>
+        <FormError errorMsg={errMsg} />
+
+        <FormBtn
+          title={t("pages.account.support.submit")}
+          loading={isPending}
+        />
       </form>
+
+      <ActionModal
+        openModal={openModal}
+        msg={t("pages.account.support.success_msg")}
+        icon="success"
+        primaryBtn={{
+          text: t("update_damana_modal.btn"),
+          action: () => {
+            setOpenModal(false);
+          },
+        }}
+      />
     </>
   );
 };

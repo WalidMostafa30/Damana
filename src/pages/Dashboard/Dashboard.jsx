@@ -8,9 +8,33 @@ import FinancialDashboard from "./FinancialDashboard";
 import OperationalDashboard from "./OperationalDashboard";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useQuery } from "@tanstack/react-query";
+import {
+  getCompanies,
+  getRunningDashboard,
+  getRunningDashboardTable,
+} from "../../services/dashboardServices";
 
 const Dashboard = () => {
   const { t } = useTranslation();
+
+  const {
+    data: dashboardData1,
+    isLoading: isLoading1,
+    isError: isError1,
+    error: error1,
+  } = useQuery({
+    queryKey: ["runningDashboard"],
+    queryFn: getRunningDashboard,
+    staleTime: 1000 * 60,
+  });
+
+  const { data: tableData } = useQuery({
+    queryKey: ["runningDashboardTable"],
+    queryFn: getRunningDashboardTable,
+    staleTime: 1000 * 60,
+  });
+
   const [filters, setFilters] = useState({
     status: "all",
     commission: "all",
@@ -45,6 +69,12 @@ const Dashboard = () => {
       setSelectedType("financial");
     }
   }, [pathname, navigate]);
+
+  const { data: companiesData } = useQuery({
+    queryKey: ["companies"],
+    queryFn: getCompanies,
+    staleTime: 1000 * 60, // دقيقة قبل ما يعيد الفetch
+  });
 
   return (
     <article className="pageContainer space-y-4 lg:space-y-8">
@@ -116,9 +146,12 @@ const Dashboard = () => {
           value={filters.company}
           onChange={(e) => handleChange("company", e.target.value)}
         >
-          <option value="all">{t("pages.dashboard.company")}</option>
-          <option value="company1">{t("pages.dashboard.company1")}</option>
-          <option value="company2">{t("pages.dashboard.company2")}</option>
+          <option value="">{t("pages.dashboard.company")}</option>
+          {companiesData?.map((comp) => (
+            <option key={comp.id} value={comp.id}>
+              {comp.name}
+            </option>
+          ))}
         </select>
       </div>
 
@@ -148,7 +181,14 @@ const Dashboard = () => {
       </div>
 
       {pathname.includes("operational") && (
-        <OperationalDashboard filters={filters} />
+        <OperationalDashboard
+          filters={filters}
+          dashboardData1={dashboardData1}
+          isLoading={isLoading1}
+          isError={isError1}
+          error={error1}
+          tableData={tableData}
+        />
       )}
       {pathname.includes("financial") && (
         <FinancialDashboard filters={filters} />

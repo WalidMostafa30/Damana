@@ -10,15 +10,18 @@ const ActionModal = ({
   closeBtn = false,
   msg,
   icon = "success",
-  primaryBtn = { text: "", action: () => {} },
-  dangerBtn = { text: "", action: () => {} },
-  lightBtn = { text: "", action: () => {} },
+  primaryBtn, // ممكن تكون undefined أو null
+  dangerBtn,
+  lightBtn,
+  size = "medium",
+  textCenter = false,
 }) => {
   return (
     <Modal
       openModal={openModal}
       setOpenModal={setOpenModal}
       closeBtn={closeBtn}
+      size={size}
     >
       {icon && (
         <img
@@ -38,35 +41,40 @@ const ActionModal = ({
       )}
 
       {msg && (
-        <div className="text-lg font-bold text-center flex flex-col items-center gap-2">
+        <div
+          className="text-lg font-bold flex flex-col items-center gap-2"
+          style={{ textAlign: textCenter ? "center" : "start" }}
+        >
           {msg}
         </div>
       )}
 
       <div className="flex flex-col lg:flex-row flex-wrap gap-2 lg:gap-4">
-        {primaryBtn.text && (
+        {primaryBtn?.text && (
           <button
-            className={`mainBtn flex-1`}
-            onClick={() => primaryBtn.action()}
-            disabled={!primaryBtn.action}
+            className="mainBtn flex-1"
+            onClick={primaryBtn?.action}
+            disabled={!primaryBtn?.action}
           >
             {primaryBtn.text}
           </button>
         )}
-        {dangerBtn.text && (
+
+        {dangerBtn?.text && (
           <button
-            className={`mainBtn danger flex-1`}
-            onClick={() => dangerBtn.action()}
-            disabled={!dangerBtn.action}
+            className="mainBtn danger flex-1"
+            onClick={dangerBtn?.action}
+            disabled={!dangerBtn?.action}
           >
             {dangerBtn.text}
           </button>
         )}
-        {lightBtn.text && (
+
+        {lightBtn?.text && (
           <button
-            className={`mainBtn light flex-1`}
-            onClick={() => lightBtn.action()}
-            disabled={!lightBtn.action}
+            className="mainBtn light flex-1"
+            onClick={lightBtn?.action}
+            disabled={!lightBtn?.action}
           >
             {lightBtn.text}
           </button>

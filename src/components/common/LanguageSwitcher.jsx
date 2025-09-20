@@ -1,92 +1,39 @@
-import { useState, useRef, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { changeLanguage } from "../../store/languageSlice/languageSlice";
-import DropDown from "../common/DropDown";
-import { AnimatePresence } from "framer-motion";
-import flagAR from "../../assets/icons/flag-ar.png";
-import flagEN from "../../assets/icons/flag-en.png";
 import LoadingModal from "../modals/LoadingModal";
-import { IoMdArrowDropdown } from "react-icons/io";
 
 const LanguageSwitcher = ({ header = false }) => {
   const dispatch = useDispatch();
   const { lang } = useSelector((state) => state.language);
 
-  const [openMenu, setOpenMenu] = useState(false);
   const [openLoading, setOpenLoading] = useState(false);
-  const langBtnRef = useRef(null);
 
-  // ⬅️ كل ما lang يتغير عدل الاتجاه
+  // ⬅️ كل ما lang يتغير عدل الاتجاه وافتح المودال
   useEffect(() => {
     document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
   }, [lang]);
 
-  const handleChange = (selectedLang) => {
-    dispatch(changeLanguage(selectedLang));
-    setOpenMenu(false);
+  const handleToggle = () => {
+    dispatch(changeLanguage(lang === "ar" ? "en" : "ar"));
     setOpenLoading(true);
   };
 
   return (
-    <div className="relative text-lg" ref={langBtnRef}>
-      {/* الزرار */}
-      {header ? (
-        // ✅ شكل مختصر لو الهيدر
-        <div
-          onClick={() => setOpenMenu((prev) => !prev)}
-          className={`flex items-center gap-1 cursor-pointer ${
-            header ? "bg-transparent" : "bg-white"
-          }`}
-        >
-          <img
-            src={lang === "ar" ? flagAR : flagEN}
-            alt="flag"
-            className="w-5"
-          />
-          <span className="font-semibold uppercase">{lang}</span>{" "}
-          <IoMdArrowDropdown className="text-xl" />
-        </div>
-      ) : (
-        // ✅ الشكل العادي
-        <div
-          onClick={() => setOpenMenu((prev) => !prev)}
-          className={`flex items-center gap-2 cursor-pointer px-3 py-1 rounded-md border-2 border-secondary ${
-            header ? "bg-transparent" : "bg-white"
-          }`}
-        >
-          <img
-            src={lang === "ar" ? flagAR : flagEN}
-            alt="flag"
-            className="w-6"
-          />
-          <span>{lang === "ar" ? "العربية" : "English"}</span>
-          <IoMdArrowDropdown className="text-2xl" />
-        </div>
-      )}
+    <div className="relative text-lg">
+      {/* زرار واحد يبدل اللغة */}
+      <button
+        onClick={handleToggle}
+        className={`cursor-pointer px-2 py-1 rounded-md border-2 border-secondary ${
+          header ? "bg-transparent border-white text-sm lg:text-base" : "bg-white"
+        }`}
+      >
+        <span className="font-semibold">
+          {lang === "en" ? "العربية" : "English"}
+        </span>
+      </button>
 
-      {/* القائمة */}
-      <AnimatePresence>
-        {openMenu && (
-          <DropDown onClose={() => setOpenMenu(false)} buttonRef={langBtnRef}>
-            <div className="bg-white w-40 p-2 rounded-md shadow space-y-2 !text-base-black">
-              <button
-                onClick={() => handleChange("ar")}
-                className="flex items-center gap-2 w-full px-2 py-1 hover:bg-gray-100 rounded"
-              >
-                {" "}
-                <img src={flagAR} alt="ar" className="w-6" /> العربية{" "}
-              </button>{" "}
-              <button
-                onClick={() => handleChange("en")}
-                className="flex items-center gap-2 w-full px-2 py-1 hover:bg-gray-100 rounded"
-              >
-                {" "}
-                <img src={flagEN} alt="en" className="w-6" /> English{" "}
-              </button>
-            </div>
-          </DropDown>
-        )}
-      </AnimatePresence>
+      {/* المودال */}
       <LoadingModal openModal={openLoading} />
     </div>
   );
