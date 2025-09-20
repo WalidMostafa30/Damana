@@ -11,6 +11,7 @@ import GuestRoute from "../components/ProtectedRoute/GuestRoute";
 import CheckAuthRoute from "../components/ProtectedRoute/CheckAuthRoute";
 import UnifiedProtectedRoute from "../components/ProtectedRoute/UnifiedProtectedRoute";
 import CheckCompleteRegisterRoute from "../components/ProtectedRoute/CheckCompleteRegisterRoute";
+import AppConfigLoader from "../components/ProtectedRoute/AppConfigRoute";
 
 const Home = React.lazy(() => import("../pages/Home/Home"));
 const AddDamana = React.lazy(() => import("../pages/AddDamana/AddDamana"));
@@ -161,7 +162,9 @@ const router = createBrowserRouter([
 const AppRouter = () => {
   return (
     <Suspense fallback={<LoadingPage />}>
-      <RouterProvider router={router} />
+      <AppConfigLoader>
+        <RouterProvider router={router} />
+      </AppConfigLoader>
     </Suspense>
   );
 };

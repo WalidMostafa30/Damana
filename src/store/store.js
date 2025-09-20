@@ -2,9 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import profileReducer from "./profile/profileSlice";
 import logoutModalReducer from "./modalsSlice/logoutModalSlice";
 import languageReducer from "./languageSlice/languageSlice";
-import appConfigReducer, {
-  fetchApplicationConfiguration,
-} from "./appConfig/appConfigSlice";
+import appConfigReducer from "./appConfig/appConfigSlice";
 
 export const store = configureStore({
   reducer: {
@@ -14,6 +12,3 @@ export const store = configureStore({
     appConfig: appConfigReducer,
   },
 });
-
-// Fetch application configuration 
-store.dispatch(fetchApplicationConfiguration());

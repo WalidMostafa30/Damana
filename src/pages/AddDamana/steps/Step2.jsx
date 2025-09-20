@@ -19,8 +19,9 @@ import ActionModal from "../../../components/modals/ActionModal";
 import LoadingModal from "../../../components/modals/LoadingModal";
 import CopyToClipboard from "../../../components/common/CopyToClipboard";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
-const Step2 = ({ formData, setFormData, configData }) => {
+const Step2 = ({ formData, setFormData }) => {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const [showCoupon, setShowCoupon] = useState(false);
@@ -29,6 +30,9 @@ const Step2 = ({ formData, setFormData, configData }) => {
   const [details, setDetails] = useState([]);
   const [openModal, setOpenModal] = useState(false);
   const [damanaData, setDamanaData] = useState("");
+
+    const { data: appConfig } = useSelector((state) => state.appConfig);
+  
 
   const navigate = useNavigate();
 
@@ -364,7 +368,7 @@ const Step2 = ({ formData, setFormData, configData }) => {
             className="w-5 h-5 accent-primary"
           />
           {t("pages.addDamana.step2.transfer.options.RTGS", {
-            fees: configData?.settings?.rtgs_fees,
+            fees: appConfig?.settings?.rtgs_fees,
           })}
         </label>
       </div>

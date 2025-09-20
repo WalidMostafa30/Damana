@@ -1,10 +1,9 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-
 import { useTranslation } from "react-i18next";
 import PageTitle from "../../components/common/PageTitle";
 import HomeSlider from "./HomeSlider/HomeSlider";
@@ -12,8 +11,8 @@ import Sale from "./Sale";
 import Purchase from "./Purchase";
 import { fetchDamanat } from "../../services/damanaServices";
 import FAQ from "./FAQ";
-import { getApplicationConfiguration } from "../../services/staticDataService";
 import WelcomeComponent from "./WelcomeComponent";
+import { useSelector } from "react-redux";
 
 const Home = () => {
   const { t } = useTranslation();
@@ -48,15 +47,12 @@ const Home = () => {
         lastPage.hasMore ? lastPage.nextPage : undefined,
     });
 
-  const { data: configData } = useQuery({
-    queryKey: ["applicationConfiguration"],
-    queryFn: getApplicationConfiguration,
-  });
+  const { data: appConfig } = useSelector((state) => state.appConfig);
 
   const damana_status_options = [
     { value: "", label: t("pages.home.all") },
-    ...(configData?.filer_statuses
-      ? Object.entries(configData.filer_statuses).map(([key, value]) => ({
+    ...(appConfig?.filer_statuses
+      ? Object.entries(appConfig.filer_statuses).map(([key, value]) => ({
           value: key,
           label: value,
         }))

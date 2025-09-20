@@ -5,8 +5,6 @@ import Step0 from "./steps/Step0";
 import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import BackStepBtn from "../../components/form/BackStepBtn";
-import { useQuery } from "@tanstack/react-query";
-import { getApplicationConfiguration } from "../../services/staticDataService";
 import { useTranslation } from "react-i18next";
 
 export default function AddDamana() {
@@ -14,11 +12,6 @@ export default function AddDamana() {
   const steps = t("pages.addDamana.steps", { returnObjects: true });
 
   const [step, setStep] = useState(0);
-
-  const { data: configData } = useQuery({
-    queryKey: ["applicationConfiguration"],
-    queryFn: getApplicationConfiguration,
-  });
 
   const [formData, setFormData] = useState({
     registration_number: "",
@@ -65,11 +58,7 @@ export default function AddDamana() {
             />
           )}
           {step === 2 && (
-            <Step2
-              formData={formData}
-              setFormData={setFormData}
-              configData={configData}
-            />
+            <Step2 formData={formData} setFormData={setFormData} />
           )}
 
           <BackStepBtn step={step} goBack={goBack} />
