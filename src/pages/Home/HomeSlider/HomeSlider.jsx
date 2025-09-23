@@ -15,7 +15,6 @@ const HomeSlider = () => {
     keepPreviousData: true,
   });
   const { t } = useTranslation();
-  console.log(data);
 
   if (isLoading) return <LoadingSection />;
 
@@ -38,12 +37,14 @@ const HomeSlider = () => {
     >
       {data?.map((item) => (
         <SwiperSlide key={item.id}>
-          <img
-            loading="lazy"
-            src={item.image_full_path}
-            alt={`slider ${item.id}`}
-            className="w-full h-full object-cover rounded-2xl"
-          />
+          <div className="w-full h-80 lg:h-96">
+            <img
+              loading="lazy"
+              src={item.image_full_path}
+              alt={`slider ${item.id}`}
+              className="w-full h-full object-cover rounded-2xl"
+            />
+          </div>
         </SwiperSlide>
       ))}
     </Swiper>

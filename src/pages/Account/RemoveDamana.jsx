@@ -2,7 +2,6 @@ import { useState } from "react";
 import { useInfiniteQuery, useMutation } from "@tanstack/react-query";
 import { useTranslation } from "react-i18next";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
-import DamanaCard from "../../components/common/DamanaCard";
 import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
 import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
@@ -12,9 +11,12 @@ import DamanaList from "../../components/common/DamanaList";
 import InfiniteScroll from "react-infinite-scroll-component";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
+import { useSelector } from "react-redux";
 
 const RemoveDamana = () => {
   const { t } = useTranslation();
+
+  const { data: appConfig } = useSelector((state) => state.appConfig);
 
   const steps = t("pages.account.remove_damana.steps", { returnObjects: true });
 
@@ -128,10 +130,15 @@ const RemoveDamana = () => {
             onChange={(e) => setReason(e.target.value)}
             error={reasonError}
           />
-          <p className="text-error-100 text-lg flex items-center gap-1">
-            <IoWarningOutline className="text-2xl" />
-            {t("pages.account.remove_damana.warning")}
-          </p>
+
+          {appConfig?.settings?.bank_refund_commotion && (
+            <p className="text-error-100 text-lg flex items-center gap-1">
+              <IoWarningOutline className="text-2xl" />
+              {t("pages.account.remove_damana.warning", {
+                amount: appConfig?.settings?.bank_refund_commotion,
+              })}
+            </p>
+          )}
 
           {errorMsg && <FormError errorMsg={errorMsg} />}
 

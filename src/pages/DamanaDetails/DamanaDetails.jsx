@@ -7,7 +7,7 @@ import LoadingPage from "../../components/Loading/LoadingPage";
 import Timer from "../../components/common/Timer";
 import { CiCalendarDate } from "react-icons/ci";
 import CopyToClipboard from "../../components/common/CopyToClipboard";
-import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
+// import { toArabicWord } from "number-to-arabic-words/dist/index-node.js";
 import { useTranslation } from "react-i18next";
 
 const DamanaDetails = () => {
@@ -37,9 +37,9 @@ const DamanaDetails = () => {
     );
 
   const vehicleData = [
-    damana?.plate_number && {
+    damana?.plate_number_code && {
       label: t("pages.damanaDetails.fields.plateNumber"),
-      value: `${damana.plate_number}-${damana.plate_number}`,
+      value: damana.plate_number_code,
     },
     damana?.vehicle_type && {
       label: t("pages.damanaDetails.fields.vehicleType"),
@@ -105,8 +105,10 @@ const DamanaDetails = () => {
 
   const pageTitle = (title, large = false, color = "var(--color-primary)") => (
     <h3
-      className={`font-bold text-white px-4 py-2 rounded-se-2xl w-fit ${
-        large ? "text-lg lg:text-2xl" : "lg:text-xl !bg-primary"
+      className={`font-bold text-white px-4 py-2 rounded-se-2xl  ${
+        large
+          ? "text-lg lg:text-2xl"
+          : "lg:text-xl !bg-primary min-w-1/4 inline-block"
       }`}
       style={{
         backgroundColor:
@@ -145,7 +147,7 @@ const DamanaDetails = () => {
             <p className="font-medium">
               {t("pages.damanaDetails.plateAndCode")}:
             </p>
-            <p className="text-primary font-bold">{`${damana?.plate_number}-${damana?.plate_number}`}</p>
+            <p className="text-primary font-bold">{damana.plate_number_code}</p>
           </div>
           <div className="flex items-center gap-2">
             <CiCalendarDate className="text-2xl" />
@@ -231,17 +233,17 @@ const DamanaDetails = () => {
               },
               {
                 label: t("pages.damanaDetails.fields.discountCode"),
-                value: damana?.code || "-",
+                value: damana?.code,
               },
               {
                 label: t("pages.damanaDetails.fields.discount"),
-                value: damana?.discount
-                  ? `${formatNumber(damana?.discount)}${
-                      damana?.discount_type === "percentage"
-                        ? "%"
-                        : ` ${t("pages.damanaDetails.currency")}`
-                    }`
-                  : "-",
+                value:
+                  damana?.discount &&
+                  `${formatNumber(damana?.discount)}${
+                    damana?.discount_type === "percentage"
+                      ? "%"
+                      : ` ${t("pages.damanaDetails.currency")}`
+                  }`,
               },
               {
                 label: t("pages.damanaDetails.fields.commissionAfterDiscount"),
@@ -250,20 +252,32 @@ const DamanaDetails = () => {
                 )}`,
               },
               {
+                label: t("pages.damanaDetails.fields.commissionOn"),
+                value:
+                  damana?.commission_on === "buyer"
+                    ? t("pages.addDamana.step2.commissionOn.options.buyer")
+                    : damana?.commission_on === "seller"
+                    ? t("pages.addDamana.step2.commissionOn.options.seller")
+                    : damana?.commission_on === "equally"
+                    ? t("pages.addDamana.step2.commissionOn.options.equally")
+                    : "-",
+              },
+
+              {
                 label: t("pages.damanaDetails.fields.totalPrice"),
                 value: `${formatNumber(
                   damana?.vehicle_price_with_commission
                 )} ${t("pages.damanaDetails.currency")}`,
               },
-              {
-                label: t("pages.damanaDetails.fields.totalPriceInWords"),
-                value: `${toArabicWord(
-                  Number(damana?.vehicle_price_with_commission)
-                )} ${t("pages.damanaDetails.currency")} ${t(
-                  "pages.damanaDetails.only"
-                )}`,
-              },
-            ]}
+              // {
+              //   label: t("pages.damanaDetails.fields.totalPriceInWords"),
+              //   value: `${toArabicWord(
+              //     Number(damana?.vehicle_price_with_commission)
+              //   )} ${t("pages.damanaDetails.currency")} ${t(
+              //     "pages.damanaDetails.only"
+              //   )}`,
+              // },
+            ].filter(Boolean)}
           />
         </div>
 

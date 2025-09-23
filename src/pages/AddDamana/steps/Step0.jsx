@@ -17,6 +17,7 @@ const Step0 = ({ goNext, formData, setFormData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const { profile } = useSelector((state) => state.profile);
+  const { data: appConfig } = useSelector((state) => state.appConfig);
 
   const { t } = useTranslation();
 
@@ -76,8 +77,6 @@ const Step0 = ({ goNext, formData, setFormData }) => {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
-  const { data: appConfig } = useSelector((state) => state.appConfig);
-
   const modalMsg = (
     <>
       <h3 className="text-lg lg:text-2xl font-bold">
@@ -92,6 +91,9 @@ const Step0 = ({ goNext, formData, setFormData }) => {
     </>
   );
 
+  console.log(appConfig?.settings?.enable_seller_not_owner);
+  
+
   return (
     <form onSubmit={formik.handleSubmit} className="space-y-4">
       <div className="flex justify-between gap-4">
@@ -100,39 +102,40 @@ const Step0 = ({ goNext, formData, setFormData }) => {
             {t("pages.addDamana.step0.title")}
           </h3>
 
-          {profile?.account_type === "company" && (
-            <div>
-              <label className="block mb-2 font-semibold">
-                {t("pages.addDamana.step0.isOwnerLabel")}
-              </label>
-              <div className="flex gap-4">
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="is_owner"
-                    checked={formik.values.is_owner === true}
-                    onChange={() => formik.setFieldValue("is_owner", true)}
-                    className="w-5 h-5 accent-primary cursor-pointer"
-                  />
-                  {t("pages.addDamana.step0.yes")}
+          {profile?.account_type === "company" &&
+            appConfig?.settings?.enable_seller_not_owner && (
+              <div>
+                <label className="block mb-2 font-semibold">
+                  {t("pages.addDamana.step0.isOwnerLabel")}
                 </label>
+                <div className="flex gap-4">
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="is_owner"
+                      checked={formik.values.is_owner === true}
+                      onChange={() => formik.setFieldValue("is_owner", true)}
+                      className="w-5 h-5 accent-primary cursor-pointer"
+                    />
+                    {t("pages.addDamana.step0.yes")}
+                  </label>
 
-                <label className="flex items-center gap-2">
-                  <input
-                    type="radio"
-                    name="is_owner"
-                    checked={formik.values.is_owner === false}
-                    onChange={() => formik.setFieldValue("is_owner", false)}
-                    className="w-5 h-5 accent-primary cursor-pointer"
-                  />
-                  {t("pages.addDamana.step0.no")}
-                </label>
+                  <label className="flex items-center gap-2">
+                    <input
+                      type="radio"
+                      name="is_owner"
+                      checked={formik.values.is_owner === false}
+                      onChange={() => formik.setFieldValue("is_owner", false)}
+                      className="w-5 h-5 accent-primary cursor-pointer"
+                    />
+                    {t("pages.addDamana.step0.no")}
+                  </label>
+                </div>
+                {getError("is_owner") && (
+                  <div className="text-error mt-1">{getError("is_owner")}</div>
+                )}
               </div>
-              {getError("is_owner") && (
-                <div className="text-error mt-1">{getError("is_owner")}</div>
-              )}
-            </div>
-          )}
+            )}
         </div>
 
         <img

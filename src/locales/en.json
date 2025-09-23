@@ -203,7 +203,7 @@
         "next": "Next",
         "reason_label": "Reason for cancellation",
         "reason_required": "Please provide a reason for cancellation",
-        "warning": "Warning: The cancellation fee of 5 Dinars will be deducted",
+        "warning": "Warning: The cancellation fee of {{amount}} Dinars will be deducted",
         "continue": "Continue with guarantee",
         "confirm": "Confirm guarantee cancellation",
         "loading": "Loading...",
@@ -268,7 +268,8 @@
           "nationalNumber": {
             "label": "National Number",
             "placeholder": "Enter national number",
-            "required": "Buyer national number is required"
+            "required": "Buyer national number is required",
+            "minLength": "National number must be at least 9 digits"
           },
           "phone": {
             "label": "Phone Number",
@@ -308,7 +309,8 @@
           "vehicleClassification": "Vehicle Classification"
         },
         "submit": "Next",
-        "errorMsg": "An error occurred while submitting"
+        "errorMsg": "An error occurred while submitting",
+        "fetchError": "Failed to fetch buyer data, please enter it manually"
       },
       "step2": {
         "title": "Guarantee Information",
@@ -1011,6 +1013,7 @@
         "discountCode": "Discount Code",
         "discount": "Discount",
         "commissionAfterDiscount": "Commission After Discount",
+        "commissionOn": "Commission On",
         "totalPrice": "Total Guarantee Price",
         "totalPriceInWords": "Total Price in Words"
       },

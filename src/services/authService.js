@@ -167,3 +167,9 @@ export const sendSupportMessage = async (message) => {
 
   return data;
 };
+export const getUserInfo = async (payload) => {
+  const { data } = await api.get("/get-user-info", {
+    params: payload, // 👈 استخدم params هنا
+  });
+  return data;
+};

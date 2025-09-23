@@ -9,10 +9,13 @@ import FormBtn from "../../../components/form/FormBtn";
 import PhoneInput from "../../../components/form/PhoneInput";
 import { useTranslation } from "react-i18next";
 import FormError from "../../../components/form/FormError";
+import { getUserInfo } from "../../../services/authService";
+import LoadingModal from "../../../components/modals/LoadingModal";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
+  const [disabledPhone, setDisabledPhone] = useState(true);
 
   const data = [
     {
@@ -21,7 +24,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
     },
     {
       label: t("pages.addDamana.step1.vehicle.plate"),
-      value: `${formData.plate_number || "-"} - ${formData.plate_code || "-"}`,
+      value: `${formData.plate_number} - ${formData.plate_code}`,
     },
     {
       label: t("pages.addDamana.step1.vehicle.vehicleType"),
@@ -82,9 +85,26 @@ const Step1 = ({ goNext, formData, setFormData }) => {
     },
   ];
 
+  // ✅ Mutation لجلب بيانات المستخدم
+  const userInfoMutation = useMutation({
+    mutationFn: (payload) => getUserInfo(payload),
+    onSuccess: (data) => {
+      console.log("User Info:", data);
+      formik.values.buyer_full_mobile = data?.data?.full_mobile || "";
+      setFormData((prev) => ({
+        ...prev,
+        ...data,
+      }));
+    },
+    onError: (error) => {
+      setDisabledPhone(false);
+      console.error("Failed to fetch user info:", error);
+    },
+  });
+
   const mutation = useMutation({
     mutationFn: async (payload) => {
-      // return await createVehicleTransfer(payload);
+      console.log(payload);
     },
     onSuccess: () => {
       setFormData((prev) => ({
@@ -108,9 +128,9 @@ const Step1 = ({ goNext, formData, setFormData }) => {
       buyer_full_mobile: formData.buyer_full_mobile || "",
     },
     validationSchema: Yup.object({
-      buyer_national_number: Yup.string().required(
-        t("pages.addDamana.step1.buyer.nationalNumber.required")
-      ),
+      buyer_national_number: Yup.string()
+        .required(t("pages.addDamana.step1.buyer.nationalNumber.required"))
+        .min(9, t("pages.addDamana.step1.buyer.nationalNumber.minLength")),
       buyer_full_mobile: Yup.string().required(
         t("pages.addDamana.step1.buyer.phone.required")
       ),
@@ -120,6 +140,22 @@ const Step1 = ({ goNext, formData, setFormData }) => {
       mutation.mutate({ ...formData, ...values });
     },
   });
+
+  // 👇 استدعاء الـ mutation لما يسيب الحقل
+  const handleNationalNumberBlur = (e) => {
+    formik.handleBlur(e);
+    const value = e.target.value;
+
+    if (!value || value.length < 9) {
+      formik.setFieldError(
+        "buyer_national_number",
+        t("pages.addDamana.step1.buyer.nationalNumber.minLength")
+      );
+      return;
+    }
+
+    userInfoMutation.mutate({ national_number: value }); // 👈 استدعاء mutation هنا
+  };
 
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
@@ -148,12 +184,17 @@ const Step1 = ({ goNext, formData, setFormData }) => {
             name="buyer_national_number"
             value={formik.values.buyer_national_number}
             onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
+            onBlur={handleNationalNumberBlur}
             error={getError("buyer_national_number")}
             icon={<LuCircleUserRound />}
           />
 
-          <PhoneInput formik={formik} name="buyer_full_mobile" combineValue />
+          <PhoneInput
+            formik={formik}
+            name="buyer_full_mobile"
+            combineValue
+            disabled={disabledPhone}
+          />
         </div>
       </div>
 
@@ -193,10 +234,14 @@ const Step1 = ({ goNext, formData, setFormData }) => {
 
       <FormError errorMsg={errorMsg} />
 
-      <FormBtn
-        title={t("pages.addDamana.step1.submit")}
-        loading={mutation.isPending}
-      />
+      {!getError("buyer_national_number") && (
+        <FormBtn
+          title={t("pages.addDamana.step1.submit")}
+          loading={mutation.isPending}
+        />
+      )}
+
+      <LoadingModal openModal={userInfoMutation.isPending} />
     </form>
   );
 };
