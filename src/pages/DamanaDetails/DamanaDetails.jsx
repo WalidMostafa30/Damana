@@ -105,10 +105,8 @@ const DamanaDetails = () => {
 
   const pageTitle = (title, large = false, color = "var(--color-primary)") => (
     <h3
-      className={`font-bold text-white px-4 py-2 rounded-se-2xl  ${
-        large
-          ? "text-lg lg:text-2xl"
-          : "lg:text-xl !bg-primary min-w-1/4 inline-block"
+      className={`font-bold text-white px-4 py-2 rounded-se-2xl min-w-1/2 md:min-w-1/4 inline-block ${
+        large ? "text-lg lg:text-2xl" : "lg:text-xl !bg-primary md:min-w-1/5"
       }`}
       style={{
         backgroundColor:

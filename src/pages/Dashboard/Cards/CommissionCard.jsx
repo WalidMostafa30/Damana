@@ -8,17 +8,26 @@ import {
   CartesianGrid,
 } from "recharts";
 
-const data = [
-  { day: "الجمعة", c1: 30, c2: 60, c3: 110, c4: 155 },
-  { day: "الخميس", c1: 90, c2: 140, c3: 180, c4: 220 },
-  { day: "الاربعاء", c1: 90, c2: 120, c3: 170, c4: 240 },
-  { day: "الثلاثاء", c1: 90, c2: 120, c3: 170, c4: 230 },
-  { day: "الاثنين", c1: 40, c2: 55, c3: 130, c4: 190 },
-  { day: "الاحد", c1: 80, c2: 160, c3: 180, c4: 245 },
-  { day: "السبت", c1: 80, c2: 130, c3: 160, c4: 230 },
-];
+const colors = [
+  "#2084c5",
+  "#1bbbc0",
+  "#39416e",
+  "#737aa1",
+  "#f59e0b",
+  "#10b981",
+  "#ef4444",
+  "#8b5cf6",
+]; // لو زودت شركات أكتر حط ألوان زيادة هنا
 
-const CommissionCard = () => {
+const CommissionCard = ({ data }) => {
+  if (!data || data.length === 0) return null;
+
+  console.log("Commission Data:", data);
+  
+
+  // استخراج أسماء الشركات بشكل ديناميك من أول عنصر
+  const companyKeys = Object.keys(data[0]).filter((key) => key !== "day");
+
   return (
     <div className="whiteContainer">
       {/* Header */}
@@ -40,45 +49,30 @@ const CommissionCard = () => {
             <YAxis type="category" dataKey="day" />
             <Tooltip />
 
-            {/* الشركات */}
-            <Bar dataKey="c1" stackId="a" fill="#2084c5" />
-            <Bar dataKey="c2" stackId="a" fill="#1bbbc0" />
-            <Bar dataKey="c3" stackId="a" fill="#39416e" />
-            <Bar dataKey="c4" stackId="a" fill="#737aa1" />
+            {/* الشركات ديناميك */}
+            {companyKeys.map((key, index) => (
+              <Bar
+                key={key}
+                dataKey={key}
+                stackId="a"
+                fill={colors[index % colors.length]}
+              />
+            ))}
           </BarChart>
         </ResponsiveContainer>
       </div>
 
-      {/* Legend */}
-      <div className="flex justify-center gap-6 mt-4 text-sm">
-        <div className="flex items-center gap-2">
-          <span
-            className="w-3 h-3 rounded-sm"
-            style={{ background: "#2084c5" }}
-          ></span>
-          <span>شركة 1</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="w-3 h-3 rounded-sm"
-            style={{ background: "#1bbbc0" }}
-          ></span>
-          <span>شركة 2</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="w-3 h-3 rounded-sm"
-            style={{ background: "#39416e" }}
-          ></span>
-          <span>شركة 3</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <span
-            className="w-3 h-3 rounded-sm"
-            style={{ background: "#737aa1" }}
-          ></span>
-          <span>شركة 4</span>
-        </div>
+      {/* Legend ديناميك */}
+      <div className="flex justify-center gap-6 mt-4 text-sm flex-wrap">
+        {companyKeys.map((key, index) => (
+          <div key={key} className="flex items-center gap-2">
+            <span
+              className="w-3 h-3 rounded-sm"
+              style={{ background: colors[index % colors.length] }}
+            ></span>
+            <span>{key}</span>
+          </div>
+        ))}
       </div>
     </div>
   );

@@ -26,7 +26,7 @@ const DamanaCard = ({
       style={{ cursor: selectable ? "pointer" : "default" }}
     >
       <h3
-        className="lg:text-lg font-bold text-white px-4 py-2 rounded-t-2xl min-w-full lg:min-w-1/2 inline-block"
+        className="lg:text-lg font-bold text-white px-4 py-2 rounded-t-2xl min-w-full md:min-w-1/3 inline-block"
         style={{
           backgroundColor: damana?.status_color
             ? `#${damana.status_color}`

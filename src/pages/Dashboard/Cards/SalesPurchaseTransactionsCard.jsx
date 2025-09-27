@@ -20,13 +20,13 @@ const SalesPurchaseTransactionsCard = ({
           >
             {title}
           </span>
-          <span
+          {/* <span
             style={{ color: typeColor }}
             className="flex items-center gap-2 text-xl"
           >
             <FiTrendingUp />
             <span>1.3%</span>
-          </span>
+          </span> */}
         </div>
 
         {/* Chart (Half Pie) */}

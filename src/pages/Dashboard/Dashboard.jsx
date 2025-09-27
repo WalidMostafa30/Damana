@@ -2,20 +2,27 @@ import { useEffect, useState } from "react";
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css";
 import "react-date-range/dist/theme/default.css";
-
 import PageTitle from "../../components/common/PageTitle";
 import FinancialDashboard from "./FinancialDashboard";
 import OperationalDashboard from "./OperationalDashboard";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { useQuery } from "@tanstack/react-query";
 import {
   getCompanies,
+  getFinancialDashboard,
   getRunningDashboard,
-  getRunningDashboardTable,
 } from "../../services/dashboardServices";
+import { useSelector } from "react-redux";
+import LoadingPage from "../../components/Loading/LoadingPage";
 
 const Dashboard = () => {
+  const { profile, loading } = useSelector((state) => state.profile);
+
+  if (loading) return <LoadingPage />;
+
+  if (profile?.account_type !== "company") return <Navigate to={"/"} replace />;
+
   const { t } = useTranslation();
 
   const {
@@ -29,9 +36,14 @@ const Dashboard = () => {
     staleTime: 1000 * 60,
   });
 
-  const { data: tableData } = useQuery({
-    queryKey: ["runningDashboardTable"],
-    queryFn: getRunningDashboardTable,
+  const {
+    data: dashboardData2,
+    isLoading: isLoading2,
+    isError: isError2,
+    error: error2,
+  } = useQuery({
+    queryKey: ["financialDashboard"],
+    queryFn: getFinancialDashboard,
     staleTime: 1000 * 60,
   });
 
@@ -76,6 +88,18 @@ const Dashboard = () => {
     staleTime: 1000 * 60, // دقيقة قبل ما يعيد الفetch
   });
 
+  const { data: appConfig } = useSelector((state) => state.appConfig);
+
+  const damana_status_options = [
+    { value: "", label: t("pages.home.all") },
+    ...(appConfig?.filer_statuses
+      ? Object.entries(appConfig.filer_statuses).map(([key, value]) => ({
+          value: key,
+          label: value,
+        }))
+      : []),
+  ];
+
   return (
     <article className="pageContainer space-y-4 lg:space-y-8">
       <PageTitle
@@ -90,10 +114,11 @@ const Dashboard = () => {
           onChange={(e) => handleChange("status", e.target.value)}
         >
           <option value="all">{t("pages.dashboard.status")}</option>
-          <option value="active">{t("pages.dashboard.status_active")}</option>
-          <option value="inactive">
-            {t("pages.dashboard.status_inactive")}
-          </option>
+          {damana_status_options.map((option) => (
+            <option key={option.value ?? "all"} value={option.value ?? ""}>
+              {option.label}
+            </option>
+          ))}
         </select>
 
         <button
@@ -187,11 +212,16 @@ const Dashboard = () => {
           isLoading={isLoading1}
           isError={isError1}
           error={error1}
-          tableData={tableData}
         />
       )}
       {pathname.includes("financial") && (
-        <FinancialDashboard filters={filters} />
+        <FinancialDashboard
+          filters={filters}
+          dashboardData2={dashboardData2}
+          isLoading={isLoading2}
+          isError={isError2}
+          error={error2}
+        />
       )}
     </article>
   );
