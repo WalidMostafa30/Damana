@@ -10,9 +10,23 @@ export const getFinancialDashboard = async (payload) => {
   return data?.data || {};
 };
 
-export const getRunningDashboardTable = async ({ page = 1, type = "sell" }) => {
+export const getRunningDashboardTable = async ({
+  page = 1,
+  type = "sell",
+  status,
+  created_at_from,
+  created_at_to,
+  company_id,
+}) => {
   const { data } = await api.get("/company/running-dashboard-table", {
-    params: { page, type },
+    params: {
+      page,
+      type,
+      status: status !== "all" ? status : undefined,
+      created_at_from,
+      created_at_to,
+      company_id: company_id !== "all" ? company_id : undefined,
+    },
   });
   return data || {};
 };

@@ -54,6 +54,9 @@ const Account = React.lazy(() => import("../pages/Account/Account"));
 const Profile = React.lazy(() => import("../pages/Account/Profile/Profile"));
 const BankInfo = React.lazy(() => import("../pages/Account/BankInfo"));
 const Address = React.lazy(() => import("../pages/Account/Address"));
+const UserManagement = React.lazy(() =>
+  import("../pages/Account/UserManagement")
+);
 const Support = React.lazy(() => import("../pages/Account/Support"));
 const Password = React.lazy(() => import("../pages/Account/Password"));
 const RemoveDamana = React.lazy(() => import("../pages/Account/RemoveDamana"));
@@ -99,6 +102,7 @@ const router = createBrowserRouter([
           { index: true, element: <Profile /> },
           { path: "bank-info", element: <BankInfo /> },
           { path: "address", element: <Address /> },
+          { path: "user-management", element: <UserManagement /> },
           { path: "support", element: <Support /> },
           { path: "password", element: <Password /> },
           { path: "remove-damana", element: <RemoveDamana /> },

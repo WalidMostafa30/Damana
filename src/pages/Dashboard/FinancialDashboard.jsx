@@ -6,7 +6,13 @@ import SalesPurchaseTransactionsCard from "./Cards/SalesPurchaseTransactionsCard
 import { getFinancialDashboardTable } from "../../services/dashboardServices";
 import { useState } from "react";
 
-const FinancialDashboard = ({ dashboardData2, isLoading, isError, error }) => {
+const FinancialDashboard = ({
+  dashboardData2,
+  isLoading,
+  isError,
+  error,
+  filters,
+}) => {
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
 
@@ -15,8 +21,25 @@ const FinancialDashboard = ({ dashboardData2, isLoading, isError, error }) => {
     isLoading: isLoadingTable,
     isError: isErrorTable,
   } = useQuery({
-    queryKey: ["financialDashboardTable", page, tableType],
-    queryFn: () => getFinancialDashboardTable({ page, type: tableType }),
+    queryKey: [
+      "financialDashboardTable",
+      page,
+      tableType,
+      filters.status,
+      filters.dateRange,
+      filters.company,
+    ],
+    queryFn: () =>
+      getFinancialDashboardTable({
+        page,
+        type: tableType,
+        status: filters.status,
+        created_at_from: filters.dateRange?.startDate
+          ?.toISOString()
+          .split("T")[0],
+        created_at_to: filters.dateRange?.endDate?.toISOString().split("T")[0],
+        company_id: filters.company,
+      }),
     keepPreviousData: true,
     staleTime: 1000 * 60,
   });

@@ -15,6 +15,7 @@ const OperationalDashboard = ({
   isLoading,
   isError,
   error,
+  filters,
 }) => {
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
@@ -24,8 +25,25 @@ const OperationalDashboard = ({
     isLoading: isLoadingTable,
     isError: isErrorTable,
   } = useQuery({
-    queryKey: ["runningDashboardTable", page, tableType],
-    queryFn: () => getRunningDashboardTable({ page ,type: tableType}),
+    queryKey: [
+      "runningDashboardTable",
+      page,
+      tableType,
+      filters.status,
+      filters.dateRange,
+      filters.company,
+    ],
+    queryFn: () =>
+      getRunningDashboardTable({
+        page,
+        type: tableType,
+        status: filters.status,
+        created_at_from: filters.dateRange?.startDate
+          ?.toISOString()
+          .split("T")[0],
+        created_at_to: filters.dateRange?.endDate?.toISOString().split("T")[0],
+        company_id: filters.company,
+      }),
     keepPreviousData: true,
     staleTime: 1000 * 60,
   });

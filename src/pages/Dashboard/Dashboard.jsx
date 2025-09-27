@@ -49,7 +49,6 @@ const Dashboard = () => {
 
   const [filters, setFilters] = useState({
     status: "all",
-    commission: "all",
     company: "all",
     dateRange: null,
   });
@@ -87,6 +86,7 @@ const Dashboard = () => {
     queryFn: getCompanies,
     staleTime: 1000 * 60, // دقيقة قبل ما يعيد الفetch
   });
+console.log(companiesData);
 
   const { data: appConfig } = useSelector((state) => state.appConfig);
 
@@ -132,7 +132,7 @@ const Dashboard = () => {
 
         {showPicker && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto">
+            <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto" dir="ltr">
               <DateRange
                 editableDateInputs={true}
                 moveRangeOnFirstSelection={false}
@@ -154,7 +154,7 @@ const Dashboard = () => {
           </div>
         )}
 
-        <select
+        {/* <select
           className="filterBtn"
           value={filters.commission}
           onChange={(e) => handleChange("commission", e.target.value)}
@@ -164,7 +164,7 @@ const Dashboard = () => {
           <option value="medium">
             {t("pages.dashboard.commission_medium")}
           </option>
-        </select>
+        </select> */}
 
         <select
           className="filterBtn"

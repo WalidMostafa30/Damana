@@ -167,9 +167,35 @@ export const sendSupportMessage = async (message) => {
 
   return data;
 };
+
 export const getUserInfo = async (payload) => {
   const { data } = await api.get("/get-user-info", {
-    params: payload, // 👈 استخدم params هنا
+    params: payload,
   });
   return data;
+};
+
+export const sendUserRegister = async (payload) => {
+  const { data } = await api.post("/company/user-register", payload);
+  return data;
+};
+
+export const getUserRegister = async () => {
+  const { data } = await api.get("/company/user-list");
+  return data?.data || [];
+};
+
+export const deleteUserRegister = async (id) => {
+  const { data } = await api.post("/company/delete-user", { id });
+  return data;
+};
+
+export const updateUserRegister = async (payload) => {
+  const { data } = await api.post("/company/user-update", payload);
+  return data;
+};
+
+export const getUserRegisterPermissions = async () => {
+  const { data } = await api.get("/company/permission-list");
+  return data?.data || [];
 };

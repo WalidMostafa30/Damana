@@ -32,6 +32,11 @@ const Account = () => {
                 </NavLink>
               </>
             )}
+            {profile?.account_type === "company" && (
+              <NavLink to="/profile/user-management" className="profileLink">
+                {t("pages.account.account.nav.user_management")}
+              </NavLink>
+            )}
             <NavLink to="/profile/remove-damana" className="profileLink">
               {t("pages.account.account.nav.remove_damana")}
             </NavLink>
