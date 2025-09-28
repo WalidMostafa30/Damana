@@ -7,6 +7,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const colors = [
   "#2084c5",
@@ -20,6 +21,8 @@ const colors = [
 ]; // لو عندك شركات كتير زود ألوان هنا
 
 const RevenueTrendCard = ({ data }) => {
+  const { t } = useTranslation();
+
   if (!data || data.length === 0) return null;
 
   // استخراج مفاتيح الشركات ديناميك (غير مفتاح day)
@@ -29,8 +32,10 @@ const RevenueTrendCard = ({ data }) => {
     <div className="whiteContainer">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">اتجاه الإيرادات</h3>
-        <p className="text-sky-600 font-medium">جروب مرسيدس</p>
+        <h3 className="text-lg font-semibold">{t("pages.revenueTrend.title")}</h3>
+        {/* <p className="text-sky-600 font-medium">
+          {t("pages.revenueTrend.groupName")}
+        </p> */}
       </div>
 
       {/* Chart */}
@@ -63,8 +68,7 @@ const RevenueTrendCard = ({ data }) => {
               className="w-3 h-3 rounded-sm"
               style={{ background: colors[index % colors.length] }}
             ></span>
-            {/* عرض اسم الشركة بشكل أوضح */}
-            <span>{`شركة ${index + 1}`}</span>
+            <span>{t("pages.revenueTrend.company", { number: index + 1 })}</span>
           </div>
         ))}
       </div>

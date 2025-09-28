@@ -9,7 +9,7 @@
   "components": {
     "common": {
       "damanaCard": {
-        "guaranteeNumber": "Guarantee Number",
+        "DamanaNumber": "Damana Number",
         "plateNumber": "Plate Number",
         "seller": "Seller",
         "price": "JOD",
@@ -18,9 +18,9 @@
       },
       "damanaList": {
         "errorLoading": "An error occurred while loading",
-        "noData": "No guarantees available",
-        "noDataWithLink": "No guarantees available yet. You can start now from here:",
-        "newRequest": "Request a new guarantee"
+        "noData": "No Damanas available",
+        "noDataWithLink": "No Damanas available yet. You can start now from here:",
+        "newRequest": "Request a new Damana"
       },
       "timer": {
         "hours": "Hours",
@@ -53,9 +53,9 @@
         "aboutUs": "About Us"
       },
       "navbar": {
-        "myGuarantees": "My Guarantees",
+        "myDamanas": "My Damanas",
         "dashboard": "Dashboard",
-        "startGuarantee": "Start Guarantee",
+        "startDamana": "Start Damana",
         "paymentOptions": "Payment Options",
         "faqs": "FAQs"
       },
@@ -79,7 +79,9 @@
       "checkCompleteRegisterRoute": {
         "completeRegisterTitle": "Complete Your Registration",
         "completeRegisterMessage": "To access all features, please complete your registration by providing the required information.",
-        "completeRegisterBtn": "Complete Registration"
+        "completeRegisterBtn": "Complete Registration",
+        "noPermissionTitle": "You do not have permission to access this page",
+        "goHomeBtn": "Home Page"
       }
     }
   },
@@ -119,7 +121,7 @@
           "bank_info": "Bank Information",
           "address": "Address",
           "user_management": "User Management",
-          "remove_damana": "Cancel Guarantee",
+          "remove_damana": "Cancel Damana",
           "support": "Support",
           "password": "Change Password",
           "terms": "Terms & Conditions"
@@ -190,11 +192,11 @@
       "remove_damana": {
         "steps": [
           {
-            "title": "Request Guarantee Cancellation",
-            "description": "You can request to cancel the guarantee you created. Select the guarantee, explain the reason for cancellation, and support will respond to you as soon as possible."
+            "title": "Request Damana Cancellation",
+            "description": "You can request to cancel the Damana you created. Select the Damana, explain the reason for cancellation, and support will respond to you as soon as possible."
           },
           {
-            "title": "Confirm Guarantee Cancellation",
+            "title": "Confirm Damana Cancellation",
             "description": "The principal amount will be refunded minus the cancellation fee if the system admin approves the cancellation."
           }
         ],
@@ -205,11 +207,11 @@
         "reason_label": "Reason for cancellation",
         "reason_required": "Please provide a reason for cancellation",
         "warning": "Warning: The cancellation fee of {{amount}} Dinars will be deducted",
-        "continue": "Continue with guarantee",
-        "confirm": "Confirm guarantee cancellation",
+        "continue": "Continue with Damana",
+        "confirm": "Confirm Damana cancellation",
         "loading": "Loading...",
         "success_msg": "The cancellation form has been sent to the system admin. You will be contacted as soon as possible.",
-        "go_to_damanat": "Go to guarantees page",
+        "go_to_damanat": "Go to Damanas page",
         "errors": {
           "load": "An error occurred while loading",
           "cancel": "An error occurred while cancelling"
@@ -229,12 +231,12 @@
     },
 
     "addDamana": {
-      "title": "New Guarantee Request",
-      "subtitle": "Start by creating a new guarantee for the vehicle you want to sell",
+      "title": "New Damana Request",
+      "subtitle": "Start by creating a new Damana for the vehicle you want to sell",
       "steps": [
         "Basic Information",
         "Parties Information",
-        "Guarantee Information"
+        "Damana Information"
       ],
       "step0": {
         "title": "Registration Information",
@@ -263,7 +265,7 @@
         "isOwnerRequired": "Owner selection is required"
       },
       "step1": {
-        "title": "Guarantee Parties Information",
+        "title": "Damana Parties Information",
         "buyer": {
           "sectionTitle": "Buyer",
           "nationalNumber": {
@@ -314,7 +316,7 @@
         "fetchError": "Failed to fetch buyer data, please enter it manually"
       },
       "step2": {
-        "title": "Guarantee Information",
+        "title": "Damana Information",
         "vehiclePrice": {
           "label": "Vehicle Price",
           "placeholder": "Enter vehicle price",
@@ -339,7 +341,7 @@
           "btn": "Check"
         },
         "transfer": {
-          "title": "Guarantee Transfer",
+          "title": "Damana Transfer",
           "required": "Transfer type is required",
           "options": {
             "ACH": "Standard – arrives same or next day (Free)",
@@ -348,18 +350,18 @@
         },
         "details": {
           "vehiclePrice": "Vehicle Price",
-          "commission": "Guarantee Commission",
-          "total": "Total Guarantee Price",
+          "commission": "Damana Commission",
+          "total": "Total Damana Price",
           "dueToSeller": "Due to Seller",
           "discountCode": "Discount Code",
           "discountValue": "Discount Value",
           "transferCommission": "Instant Transfer Commission"
         },
-        "submit": "Submit Guarantee",
-        "errorMsg": "An error occurred while creating the guarantee",
+        "submit": "Submit Damana",
+        "errorMsg": "An error occurred while creating the Damana",
         "success": {
-          "msg": "Guarantee created successfully. Guarantee Number",
-          "btn": "Go to Guarantee Page"
+          "msg": "Damana created successfully. Damana Number",
+          "btn": "Go to Damana Page"
         }
       }
     },
@@ -367,7 +369,7 @@
     "forgotPassword": {
       "title": "Forgot your password?",
       "breadcrumbs": {
-        "home": "Dhamanah",
+        "home": "eDamana",
         "page": "Password Recovery"
       },
       "loginText": "Already have an account?",
@@ -451,9 +453,9 @@
     },
 
     "login": {
-      "title": "Welcome to Dhamanah!",
+      "title": "Welcome to eDamana!",
       "breadcrumbs": {
-        "home": "Dhamanah",
+        "home": "eDamana",
         "page": "Login"
       },
       "labels": {
@@ -816,13 +818,13 @@
     },
 
     "RegisterPerson": {
-      "title": "Welcome to Damana!",
+      "title": "Welcome to eDamana!",
       "breadcrumbs": {
-        "home": "Damana",
+        "home": "eDamana",
         "register": "Create new account"
       },
-      "heading": "Verify your identity",
-      "subheading": "To be able to create a transaction in Damana and use the application features, verify your identity and bank data",
+      "heading": "Welcome to eDamana!",
+      "subheading": "To enjoy all the features of the platform and create your transaction with ease and security, create with account now and start your journey with eDamana",
       "form": {
         "name": "Name",
         "name_placeholder": "Username",
@@ -840,7 +842,8 @@
           "strong": "Strong"
         },
         "terms_label": "Agree to the",
-        "terms_link": "Privacy Policy and Terms of Use of Damana",
+        "privacy_policy_link": "Privacy Policy",
+        "terms_link": "Terms of Use of eDamana",
         "submit": "Create account",
         "login_text": "Already have an account?",
         "login_link": "Login"
@@ -982,13 +985,13 @@
       "loading": "Loading...",
       "loadError": "Failed to load data",
       "status": "Status",
-      "guaranteeNumber": "Guarantee Number",
+      "DamanaNumber": "Damana Number",
       "plateAndCode": "Plate & Code",
       "createdAt": "Created At",
       "sellerInfo": "Seller Information",
       "buyerInfo": "Buyer Information",
       "vehicleInfo": "Vehicle Information",
-      "damanaInfo": "Guarantee Information",
+      "damanaInfo": "Damana Information",
       "fields": {
         "name": "Name",
         "phone": "Phone Number",
@@ -1010,17 +1013,17 @@
         "vehicleClassification": "Vehicle Classification",
         "engineCapacity": "Engine Capacity",
         "vehiclePrice": "Vehicle Price",
-        "commissionBeforeDiscount": "Guarantee Commission",
+        "commissionBeforeDiscount": "Damana Commission",
         "discountCode": "Discount Code",
         "discount": "Discount",
         "commissionAfterDiscount": "Commission After Discount",
         "commissionOn": "Commission On",
-        "totalPrice": "Total Guarantee Price",
+        "totalPrice": "Total Damana Price",
         "totalPriceInWords": "Total Price in Words"
       },
       "currency": "Jordanian Dinar",
       "only": "only",
-      "inactiveMessage": "This guarantee is inactive or blocked. No actions can be performed on it"
+      "inactiveMessage": "This Damana is inactive or blocked. No actions can be performed on it"
     },
 
     "actionsSection": {
@@ -1028,13 +1031,13 @@
         "statusUpdated": "Status updated successfully",
         "error": "An error occurred",
         "serverError": "Failed to connect to server",
-        "releaseRequested": "Guarantee release requested successfully",
+        "releaseRequested": "Damana release requested successfully",
         "cancelled": "Operation cancelled"
       },
       "confirm": {
-        "accept": "Do you want to accept the guarantee?",
-        "reject": "Do you want to reject the guarantee?",
-        "release": "Do you want to release the guarantee?\n\nYou must complete the transfer procedures first, otherwise extra fees may apply."
+        "accept": "Do you want to accept the Damana?",
+        "reject": "Do you want to reject the Damana?",
+        "release": "Do you want to release the Damana?\n\nYou must complete the transfer procedures first, otherwise extra fees may apply."
       },
       "cancelRequest": {
         "pending": "A cancellation request has been submitted, awaiting approval",
@@ -1042,9 +1045,9 @@
         "rejected": "The cancellation request was rejected: {{reason}}"
       },
       "buttons": {
-        "accept": "Accept Guarantee",
-        "reject": "Reject Guarantee",
-        "release": "Request Guarantee Release"
+        "accept": "Accept Damana",
+        "reject": "Reject Damana",
+        "release": "Request Damana Release"
       },
       "timer": {
         "allowed": "Release request is now allowed ✅",
@@ -1069,8 +1072,136 @@
       "company1": "Company 1",
       "company2": "Company 2",
       "confirm_button": "Confirm",
+      "clear_button": "Clear",
+      "reset_button": "Reset",
       "operational_tab": "Operational Dashboard",
       "financial_tab": "Financial Dashboard"
+    },
+
+    "financial_dashboard": {
+      "transactions": {
+        "buyTitle": "Purchase Transactions",
+        "sellTitle": "Sales Transactions",
+        "progress": "In Progress",
+        "hold": "On Hold",
+        "late": "Late",
+        "released": "Released",
+        "totalProgress": "Total Value of In-Progress Transactions",
+        "totalLate": "Total Late Amounts",
+        "totalHold": "Total On-Hold Amounts",
+        "totalReleased": "Total Released Amounts",
+        "currency": "JOD"
+      },
+      "table": {
+        "title": "Payments Table",
+        "headers": {
+          "transactionNumber": "Transaction Number",
+          "carNumber": "Vehicle Number",
+          "carValue": "Vehicle Value",
+          "paymentStatus": "Payment Status",
+          "paymentDate": "Payment Date"
+        },
+        "pagination": {
+          "next": "Next",
+          "previous": "Previous",
+          "showing": "Showing",
+          "to": "to",
+          "of": "of"
+        },
+        "download": "Download Table"
+      },
+      "cards": {
+        "revenueTrend": "Revenue Trend",
+        "commission": "Commissions"
+      },
+      "errors": {
+        "failedToLoad": "Failed to load data"
+      }
+    },
+
+    "operational_dashboard": {
+      "table": {
+        "title": "Transactions Management Table",
+        "headers": {
+          "transactionNumber": "Transaction Number",
+          "buyerName": "Buyer Name",
+          "sellerName": "Seller Name",
+          "carNumber": "Vehicle Number",
+          "carValue": "Vehicle Value",
+          "damanaCommission": "Damana Commission",
+          "status": "Status",
+          "createdDate": "Created At",
+          "lastUpdate": "Last Update"
+        },
+        "currency": "JOD"
+      }
+    },
+
+    "cancellations": {
+      "title": "Cancellations Statistics",
+      "buyer": "By Buyer",
+      "seller": "By Seller",
+      "admin": "By Admin"
+    },
+
+    "commission": {
+      "title": "Commission",
+      "group": "Mercedes Group"
+    },
+
+    "table_dashboard": {
+      "sellerTransactions": "Seller Transactions",
+      "buyerTransactions": "Buyer Transactions",
+      "noData": "No data available",
+      "pagination": "Showing {{from}}-{{to}} of {{total}} transactions",
+      "prev": "Previous",
+      "next": "Next"
+    },
+
+    "monthlySalesTrend": {
+      "title": "Monthly Sales Trend",
+      "sales": "Sales Trend"
+    },
+
+    "transactions": {
+      "active": "Active Transactions",
+      "pending": "Pending Transactions",
+      "paid": "Paid Transactions",
+      "completed": "Completed Transactions",
+      "higherThanLastWeek": "Higher than last week"
+    },
+
+    "revenueTrend": {
+      "title": "Revenue Trend",
+      "groupName": "Mercedes Group",
+      "company": "Company {{number}}"
+    },
+
+    "salesPurchase": {
+      "totalCount": "Total Count",
+      "higherThanLastWeek": "Higher than last week",
+      "sales": "Sales",
+      "purchases": "Purchases",
+      "online": "Online Transactions",
+      "offline": "In-Store Transactions"
+    },
+
+    "totalCount": {
+      "carsSold": "Total Cars Sold",
+      "carsBought": "Total Cars Bought",
+      "cancelRate": "Cancellation Rate",
+      "expiredRate": "Expiration Rate"
+    },
+
+    "transactionsType": {
+      "title": "Transactions Distribution by Type",
+      "buy": "Buy",
+      "sell": "Sell"
+    },
+
+    "faqs-page": {
+      "title": "FAQs",
+      "subtitle": "Here you can find more frequently asked questions"
     },
 
     "getPage": {
@@ -1078,17 +1209,19 @@
     },
 
     "home": {
-      "title": "My Guarantees",
-      "subtitle": "Here you can find all your guarantees with their full details.",
-      "sellGuarantees": "Sell Guarantees",
-      "buyGuarantees": "Purchase Guarantees",
+      "title": "My Damanas",
+      "subtitle": "Here you can find all your Damanas with their full details.",
+      "sellDamanas": "Sell Damanas",
+      "buyDamanas": "Purchase Damanas",
       "all": "All",
       "selectDate": "Select Date",
       "confirm": "Confirm",
+      "clear": "Clear",
+      "reset": "Reset",
       "welcomeTitle": "Welcome to Dhamana!",
-      "welcomeSubtitle": "You can start a new guarantee by clicking the button below",
-      "newRequest": "New Guarantee Request",
-      "completeRegisterSubtitle": "Complete your registration to start creating guarantees and enjoy all the features",
+      "welcomeSubtitle": "You can start a new Damana by clicking the button below",
+      "newRequest": "New Damana Request",
+      "completeRegisterSubtitle": "Complete your registration to start creating Damanas and enjoy all the features",
       "completeRegisterRequestBtn": "Complete Registration"
     },
 

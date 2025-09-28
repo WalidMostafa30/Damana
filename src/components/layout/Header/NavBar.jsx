@@ -5,7 +5,7 @@ import { usePermission } from "../../../hooks/usePermission";
 const NavBar = ({ openNav, setOpenNav }) => {
   const { t } = useTranslation();
 
-  const {has} = usePermission();
+  const { has } = usePermission();
 
   return (
     <nav
@@ -15,14 +15,6 @@ const NavBar = ({ openNav, setOpenNav }) => {
             openNav ? "max-h-[500px]" : "max-h-0 py-0"
           }`}
     >
-      <NavLink
-        onClick={() => setOpenNav(false)}
-        to="/damanaty"
-        className="navLink"
-      >
-        {t("components.layout.navbar.myGuarantees")}
-      </NavLink>
-
       {has("company.dashboard") && (
         <NavLink
           onClick={() => setOpenNav(false)}
@@ -35,10 +27,18 @@ const NavBar = ({ openNav, setOpenNav }) => {
 
       <NavLink
         onClick={() => setOpenNav(false)}
+        to="/damanaty"
+        className="navLink"
+      >
+        {t("components.layout.navbar.myDamanas")}
+      </NavLink>
+
+      <NavLink
+        onClick={() => setOpenNav(false)}
         to="/add-damana"
         className="navLink"
       >
-        {t("components.layout.navbar.startGuarantee")}
+        {t("components.layout.navbar.startDamana")}
       </NavLink>
 
       <NavLink

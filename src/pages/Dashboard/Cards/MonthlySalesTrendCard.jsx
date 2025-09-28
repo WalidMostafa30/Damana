@@ -8,11 +8,16 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const MonthlySalesTrendCard = ({ data = {} }) => {
+  const { t } = useTranslation();
+
   return (
     <div className="whiteContainer">
-      <h3 className="text-lg font-semibold mb-4">اتجاه المبيعات الشهري</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {t("pages.monthlySalesTrend.title")}
+      </h3>
       <div dir="ltr">
         <ResponsiveContainer width="100%" height={350}>
           <LineChart data={data?.getMonthlySales}>
@@ -24,7 +29,7 @@ const MonthlySalesTrendCard = ({ data = {} }) => {
             <Line
               type="monotone"
               dataKey="value"
-              name="اتجاه المبيعات"
+              name={t("pages.monthlySalesTrend.sales")}
               stroke="#3391cd"
               strokeWidth={2}
               dot={{ r: 6, fill: "#3391cd", strokeWidth: 2, stroke: "#fff" }}

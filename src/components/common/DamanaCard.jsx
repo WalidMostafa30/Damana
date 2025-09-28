@@ -39,7 +39,7 @@ const DamanaCard = ({
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
         <div className="grid 2xl:grid-cols-2 gap-2">
           <p className="lg:text-lg text-primary font-bold 2xl:col-span-2 flex items-center gap-1">
-            {tr("guaranteeNumber")}:{" "}
+            {tr("DamanaNumber")}:{" "}
             <CopyToClipboard text={damana?.serial_number} />
           </p>
 

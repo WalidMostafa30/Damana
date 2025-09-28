@@ -9,6 +9,7 @@ import MonthlySalesTrendCard from "./Cards/MonthlySalesTrendCard";
 import TransactionsByTypeCard from "./Cards/TransactionsByTypeCard";
 import CancellationsCard from "./Cards/CancellationsCard";
 import DashboardTable from "./Cards/DashboardTable";
+import { useTranslation } from "react-i18next";
 
 const OperationalDashboard = ({
   dashboardData1,
@@ -17,6 +18,7 @@ const OperationalDashboard = ({
   error,
   filters,
 }) => {
+  const { t } = useTranslation();
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
 
@@ -49,18 +51,18 @@ const OperationalDashboard = ({
   });
 
   const tableData = {
-    table_title: "جدول إدارة المعاملات",
+    table_title: t("pages.operational_dashboard.table.title"),
     download_link: data?.download_table_link,
     table_header: [
-      "رقم المعاملة",
-      "اسم المشترى",
-      "اسم البائع",
-      "رقم المركبة",
-      "قيمه المركبة",
-      "عمولة ضمانة",
-      "الحالة",
-      "تاريخ الانشاء",
-      "اخر تحديث",
+      t("pages.operational_dashboard.table.headers.transactionNumber"),
+      t("pages.operational_dashboard.table.headers.buyerName"),
+      t("pages.operational_dashboard.table.headers.sellerName"),
+      t("pages.operational_dashboard.table.headers.carNumber"),
+      t("pages.operational_dashboard.table.headers.carValue"),
+      t("pages.operational_dashboard.table.headers.damanaCommission"),
+      t("pages.operational_dashboard.table.headers.status"),
+      t("pages.operational_dashboard.table.headers.createdDate"),
+      t("pages.operational_dashboard.table.headers.lastUpdate"),
     ],
     table_rows:
       data?.data?.map((item) => ({
@@ -72,8 +74,12 @@ const OperationalDashboard = ({
           ? item?.seller_company.ar_name
           : item?.seller?.name,
         car_number: item.registration_number,
-        car_value: `${item.vehicle_price} دينار أردني`,
-        damana_commission: `${item.commission_value} دينار أردني`,
+        car_value: `${item.vehicle_price} ${t(
+          "pages.operational_dashboard.table.currency"
+        )}`,
+        damana_commission: `${item.commission_value} ${t(
+          "pages.operational_dashboard.table.currency"
+        )}`,
         status: (
           <span
             className="py-1 px-2 rounded-lg text-white"

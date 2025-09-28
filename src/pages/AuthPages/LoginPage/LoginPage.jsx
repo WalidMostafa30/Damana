@@ -56,6 +56,7 @@ const LoginPage = () => {
         mobile: values.mobile,
         country_code: values.country_code,
         password: values.password,
+        remember: values.remember,
       };
       mutation.mutate(payload);
     },

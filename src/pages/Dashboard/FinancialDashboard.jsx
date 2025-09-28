@@ -5,6 +5,9 @@ import RevenueTrendCard from "./Cards/RevenueTrendCard";
 import SalesPurchaseTransactionsCard from "./Cards/SalesPurchaseTransactionsCard";
 import { getFinancialDashboardTable } from "../../services/dashboardServices";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
+import FormError from "../../components/form/FormError";
+import LoadingSection from "../../components/Loading/LoadingSection";
 
 const FinancialDashboard = ({
   dashboardData2,
@@ -13,6 +16,7 @@ const FinancialDashboard = ({
   error,
   filters,
 }) => {
+  const { t } = useTranslation();
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
 
@@ -57,36 +61,38 @@ const FinancialDashboard = ({
 
   const transactionsData = [
     {
-      title: "معاملات شراء",
+      title: t("pages.financial_dashboard.transactions.buyTitle"),
       amount: dashboardData2?.buyCard?.all_vehicle_price || 0,
       percentage: dashboardData2?.buyCard?.all_vehicle_price_percent || 0,
       typeColor: "#0e7ac0",
       bars: [
         {
-          name: "قيد التنفيذ",
+          name: t("pages.financial_dashboard.transactions.progress"),
           value: Number(dashboardData2?.buyCard?.progress_vehicle_price) || 0,
           fill: "#00b3b9",
         },
         {
-          name: "معلقة",
+          name: t("pages.financial_dashboard.transactions.hold"),
           value: Number(dashboardData2?.buyCard?.hold_vehicle_price) || 0,
           fill: "#eda145",
         },
         {
-          name: "متأخرة",
+          name: t("pages.financial_dashboard.transactions.late"),
           value: Number(dashboardData2?.buyCard?.late_vehicle_price) || 0,
           fill: "#fc2127",
         },
         {
-          name: "مصروفة",
+          name: t("pages.financial_dashboard.transactions.released"),
           value: Number(dashboardData2?.buyCard?.released_vehicle_price) || 0,
           fill: "#0e7ac0",
         },
       ],
       stats: [
         {
-          label: "إجمالي قيمة المعاملات قيد التنفيذ",
-          value: `${dashboardData2?.buyCard?.progress_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalProgress"),
+          value: `${dashboardData2?.buyCard?.progress_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.buyCard?.progress_vehicle_price) /
               Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
@@ -94,8 +100,10 @@ const FinancialDashboard = ({
           color: "#0e7ac0",
         },
         {
-          label: "إجمالي المبالغ المتأخرة",
-          value: `${dashboardData2?.buyCard?.late_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalLate"),
+          value: `${dashboardData2?.buyCard?.late_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.buyCard?.late_vehicle_price) /
               Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
@@ -103,8 +111,10 @@ const FinancialDashboard = ({
           color: "#fc2127",
         },
         {
-          label: "إجمالي المبالغ المعلقة",
-          value: `${dashboardData2?.buyCard?.hold_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalHold"),
+          value: `${dashboardData2?.buyCard?.hold_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.buyCard?.hold_vehicle_price) /
               Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
@@ -112,8 +122,10 @@ const FinancialDashboard = ({
           color: "#eda145",
         },
         {
-          label: "إجمالي المبالغ المصروفة",
-          value: `${dashboardData2?.buyCard?.released_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalReleased"),
+          value: `${dashboardData2?.buyCard?.released_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.buyCard?.released_vehicle_price) /
               Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
@@ -123,36 +135,38 @@ const FinancialDashboard = ({
       ],
     },
     {
-      title: "معاملات بيع",
+      title: t("pages.financial_dashboard.transactions.sellTitle"),
       amount: dashboardData2?.selleCard?.all_vehicle_price || 0,
       percentage: dashboardData2?.selleCard?.all_vehicle_price_percent || 0,
       typeColor: "#00b3b9",
       bars: [
         {
-          name: "قيد التنفيذ",
+          name: t("pages.financial_dashboard.transactions.progress"),
           value: Number(dashboardData2?.selleCard?.progress_vehicle_price) || 0,
           fill: "#00b3b9",
         },
         {
-          name: "معلقة",
+          name: t("pages.financial_dashboard.transactions.hold"),
           value: Number(dashboardData2?.selleCard?.hold_vehicle_price) || 0,
           fill: "#eda145",
         },
         {
-          name: "متأخرة",
+          name: t("pages.financial_dashboard.transactions.late"),
           value: Number(dashboardData2?.selleCard?.late_vehicle_price) || 0,
           fill: "#fc2127",
         },
         {
-          name: "مصروفة",
+          name: t("pages.financial_dashboard.transactions.released"),
           value: Number(dashboardData2?.selleCard?.released_vehicle_price) || 0,
           fill: "#0e7ac0",
         },
       ],
       stats: [
         {
-          label: "إجمالي قيمة المعاملات قيد التنفيذ",
-          value: `${dashboardData2?.selleCard?.progress_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalProgress"),
+          value: `${dashboardData2?.selleCard?.progress_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.selleCard?.progress_vehicle_price) /
               Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
@@ -160,8 +174,10 @@ const FinancialDashboard = ({
           color: "#0e7ac0",
         },
         {
-          label: "إجمالي المبالغ المتأخرة",
-          value: `${dashboardData2?.selleCard?.late_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalLate"),
+          value: `${dashboardData2?.selleCard?.late_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.selleCard?.late_vehicle_price) /
               Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
@@ -169,8 +185,10 @@ const FinancialDashboard = ({
           color: "#fc2127",
         },
         {
-          label: "إجمالي المبالغ المعلقة",
-          value: `${dashboardData2?.selleCard?.hold_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalHold"),
+          value: `${dashboardData2?.selleCard?.hold_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.selleCard?.hold_vehicle_price) /
               Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
@@ -178,8 +196,10 @@ const FinancialDashboard = ({
           color: "#eda145",
         },
         {
-          label: "إجمالي المبالغ المصروفة",
-          value: `${dashboardData2?.selleCard?.released_vehicle_price} دينار أردني`,
+          label: t("pages.financial_dashboard.transactions.totalReleased"),
+          value: `${dashboardData2?.selleCard?.released_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
           progress:
             (Number(dashboardData2?.selleCard?.released_vehicle_price) /
               Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
@@ -191,21 +211,22 @@ const FinancialDashboard = ({
   ];
 
   const tableData = {
-    table_title: "جدول الدفعات",
+    table_title: t("pages.financial_dashboard.table.title"),
     download_link: data?.download_table_link,
     table_header: [
-      "رقم المعاملة",
-      "رقم المركبة",
-      "قيمه المركبة",
-      "حالة الدفع",
-      "تاريخ الدفع",
+      t("pages.financial_dashboard.table.headers.transactionNumber"),
+      t("pages.financial_dashboard.table.headers.carNumber"),
+      t("pages.financial_dashboard.table.headers.carValue"),
+      t("pages.financial_dashboard.table.headers.paymentStatus"),
+      t("pages.financial_dashboard.table.headers.paymentDate"),
     ],
     table_rows:
       data?.data.map((item) => ({
-        // id: item.id,
         commission_number: item.serial_number,
         car_number: item.registration_number,
-        car_value: `${item.vehicle_price} دينار أردني`,
+        car_value: `${item.vehicle_price} ${t(
+          "pages.financial_dashboard.transactions.currency"
+        )}`,
         status: (
           <span
             className="py-1 px-2 rounded-lg text-white"
@@ -236,8 +257,14 @@ const FinancialDashboard = ({
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
-        <RevenueTrendCard data={dashboardData2?.RevenueTrendCard} />
-        <CommissionCard data={dashboardData2?.CommissionCard} />
+        <RevenueTrendCard
+          title={t("pages.financial_dashboard.cards.revenueTrend")}
+          data={dashboardData2?.RevenueTrendCard}
+        />
+        <CommissionCard
+          title={t("pages.financial_dashboard.cards.commission")}
+          data={dashboardData2?.CommissionCard}
+        />
       </div>
 
       <DashboardTable

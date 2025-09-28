@@ -1,9 +1,6 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
 import { useTranslation } from "react-i18next";
 import PageTitle from "../../components/common/PageTitle";
 import HomeSlider from "./HomeSlider/HomeSlider";
@@ -13,11 +10,13 @@ import { fetchDamanat } from "../../services/damanaServices";
 import FAQ from "./FAQ";
 import WelcomeComponent from "./WelcomeComponent";
 import { useSelector } from "react-redux";
+import DatePickerModal from "../../components/form/DatePickerModal";
 
 const Home = () => {
   const { t } = useTranslation();
   const [selectedType, setSelectedType] = useState("sell");
   const [selectedStatus, setSelectedStatus] = useState(null);
+
   const [dateRange, setDateRange] = useState(null);
   const [tempRange, setTempRange] = useState({
     startDate: new Date(),
@@ -70,6 +69,25 @@ const Home = () => {
     }
   }, [pathname, navigate]);
 
+  // دوال للتحكم في مودال التاريخ
+  const handleConfirmDate = () => {
+    setDateRange(tempRange);
+    setShowPicker(false);
+  };
+
+  const handleClearDate = () => {
+    setDateRange(null);
+    setShowPicker(false);
+  };
+
+  const handleResetDate = () => {
+    setTempRange({
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    });
+  };
+
   return (
     <section className="pageContainer grid grid-cols-1 xl:grid-cols-3 gap-8">
       <div className="col-span-1 xl:col-span-2 space-y-4">
@@ -89,8 +107,9 @@ const Home = () => {
                 selectedType === "sell" ? "active-sale" : ""
               }`}
             >
-              {t("pages.home.sellGuarantees")}
+              {t("pages.home.sellDamanas")}
             </button>
+
             <button
               onClick={() => {
                 setSelectedType("buy");
@@ -100,7 +119,7 @@ const Home = () => {
                 selectedType === "buy" ? "active-purchase" : ""
               }`}
             >
-              {t("pages.home.buyGuarantees")}
+              {t("pages.home.buyDamanas")}
             </button>
 
             <select
@@ -127,30 +146,19 @@ const Home = () => {
             </button>
           </div>
 
+          {/* استخدام الكومبوننت الجديد */}
           {showPicker && (
-            <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-              <div
-                className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto"
-                dir="ltr"
-              >
-                <DateRange
-                  editableDateInputs={true}
-                  moveRangeOnFirstSelection={false}
-                  ranges={[tempRange]}
-                  className="w-full"
-                  onChange={(item) => setTempRange(item.selection)}
-                />
-                <button
-                  className="mt-2 mainBtn"
-                  onClick={() => {
-                    setDateRange(tempRange);
-                    setShowPicker(false);
-                  }}
-                >
-                  {t("pages.home.confirm")}
-                </button>
-              </div>
-            </div>
+            <DatePickerModal
+              tempRange={tempRange}
+              setTempRange={setTempRange}
+              onConfirm={handleConfirmDate}
+              onClear={handleClearDate}
+              onReset={handleResetDate}
+              onClose={() => setShowPicker(false)}
+              confirmLabel={t("pages.home.confirm")}
+              clearLabel={t("pages.home.clear")}
+              resetLabel={t("pages.home.reset")}
+            />
           )}
 
           {pathname.includes("/sale") && (
@@ -162,6 +170,7 @@ const Home = () => {
               error={error}
             />
           )}
+
           {pathname.includes("/purchase") && (
             <Purchase
               data={data?.pages.flatMap((page) => page.data) || []}
@@ -176,9 +185,7 @@ const Home = () => {
 
       <aside className="space-y-8">
         <WelcomeComponent />
-
         <HomeSlider />
-
         <FAQ />
       </aside>
     </section>

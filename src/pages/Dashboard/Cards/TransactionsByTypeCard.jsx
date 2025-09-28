@@ -10,17 +10,19 @@ import {
   LabelList,
   Cell,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const TransactionsByTypeCard = ({ data = {} }) => {
+  const { t } = useTranslation();
+
   const theData = [
-    // { name: "بيع غير مملوك", value: 34, color: "#aedcf9" },
     {
-      name: "شراء",
+      name: t("pages.transactionsType.buy"),
       value: Number(data?.buyerTransAvg).toFixed(2),
       color: "#0e7ac0",
     },
     {
-      name: "بيع",
+      name: t("pages.transactionsType.sell"),
       value: Number(data?.salleTransAvg).toFixed(2),
       color: "#15b097",
     },
@@ -49,7 +51,9 @@ const TransactionsByTypeCard = ({ data = {} }) => {
 
   return (
     <div className="whiteContainer lg:col-span-4">
-      <h3 className="text-lg font-semibold mb-4">توزيع المعاملات حسب النوع</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {t("pages.transactionsType.title")}
+      </h3>
       <div dir="ltr">
         <ResponsiveContainer width="100%" height={300}>
           <BarChart

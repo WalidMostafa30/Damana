@@ -9,7 +9,7 @@
   "components": {
     "common": {
       "damanaCard": {
-        "guaranteeNumber": "رقم الضمانة",
+        "DamanaNumber": "رقم الضمانة",
         "plateNumber": "رقم اللوحة",
         "seller": "البائع",
         "price": "دينار أردني",
@@ -53,9 +53,9 @@
         "aboutUs": "من نحن"
       },
       "navbar": {
-        "myGuarantees": "ضماناتي",
+        "myDamanas": "ضماناتي",
         "dashboard": "لوحة التحكم",
-        "startGuarantee": "بدء ضمانة",
+        "startDamana": "بدء ضمانة",
         "paymentOptions": "خيارات الدفع",
         "faqs": "الأسئلة الشائعة"
       },
@@ -79,7 +79,9 @@
       "checkCompleteRegisterRoute": {
         "completeRegisterTitle": "اكمل تسجيل بياناتك",
         "completeRegisterMessage": "يرجى استكمال تسجيل بياناتك للمتابعة.",
-        "completeRegisterBtn": "اكمل التسجيل"
+        "completeRegisterBtn": "اكمل التسجيل",
+        "noPermissionTitle": "لا توجد صلاحية للوصول لهذه الصفحة",
+        "goHomeBtn": "الصفحة الرئيسة"
       }
     }
   },
@@ -818,8 +820,8 @@
         "home": "ضمانة",
         "register": "انشاء حساب جديد"
       },
-      "heading": "اكد هويتك الشخصية",
-      "subheading": "حتى تتمكن من انشاء معامله فى ضمانة, واستخدام ميزات التطبيق, اكد هويتك وبيانات البنك الخاص بك",
+      "heading": "أهلاً في ضمانة!",
+      "subheading": "للاستفادة من جميع ميزات المنصة وإنشاء معاملاتك بكل سهولة وأمان,أنشئ حسابك الآن وابدأ تجربتك مع ضمانة.",
       "form": {
         "name": "الاسم",
         "name_placeholder": "اسم المستخدم",
@@ -837,7 +839,8 @@
           "strong": "قوية"
         },
         "terms_label": "الموافقة على سياسة",
-        "terms_link": "الخصوصية و شروط استخدام ضمانة",
+        "privacy_policy_link": "الخصوصية",
+        "terms_link": "شروط استخدام ضمانة",
         "submit": "انشاء حساب",
         "login_text": "هل تمتلك حساب بالفعل؟",
         "login_link": "تسجيل دخول"
@@ -979,7 +982,7 @@
       "loading": "جار التحميل...",
       "loadError": "فشل في تحميل البيانات",
       "status": "الحالة",
-      "guaranteeNumber": "رقم الضمانة",
+      "DamanaNumber": "رقم الضمانة",
       "plateAndCode": "رقم الترميز واللوحة",
       "createdAt": "تاريخ الإنشاء",
       "sellerInfo": "بيانات البائع",
@@ -1066,8 +1069,131 @@
       "company1": "شركة 1",
       "company2": "شركة 2",
       "confirm_button": "تم",
+      "clear_button": "مسح",
+      "reset_button": "إعادة تعيين",
       "operational_tab": "لوحة المعلومات التشغيلية",
       "financial_tab": "لوحة المعلومات المالية"
+    },
+
+    "financial_dashboard": {
+      "transactions": {
+        "buyTitle": "معاملات شراء",
+        "sellTitle": "معاملات بيع",
+        "progress": "قيد التنفيذ",
+        "hold": "معلقة",
+        "late": "متأخرة",
+        "released": "مصروفة",
+        "totalProgress": "إجمالي قيمة المعاملات قيد التنفيذ",
+        "totalLate": "إجمالي المبالغ المتأخرة",
+        "totalHold": "إجمالي المبالغ المعلقة",
+        "totalReleased": "إجمالي المبالغ المصروفة",
+        "currency": "دينار أردني"
+      },
+      "table": {
+        "title": "جدول الدفعات",
+        "headers": {
+          "transactionNumber": "رقم المعاملة",
+          "carNumber": "رقم المركبة",
+          "carValue": "قيمة المركبة",
+          "paymentStatus": "حالة الدفع",
+          "paymentDate": "تاريخ الدفع"
+        },
+        "pagination": {
+          "next": "التالي",
+          "previous": "السابق",
+          "showing": "عرض",
+          "to": "إلى",
+          "of": "من أصل"
+        },
+        "download": "تحميل الجدول"
+      },
+      "cards": {
+        "revenueTrend": "اتجاه الإيرادات",
+        "commission": "العمولات"
+      },
+      "errors": {
+        "failedToLoad": "فشل تحميل البيانات"
+      }
+    },
+
+    "operational_dashboard": {
+      "table": {
+        "title": "جدول إدارة المعاملات",
+        "headers": {
+          "transactionNumber": "رقم المعاملة",
+          "buyerName": "اسم المشتري",
+          "sellerName": "اسم البائع",
+          "carNumber": "رقم المركبة",
+          "carValue": "قيمة المركبة",
+          "damanaCommission": "عمولة ضمانة",
+          "status": "الحالة",
+          "createdDate": "تاريخ الإنشاء",
+          "lastUpdate": "آخر تحديث"
+        },
+        "currency": "دينار أردني"
+      }
+    },
+
+    "cancellations": {
+      "title": "احصائيات الإلغاء",
+      "buyer": "من طرف المشتري",
+      "seller": "من طرف البائع",
+      "admin": "من طرف الإدارة"
+    },
+
+    "commission": {
+      "title": "العمولة",
+      "group": "جروب مرسيدس"
+    },
+
+    "table_dashboard": {
+      "sellerTransactions": "معاملات البائع",
+      "buyerTransactions": "معاملات المشتري",
+      "noData": "لا يوجد بيانات",
+      "pagination": "عرض {{from}}-{{to}} من أصل {{total}} معامله",
+      "prev": "السابق",
+      "next": "التالي"
+    },
+
+    "monthlySalesTrend": {
+      "title": "اتجاه المبيعات الشهري",
+      "sales": "اتجاه المبيعات"
+    },
+
+    "transactions": {
+      "active": "عدد المعاملات النشطة",
+      "pending": "عدد المعاملات المعلقة",
+      "paid": "عدد المعاملات المدفوعة",
+      "completed": "عدد المعاملات المكتملة",
+      "higherThanLastWeek": "أعلى من الأسبوع الماضي"
+    },
+
+    "revenueTrend": {
+      "title": "اتجاه الإيرادات",
+      "groupName": "جروب مرسيدس",
+      "company": "شركة {{number}}"
+    },
+
+    "salesPurchase": {
+      "totalCount": "إجمالي العدد",
+      "higherThanLastWeek": "أعلى من الأسبوع الماضي",
+      "sales": "المبيعات",
+      "purchases": "المشتريات",
+      "online": "المعاملات عبر الإنترنت",
+      "offline": "المعاملات في الفروع"
+    },
+
+    "totalCount": {
+      "carsSold": "اجمالي السيارات المباعة",
+      "carsBought": "اجمالى السيارات المشتراة",
+      "cancelRate": "معدل الإلغاء",
+      "expiredRate": "معدل انتهاء الصلاحية"
+    },
+
+    "transactionsType": {
+      "title": "توزيع المعاملات حسب النوع",
+      "buy": "شراء",
+      "sell": "بيع"
     },
 
     "faqs-page": {
@@ -1082,11 +1208,13 @@
     "home": {
       "title": "ضماناتى",
       "subtitle": "هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.",
-      "sellGuarantees": "ضمانات البيع",
-      "buyGuarantees": "ضمانات الشراء",
+      "sellDamanas": "ضمانات البيع",
+      "buyDamanas": "ضمانات الشراء",
       "all": "الكل",
       "selectDate": "اختر التاريخ",
       "confirm": "تم",
+      "clear": "مسح",
+      "reset": "إعادة تعيين",
       "welcomeTitle": "مرحبًا بك في ضمانة!",
       "welcomeSubtitle": "يمكنك بدء ضمانة جديدة بالضغط على الزر أدناه",
       "newRequest": "طلب ضمانة جديدة",

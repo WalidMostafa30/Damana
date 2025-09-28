@@ -1,6 +1,7 @@
 import LoadingSection from "../../../components/Loading/LoadingSection";
 import noDataImg from "../../../assets/images/No data-pana 1.png";
 import { GrDownload } from "react-icons/gr";
+import { useTranslation } from "react-i18next";
 
 const DashboardTable = ({
   data,
@@ -10,6 +11,8 @@ const DashboardTable = ({
   setTableType,
   setPage,
 }) => {
+  const { t } = useTranslation();
+
   if (isLoading) return <LoadingSection />;
 
   if (isError) return;
@@ -40,7 +43,7 @@ const DashboardTable = ({
           }`}
           onClick={() => setTableType("sell")}
         >
-          معاملات البائع
+          {t("pages.table_dashboard.sellerTransactions")}
         </button>
         <button
           className={`homeLink flex-1 lg:flex-initial ${
@@ -48,7 +51,7 @@ const DashboardTable = ({
           }`}
           onClick={() => setTableType("buy")}
         >
-          معاملات المشتري
+          {t("pages.table_dashboard.buyerTransactions")}
         </button>
       </div>
 
@@ -88,11 +91,11 @@ const DashboardTable = ({
           <div className="flex items-center justify-center flex-col gap-4 mt-8">
             <img
               src={noDataImg}
-              alt="no data"
+              alt={t("pages.table_dashboard.noData")}
               loading="lazy"
               className="w-96"
             />
-            <p className="text-lg">لا يوجد بيانات</p>
+            <p className="text-lg">{t("pages.table_dashboard.noData")}</p>
           </div>
         )}
       </div>
@@ -100,7 +103,11 @@ const DashboardTable = ({
       {/* Pagination */}
       <div className="px-6 py-4 border-t border-gray-200 flex flex-col items-center lg:flex-row lg:justify-between gap-4">
         <div className="text-gray-500">
-          عرض {pagination.from}-{pagination.to} من أصل {pagination.total} معامله
+          {t("pages.table_dashboard.pagination", {
+            from: pagination.from,
+            to: pagination.to,
+            total: pagination.total,
+          })}
         </div>
 
         <div className="flex gap-1">
@@ -109,7 +116,7 @@ const DashboardTable = ({
             disabled={!pagination.prev_page_url}
             onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           >
-            السابق
+            {t("pages.table_dashboard.prev")}
           </button>
 
           <span className="px-3 py-1 bg-primary text-white rounded">
@@ -121,7 +128,7 @@ const DashboardTable = ({
             disabled={!pagination.next_page_url}
             onClick={() => setPage((prev) => prev + 1)}
           >
-            التالي
+            {t("pages.table_dashboard.next")}
           </button>
         </div>
       </div>

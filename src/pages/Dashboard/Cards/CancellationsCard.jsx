@@ -6,21 +6,24 @@ import {
   Legend,
   ResponsiveContainer,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const CancellationsCard = ({ data = {} }) => {
+  const { t } = useTranslation();
+
   const theData = [
     {
-      name: "من طرف المشتري",
+      name: t("pages.cancellations.buyer"),
       value: data?.cancelledBuyerAvg,
       color: "#3f4c82",
     },
     {
-      name: "من طرف البائع",
+      name: t("pages.cancellations.seller"),
       value: data?.cancelledSellerAvg,
       color: "#1677c2",
     },
     {
-      name: "من طرف الادارة",
+      name: t("pages.cancellations.admin"),
       value: data?.cancelledAdminAvg,
       color: "#26c6da",
     },
@@ -55,7 +58,9 @@ const CancellationsCard = ({ data = {} }) => {
 
   return (
     <div className="whiteContainer lg:col-span-3">
-      <h3 className="text-lg font-semibold mb-4">احصائيات الالغاء</h3>
+      <h3 className="text-lg font-semibold mb-4">
+        {t("pages.cancellations.title")}
+      </h3>
       <div dir="ltr" style={{ width: "100%", height: 300 }}>
         <ResponsiveContainer>
           <PieChart>

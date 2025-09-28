@@ -24,6 +24,7 @@ const RegisterPerson = () => {
   const [passwordStrength, setPasswordStrength] = useState(0);
   const [passwordValue, setPasswordValue] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [selectedPage, setSelectedPage] = useState("privacy_policy");
 
   const navigate = useNavigate();
 
@@ -88,9 +89,9 @@ const RegisterPerson = () => {
       name: Yup.string()
         .required(t("pages.RegisterPerson.validation.name_required"))
         .min(3, t("pages.RegisterPerson.validation.name_min")),
-      email: Yup.string()
-        .required(t("pages.RegisterPerson.validation.email_required"))
-        .email(t("pages.RegisterPerson.validation.email_valid")),
+      email: Yup.string().email(
+        t("pages.RegisterPerson.validation.email_valid")
+      ),
       mobile: Yup.string()
         .required(t("pages.RegisterPerson.validation.phone_required"))
         .min(9, t("pages.RegisterPerson.validation.phone_min")),
@@ -137,8 +138,8 @@ const RegisterPerson = () => {
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
   const { data: pageContent } = useQuery({
-    queryFn: () => getPage("full_terms_and_conditions"),
-    queryKey: ["page"],
+    queryFn: () => getPage(selectedPage),
+    queryKey: ["page", selectedPage],
     keepPreviousData: true,
   });
 
@@ -187,7 +188,6 @@ const RegisterPerson = () => {
             label={t("pages.RegisterPerson.form.email")}
             id="email"
             name="email"
-            type="email"
             placeholder={t("pages.RegisterPerson.form.email_placeholder")}
             value={formik.values.email}
             onChange={formik.handleChange}
@@ -267,7 +267,21 @@ const RegisterPerson = () => {
             {t("pages.RegisterPerson.form.terms_label")}{" "}
             <button
               type="button"
-              onClick={() => setOpenModal(true)}
+              onClick={() => {
+                setSelectedPage("privacy_policy");
+                setOpenModal(true);
+              }}
+              className="text-primary font-semibold cursor-pointer underline"
+            >
+              {t("pages.RegisterPerson.form.privacy_policy_link")}
+            </button>
+            {" & "}
+            <button
+              type="button"
+              onClick={() => {
+                setSelectedPage("full_terms_and_conditions");
+                setOpenModal(true);
+              }}
               className="text-primary font-semibold cursor-pointer underline"
             >
               {t("pages.RegisterPerson.form.terms_link")}

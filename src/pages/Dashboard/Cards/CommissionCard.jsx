@@ -7,6 +7,7 @@ import {
   Tooltip,
   CartesianGrid,
 } from "recharts";
+import { useTranslation } from "react-i18next";
 
 const colors = [
   "#2084c5",
@@ -20,10 +21,11 @@ const colors = [
 ]; // لو زودت شركات أكتر حط ألوان زيادة هنا
 
 const CommissionCard = ({ data }) => {
+  const { t } = useTranslation();
+
   if (!data || data.length === 0) return null;
 
   console.log("Commission Data:", data);
-  
 
   // استخراج أسماء الشركات بشكل ديناميك من أول عنصر
   const companyKeys = Object.keys(data[0]).filter((key) => key !== "day");
@@ -32,8 +34,12 @@ const CommissionCard = ({ data }) => {
     <div className="whiteContainer">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h3 className="text-lg font-semibold">العمولة</h3>
-        <p className="text-sky-600 font-medium">جروب مرسيدس</p>
+        <h3 className="text-lg font-semibold">
+          {t("pages.commission.title")}
+        </h3>
+        {/* <p className="text-sky-600 font-medium">
+          {t("pages.commission.group")}
+        </p> */}
       </div>
 
       {/* Chart */}

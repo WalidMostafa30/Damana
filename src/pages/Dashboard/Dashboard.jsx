@@ -1,7 +1,4 @@
 import { useEffect, useState } from "react";
-import { DateRange } from "react-date-range";
-import "react-date-range/dist/styles.css";
-import "react-date-range/dist/theme/default.css";
 import PageTitle from "../../components/common/PageTitle";
 import FinancialDashboard from "./FinancialDashboard";
 import OperationalDashboard from "./OperationalDashboard";
@@ -14,12 +11,11 @@ import {
   getRunningDashboard,
 } from "../../services/dashboardServices";
 import { useSelector } from "react-redux";
-import LoadingPage from "../../components/Loading/LoadingPage";
 import { usePermission } from "../../hooks/usePermission";
+import DatePickerModal from "../../components/form/DatePickerModal";
 
 const Dashboard = () => {
   const { has } = usePermission();
-
   if (!has("company.dashboard")) return <Navigate to={"/"} replace />;
 
   const { t } = useTranslation();
@@ -67,8 +63,6 @@ const Dashboard = () => {
     setFilters((prev) => ({ ...prev, [field]: value }));
   };
 
-  const closePicker = () => setShowPicker(false);
-
   useEffect(() => {
     if (pathname === "/dashboard") {
       navigate("/dashboard/operational", { replace: true });
@@ -83,9 +77,8 @@ const Dashboard = () => {
   const { data: companiesData } = useQuery({
     queryKey: ["companies"],
     queryFn: getCompanies,
-    staleTime: 1000 * 60, // دقيقة قبل ما يعيد الفetch
+    staleTime: 1000 * 60,
   });
-  console.log(companiesData);
 
   const { data: appConfig } = useSelector((state) => state.appConfig);
 
@@ -99,6 +92,25 @@ const Dashboard = () => {
       : []),
   ];
 
+  // دوال التحكم في المودال
+  const handleConfirmDate = () => {
+    handleChange("dateRange", tempRange);
+    setShowPicker(false);
+  };
+
+  const handleClearDate = () => {
+    handleChange("dateRange", null);
+    setShowPicker(false);
+  };
+
+  const handleResetDate = () => {
+    setTempRange({
+      startDate: new Date(),
+      endDate: new Date(),
+      key: "selection",
+    });
+  };
+
   return (
     <article className="pageContainer space-y-4 lg:space-y-8">
       <PageTitle
@@ -107,6 +119,7 @@ const Dashboard = () => {
       />
 
       <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
+        {/* فلتر الحالة */}
         <select
           className="filterBtn"
           value={filters.status}
@@ -120,6 +133,7 @@ const Dashboard = () => {
           ))}
         </select>
 
+        {/* فلتر التاريخ */}
         <button
           className="filterBtn w-full h-full"
           onClick={() => setShowPicker(true)}
@@ -129,45 +143,22 @@ const Dashboard = () => {
             : t("pages.dashboard.date_picker")}
         </button>
 
+        {/* مودال اختيار التاريخ باستخدام الكومبوننت الجديد */}
         {showPicker && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div
-              className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto"
-              dir="ltr"
-            >
-              <DateRange
-                editableDateInputs={true}
-                moveRangeOnFirstSelection={false}
-                ranges={[tempRange]}
-                className="w-full"
-                onChange={(item) => setTempRange(item.selection)}
-              />
-
-              <button
-                className="mt-2 mainBtn"
-                onClick={() => {
-                  handleChange("dateRange", tempRange);
-                  closePicker();
-                }}
-              >
-                {t("pages.dashboard.confirm_button")}
-              </button>
-            </div>
-          </div>
+          <DatePickerModal
+            tempRange={tempRange}
+            setTempRange={setTempRange}
+            onConfirm={handleConfirmDate}
+            onClear={handleClearDate}
+            onReset={handleResetDate}
+            onClose={() => setShowPicker(false)}
+            confirmLabel={t("pages.dashboard.confirm_button")}
+            clearLabel={t("pages.dashboard.clear_button")}
+            resetLabel={t("pages.dashboard.reset_button")}
+          />
         )}
 
-        {/* <select
-          className="filterBtn"
-          value={filters.commission}
-          onChange={(e) => handleChange("commission", e.target.value)}
-        >
-          <option value="all">{t("pages.dashboard.commission")}</option>
-          <option value="high">{t("pages.dashboard.commission_high")}</option>
-          <option value="medium">
-            {t("pages.dashboard.commission_medium")}
-          </option>
-        </select> */}
-
+        {/* فلتر الشركة */}
         <select
           className="filterBtn"
           value={filters.company}
@@ -182,6 +173,7 @@ const Dashboard = () => {
         </select>
       </div>
 
+      {/* تبويبات الداشبورد */}
       <div className="flex gap-2 border-b border-neutral-300">
         <button
           onClick={() => {
@@ -194,6 +186,7 @@ const Dashboard = () => {
         >
           {t("pages.dashboard.operational_tab")}
         </button>
+
         <button
           onClick={() => {
             setSelectedType("financial");
@@ -207,6 +200,7 @@ const Dashboard = () => {
         </button>
       </div>
 
+      {/* محتوى الداشبورد */}
       {pathname.includes("operational") && (
         <OperationalDashboard
           filters={filters}

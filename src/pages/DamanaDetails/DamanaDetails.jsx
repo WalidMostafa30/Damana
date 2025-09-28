@@ -137,7 +137,7 @@ const DamanaDetails = () => {
         <div className="whiteContainer flex items-start lg:items-center justify-between flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
             <p className="font-medium">
-              {t("pages.damanaDetails.guaranteeNumber")}:
+              {t("pages.damanaDetails.DamanaNumber")}:
             </p>
             <CopyToClipboard text={damana?.serial_number} />
           </div>
