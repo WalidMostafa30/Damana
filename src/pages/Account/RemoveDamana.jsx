@@ -12,13 +12,23 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import FormError from "../../components/form/FormError";
 import FormBtn from "../../components/form/FormBtn";
 import { useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
+import { usePermission } from "../../hooks/usePermission";
 
 const RemoveDamana = () => {
   const { t } = useTranslation();
 
   const { data: appConfig } = useSelector((state) => state.appConfig);
 
+  const { hasAndUser, loading } = usePermission();
+
+  if (loading) return <LoadingPage />;
+
   const steps = t("pages.account.remove_damana.steps", { returnObjects: true });
+
+  if (!hasAndUser("damana.cancel")) {
+    return <Navigate to="/" replace />;
+  }
 
   const [step, setStep] = useState(0);
   const [selectedDamanat, setSelectedDamanat] = useState([]);

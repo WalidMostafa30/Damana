@@ -2,10 +2,15 @@ import { NavLink, Outlet } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import PageTitle from "../../components/common/PageTitle";
 import { useSelector } from "react-redux";
+import { usePermission } from "../../hooks/usePermission";
+import LoadingPage from "../../components/Loading/LoadingPage";
 
 const Account = () => {
   const { t } = useTranslation();
   const { profile } = useSelector((state) => state.profile);
+  const { has, hasAndUser, loading } = usePermission();
+
+  if (loading) return <LoadingPage />;
 
   return (
     <section className="pageContainer space-y-4">
@@ -32,14 +37,16 @@ const Account = () => {
                 </NavLink>
               </>
             )}
-            {profile?.account_type === "company" && (
+            {has("users.manage") && (
               <NavLink to="/profile/user-management" className="profileLink">
                 {t("pages.account.account.nav.user_management")}
               </NavLink>
             )}
-            <NavLink to="/profile/remove-damana" className="profileLink">
-              {t("pages.account.account.nav.remove_damana")}
-            </NavLink>
+            {!hasAndUser("damana.cancel") ? null : (
+              <NavLink to="/profile/remove-damana" className="profileLink">
+                {t("pages.account.account.nav.remove_damana")}
+              </NavLink>
+            )}
             <NavLink to="/profile/support" className="profileLink">
               {t("pages.account.account.nav.support")}
             </NavLink>

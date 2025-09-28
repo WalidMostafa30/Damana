@@ -2,7 +2,6 @@ import { FaChartLine } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 import { IoWarningOutline } from "react-icons/io5";
 import { PiSigma } from "react-icons/pi";
-import { RiExchangeDollarLine } from "react-icons/ri";
 
 const TotalCountCards = ({ data = {} }) => {
   const TotalCountCardsList = [
@@ -23,14 +22,14 @@ const TotalCountCards = ({ data = {} }) => {
     {
       id: 4,
       label: "معدل الالغاء",
-      value: data?.cancelledTransAvg || 0,
+      value: `${data?.cancelledTransAvg || 0} %`,
       icon: <IoMdClose />,
       color: "#fc2127",
     },
     {
       id: 5,
       label: "معدل انتهاء الصلاحية",
-      value: data?.expiredTransAvg || 0,
+      value: `${data?.expiredTransAvg || 0} %`,
       icon: <IoWarningOutline />,
       color: "#f28303",
     },
@@ -48,7 +47,7 @@ const TotalCountCards = ({ data = {} }) => {
             <div>
               <p className="text-lg">{card.label}</p>
               <h4 className="text-4xl font-bold mt-2 line-clamp-1">
-                {Number(card.value).toFixed(2)}
+                {card.value}
               </h4>
             </div>
             <span

@@ -37,7 +37,7 @@ const HomeSlider = () => {
     >
       {data?.map((item) => (
         <SwiperSlide key={item.id}>
-          <div className="w-full h-80 lg:h-96">
+          <div className="w-full h-80 md:h-96">
             <img
               loading="lazy"
               src={item.image_full_path}

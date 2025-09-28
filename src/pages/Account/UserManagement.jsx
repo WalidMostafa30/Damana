@@ -15,12 +15,20 @@ import {
   sendUserRegister,
   updateUserRegister,
 } from "../../services/authService";
+import { usePermission } from "../../hooks/usePermission";
+import { Navigate } from "react-router-dom";
 
 const UserManagement = () => {
   const [editingUser, setEditingUser] = useState(null);
   const [countryCode, setCountryCode] = useState(""); // نخزن كود الدولة هنا
   const [errorMsg, setErrorMsg] = useState("");
   const queryClient = useQueryClient();
+
+  const { has } = usePermission();
+
+  if (!has("users.manage")) {
+    return <Navigate to="/profile" replace />;
+  }
 
   const validationSchema = Yup.object({
     name: Yup.string().required("اسم المستخدم مطلوب"),

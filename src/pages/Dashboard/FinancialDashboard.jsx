@@ -191,7 +191,7 @@ const FinancialDashboard = ({
   ];
 
   const tableData = {
-    table_title: "جدول إدارة المعاملات",
+    table_title: "جدول الدفعات",
     download_link: data?.download_table_link,
     table_header: [
       "رقم المعاملة",

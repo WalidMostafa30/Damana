@@ -1,10 +1,11 @@
-import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { usePermission } from "../../../hooks/usePermission";
 
 const NavBar = ({ openNav, setOpenNav }) => {
   const { t } = useTranslation();
-  const { profile } = useSelector((state) => state.profile);
+
+  const {has} = usePermission();
 
   return (
     <nav
@@ -22,7 +23,7 @@ const NavBar = ({ openNav, setOpenNav }) => {
         {t("components.layout.navbar.myGuarantees")}
       </NavLink>
 
-      {profile?.account_type === "company" && (
+      {has("company.dashboard") && (
         <NavLink
           onClick={() => setOpenNav(false)}
           to="/dashboard"
@@ -48,11 +49,7 @@ const NavBar = ({ openNav, setOpenNav }) => {
         {t("components.layout.navbar.paymentOptions")}
       </NavLink>
 
-      <NavLink
-        onClick={() => setOpenNav(false)}
-        to="/faqs"
-        className="navLink"
-      >
+      <NavLink onClick={() => setOpenNav(false)} to="/faqs" className="navLink">
         {t("components.layout.navbar.faqs")}
       </NavLink>
     </nav>

@@ -6,11 +6,13 @@ import Timer from "../../components/common/Timer";
 import { useState } from "react";
 import ActionModal from "../../components/modals/ActionModal";
 import LoadingModal from "../../components/modals/LoadingModal";
+import { usePermission } from "../../hooks/usePermission";
 
 const ActionsSection = ({ damana }) => {
   const { t } = useTranslation();
   const { profile } = useSelector((state) => state.profile);
   const queryClient = useQueryClient();
+  const { hasAndUser } = usePermission();
 
   const [openModal, setOpenModal] = useState(false);
   const [modalConfig, setModalConfig] = useState({
@@ -70,7 +72,9 @@ const ActionsSection = ({ damana }) => {
     },
     onError: (error) => {
       openActionModal({
-        msg:error?.response?.data?.error_msg || t("pages.actionsSection.toast.serverError"),
+        msg:
+          error?.response?.data?.error_msg ||
+          t("pages.actionsSection.toast.serverError"),
         icon: "error",
       });
     },
@@ -141,24 +145,28 @@ const ActionsSection = ({ damana }) => {
 
       {isBuyer && damana.status === "new" && (
         <div className="flex flex-wrap gap-2">
-          <button
-            disabled={isDisabled}
-            onClick={() => handleChangeStatus("accepted")}
-            className={`mainBtn flex-1 min-w-[150px] ${
-              isDisabled ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {t("pages.actionsSection.buttons.accept")}
-          </button>
-          <button
-            disabled={isDisabled}
-            onClick={() => handleChangeStatus("rejected")}
-            className={`mainBtn light flex-1 min-w-[150px] ${
-              isDisabled ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            {t("pages.actionsSection.buttons.reject")}
-          </button>
+          {hasAndUser("damana.accept") && (
+            <button
+              disabled={isDisabled}
+              onClick={() => handleChangeStatus("accepted")}
+              className={`mainBtn flex-1 min-w-[150px] ${
+                isDisabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {t("pages.actionsSection.buttons.accept")}
+            </button>
+          )}
+          {hasAndUser("damana.reject") && (
+            <button
+              disabled={isDisabled}
+              onClick={() => handleChangeStatus("rejected")}
+              className={`mainBtn light flex-1 min-w-[150px] ${
+                isDisabled ? "opacity-50 cursor-not-allowed" : ""
+              }`}
+            >
+              {t("pages.actionsSection.buttons.reject")}
+            </button>
+          )}
         </div>
       )}
 
@@ -170,17 +178,19 @@ const ActionsSection = ({ damana }) => {
             </div>
           )}
 
-          <button
-            disabled={isDisabled || !damana.can_request_release}
-            onClick={handleReleaseRequest}
-            className={`mainBtn flex-1 min-w-[150px] ${
-              isDisabled || !damana.can_request_release
-                ? "opacity-50 cursor-not-allowed bg-gray-400"
-                : ""
-            }`}
-          >
-            {t("pages.actionsSection.buttons.release")}
-          </button>
+          {hasAndUser("damana.release") && (
+            <button
+              disabled={isDisabled || !damana.can_request_release}
+              onClick={handleReleaseRequest}
+              className={`mainBtn flex-1 min-w-[150px] ${
+                isDisabled || !damana.can_request_release
+                  ? "opacity-50 cursor-not-allowed bg-gray-400"
+                  : ""
+              }`}
+            >
+              {t("pages.actionsSection.buttons.release")}
+            </button>
+          )}
         </div>
       )}
 

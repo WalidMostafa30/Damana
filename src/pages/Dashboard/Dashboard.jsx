@@ -15,13 +15,12 @@ import {
 } from "../../services/dashboardServices";
 import { useSelector } from "react-redux";
 import LoadingPage from "../../components/Loading/LoadingPage";
+import { usePermission } from "../../hooks/usePermission";
 
 const Dashboard = () => {
-  const { profile, loading } = useSelector((state) => state.profile);
+  const { has } = usePermission();
 
-  if (loading) return <LoadingPage />;
-
-  if (profile?.account_type !== "company") return <Navigate to={"/"} replace />;
+  if (!has("company.dashboard")) return <Navigate to={"/"} replace />;
 
   const { t } = useTranslation();
 
@@ -86,7 +85,7 @@ const Dashboard = () => {
     queryFn: getCompanies,
     staleTime: 1000 * 60, // دقيقة قبل ما يعيد الفetch
   });
-console.log(companiesData);
+  console.log(companiesData);
 
   const { data: appConfig } = useSelector((state) => state.appConfig);
 
@@ -107,7 +106,7 @@ console.log(companiesData);
         subtitle={t("pages.dashboard.subtitle")}
       />
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-8">
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-8">
         <select
           className="filterBtn"
           value={filters.status}
@@ -132,7 +131,10 @@ console.log(companiesData);
 
         {showPicker && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-            <div className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto" dir="ltr">
+            <div
+              className="bg-white w-full md:w-auto md:rounded-lg md:shadow-lg p-4 overflow-auto"
+              dir="ltr"
+            >
               <DateRange
                 editableDateInputs={true}
                 moveRangeOnFirstSelection={false}

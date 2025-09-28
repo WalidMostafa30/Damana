@@ -4,14 +4,17 @@ import LoadingPage from "../Loading/LoadingPage";
 import { useTranslation } from "react-i18next";
 import { FaExclamationTriangle } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { usePermission } from "../../hooks/usePermission";
 
-const CheckCompleteRegisterRoute = ({children}) => {
+const CheckCompleteRegisterRoute = ({ children }) => {
   const { data, isLoading } = useQuery({
     queryKey: ["checkAuth"],
     queryFn: checkAuth,
   });
 
   const { t } = useTranslation();
+
+  const { hasAndUser } = usePermission();
 
   if (isLoading) return <LoadingPage />;
 
@@ -41,6 +44,24 @@ const CheckCompleteRegisterRoute = ({children}) => {
       </article>
     );
   }
+
+  if (!hasAndUser("damana.cancel")) {
+    return (
+      <article className="pageContainer flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <FaExclamationTriangle className="text-warning-200 text-7xl lg:text-9xl" />
+          <h3 className="text-xl font-bold">
+            لا توجد صلاحية للوصول لهذه الصفحة
+          </h3>
+
+          <Link to={"/"} replace className="mainBtn">
+            الصفحة الرئيسة
+          </Link>
+        </div>
+      </article>
+    );
+  }
+
   return children;
 };
 
