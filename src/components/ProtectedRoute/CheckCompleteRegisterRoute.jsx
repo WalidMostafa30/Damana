@@ -51,11 +51,13 @@ const CheckCompleteRegisterRoute = ({ children }) => {
         <div className="flex flex-col items-center gap-4">
           <FaExclamationTriangle className="text-warning-200 text-7xl lg:text-9xl" />
           <h3 className="text-xl font-bold">
-            {t("protectedRoutes.checkCompleteRegisterRoute.noPermissionTitle")}
+            {t ("components.protectedRoutes.checkCompleteRegisterRoute.noPermissionTitle") }
+
+
           </h3>
 
           <Link to={"/"} replace className="mainBtn">
-            {t("protectedRoutes.checkCompleteRegisterRoute.goHomeBtn")}
+            {t("components.protectedRoutes.checkCompleteRegisterRoute.goHomeBtn")}
           </Link>
         </div>
       </article>

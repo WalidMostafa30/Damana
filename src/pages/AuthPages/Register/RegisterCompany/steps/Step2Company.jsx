@@ -174,7 +174,7 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 icon={<FaEarthAsia />}
               />
 
-              <MainInput
+               <MainInput
                 label={t("pages.step2Company.fields.type.label")}
                 placeholder={t("pages.step2Company.fields.type.placeholder")}
                 id={`commissioners.${index}.type`}
@@ -184,6 +184,58 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 error={getError(`commissioners.${index}.type`)}
                 icon={<FaPeopleLine />}
               />
+
+
+
+
+
+
+
+{/* 
+              <MainInput
+                
+                type="select"
+                label={t("pages.step2Company.fields.type.label")}
+                placeholder={t("pages.step2Company.fields.type.placeholder")}
+                id={`commissioners.${index}.type`}
+                name={`commissioners.${index}.type`}
+
+                value={comm.type}
+                onChange={formik.handleChange}
+                error={getError(`commissioners.${index}.type`)}
+                icon={<FaPeopleLine />}
+                options={[
+                  {
+                    value: "",
+                    label: t("pages.Step0.form.nationality_type_placeholder"),
+                  },
+                  {
+                    value: "jordanian",
+                    label: t("pages.Step0.form.nationality_options.jordanian"),
+                  },
+                  {
+                    value: "sons",
+                    label: t("pages.Step0.form.nationality_options.sons"),
+                  },
+                  {
+                    value: "non",
+                    label: t("pages.Step0.form.nationality_options.non"),
+                  },
+                ]}
+              />
+
+
+ */}
+
+
+
+
+
+
+
+
+
+
 
               <MainInput
                 label={t("pages.step2Company.fields.topCommissioner.label")}
@@ -197,6 +249,9 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 error={getError(`commissioners.${index}.top_commissioner`)}
                 icon={<LuFileDigit />}
               />
+
+
+
 
               <MainInput
                 label={t(

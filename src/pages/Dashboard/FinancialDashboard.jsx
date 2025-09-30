@@ -232,7 +232,7 @@ const FinancialDashboard = ({
             className="py-1 px-2 rounded-lg text-white"
             style={{ backgroundColor: `#${item.status_color}` }}
           >
-            {item.status}
+            {item.status_translate}
           </span>
         ),
         paid_date: new Date(item.paid_at).toLocaleDateString("en-GB"),

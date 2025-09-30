@@ -1,4 +1,4 @@
-import favLogo from "../../assets/images/fav-logo.png";
+import favLogo from "../../assets/images/logo9658logo9658.png";
 
 const Loader = () => {
   return (

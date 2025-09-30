@@ -153,7 +153,29 @@ const DamanaDetails = () => {
               {new Date(damana?.created_at).toLocaleDateString("en-GB")}
             </p>
           </div>
-          <Timer expiryDate={damana?.schedule_expired_at} />
+
+
+
+
+
+          {
+  !damana.is_expired && 
+  damana.status  !="finished" &&
+  damana.status  !="rejected" &&
+  damana.status  !="cancelled" &&
+  damana.status  !="expired" &&
+  damana.status  !="cancellable" &&
+  damana?.schedule_expired_at &&
+
+    <Timer expiryDate={damana?.schedule_expired_at} />
+
+
+
+}
+
+
+
+
         </div>
 
         <div>

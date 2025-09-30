@@ -94,6 +94,7 @@ const UserManagement = () => {
       name: values.name,
       email: values.email,
       mobile: values.mobile,
+
       country_code: countryCode || editingUser?.country_code,
       password: values.password,
       permissions: values.permissions,
@@ -125,6 +126,9 @@ const UserManagement = () => {
       permissions: user.company_permissions || [],
     });
   };
+
+
+  const [fullMobile, setfullMobile] = useState("+962")
 
   const handleDelete = async (id) => {
     if (window.confirm("هل انت متأكد من حذف المستخدم؟")) {
@@ -188,10 +192,17 @@ const UserManagement = () => {
                 label="رقم الهاتف"
                 id="mobile"
                 type="tel"
-                value={values.mobile}
+                value={fullMobile}
                 onChange={(val, country) => {
-                  setFieldValue("mobile", val);
+                  const mobileWithoutCode = country?.dialCode
+                  ? val.slice(country.dialCode.length)
+                  : phvalone;
+
+                  setfullMobile(val);
+                  setFieldValue("mobile", mobileWithoutCode);
                   setCountryCode(country?.dialCode || "");
+
+
                 }}
                 onBlur={handleBlur}
                 error={touched.mobile && errors.mobile}
