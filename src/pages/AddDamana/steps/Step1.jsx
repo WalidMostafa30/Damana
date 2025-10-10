@@ -11,11 +11,13 @@ import { useTranslation } from "react-i18next";
 import FormError from "../../../components/form/FormError";
 import { getUserInfo } from "../../../services/authService";
 import LoadingModal from "../../../components/modals/LoadingModal";
+import { useSelector } from "react-redux";
 
 const Step1 = ({ goNext, formData, setFormData }) => {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState("");
   const [disabledPhone, setDisabledPhone] = useState(true);
+  const { profile } = useSelector((state) => state.profile);
 
   const data = [
     {
@@ -137,6 +139,7 @@ const Step1 = ({ goNext, formData, setFormData }) => {
     }),
     onSubmit: (values) => {
       setErrorMsg("");
+
       mutation.mutate({ ...formData, ...values });
     },
   });
@@ -153,6 +156,17 @@ const Step1 = ({ goNext, formData, setFormData }) => {
       );
       return;
     }
+
+    // ✅ تحقق من أن المستخدم لا يبيع لنفسه
+    const userNationalNumber =
+      profile?.user_company?.national_number || profile?.national_number;
+
+    if (formik.values.buyer_national_number === userNationalNumber) {
+      setErrorMsg(t("pages.addDamana.step1.sameBuyerOwnerError"));
+      return;
+    }
+
+    setErrorMsg("");
 
     userInfoMutation.mutate({ national_number: value }); // 👈 استدعاء mutation هنا
   };

@@ -134,6 +134,12 @@ const DamanaDetails = () => {
       )}
 
       <section className="baseWhiteContainer space-y-4">
+        {damana?.pay_status_translate && (
+          <div className="px-4 py-2 border-2 border-secondary text-secondary font-bold rounded-lg w-fit text-center">
+            {damana?.pay_status_translate}
+          </div>
+        )}
+
         <div className="whiteContainer flex items-start lg:items-center justify-between flex-col lg:flex-row gap-4">
           <div className="flex items-center gap-2">
             <p className="font-medium">
@@ -154,28 +160,15 @@ const DamanaDetails = () => {
             </p>
           </div>
 
-
-
-
-
-          {
-  !damana.is_expired && 
-  damana.status  !="finished" &&
-  damana.status  !="rejected" &&
-  damana.status  !="cancelled" &&
-  damana.status  !="expired" &&
-  damana.status  !="cancellable" &&
-  damana?.schedule_expired_at &&
-
-    <Timer expiryDate={damana?.schedule_expired_at} />
-
-
-
-}
-
-
-
-
+          {!damana.is_expired &&
+            damana.status != "finished" &&
+            damana.status != "rejected" &&
+            damana.status != "cancelled" &&
+            damana.status != "expired" &&
+            damana.status != "cancellable" &&
+            damana?.schedule_expired_at && (
+              <Timer expiryDate={damana?.schedule_expired_at} />
+            )}
         </div>
 
         <div>

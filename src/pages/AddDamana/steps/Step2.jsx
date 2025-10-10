@@ -31,9 +31,7 @@ const Step2 = ({ formData, setFormData }) => {
   const [openModal, setOpenModal] = useState(false);
   const [damanaData, setDamanaData] = useState("");
 
-    const { data: appConfig } = useSelector((state) => state.appConfig);
-  
-
+  const { data: appConfig } = useSelector((state) => state.appConfig);
   const navigate = useNavigate();
 
   const commission_on_options = [
@@ -160,7 +158,8 @@ const Step2 = ({ formData, setFormData }) => {
       vehicle_price: formData.vehicle_price || "",
       commission_on: formData.commission_on || "",
       code: formData.code || "",
-      transfer_commission: formData.transfer_commission || "",
+      // ✅ تم تثبيت التحويل على ACH دائمًا
+      transfer_commission: "ACH",
     },
     enableReinitialize: true,
     validationSchema: Yup.object({
@@ -176,7 +175,6 @@ const Step2 = ({ formData, setFormData }) => {
     }),
     onSubmit: (values) => {
       setErrorMsg("");
-
       setFormData((prev) => ({ ...prev, ...values }));
 
       createVehicleTransferMutation.mutate({
@@ -186,7 +184,8 @@ const Step2 = ({ formData, setFormData }) => {
         vehicle_price: values.vehicle_price,
         commission_on: values.commission_on,
         code: values.code,
-        transfer_type: values.transfer_commission,
+        // ✅ دايمًا ACH
+        transfer_type: "ACH",
         is_owner: formData.is_owner ? 1 : 0,
         owner_national_number: formData.owner_national_number,
         owner_full_mobile: formData.owner_full_mobile,
@@ -204,21 +203,18 @@ const Step2 = ({ formData, setFormData }) => {
         vehicle_price: formik.values.vehicle_price,
         commission_on: formik.values.commission_on,
         code: formik.values.code,
-        transfer_type: formik.values.transfer_commission,
+        // ✅ دايمًا ACH
+        transfer_type: "ACH",
         ...extra,
       });
     }
   };
 
   useEffect(() => {
-    if (
-      formik.values.commission_on &&
-      formik.values.transfer_commission &&
-      formik.values.vehicle_price
-    ) {
+    if (formik.values.commission_on && formik.values.vehicle_price) {
       triggerCommission();
     }
-  }, [formik.values.commission_on, formik.values.transfer_commission]);
+  }, [formik.values.commission_on]);
 
   useEffect(() => {
     if (couponServer) {
@@ -342,36 +338,37 @@ const Step2 = ({ formData, setFormData }) => {
         </div>
       </div>
 
-      {/* صرف الضمانة */}
-      <h3 className="text-xl lg:text-2xl font-bold text-primary">
-        {t("pages.addDamana.step2.transfer.title")}
-      </h3>
-      <div className="space-y-2">
-        <label className="flex items-center gap-2">
-          <input
-            type="radio"
-            name="transfer_commission"
-            value="ACH"
-            checked={formik.values.transfer_commission === "ACH"}
-            onChange={formik.handleChange}
-            className="w-5 h-5 accent-primary"
-          />
-          {t("pages.addDamana.step2.transfer.options.ACH")}
-        </label>
-        <label className="flex items-center gap-2">
-          <input
-            type="radio"
-            name="transfer_commission"
-            value="RTGS"
-            checked={formik.values.transfer_commission === "RTGS"}
-            onChange={formik.handleChange}
-            className="w-5 h-5 accent-primary"
-          />
-          {t("pages.addDamana.step2.transfer.options.RTGS", {
-            fees: appConfig?.settings?.rtgs_fees,
-          })}
-        </label>
-      </div>
+      {/* ✅ تم إخفاء اختيار طريقة التحويل (ACH / RTGS)
+          <h3 className="text-xl lg:text-2xl font-bold text-primary">
+            {t("pages.addDamana.step2.transfer.title")}
+          </h3>
+          <div className="space-y-2">
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="transfer_commission"
+                value="ACH"
+                checked={formik.values.transfer_commission === "ACH"}
+                onChange={formik.handleChange}
+                className="w-5 h-5 accent-primary"
+              />
+              {t("pages.addDamana.step2.transfer.options.ACH")}
+            </label>
+            <label className="flex items-center gap-2">
+              <input
+                type="radio"
+                name="transfer_commission"
+                value="RTGS"
+                checked={formik.values.transfer_commission === "RTGS"}
+                onChange={formik.handleChange}
+                className="w-5 h-5 accent-primary"
+              />
+              {t("pages.addDamana.step2.transfer.options.RTGS", {
+                fees: appConfig?.settings?.rtgs_fees,
+              })}
+            </label>
+          </div>
+      */}
 
       {details.length > 0 && <DetailsCard data={details} />}
       <FormError errorMsg={errorMsg} />

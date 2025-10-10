@@ -20,7 +20,7 @@ const Timer = ({ expiryDate, onFinish }) => {
 
       if (diff <= 0) {
         clearInterval(timerId);
-        if (onFinish) onFinish();
+        if (onFinish) onFinish(); // ✅ هنا بيتم تنفيذ الفنكشن بعد انتهاء العداد
       }
     };
 

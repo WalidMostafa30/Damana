@@ -23,7 +23,6 @@ import {
   registerCompanyFile,
 } from "../../../../services/authService";
 import BackStepBtn from "../../../../components/form/BackStepBtn";
-import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 import { getSamplesLinks } from "../../../../services/staticDataService";
@@ -44,6 +43,10 @@ const RegisterCompany = () => {
   const navigate = useNavigate();
 
   const steps = t("pages.registerCompany.steps", { returnObjects: true });
+
+  // ✅ تنظيف IBAN من المسافات وتحويله كابيتال
+  const cleanIban = (value) =>
+    value ? value.replace(/\s+/g, "").toUpperCase() : "";
 
   const partnerYup = Yup.object({
     full_name: Yup.string().required(
@@ -140,7 +143,6 @@ const RegisterCompany = () => {
       commissioners_type: Yup.string()
         .required("اختيار طريقة الإدخال مطلوب")
         .oneOf(["form", "excel"], "طريقة الإدخال غير صحيحة"),
-      // commissioners: Yup.array().of(partnerYup),
       commissioners: Yup.array().when("commissioners_type", {
         is: "form",
         then: (schema) =>
@@ -165,7 +167,6 @@ const RegisterCompany = () => {
             .min(1, "يجب إضافة مفوض واحد على الأقل"),
         otherwise: (schema) => schema.notRequired(),
       }),
-
       company_commissioner_file: Yup.mixed().when("commissioners_type", {
         is: "excel",
         then: (schema) =>
@@ -183,17 +184,19 @@ const RegisterCompany = () => {
       managementCommissioners: partnerYup,
     }),
 
-    // Step 4
+    // ✅ Step 4 بعد حذف isValid
     Yup.object({
       bank_id: Yup.string().required(
         t("pages.registerCompany.validation.bankNameRequired")
       ),
       iban: Yup.string()
-        .test(
-          "iban-check",
-          t("pages.registerCompany.validation.invalidIban"),
-          (value) => isValid(value || "")
+        .transform((value) => cleanIban(value))
+        .matches(
+          /^[A-Z0-9]+$/,
+          t("pages.registerCompany.validation.invalidIban")
         )
+        .min(30, t("pages.registerCompany.validation.invalidIban"))
+        .max(30, t("pages.registerCompany.validation.invalidIban"))
         .required(t("pages.registerCompany.validation.ibanRequired")),
       currency: Yup.string().required(
         t("pages.registerCompany.validation.currencyRequired")
@@ -243,7 +246,7 @@ const RegisterCompany = () => {
       ),
     }),
 
-    // step 7
+    // Step 7
     Yup.object({
       group_id: Yup.object(),
       accept_policy_terms: Yup.boolean().oneOf(
@@ -254,11 +257,10 @@ const RegisterCompany = () => {
     }),
   ];
 
+  // باقي الكود كما هو 🔽 (لم يتم تغييره)
   const mutation = useMutation({
     mutationFn: registerCompany,
-    onSuccess: () => {
-      setOpenModal(true);
-    },
+    onSuccess: () => setOpenModal(true),
     onError: (error) => {
       setErrorMsg(
         error?.response?.data?.error_msg ||
@@ -357,7 +359,6 @@ const RegisterCompany = () => {
     onSubmit: (values) => {
       setErrorMsg("");
 
-      // ✅ هنا نفضي الـ commissioners لو نوع الإدخال Excel
       if (values.commissioners_type === "excel") {
         values.commissioners = null;
       } else if (values.commissioners_type === "form") {
@@ -368,9 +369,7 @@ const RegisterCompany = () => {
         setStep((prev) => prev + 1);
         formik.setTouched({});
       } else {
-        // const payload = formatPayload(values);
         const formData = new FormData();
-        // 👇 هنا يتم تحويل جميع البيانات بشكل تلقائي
         buildFormData(formData, values);
         mutation.mutate(formData);
       }
@@ -392,11 +391,7 @@ const RegisterCompany = () => {
   const fileUploadMutation = useMutation({
     mutationFn: registerCompanyFile,
     onSuccess: (res) => {
-      // هنا ممكن تحفظ اللينك أو ID في Formik
       formik.setFieldValue("company_commissioner_file", res?.file_path || null);
-    },
-    onError: (err) => {
-      console.error("❌ Upload error:", err);
     },
   });
 
@@ -446,7 +441,6 @@ const RegisterCompany = () => {
 
       {step === 0 && (
         <div className="mb-8">
-          {/* زر فتح / إغلاق */}
           <button
             onClick={() => setIsOpen((prev) => !prev)}
             className="w-full flex items-center justify-between py-4 font-bold text-secondary cursor-pointer hover:brightness-75 transition"
@@ -457,7 +451,6 @@ const RegisterCompany = () => {
             />
           </button>
 
-          {/* المحتوى القابل للفتح */}
           <div
             className={`transition-all ease-in-out duration-500 overflow-hidden ${
               isOpen ? "max-h-[500px]" : "max-h-0"
@@ -487,7 +480,6 @@ const RegisterCompany = () => {
           {steps[step]}
         </h3>
 
-        {/** Render the current step */}
         {renderStep()}
 
         <FormError errorMsg={errorMsg} />
@@ -510,6 +502,7 @@ const RegisterCompany = () => {
             {t("pages.registerCompany.links.login")}
           </Link>
         </p>
+
         {!mutation.isPending && <BackStepBtn step={step} goBack={goBack} />}
       </form>
 

@@ -117,14 +117,25 @@ const Otp = ({ goNext, parentData, setParentData }) => {
     return `${m}:${s}`;
   };
 
+  const maskMobileNumber = (countryCode, mobile) => {
+    if (!mobile || !countryCode) return "";
+    const visibleStart = mobile.slice(0, 1); // أول رقم
+    const visibleEnd = mobile.slice(-2); // آخر رقمين
+    const masked = `${countryCode}${visibleStart}****${visibleEnd}`;
+    return masked;
+  };
+
   return (
     <>
-      <p className="text-neutral-500 mb-4">
-        {t("pages.Otp.subtitle")}{" "}
-        <span className="font-bold text-success-200">
-          {parentData.country_code + parentData.mobile}
-        </span>
-      </p>
+      {parentData?.mobile && parentData?.country_code && (
+        <p className="text-neutral-500 mb-4">
+          {t("pages.Otp.subtitle")}{" "}
+          <span className="font-bold text-success-200">
+            {maskMobileNumber(parentData.country_code, parentData.mobile)}
+          </span>
+        </p>
+      )}
+
       <p className="text-neutral-500 mb-4">
         {t("pages.forgotPassword.otp.instruction")}
       </p>

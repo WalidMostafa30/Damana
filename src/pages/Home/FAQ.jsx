@@ -33,7 +33,7 @@ const FAQ = () => {
       <h3 className="text-2xl font-bold p-4 text-primary border-b border-neutral-200">
         {t("pages.faq.title")}{" "}
       </h3>
-      <ul>
+      <ul className="max-h-[600px] overflow-y-auto">
         {faqs?.map((question, index) => (
           <li key={question.id} className="border-b border-neutral-200">
             <button
@@ -50,7 +50,7 @@ const FAQ = () => {
 
             <div
               className={`overflow-hidden transition-all duration-500 ease-in-out ${
-                openIndex === index ? "max-h-[500px]" : "max-h-0"
+                openIndex === index ? "max-h-[1000px]" : "max-h-0"
               }`}
             >
               <div className="p-4 pt-0">

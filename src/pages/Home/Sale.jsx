@@ -6,26 +6,30 @@ const Sale = ({ data, fetchNextPage, hasNextPage, loading, error }) => {
   const { t } = useTranslation();
 
   return (
-    <InfiniteScroll
-      dataLength={data.length}
-      next={fetchNextPage}
-      hasMore={hasNextPage}
-      loader={
-        <p className="text-center p-4">
-          {t("pages.purchase_sale.loadingMore")}
-        </p>
-      }
-      endMessage={
-        data.length !== 0 && (
+    <div id="saleScrollContainer" className="max-h-[60vh] overflow-y-auto px-1">
+      <InfiniteScroll
+        dataLength={data.length}
+        next={fetchNextPage}
+        hasMore={hasNextPage}
+        loader={
           <p className="text-center p-4">
-            {t("pages.purchase_sale.noMoreItems")}
+            {t("pages.purchase_sale.loadingMore")}
           </p>
-        )
-      }
-      className="!overflow-hidden"
-    >
-      <DamanaList data={data} addDamanaText loading={loading} error={error} />
-    </InfiniteScroll>
+        }
+        endMessage={
+          data.length !== 0 && (
+            <p className="text-center p-4">
+              {t("pages.purchase_sale.noMoreItems")}
+            </p>
+          )
+        }
+        scrollableTarget="saleScrollContainer"
+        className="!overflow-hidden"
+      >
+        <DamanaList data={data} addDamanaText loading={loading} error={error} />
+      </InfiniteScroll>
+    </div>
   );
 };
+
 export default Sale;

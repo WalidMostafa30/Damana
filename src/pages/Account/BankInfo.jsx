@@ -13,9 +13,9 @@ import { SiBitcoin } from "react-icons/si";
 import { IoIdCardSharp } from "react-icons/io5";
 import { IoMdCode } from "react-icons/io";
 import BankSelect from "../../components/form/BankSelect";
-import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
 import ActionModal from "../../components/modals/ActionModal";
+import { Navigate } from "react-router-dom";
 
 const BankInfo = () => {
   const { t } = useTranslation();
@@ -32,9 +32,12 @@ const BankInfo = () => {
     (profile?.account_type === "company"
       ? profile?.user_company?.user_bank
       : profile?.user_bank) || {};
-  console.log(profile);
 
-  // 🟢 Mutation للتعديل على البيانات البنكية
+  // ✅ تنظيف الـ IBAN من المسافات وتحويله كابيتال
+  const cleanIban = (value) =>
+    value ? value.replace(/\s+/g, "").toUpperCase() : "";
+
+  // 🟢 Mutation
   const mutation = useMutation({
     mutationFn: completeRegister,
     onSuccess: () => {
@@ -48,13 +51,14 @@ const BankInfo = () => {
     },
   });
 
-  // 🟢 الفاليديشن مع الـ 5 حقول
+  // 🟢 الفاليديشن بدون isValid
   const bankSchema = Yup.object({
     bank_id: Yup.string().required(t("pages.account.bank_info.bank_required")),
     iban: Yup.string()
-      .test("iban-check", t("pages.account.bank_info.iban_invalid"), (value) =>
-        isValid(value || "")
-      )
+      .transform((value) => cleanIban(value))
+      .matches(/^[A-Z0-9]+$/, t("pages.account.bank_info.iban_invalid")) // أحرف وأرقام فقط
+      .min(30, t("pages.account.bank_info.iban_invalid"))
+      .max(30, t("pages.account.bank_info.iban_invalid"))
       .required(t("pages.account.bank_info.iban_required")),
     swift_code: Yup.string().required(
       t("pages.account.bank_info.swift_required")
@@ -65,7 +69,6 @@ const BankInfo = () => {
     clik_name: Yup.string(),
   });
 
-  // 🟢 Formik بنفس أسماء الـ API
   const formik = useFormik({
     enableReinitialize: true,
     initialValues: {
@@ -80,7 +83,10 @@ const BankInfo = () => {
       setErrorMsg("");
       mutation.mutate({
         form_type: "bank",
-        bank: values,
+        bank: {
+          ...values,
+          iban: cleanIban(values.iban),
+        },
       });
     },
   });
@@ -109,7 +115,6 @@ const BankInfo = () => {
 
       <form onSubmit={formik.handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-          {/* 🟢 البنك */}
           <BankSelect formik={formik} disabled={!isEditing} />
 
           {/* 🟢 IBAN */}
@@ -119,7 +124,10 @@ const BankInfo = () => {
             name="iban"
             placeholder={t("pages.account.bank_info.iban_placeholder")}
             value={formik.values.iban}
-            onChange={formik.handleChange}
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
+              formik.setFieldValue("iban", cleaned);
+            }}
             error={getError("iban")}
             icon={<GoFileBinary />}
             disabled={!isEditing}
@@ -192,9 +200,7 @@ const BankInfo = () => {
         icon="success"
         primaryBtn={{
           text: t("update_damana_modal.btn"),
-          action: () => {
-            setOpenModal(false);
-          },
+          action: () => setOpenModal(false),
         }}
       />
     </>

@@ -10,10 +10,19 @@ const languageSlice = createSlice({
   initialState,
   reducers: {
     changeLanguage: (state, action) => {
-      state.lang = action.payload;
-      i18n.changeLanguage(action.payload); // يغير لغة i18next
-      localStorage.setItem("lang", action.payload); // يخزن اللغة
-      window.location.reload(); // يعيد تحميل الصفحة لتطبيق التغييرات
+      const newLang = action.payload;
+      state.lang = newLang;
+      i18n.changeLanguage(newLang);
+      localStorage.setItem("lang", newLang);
+
+      // ✅ عدّل الاتجاه أولاً
+      document.documentElement.dir = newLang === "ar" ? "rtl" : "ltr";
+      document.documentElement.lang = newLang;
+
+      // ✅ بعد نصف ثانية reload لتحديث axios headers
+      setTimeout(() => {
+        window.location.reload();
+      }, 300);
     },
   },
 });

@@ -38,9 +38,14 @@ const DamanaCard = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
         <div className="grid 2xl:grid-cols-2 gap-2">
-          <p className="lg:text-lg text-primary font-bold 2xl:col-span-2 flex items-center gap-1">
+          <p className="lg:text-lg text-primary font-bold 2xl:col-span-2 flex items-center flex-wrap gap-1">
             {tr("DamanaNumber")}:{" "}
             <CopyToClipboard text={damana?.serial_number} />
+            {damana?.pay_status_translate && (
+              <div className="px-4 py-2 border-2 border-secondary text-secondary font-bold rounded-lg w-fit text-center">
+                {damana?.pay_status_translate}
+              </div>
+            )}
           </p>
 
           <div className="flex items-start gap-1 text-sm lg:text-base">
@@ -79,26 +84,16 @@ const DamanaCard = ({
           </div>
         </div>
 
-
-
-
         <div className="flex flex-col items-center justify-end gap-2">
-
-
-        {
-  !damana.is_expired && 
-  damana.status  !="finished" &&
-  damana.status  !="rejected" &&
-  damana.status  !="cancelled" &&
-  damana.status  !="expired" &&
-  damana.status  !="cancellable" &&
-  damana?.schedule_expired_at &&
-
-    <Timer expiryDate={damana?.schedule_expired_at} />
-
-
-
-}
+          {!damana.is_expired &&
+            damana.status != "finished" &&
+            damana.status != "rejected" &&
+            damana.status != "cancelled" &&
+            damana.status != "expired" &&
+            damana.status != "cancellable" &&
+            damana?.schedule_expired_at && (
+              <Timer expiryDate={damana?.schedule_expired_at} />
+            )}
 
           {selectable ? (
             <span className="w-10 h-10 rounded-full border-2 border-primary p-1 flex items-center justify-center">
@@ -112,10 +107,6 @@ const DamanaCard = ({
             </Link>
           )}
         </div>
-
-
-
-
       </div>
     </div>
   );

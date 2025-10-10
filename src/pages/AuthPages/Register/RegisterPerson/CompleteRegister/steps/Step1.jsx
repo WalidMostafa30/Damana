@@ -11,13 +11,17 @@ import { GoFileBinary } from "react-icons/go";
 import { SiBitcoin } from "react-icons/si";
 import { IoIdCardSharp } from "react-icons/io5";
 import { IoMdCode } from "react-icons/io";
-import { isValid } from "iban";
 import { useTranslation } from "react-i18next";
 
 export default function Step1({ formData, setFormData, setStep }) {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState(null);
 
+  // ✅ دالة تنظيف الـ IBAN (تشيل المسافات وتحوله كابيتال)
+  const cleanIban = (value) =>
+    value ? value.replace(/\s+/g, "").toUpperCase() : "";
+
+  // 🟢 Mutation
   const mutation = useMutation({
     mutationFn: sendAddressOrBankData,
     onSuccess: (data, values) => {
@@ -31,6 +35,24 @@ export default function Step1({ formData, setFormData, setStep }) {
     },
   });
 
+  // ✅ نفس تحقق الـ IBAN الموجود في BankInfo
+  const bankSchema = Yup.object({
+    bank_id: Yup.string().required(t("pages.Step1.validation.bank_required")),
+    iban: Yup.string()
+      .transform((value) => cleanIban(value))
+      .matches(/^[A-Z0-9]+$/, t("pages.Step1.validation.iban_invalid")) // أحرف وأرقام فقط
+      .min(30, t("pages.Step1.validation.iban_invalid"))
+      .max(30, t("pages.Step1.validation.iban_invalid"))
+      .required(t("pages.Step1.validation.iban_required")),
+    swift_code: Yup.string().required(
+      t("pages.Step1.validation.swift_code_required")
+    ),
+    currency: Yup.string().required(
+      t("pages.Step1.validation.currency_required")
+    ),
+    clik_name: Yup.string(),
+  });
+
   const formik = useFormik({
     initialValues: {
       bank_id: formData.bank_id || "",
@@ -39,27 +61,13 @@ export default function Step1({ formData, setFormData, setStep }) {
       currency: formData.currency || "",
       clik_name: formData.clik_name || "",
     },
-    validationSchema: Yup.object({
-      bank_id: Yup.string().required(t("pages.Step1.validation.bank_required")),
-      iban: Yup.string()
-        .test("iban-check", t("pages.Step1.validation.iban_invalid"), (value) =>
-          isValid(value || "")
-        )
-        .required(t("pages.Step1.validation.iban_required")),
-      swift_code: Yup.string().required(
-        t("pages.Step1.validation.swift_code_required")
-      ),
-      currency: Yup.string().required(
-        t("pages.Step1.validation.currency_required")
-      ),
-      clik_name: Yup.string(),
-    }),
+    validationSchema: bankSchema,
     onSubmit: (values) => {
       mutation.mutate({
         form_type: "bank",
         bank: {
           bank_id: values.bank_id,
-          iban: values.iban,
+          iban: cleanIban(values.iban),
           swift_code: values.swift_code,
           currency: values.currency,
           clik_name: values.clik_name,
@@ -76,17 +84,22 @@ export default function Step1({ formData, setFormData, setStep }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
         <BankSelect formik={formik} />
 
+        {/* 🟢 IBAN */}
         <MainInput
           label={t("pages.Step1.form.iban")}
           id="iban"
           name="iban"
           placeholder={t("pages.Step1.form.iban_placeholder")}
           value={formik.values.iban}
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
+            formik.setFieldValue("iban", cleaned);
+          }}
           error={getError("iban")}
           icon={<GoFileBinary />}
         />
 
+        {/* 🟢 SWIFT Code */}
         <MainInput
           label={t("pages.Step1.form.swift_code")}
           id="swift_code"
@@ -98,6 +111,7 @@ export default function Step1({ formData, setFormData, setStep }) {
           icon={<IoMdCode />}
         />
 
+        {/* 🟢 العملة */}
         <MainInput
           type="select"
           label={t("pages.Step1.form.currency")}
@@ -116,6 +130,7 @@ export default function Step1({ formData, setFormData, setStep }) {
           ]}
         />
 
+        {/* 🟢 CLIQ */}
         <MainInput
           label={t("pages.Step1.form.clik_name")}
           id="clik_name"

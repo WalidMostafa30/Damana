@@ -313,7 +313,8 @@
         },
         "submit": "Next",
         "errorMsg": "An error occurred while submitting",
-        "fetchError": "Failed to fetch buyer data, please enter it manually"
+        "fetchError": "Failed to fetch buyer data, please enter it manually",
+        "sameBuyerOwnerError": "You cannot sell the vehicle to yourself"
       },
       "step2": {
         "title": "Damana Information",
@@ -1052,6 +1053,12 @@
       "timer": {
         "allowed": "Release request is now allowed ✅",
         "countdown": "{{minutes}}:{{seconds}} ⏳"
+      },
+      "extraMsg": {
+        "pay": "Please visit any Fawateercom outlet and pay the Damana amount using the reference number:",
+        "refNumber": "",
+        "copy": "Copy",
+        "copied": "Copied ✅"
       }
     },
 

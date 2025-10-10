@@ -28,15 +28,36 @@ const ActionsSection = ({ damana }) => {
 
   const changeStatusMutation = useMutation({
     mutationFn: (status) => changeStatus({ id: damana.id, status }),
-    onSuccess: (data) => {
+    onSuccess: (data, status) => {
       // ✅ تحديث البيانات بعد النجاح
       queryClient.invalidateQueries(["damana-details", damana.id]);
 
       if (data.status) {
-        openActionModal({
-          msg: t("pages.actionsSection.toast.statusUpdated"),
-          icon: "success",
-        });
+        if (status === "accepted") {
+          // ✅ في حالة الموافقة، نظهر رسالة تحتوي على رقم الضمانة
+          openActionModal({
+            icon: "success",
+            msg: (
+              <div className="text-center space-y-2">
+                <p>{t("pages.actionsSection.toast.statusUpdated")}</p>
+                <p className="text-gray-700 text-sm mt-2">
+                  {t("pages.actionsSection.extraMsg.pay")}{" "}
+                  <span className="font-semibold text-primary">
+                    {t("pages.actionsSection.extraMsg.refNumber")}
+                  </span>
+                </p>
+                <div className="flex items-center justify-center gap-2 mt-2">
+                  <CopyToClipboard text={damana?.serial_number} />
+                </div>
+              </div>
+            ),
+          });
+        } else {
+          openActionModal({
+            msg: t("pages.actionsSection.toast.statusUpdated"),
+            icon: "success",
+          });
+        }
       } else {
         openActionModal({
           msg: data.error_message || t("pages.actionsSection.toast.error"),
@@ -174,7 +195,13 @@ const ActionsSection = ({ damana }) => {
         <div className="space-y-2">
           {damana?.coming_request_release && (
             <div className="mx-auto w-max my-2">
-              <Timer expiryDate={damana.coming_request_release} />
+              <Timer
+                expiryDate={damana.coming_request_release}
+                onFinish={() => {
+                  // ✅ بعد انتهاء التايمر، يتم تحديث بيانات الضمانة
+                  queryClient.invalidateQueries(["damana-details", damana.id]);
+                }}
+              />
             </div>
           )}
 

@@ -20,7 +20,6 @@ import { Navigate } from "react-router-dom";
 
 const UserManagement = () => {
   const [editingUser, setEditingUser] = useState(null);
-  const [countryCode, setCountryCode] = useState(""); // نخزن كود الدولة هنا
   const [errorMsg, setErrorMsg] = useState("");
   const queryClient = useQueryClient();
 
@@ -36,13 +35,14 @@ const UserManagement = () => {
       .email("بريد إلكتروني غير صالح")
       .required("البريد مطلوب"),
     mobile: Yup.string().required("رقم الهاتف مطلوب"),
+    country_code: Yup.string().required("كود الدولة مطلوب"),
     password: Yup.string().when([], {
-      is: () => !editingUser, // لو مفيش مستخدم في حالة التعديل يبقى مطلوب
+      is: () => !editingUser,
       then: (schema) =>
         schema
           .min(6, "كلمة المرور لا تقل عن 6 أحرف")
           .required("كلمة المرور مطلوبة"),
-      otherwise: (schema) => schema.notRequired(), // في التعديل نخليها اختيارية
+      otherwise: (schema) => schema.notRequired(),
     }),
     permissions: Yup.array(),
   });
@@ -90,45 +90,37 @@ const UserManagement = () => {
 
   const handleSubmit = async (values, { resetForm }) => {
     const payload = {
-      id: editingUser?.id, // لو في editing هنضيف الـ id هنا
+      id: editingUser?.id,
       name: values.name,
       email: values.email,
       mobile: values.mobile,
-
-      country_code: countryCode || editingUser?.country_code,
+      country_code: values.country_code,
       password: values.password,
       permissions: values.permissions,
     };
 
     if (editingUser) {
-      // نستخدم نفس الـ payload في الابديت
       await updateUserMutation.mutateAsync(payload);
       setEditingUser(null);
     } else {
-      // في الإضافة مش محتاجين id
       const { id, ...rest } = payload;
       await addUserMutation.mutateAsync(rest);
     }
 
     resetForm();
-    setCountryCode("");
   };
 
   const handleEdit = (user, setValues) => {
     setEditingUser(user);
-    setCountryCode(user.country_code || "");
     setValues({
       name: user.name,
       email: user.email,
       mobile: user.mobile,
-      country_code: countryCode,
-      password: user.password,
-      permissions: user.company_permissions || [],
+      country_code: user.country_code,
+      password: "",
+      permissions: user.company_permissions?.map((p) => p) || [],
     });
   };
-
-
-  const [fullMobile, setfullMobile] = useState("+962")
 
   const handleDelete = async (id) => {
     if (window.confirm("هل انت متأكد من حذف المستخدم؟")) {
@@ -149,9 +141,10 @@ const UserManagement = () => {
         initialValues={{
           name: editingUser?.name || "",
           email: editingUser?.email || "",
-          mobile: editingUser?.full_mobile || "",
+          mobile: editingUser?.mobile || "",
+          country_code: editingUser?.country_code || "962",
           password: "",
-          permissions: editingUser?.permissions || [],
+          permissions: editingUser?.company_permissions || [],
         }}
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
@@ -177,6 +170,7 @@ const UserManagement = () => {
                 placeholder="ادخل اسم المستخدم"
                 icon={<FaUser />}
               />
+
               <MainInput
                 label="البريد الإلكتروني"
                 id="email"
@@ -188,26 +182,29 @@ const UserManagement = () => {
                 placeholder="example@email.com"
                 icon={<MdEmail />}
               />
+
               <MainInput
                 label="رقم الهاتف"
                 id="mobile"
                 type="tel"
-                value={fullMobile}
+                value={`+${values.country_code}${values.mobile}`}
                 onChange={(val, country) => {
-                  const mobileWithoutCode = country?.dialCode
-                  ? val.slice(country.dialCode.length)
-                  : phvalone;
+                  const dialCode = country?.dialCode || values.country_code;
 
-                  setfullMobile(val);
-                  setFieldValue("mobile", mobileWithoutCode);
-                  setCountryCode(country?.dialCode || "");
+                  // احذف أي "+" أو "كود دولة" متكرر في بداية النص
+                  const cleanedVal = val
+                    .replace(/^\+/, "")
+                    .replace(new RegExp(`^${dialCode}`), "")
+                    .trim();
 
-
+                  setFieldValue("mobile", cleanedVal);
+                  setFieldValue("country_code", dialCode);
                 }}
                 onBlur={handleBlur}
                 error={touched.mobile && errors.mobile}
                 placeholder="ادخل رقم الهاتف"
               />
+
               <MainInput
                 label="كلمة المرور"
                 id="password"
@@ -294,7 +291,12 @@ const UserManagement = () => {
                       <tr key={user.id}>
                         <td className="px-6 py-4">{user.name}</td>
                         <td className="px-6 py-4">{user.email}</td>
-                        <td className="px-6 py-4">{user.full_mobile}</td>
+                        <td className="px-6 py-4">
+                          {user.country_code.startsWith("+")
+                            ? user.country_code
+                            : `+${user.country_code}`}
+                          {user.mobile}
+                        </td>
                         <td className="px-6 py-4">
                           {user.company_permissions?.map((p, i) => (
                             <span key={i} className="block">
