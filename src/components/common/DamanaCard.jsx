@@ -38,17 +38,17 @@ const DamanaCard = ({
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 p-4 lg:p-6">
         <div className="grid 2xl:grid-cols-2 gap-2">
-          <p className="lg:text-lg text-primary font-bold 2xl:col-span-2 flex items-center flex-wrap gap-1">
+          <p className="lg:text-base text-primary font-bold 2xl:col-span-2 flex items-center flex-wrap gap-1">
             {tr("DamanaNumber")}:{" "}
             <CopyToClipboard text={damana?.serial_number} />
             {damana?.pay_status_translate && (
-              <div className="px-4 py-2 border-2 border-secondary text-secondary font-bold rounded-lg w-fit text-center">
+              <div className="px-1 py-1 border-2 border-secondary text-secondary font-bold rounded-lg w-fit text-center  text-xs ms-1">
                 {damana?.pay_status_translate}
               </div>
             )}
           </p>
 
-          <div className="flex items-start gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-sm">
             <PiCertificate className="text-2xl" />
             <p>
               <span>{tr("plateNumber")}</span> :{" "}
@@ -56,7 +56,7 @@ const DamanaCard = ({
             </p>
           </div>
 
-          <div className="flex items-start gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-sm">
             <CiUser className="text-2xl" />
             <p>
               <span>{tr("seller")}</span> :{" "}
@@ -68,14 +68,14 @@ const DamanaCard = ({
             </p>
           </div>
 
-          <div className="flex items-start gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-sm">
             <FaMoneyBill1Wave className="text-2xl" />
             <p>
               {damana?.vehicle_price} {tr("price")}
             </p>
           </div>
 
-          <div className="flex items-start gap-1 text-sm lg:text-base">
+          <div className="flex items-start gap-1 text-sm lg:text-sm">
             <CiCalendarDate className="text-2xl" />
             <p>
               <span>{tr("date")}: </span>

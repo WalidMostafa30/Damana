@@ -8,7 +8,7 @@ const Purchase = ({ data, fetchNextPage, hasNextPage, loading, error }) => {
   return (
     <div
       id="purchaseScrollContainer"
-      className="max-h-[60vh] overflow-y-auto px-1"
+      className="max-h-[101vh] overflow-y-auto px-1"
     >
       <InfiniteScroll
         dataLength={data.length}

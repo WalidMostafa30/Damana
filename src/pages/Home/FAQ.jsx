@@ -33,7 +33,7 @@ const FAQ = () => {
       <h3 className="text-2xl font-bold p-4 text-primary border-b border-neutral-200">
         {t("pages.faq.title")}{" "}
       </h3>
-      <ul className="max-h-[600px] overflow-y-auto">
+      <ul className="md:max-h-[270px] overflow-y-auto">
         {faqs?.map((question, index) => (
           <li key={question.id} className="border-b border-neutral-200">
             <button

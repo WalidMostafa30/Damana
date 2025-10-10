@@ -75,10 +75,15 @@ const LoginPage = () => {
       />
 
       <form onSubmit={formik.handleSubmit} className="space-y-6">
+
+
         <PhoneInput
           formik={formik}
           placeholder={t("pages.login.placeholders.mobile")}
         />
+
+
+
 
         <MainInput
           type="password"
