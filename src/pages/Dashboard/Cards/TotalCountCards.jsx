@@ -46,19 +46,18 @@ const TotalCountCards = ({ data = {} }) => {
           className="whiteContainer text-white"
           style={{ backgroundColor: card.color }}
         >
-          <div className="mb-4 flex justify-between items-center gap-2">
-            <div>
+          <div className="space-y-4">
+            <div className="flex items-start justify-between gap-2">
               <p className="text-lg">{card.label}</p>
-              <h4 className="text-4xl font-bold mt-2 line-clamp-1">
-                {card.value}
-              </h4>
+              <span
+                className="p-2 rounded-full text-4xl"
+                style={{ backgroundColor: "white", color: card.color }}
+              >
+                {card.icon}
+              </span>
             </div>
-            <span
-              className="p-2 rounded-full text-4xl"
-              style={{ backgroundColor: "white", color: card.color }}
-            >
-              {card.icon}
-            </span>
+
+            <h4 className="text-4xl font-bold line-clamp-1">{card.value}</h4>
           </div>
         </div>
       ))}

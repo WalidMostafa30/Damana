@@ -150,12 +150,14 @@ const Otp = () => {
         ]}
       />
 
-      <p className="text-neutral-500 mb-4">
-        {t("pages.Otp.subtitle")}{" "}
-        <span className="font-bold text-success-200">
-          {country_code + mobile}
-        </span>
-      </p>
+      {!isNaN(Number(mobile)) && (
+        <p className="text-neutral-500 mb-4">
+          {t("pages.Otp.subtitle")}{" "}
+          <span className="font-bold text-success-200">
+            {country_code + mobile}
+          </span>
+        </p>
+      )}
       <p className="text-neutral-500 mb-4">{t("pages.Otp.instruction")}</p>
 
       <div className="flex justify-end gap-6 mb-2" dir="ltr">

@@ -256,15 +256,15 @@ const FinancialDashboard = ({
         ))}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-8">
+      <div className="grid grid-cols-1 gap-4 lg:gap-8">
         <RevenueTrendCard
           title={t("pages.financial_dashboard.cards.revenueTrend")}
           data={dashboardData2?.RevenueTrendCard}
         />
-        <CommissionCard
+        {/* <CommissionCard
           title={t("pages.financial_dashboard.cards.commission")}
           data={dashboardData2?.CommissionCard}
-        />
+        /> */}
       </div>
 
       <DashboardTable

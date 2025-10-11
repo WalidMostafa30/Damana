@@ -42,30 +42,19 @@ const NumberOfTransactionsCards = ({ data = {} }) => {
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 lg:gap-8">
       {NumberOfTransactionsCardsList.map((card) => (
         <div key={card.id} className="whiteContainer">
-          <div className="mb-4 flex justify-between items-center gap-2">
-            <div>
+          <div className="space-y-4">
+            <div className="flex items-start justify-between gap-2">
               <p className="text-lg">{card.label}</p>
-              <h4 className="text-4xl font-bold my-2 line-clamp-1">
-                {card.value}
-              </h4>
+              <span
+                className="p-2 rounded-full text-4xl"
+                style={{ backgroundColor: card.color, color: "white" }}
+              >
+                {card.icon}
+              </span>
             </div>
-            <span
-              className="p-2 rounded-full text-4xl"
-              style={{ backgroundColor: card.color, color: "white" }}
-            >
-              {card.icon}
-            </span>
-          </div>
 
-          {/* مثال لو حبيت تترجم نسبة النمو */}
-          {/* <p className="flex items-center gap-2">
-            <FiTrendingUp
-              className="inline-block text-2xl"
-              style={{ color: card.color }}
-            />
-            <span style={{ color: card.color, fontSize: "22px" }}>1.3%</span>
-            {t("pages.transactions.higherThanLastWeek")}
-          </p> */}
+            <h4 className="text-4xl font-bold line-clamp-1">{card.value}</h4>
+          </div>
         </div>
       ))}
     </div>

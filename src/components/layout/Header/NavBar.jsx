@@ -4,8 +4,14 @@ import { usePermission } from "../../../hooks/usePermission";
 
 const NavBar = ({ openNav, setOpenNav }) => {
   const { t } = useTranslation();
-
   const { has } = usePermission();
+
+  // ✅ فحص الصلاحيات المختلفة
+  const canViewRunning = has("company.dashboard.running");
+  const canViewFinancial = has("company.dashboard.financial");
+
+  // ✅ لو عنده أي صلاحية من الثلاثة
+  const canViewAnyDashboard = canViewRunning || canViewFinancial;
 
   return (
     <nav
@@ -15,7 +21,8 @@ const NavBar = ({ openNav, setOpenNav }) => {
             openNav ? "max-h-[500px]" : "max-h-0 py-0"
           }`}
     >
-      {has("company.dashboard") && (
+      {/* ✅ إظهار الداشبورد فقط لو عنده أي صلاحية من الثلاثة */}
+      {canViewAnyDashboard && (
         <NavLink
           onClick={() => setOpenNav(false)}
           to="/dashboard"

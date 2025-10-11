@@ -56,6 +56,12 @@ const Account = () => {
             <NavLink to="/profile/terms" className="profileLink">
               {t("pages.account.account.nav.terms")}
             </NavLink>
+            <NavLink to="/profile/privacy-policy" className="profileLink">
+              {t("pages.account.account.nav.privacy_policy")}
+            </NavLink>
+            <NavLink to="/profile/cancellation-policy" className="profileLink">
+              {t("pages.account.account.nav.cancellation_policy")}
+            </NavLink>
           </nav>
         </div>
 

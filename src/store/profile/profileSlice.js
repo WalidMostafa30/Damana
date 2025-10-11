@@ -3,7 +3,7 @@ import { getProfile } from "../../services/authService";
 
 const initialState = {
   profile: null,
-  loading: false,
+  loading: true,
   error: null,
 };
 

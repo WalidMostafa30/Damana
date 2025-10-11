@@ -22,6 +22,7 @@ const BankInfo = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
+  const [openIbanWarning, setOpenIbanWarning] = useState(false); // 🟢 مودال التحذير الجديد
 
   const { profile } = useSelector((state) => state.profile);
 
@@ -93,6 +94,15 @@ const BankInfo = () => {
 
   const getError = (field) => formik.touched[field] && formik.errors[field];
 
+  // 🟢 عند الخروج من حقل IBAN نعرض المودال التحذيري
+  const handleIbanBlur = (e) => {
+    formik.handleBlur(e);
+    const value = cleanIban(formik.values.iban);
+    if (value.length === 30) {
+      setOpenIbanWarning(true);
+    }
+  };
+
   return (
     <>
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -128,6 +138,7 @@ const BankInfo = () => {
               const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
               formik.setFieldValue("iban", cleaned);
             }}
+            onBlur={handleIbanBlur} // 🟢 نضيف هنا
             error={getError("iban")}
             icon={<GoFileBinary />}
             disabled={!isEditing}
@@ -194,6 +205,7 @@ const BankInfo = () => {
         )}
       </form>
 
+      {/* 🟢 مودال النجاح بعد الحفظ */}
       <ActionModal
         openModal={openModal}
         msg={t("update_damana_modal.msg")}
@@ -201,6 +213,17 @@ const BankInfo = () => {
         primaryBtn={{
           text: t("update_damana_modal.btn"),
           action: () => setOpenModal(false),
+        }}
+      />
+
+      {/* 🟡 مودال تحذير IBAN */}
+      <ActionModal
+        openModal={openIbanWarning}
+        msg={t("iban_warning")}
+        icon="warning"
+        primaryBtn={{
+          text: "حسنًا",
+          action: () => setOpenIbanWarning(false),
         }}
       />
     </>

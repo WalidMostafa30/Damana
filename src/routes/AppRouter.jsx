@@ -49,6 +49,7 @@ const Dashboard = React.lazy(() => import("../pages/Dashboard/Dashboard"));
 const GetPage = React.lazy(() => import("../pages/GetPage/GetPage"));
 
 const NotFound = React.lazy(() => import("../pages/NotFound/NotFound"));
+const NoAccess = React.lazy(() => import("../pages/NotFound/NoAccess"));
 
 const Account = React.lazy(() => import("../pages/Account/Account"));
 const Profile = React.lazy(() => import("../pages/Account/Profile/Profile"));
@@ -61,6 +62,12 @@ const Support = React.lazy(() => import("../pages/Account/Support"));
 const Password = React.lazy(() => import("../pages/Account/Password"));
 const RemoveDamana = React.lazy(() => import("../pages/Account/RemoveDamana"));
 const Terms = React.lazy(() => import("../pages/Account/Terms"));
+const PrivacyPolicy = React.lazy(() =>
+  import("../pages/Account/privacyPolicy")
+);
+const CancellationPolicy = React.lazy(() =>
+  import("../pages/Account/CancellationPolicy")
+);
 
 const router = createBrowserRouter([
   {
@@ -107,6 +114,8 @@ const router = createBrowserRouter([
           { path: "password", element: <Password /> },
           { path: "remove-damana", element: <RemoveDamana /> },
           { path: "terms", element: <Terms /> },
+          { path: "privacy-policy", element: <PrivacyPolicy /> },
+          { path: "cancellation-policy", element: <CancellationPolicy /> },
         ],
       },
     ],
@@ -161,6 +170,7 @@ const router = createBrowserRouter([
   },
 
   { path: "*", element: <NotFound /> },
+  { path: "/no-access", element: <NoAccess /> },
 ]);
 
 const AppRouter = () => {

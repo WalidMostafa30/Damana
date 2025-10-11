@@ -3,14 +3,14 @@ import { getPage } from "../../services/staticDataService";
 import LoadingSection from "../../components/Loading/LoadingSection";
 import { useTranslation } from "react-i18next";
 
-const Terms = () => {
+const PrivacyPolicy = () => {
   const {
     data: pageContent,
     isLoading,
     isError,
   } = useQuery({
-    queryFn: () => getPage("full_terms_and_conditions"),
-    queryKey: ["page", "full_terms_and_conditions"], // ✅ مميز
+    queryFn: () => getPage("privacy_policy"),
+    queryKey: ["page", "privacy_policy"], // ✅ مميز
     keepPreviousData: true,
   });
 
@@ -33,4 +33,4 @@ const Terms = () => {
   );
 };
 
-export default Terms;
+export default PrivacyPolicy;

@@ -5,6 +5,7 @@
     "msg": "updated successfully",
     "btn": "Ok"
   },
+  "iban_warning": "Please double-check your IBAN number before proceeding. If the IBAN you entered is incorrect, it may result in lost or delayed funds. We are not responsible for any transfers made to an incorrect IBAN.",
 
   "components": {
     "common": {
@@ -124,7 +125,9 @@
           "remove_damana": "Cancel Damana",
           "support": "Support",
           "password": "Change Password",
-          "terms": "Terms & Conditions"
+          "terms": "Terms & Conditions",
+          "privacy_policy": "Privacy Policy",
+          "cancellation_policy": "Cancellation Policy"
         }
       },
       "address": {

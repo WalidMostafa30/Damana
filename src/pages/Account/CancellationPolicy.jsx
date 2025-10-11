@@ -3,16 +3,16 @@ import { getPage } from "../../services/staticDataService";
 import LoadingSection from "../../components/Loading/LoadingSection";
 import { useTranslation } from "react-i18next";
 
-const Terms = () => {
-  const {
-    data: pageContent,
-    isLoading,
-    isError,
-  } = useQuery({
-    queryFn: () => getPage("full_terms_and_conditions"),
-    queryKey: ["page", "full_terms_and_conditions"], // ✅ مميز
-    keepPreviousData: true,
-  });
+const CancellationPolicy = () => {
+const {
+  data: pageContent,
+  isLoading,
+  isError,
+} = useQuery({
+  queryFn: () => getPage("cancellation_policy"),
+  queryKey: ["page", "cancellation_policy"], // ✅ مميز
+  keepPreviousData: true,
+});
 
   const { t } = useTranslation();
 
@@ -33,4 +33,4 @@ const Terms = () => {
   );
 };
 
-export default Terms;
+export default CancellationPolicy;

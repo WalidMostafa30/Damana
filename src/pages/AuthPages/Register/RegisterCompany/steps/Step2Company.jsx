@@ -174,7 +174,7 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 icon={<FaEarthAsia />}
               />
 
-               <MainInput
+              <MainInput
                 label={t("pages.step2Company.fields.type.label")}
                 placeholder={t("pages.step2Company.fields.type.placeholder")}
                 id={`commissioners.${index}.type`}
@@ -185,13 +185,7 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 icon={<FaPeopleLine />}
               />
 
-
-
-
-
-
-
-{/* 
+              {/* 
               <MainInput
                 
                 type="select"
@@ -223,19 +217,7 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                   },
                 ]}
               />
-
-
  */}
-
-
-
-
-
-
-
-
-
-
 
               <MainInput
                 label={t("pages.step2Company.fields.topCommissioner.label")}
@@ -249,9 +231,6 @@ const Step2Company = ({ formik, getError, commissionerExcelLink }) => {
                 error={getError(`commissioners.${index}.top_commissioner`)}
                 icon={<LuFileDigit />}
               />
-
-
-
 
               <MainInput
                 label={t(

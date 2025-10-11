@@ -12,12 +12,14 @@ import { SiBitcoin } from "react-icons/si";
 import { IoIdCardSharp } from "react-icons/io5";
 import { IoMdCode } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import ActionModal from "../../../../../../components/modals/ActionModal";
 
 export default function Step1({ formData, setFormData, setStep }) {
   const { t } = useTranslation();
   const [errorMsg, setErrorMsg] = useState(null);
+  const [openIbanWarning, setOpenIbanWarning] = useState(false); // 🟡 مودال التحذير للـ IBAN
 
-  // ✅ دالة تنظيف الـ IBAN (تشيل المسافات وتحوله كابيتال)
+  // ✅ تنظيف الـ IBAN من المسافات وتحويله كابيتال
   const cleanIban = (value) =>
     value ? value.replace(/\s+/g, "").toUpperCase() : "";
 
@@ -79,76 +81,99 @@ export default function Step1({ formData, setFormData, setStep }) {
   const getError = (name) =>
     formik.touched[name] && formik.errors[name] ? formik.errors[name] : "";
 
+  // 🟢 عند الخروج من حقل الـ IBAN نتحقق من الطول ونفتح المودال التحذيري
+  const handleIbanBlur = (e) => {
+    formik.handleBlur(e);
+    const value = cleanIban(formik.values.iban);
+    if (value.length === 30) {
+      setOpenIbanWarning(true);
+    }
+  };
+
   return (
-    <form onSubmit={formik.handleSubmit} className="space-y-4">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <BankSelect formik={formik} />
+    <>
+      <form onSubmit={formik.handleSubmit} className="space-y-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <BankSelect formik={formik} />
 
-        {/* 🟢 IBAN */}
-        <MainInput
-          label={t("pages.Step1.form.iban")}
-          id="iban"
-          name="iban"
-          placeholder={t("pages.Step1.form.iban_placeholder")}
-          value={formik.values.iban}
-          onChange={(e) => {
-            const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
-            formik.setFieldValue("iban", cleaned);
-          }}
-          error={getError("iban")}
-          icon={<GoFileBinary />}
+          {/* 🟢 IBAN */}
+          <MainInput
+            label={t("pages.Step1.form.iban")}
+            id="iban"
+            name="iban"
+            placeholder={t("pages.Step1.form.iban_placeholder")}
+            value={formik.values.iban}
+            onChange={(e) => {
+              const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
+              formik.setFieldValue("iban", cleaned);
+            }}
+            onBlur={handleIbanBlur} // 🟢 إضافة الحدث هنا
+            error={getError("iban")}
+            icon={<GoFileBinary />}
+          />
+
+          {/* 🟢 SWIFT Code */}
+          <MainInput
+            label={t("pages.Step1.form.swift_code")}
+            id="swift_code"
+            name="swift_code"
+            placeholder={t("pages.Step1.form.swift_code_placeholder")}
+            value={formik.values.swift_code}
+            onChange={formik.handleChange}
+            error={getError("swift_code")}
+            icon={<IoMdCode />}
+          />
+
+          {/* 🟢 العملة */}
+          <MainInput
+            type="select"
+            label={t("pages.Step1.form.currency")}
+            id="currency"
+            name="currency"
+            value={formik.values.currency}
+            onChange={formik.handleChange}
+            error={getError("currency")}
+            icon={<SiBitcoin />}
+            options={[
+              { value: "", label: t("pages.Step1.form.currency_placeholder") },
+              ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
+                value: c,
+                label: c,
+              })),
+            ]}
+          />
+
+          {/* 🟢 CLIQ */}
+          <MainInput
+            label={t("pages.Step1.form.clik_name")}
+            id="clik_name"
+            name="clik_name"
+            placeholder={t("pages.Step1.form.clik_name_placeholder")}
+            value={formik.values.clik_name}
+            onChange={formik.handleChange}
+            error={getError("clik_name")}
+            icon={<IoIdCardSharp />}
+          />
+        </div>
+
+        <FormError errorMsg={errorMsg} />
+
+        <FormBtn
+          title={t("pages.Step1.form.next_button")}
+          loading={mutation.isPending}
         />
+      </form>
 
-        {/* 🟢 SWIFT Code */}
-        <MainInput
-          label={t("pages.Step1.form.swift_code")}
-          id="swift_code"
-          name="swift_code"
-          placeholder={t("pages.Step1.form.swift_code_placeholder")}
-          value={formik.values.swift_code}
-          onChange={formik.handleChange}
-          error={getError("swift_code")}
-          icon={<IoMdCode />}
-        />
-
-        {/* 🟢 العملة */}
-        <MainInput
-          type="select"
-          label={t("pages.Step1.form.currency")}
-          id="currency"
-          name="currency"
-          value={formik.values.currency}
-          onChange={formik.handleChange}
-          error={getError("currency")}
-          icon={<SiBitcoin />}
-          options={[
-            { value: "", label: t("pages.Step1.form.currency_placeholder") },
-            ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
-              value: c,
-              label: c,
-            })),
-          ]}
-        />
-
-        {/* 🟢 CLIQ */}
-        <MainInput
-          label={t("pages.Step1.form.clik_name")}
-          id="clik_name"
-          name="clik_name"
-          placeholder={t("pages.Step1.form.clik_name_placeholder")}
-          value={formik.values.clik_name}
-          onChange={formik.handleChange}
-          error={getError("clik_name")}
-          icon={<IoIdCardSharp />}
-        />
-      </div>
-
-      <FormError errorMsg={errorMsg} />
-
-      <FormBtn
-        title={t("pages.Step1.form.next_button")}
-        loading={mutation.isPending}
+      {/* 🟡 مودال تحذير IBAN */}
+      <ActionModal
+        openModal={openIbanWarning}
+        msg={t("iban_warning")}
+        icon="warning"
+        primaryBtn={{
+          text: "حسنًا",
+          action: () => setOpenIbanWarning(false),
+        }}
       />
-    </form>
+    </>
   );
 }

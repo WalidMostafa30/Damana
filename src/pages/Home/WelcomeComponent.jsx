@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { FaFileInvoice } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
+import { usePermission } from "../../hooks/usePermission";
 
 const WelcomeComponent = () => {
   const { data, isLoading } = useQuery({
@@ -11,7 +12,10 @@ const WelcomeComponent = () => {
     queryFn: checkAuth,
   });
   const { t } = useTranslation();
+  const { hasAndUser } = usePermission();
+
   if (isLoading) return null;
+  if (!hasAndUser("damana.create")) return null;
 
   return (
     <div className="whiteContainer text-center !p-8">

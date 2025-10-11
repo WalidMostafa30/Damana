@@ -66,7 +66,7 @@ const HeaderActions = ({ setOpenNav }) => {
               onClose={() => setOpenNotification(false)}
               buttonRef={notificationBtnRef}
             >
-              <div className="bg-white w-72 lg:w-96">
+              <div className="bg-white w-[320px] lg:w-[500px]">
                 <h3 className="lg:text-lg text-neutral-800 font-bold p-2 lg:p-4 border-b border-neutral-300">
                   {t("components.layout.headerActions.notifications")}
                 </h3>

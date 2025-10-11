@@ -29,6 +29,10 @@ const CancellationsCard = ({ data = {} }) => {
     },
   ];
 
+  // ✅ استبعاد العناصر اللي قيمتها 0 أو undefined
+  // const filteredData = theData.filter((item) => item.value && item.value > 0);
+  const filteredData = theData;
+
   const renderCustomizedLabel = ({
     cx,
     cy,
@@ -51,7 +55,7 @@ const CancellationsCard = ({ data = {} }) => {
         dominantBaseline="central"
         style={{ fontWeight: "bold", fontSize: "14px" }}
       >
-        {`${theData[index].name} ${theData[index].value}%`}
+        {`${filteredData[index].name} ${filteredData[index].value}%`}
       </text>
     );
   };
@@ -65,7 +69,7 @@ const CancellationsCard = ({ data = {} }) => {
         <ResponsiveContainer>
           <PieChart>
             <Pie
-              data={theData}
+              data={filteredData}
               cx="50%"
               cy="50%"
               labelLine={false}
@@ -73,7 +77,7 @@ const CancellationsCard = ({ data = {} }) => {
               outerRadius={100}
               dataKey="value"
             >
-              {theData.map((entry, index) => (
+              {filteredData.map((entry, index) => (
                 <Cell key={`cell-${index}`} fill={entry.color} />
               ))}
             </Pie>

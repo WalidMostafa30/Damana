@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 import MainInput from "../../../../../components/form/MainInput/MainInput";
 import { IoIdCardSharp } from "react-icons/io5";
@@ -5,9 +6,24 @@ import { GoFileBinary } from "react-icons/go";
 import { IoMdCode } from "react-icons/io";
 import { SiBitcoin } from "react-icons/si";
 import BankSelect from "../../../../../components/form/BankSelect";
+import ActionModal from "../../../../../components/modals/ActionModal";
 
 const Step3Company = ({ formik, getError }) => {
   const { t } = useTranslation();
+  const [openIbanWarning, setOpenIbanWarning] = useState(false); // 🟡 مودال التحذير
+
+  // ✅ تنظيف الـ IBAN من المسافات وتحويله لحروف كبيرة
+  const cleanIban = (value) =>
+    value ? value.replace(/\s+/g, "").toUpperCase() : "";
+
+  // 🟢 عند الخروج من حقل الـ IBAN نتحقق من الطول ونفتح المودال
+  const handleIbanBlur = (e) => {
+    formik.handleBlur(e);
+    const value = cleanIban(formik.values.iban);
+    if (value.length === 30) {
+      setOpenIbanWarning(true);
+    }
+  };
 
   return (
     <>
@@ -22,14 +38,18 @@ const Step3Company = ({ formik, getError }) => {
           label={t("pages.Step3Company.bankSelect.label")}
         />
 
-        {/* IBAN */}
+        {/* 🟢 IBAN */}
         <MainInput
           label={t("pages.Step3Company.iban.label")}
           id="iban"
           name="iban"
           placeholder={t("pages.Step3Company.iban.placeholder")}
           value={formik.values.iban}
-          onChange={formik.handleChange}
+          onChange={(e) => {
+            const cleaned = e.target.value.replace(/\s+/g, "").toUpperCase();
+            formik.setFieldValue("iban", cleaned);
+          }}
+          onBlur={handleIbanBlur} // 🟢 نضيف هنا
           error={getError("iban")}
           icon={<GoFileBinary />}
         />
@@ -57,7 +77,10 @@ const Step3Company = ({ formik, getError }) => {
           error={getError("currency")}
           icon={<SiBitcoin />}
           options={[
-            { value: "", label: t("pages.Step3Company.currency.defaultOption") },
+            {
+              value: "",
+              label: t("pages.Step3Company.currency.defaultOption"),
+            },
             ...["JOD", "SAR", "USD", "EUR"].map((c) => ({
               value: c,
               label: t(`pages.Step3Company.currency.options.${c}`),
@@ -77,6 +100,17 @@ const Step3Company = ({ formik, getError }) => {
           icon={<IoIdCardSharp />}
         />
       </div>
+
+      {/* 🟡 مودال تحذير IBAN */}
+      <ActionModal
+        openModal={openIbanWarning}
+        msg={t("iban_warning")}
+        icon="warning"
+        primaryBtn={{
+          text: "حسنًا",
+          action: () => setOpenIbanWarning(false),
+        }}
+      />
     </>
   );
 };
