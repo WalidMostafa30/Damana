@@ -48,7 +48,7 @@ const ResetPassword = ({ parentData }) => {
     mutationFn: resetPassword,
     onSuccess: () => {
       toast.success(t("pages.forgotPassword.resetPassword.messages.success"));
-      // ممكن هنا تعمل إعادة توجيه لصفحة تسجيل الدخول
+      location.href="/login"
     },
     onError: (error) => {
       setErrorMsg(
