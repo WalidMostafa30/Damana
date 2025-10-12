@@ -7,6 +7,7 @@ import { useState } from "react";
 import ActionModal from "../../components/modals/ActionModal";
 import LoadingModal from "../../components/modals/LoadingModal";
 import { usePermission } from "../../hooks/usePermission";
+import CopyToClipboard from "../../components/common/CopyToClipboard";
 
 const ActionsSection = ({ damana }) => {
   const { t } = useTranslation();
@@ -29,6 +30,9 @@ const ActionsSection = ({ damana }) => {
   const changeStatusMutation = useMutation({
     mutationFn: (status) => changeStatus({ id: damana.id, status }),
     onSuccess: (data, status) => {
+
+      console.log("data" , data );
+      console.log("status" , status );
       // ✅ تحديث البيانات بعد النجاح
       queryClient.invalidateQueries(["damana-details", damana.id]);
 
@@ -65,7 +69,11 @@ const ActionsSection = ({ damana }) => {
         });
       }
     },
-    onError: () => {
+    onError: (error) => {
+      console.log("error" , error );
+
+
+
       openActionModal({
         msg: t("pages.actionsSection.toast.serverError"),
         icon: "error",
@@ -135,13 +143,59 @@ const ActionsSection = ({ damana }) => {
 
   if (!profile) return null;
 
-  const isBuyer = damana?.buyer_company_id
-    ? damana.buyer_company_id === profile.company_id
-    : damana?.buyer?.id === profile.id;
 
-  const isSeller = damana?.seller_company_id
-    ? damana.seller_company_id === profile.company_id
-    : damana?.seller?.id === profile.id;
+
+  // const isBuyer = damana?.buyer_company_id
+  //   ? damana.buyer_company_id === profile.company_id
+  //   : damana?.buyer?.id === profile.id;
+
+
+ const isBuyer = (() => {
+  const buyerCompanyId = damana?.buyer_company_id;
+  const profileCompanyId = profile?.company_id;
+  const userCompanyIds = Array.isArray(profile?.user_company_ids)
+    ? profile.user_company_ids
+    : [];
+
+  // Normalize to strings to avoid number/string mismatches
+  const norm = v => (v === undefined || v === null ? null : String(v));
+
+  if (buyerCompanyId != null) {
+    return (
+      norm(buyerCompanyId) === norm(profileCompanyId) ||
+      userCompanyIds.map(norm).includes(norm(buyerCompanyId))
+    );
+  }
+
+  // Fallback: match by user id if no buyer_company_id on damana
+  return norm(damana?.buyer?.id) === norm(profile?.id);
+})();
+
+
+
+
+const isSeller = (() => {
+  const sellerCompanyId = damana?.seller_company_id;
+  const profileCompanyId = profile?.company_id;
+  const userCompanyIds = Array.isArray(profile?.user_company_ids)
+    ? profile.user_company_ids
+    : [];
+
+  const norm = v => (v === undefined || v === null ? null : String(v));
+
+  if (sellerCompanyId != null) {
+    return (
+      norm(sellerCompanyId) === norm(profileCompanyId) ||
+      userCompanyIds.map(norm).includes(norm(sellerCompanyId))
+    );
+  }
+
+  // Fallback: match by user id if no seller_company_id on damana
+  return norm(damana?.seller?.id) === norm(profile?.id);
+})();
+
+
+
 
   const isDisabled = damana?.is_expired || damana?.blocked;
 
@@ -163,6 +217,8 @@ const ActionsSection = ({ damana }) => {
             })}
         </div>
       )}
+
+
 
       {isBuyer && damana.status === "new" && (
         <div className="flex flex-wrap gap-2">

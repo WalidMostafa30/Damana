@@ -987,7 +987,8 @@
       "loadError": "فشل في تحميل البيانات",
       "status": "الحالة",
       "DamanaNumber": "رقم الضمانة",
-      "plateAndCode": "رقم الترميز واللوحة",
+        "plateAndCode": "رقم اللوحة والترميز",
+
       "createdAt": "تاريخ الإنشاء",
       "sellerInfo": "بيانات البائع",
       "buyerInfo": "بيانات المشتري",

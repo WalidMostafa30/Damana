@@ -27,26 +27,41 @@ const Account = () => {
             <NavLink to="/profile" end className="profileLink">
               {t("pages.account.account.nav.profile")}
             </NavLink>
-            {profile?.account_type !== "company" && (
-              <>
-                <NavLink to="/profile/bank-info" className="profileLink">
-                  {t("pages.account.account.nav.bank_info")}
-                </NavLink>
-                <NavLink to="/profile/address" className="profileLink">
-                  {t("pages.account.account.nav.address")}
-                </NavLink>
-              </>
-            )}
+            {profile?.account_type !== "company" &&
+              (
+                <>
+                  <NavLink to="/profile/bank-info" className="profileLink">
+                    {t("pages.account.account.nav.bank_info")}
+                  </NavLink>
+                  <NavLink to="/profile/address" className="profileLink">
+                    {t("pages.account.account.nav.address")}
+                  </NavLink>
+                </>
+              )}
+
+
+
             {has("users.manage") && (
               <NavLink to="/profile/user-management" className="profileLink">
                 {t("pages.account.account.nav.user_management")}
               </NavLink>
             )}
-            {!hasAndUser("damana.cancel") ? null : (
-              <NavLink to="/profile/remove-damana" className="profileLink">
-                {t("pages.account.account.nav.remove_damana")}
-              </NavLink>
-            )}
+
+
+            {profile?.account_type !== "company" &&
+              (
+                <>
+
+                  {!hasAndUser("damana.cancel") ? null : (
+                    <NavLink to="/profile/remove-damana" className="profileLink">
+                      {t("pages.account.account.nav.remove_damana")}
+                    </NavLink>
+                  )}
+                </>
+              )}
+
+
+
             <NavLink to="/profile/support" className="profileLink">
               {t("pages.account.account.nav.support")}
             </NavLink>

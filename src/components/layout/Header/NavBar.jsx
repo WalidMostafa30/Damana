@@ -1,6 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { usePermission } from "../../../hooks/usePermission";
+import { useSelector } from "react-redux";
 
 const NavBar = ({ openNav, setOpenNav }) => {
   const { t } = useTranslation();
@@ -13,13 +14,16 @@ const NavBar = ({ openNav, setOpenNav }) => {
   // ✅ لو عنده أي صلاحية من الثلاثة
   const canViewAnyDashboard = canViewRunning || canViewFinancial;
 
+  const { profile } = useSelector((state) => state.profile);
+
+
+
   return (
     <nav
       className={`flex flex-col xl:items-center gap-4 xl:gap-8 p-4 bg-primary absolute z-50 w-full xl:max-h-[500px] top-full left-0
           overflow-hidden transition-all duration-500 ease-in-out
-          xl:static xl:flex-row xl:w-auto xl:p-0 ${
-            openNav ? "max-h-[500px]" : "max-h-0 py-0"
-          }`}
+          xl:static xl:flex-row xl:w-auto xl:p-0 ${openNav ? "max-h-[500px]" : "max-h-0 py-0"
+        }`}
     >
       {/* ✅ إظهار الداشبورد فقط لو عنده أي صلاحية من الثلاثة */}
       {canViewAnyDashboard && (
@@ -40,13 +44,34 @@ const NavBar = ({ openNav, setOpenNav }) => {
         {t("components.layout.navbar.myDamanas")}
       </NavLink>
 
-      <NavLink
-        onClick={() => setOpenNav(false)}
-        to="/add-damana"
-        className="navLink"
-      >
-        {t("components.layout.navbar.startDamana")}
-      </NavLink>
+
+
+
+
+      {
+       ( profile
+        && profile?.account_type =='individual' )||
+        (
+
+           profile
+        && 
+        profile?.account_type =='company' &&
+        profile?.user_company_id&&
+        profile?.company_permissions?.includes("damana.create")
+        )
+        
+       &&
+        <NavLink
+          onClick={() => setOpenNav(false)}
+          to="/add-damana"
+          className="navLink"
+        >
+          {t("components.layout.navbar.startDamana")}
+        </NavLink>
+      }
+
+
+
 
       <NavLink
         onClick={() => setOpenNav(false)}

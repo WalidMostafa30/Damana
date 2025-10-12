@@ -47,9 +47,37 @@ export default function CheckAuthRoute({ children }) {
       />
     );
 
-  if (!data?.mobile_verified || data?.next_screen === "mobile_otp") {
-    return <Navigate to="/register-otp" replace />;
-  }
+
+
+
+    if ( 
+      data?.account_type  == "company" 
+    ) {
+
+
+      if (  !data?.email_verified  &&   !data?.mobile_verified ) {
+        return <Navigate to="/register-otp" replace />;
+      }
+
+
+
+    }else {
+
+              // لو فيه توكن → يدخل الصفحة بس لو الموبايل مش متفعل
+      if (!data?.mobile_verified || data?.next_screen === "mobile_otp") {
+       
+        return <Navigate to="/register-otp" replace />;
+
+
+      }
+
+
+
+    }
+
+
+
+
 
   if (data?.next_screen === "dis_active") {
     return <DisActivePage msg={data?.dis_active_message} />;

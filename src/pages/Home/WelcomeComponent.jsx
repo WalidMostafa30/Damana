@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { FaFileInvoice } from "react-icons/fa";
 import { FaCirclePlus } from "react-icons/fa6";
 import { usePermission } from "../../hooks/usePermission";
+import { useSelector } from "react-redux";
 
 const WelcomeComponent = () => {
   const { data, isLoading } = useQuery({
@@ -14,8 +15,17 @@ const WelcomeComponent = () => {
   const { t } = useTranslation();
   const { hasAndUser } = usePermission();
 
+  const { profile } = useSelector((state) => state.profile);
+
+
+
   if (isLoading) return null;
   if (!hasAndUser("damana.create")) return null;
+
+
+
+
+
 
   return (
     <div className="whiteContainer text-center !p-8">

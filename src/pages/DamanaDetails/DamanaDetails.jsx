@@ -28,6 +28,7 @@ const DamanaDetails = () => {
   console.log("📌 بيانات الضمانة:", damana);
 
   if (isLoading) return <LoadingPage />;
+  if (!damana) return <LoadingPage />;
 
   if (isError)
     return (

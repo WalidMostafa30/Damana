@@ -12,7 +12,11 @@ export const hasPermission = (user, permission) => {
   // لو مش primary يبقى لازم company_permissions موجودة
   if (!Array.isArray(user.company_permissions)) return false;
 
-  return user.company_permissions.includes(permission);
+  if (permission == "damana.create")
+    return     user?.user_company_id && user.company_permissions.includes(permission);
+
+
+  return user.company_permissions.includes("full") || user.company_permissions.includes(permission);
 };
 
 export const hasUserAndPermission = (user, permission) => {
@@ -27,7 +31,11 @@ export const hasUserAndPermission = (user, permission) => {
   // ✅ لو الشركة مش Primary → لازم يكون عندها صلاحيات
   if (!Array.isArray(user.company_permissions)) return false;
 
-  return user.company_permissions.includes(permission);
+  if (permission == "damana.create")
+    return user?.user_company_id && user.company_permissions.includes(permission);
+
+
+  return user.company_permissions.includes("full") || user.company_permissions.includes(permission);
 };
 
 // عشان تشيك اكتر من صلاحية
@@ -48,5 +56,7 @@ export const hasAllPermissions = (user, permissions = []) => {
 
   if (!Array.isArray(user.company_permissions)) return false;
 
+
   return permissions.every((perm) => user.company_permissions.includes(perm));
 };
+

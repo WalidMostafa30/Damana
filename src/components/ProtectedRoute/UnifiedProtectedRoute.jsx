@@ -55,10 +55,37 @@ export default function UnifiedProtectedRoute({ children, page }) {
   // --- صفحة OTP ---
   if (page === "otp") {
     if (token) {
+
+
+            if ( 
+        data?.account_type  == "company" 
+      ) {
+
+
+        if (  !data?.email_verified  &&   !data?.mobile_verified ) {
+          return children;
+        }
+
+
+
+      }else {
+
+        
       // لو فيه توكن → يدخل الصفحة بس لو الموبايل مش متفعل
       if (!data?.mobile_verified || data?.next_screen === "mobile_otp") {
         return children;
       }
+
+
+
+
+
+    }
+
+
+
+
+
       // لو الموبايل متفعل → رجعه للصفحة الرئيسية
       return <Navigate to="/" replace />;
     }

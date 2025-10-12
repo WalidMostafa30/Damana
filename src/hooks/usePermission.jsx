@@ -16,5 +16,6 @@ export const usePermission = () => {
     hasAndUser: (perm) => hasUserAndPermission(profile, perm),
     hasAny: (perms) => hasAnyPermission(profile, perms),
     hasAll: (perms) => hasAllPermissions(profile, perms),
+ 
   };
 };

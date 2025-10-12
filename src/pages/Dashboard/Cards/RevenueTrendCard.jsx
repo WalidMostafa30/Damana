@@ -68,7 +68,7 @@ const RevenueTrendCard = ({ data }) => {
               className="w-3 h-3 rounded-sm"
               style={{ background: colors[index % colors.length] }}
             ></span>
-            <span>{t("pages.revenueTrend.company", { number: index + 1 })}</span>
+            <span>{key}</span>
           </div>
         ))}
       </div>
