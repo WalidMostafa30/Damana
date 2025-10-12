@@ -37,7 +37,7 @@ const FinancialDashboard = ({
       getFinancialDashboardTable({
         page,
         type: tableType,
-        status: filters.status,
+        filer_financial_statuses: filters.status,
         created_at_from: filters.dateRange?.startDate
           ?.toISOString()
           .split("T")[0],

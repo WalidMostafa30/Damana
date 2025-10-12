@@ -103,6 +103,42 @@ const Dashboard = () => {
         }))
       : []),
   ];
+  // ✅ فلترة الحالة
+  // ✅ فلترة الحالة التشغيلية
+  const filer_running_statuses = [
+    { value: "", label: t("pages.home.all") },
+    ...(appConfig?.filer_running_statuses
+      ? Object.entries(appConfig.filer_running_statuses).map(
+          ([key, value]) => ({
+            value: key,
+            label: value,
+          })
+        )
+      : []),
+  ];
+
+  // ✅ فلترة الحالة المالية
+  const filer_financial_statuses = [
+    { value: "", label: t("pages.home.all") },
+    ...(appConfig?.filer_financial_statuses
+      ? Object.entries(appConfig.filer_financial_statuses).map(
+          ([key, value]) => ({
+            value: key,
+            label: value,
+          })
+        )
+      : []),
+  ];
+
+  // ✅ تحديد الحالة بناءً على نوع الصفحة
+  const currentStatusOptions =
+    selectedType === "operational"
+      ? filer_running_statuses
+      : filer_financial_statuses;
+
+  console.log("damana_status_options" + damana_status_options);
+  console.log("filer_running_statuses" + filer_running_statuses);
+  console.log("filer_financial_statuses" + filer_financial_statuses);
 
   const handleChange = (field, value) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
@@ -146,7 +182,7 @@ const Dashboard = () => {
             onChange={(e) => handleChange("status", e.target.value)}
           >
             <option value="all">{t("pages.dashboard.status")}</option>
-            {damana_status_options.map((option) => (
+            {currentStatusOptions.map((option) => (
               <option key={option.value ?? "all"} value={option.value ?? ""}>
                 {option.label}
               </option>
@@ -178,20 +214,24 @@ const Dashboard = () => {
           )}
 
           {/* فلتر الشركة */}
-          <select
-            className="filterBtn"
-            value={filters.company}
-            onChange={(e) => handleChange("company", e.target.value)}
-          >
-            <option value="">
-              {isCompaniesLoading ? t("loading") : t("pages.dashboard.company")}
-            </option>
-            {companiesData?.map((comp) => (
-              <option key={comp.id} value={comp.id}>
-                {comp.name}
+          {has("show_group_data") && (
+            <select
+              className="filterBtn"
+              value={filters.company}
+              onChange={(e) => handleChange("company", e.target.value)}
+            >
+              <option value="">
+                {isCompaniesLoading
+                  ? t("loading")
+                  : t("pages.dashboard.company")}
               </option>
-            ))}
-          </select>
+              {companiesData?.map((comp) => (
+                <option key={comp.id} value={comp.id}>
+                  {comp.name}
+                </option>
+              ))}
+            </select>
+          )}
         </div>
       )}
 

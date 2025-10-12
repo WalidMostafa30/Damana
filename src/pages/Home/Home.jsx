@@ -25,7 +25,8 @@ const Home = () => {
   console.log("canViewBuy", canViewBuy);
 
   const [selectedType, setSelectedType] = useState("sell");
-  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [selectedRunningStatus, setSelectedRunningStatus] = useState("");
+  const [selectedFinancialStatus, setSelectedFinancialStatus] = useState("");
 
   const [dateRange, setDateRange] = useState(null);
   const [tempRange, setTempRange] = useState({
@@ -43,7 +44,8 @@ const Home = () => {
       queryKey: [
         "damanat",
         selectedType,
-        selectedStatus,
+        selectedRunningStatus,
+        selectedFinancialStatus,
         dateRange
           ? {
               created_at_from: dateRange.startDate.toISOString().split("T")[0],
@@ -56,18 +58,34 @@ const Home = () => {
         lastPage.hasMore ? lastPage.nextPage : undefined,
       enabled:
         (selectedType === "sell" && canViewSell) ||
-        (selectedType === "buy" && canViewBuy), // ✅ تشغيل الـ API فقط لو عنده صلاحية
+        (selectedType === "buy" && canViewBuy),
     });
 
   const { data: appConfig } = useSelector((state) => state.appConfig);
 
-  const damana_status_options = [
+  // ✅ فلترة الحالة التشغيلية
+  const filer_running_statuses = [
     { value: "", label: t("pages.home.all") },
-    ...(appConfig?.filer_statuses
-      ? Object.entries(appConfig.filer_statuses).map(([key, value]) => ({
-          value: key,
-          label: value,
-        }))
+    ...(appConfig?.filer_running_statuses
+      ? Object.entries(appConfig.filer_running_statuses).map(
+          ([key, value]) => ({
+            value: key,
+            label: value,
+          })
+        )
+      : []),
+  ];
+
+  // ✅ فلترة الحالة المالية
+  const filer_financial_statuses = [
+    { value: "", label: t("pages.home.all") },
+    ...(appConfig?.filer_financial_statuses
+      ? Object.entries(appConfig.filer_financial_statuses).map(
+          ([key, value]) => ({
+            value: key,
+            label: value,
+          })
+        )
       : []),
   ];
 
@@ -116,7 +134,7 @@ const Home = () => {
 
         {canViewBuy || canViewSell ? (
           <section className="baseWhiteContainer space-y-4">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 lg:gap-4">
+            <div className="grid grid-cols-2 lg:grid-cols-5 gap-2 lg:gap-4">
               {canViewSell && (
                 <button
                   onClick={() => {
@@ -145,16 +163,29 @@ const Home = () => {
                 </button>
               )}
 
+              {/* فلتر الحالة التشغيلية */}
               <select
                 className="filterBtn"
-                value={selectedStatus || ""}
-                onChange={(e) => setSelectedStatus(e.target.value || null)}
+                value={selectedRunningStatus}
+                onChange={(e) => setSelectedRunningStatus(e.target.value)}
               >
-                {damana_status_options.map((option) => (
-                  <option
-                    key={option.value ?? "all"}
-                    value={option.value ?? ""}
-                  >
+                <option value="">{t("pages.home.allRunningStatuses")}</option>
+                {filer_running_statuses.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))}
+              </select>
+
+              {/* فلتر الحالة المالية */}
+              <select
+                className="filterBtn"
+                value={selectedFinancialStatus}
+                onChange={(e) => setSelectedFinancialStatus(e.target.value)}
+              >
+                <option value="">{t("pages.home.allFinancialStatuses")}</option>
+                {filer_financial_statuses.map((option) => (
+                  <option key={option.value} value={option.value}>
                     {option.label}
                   </option>
                 ))}

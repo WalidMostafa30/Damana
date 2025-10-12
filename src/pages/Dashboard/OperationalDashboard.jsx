@@ -39,7 +39,7 @@ const OperationalDashboard = ({
       getRunningDashboardTable({
         page,
         type: tableType,
-        status: filters.status,
+        filer_running_statuses: filters.status,
         created_at_from: filters.dateRange?.startDate
           ?.toISOString()
           .split("T")[0],

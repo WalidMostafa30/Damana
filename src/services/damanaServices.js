@@ -41,12 +41,13 @@ export const fetchDamanaDetails = async (id) => {
 };
 
 export const fetchDamanat = async ({ pageParam = 1, queryKey }) => {
-  const [, type, status, dateRange] = queryKey;
+  const [, type, runningStatus, financialStatus, dateRange] = queryKey;
 
   const { data } = await api.get("/vehicle-transfers/list", {
     params: {
       type,
-      status,
+      filer_running_statuses: runningStatus || "",
+      filer_financial_statuses: financialStatus || "",
       created_at_from: dateRange?.created_at_from,
       created_at_to: dateRange?.created_at_to,
       page: pageParam,
