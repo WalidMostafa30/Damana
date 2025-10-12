@@ -7,13 +7,20 @@ import { useTranslation } from "react-i18next";
 
 const Step6CompanyLoginAccounts = ({ formik }) => {
   const { t } = useTranslation();
-  const [showLoginForm, setShowLoginForm] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(true);
+
   const [tempLogin, setTempLogin] = useState({
     login_name: "",
     login_phone: "",
+    login_email: "",
     authorizationFile: null,
   });
   const [errors, setErrors] = useState({});
+
+  const validateEmail = (email) => {
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const validate = () => {
     let newErrors = {};
@@ -27,9 +34,13 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
         "pages.Step6CompanyLoginAccounts.errors.phoneRequired"
       );
     }
-    if (!tempLogin.authorizationFile) {
-      newErrors.authorizationFile = t(
-        "pages.Step6CompanyLoginAccounts.errors.fileRequired"
+    if (!tempLogin.login_email.trim()) {
+      newErrors.login_email = t(
+        "pages.Step6CompanyLoginAccounts.errors.emailRequired"
+      );
+    } else if (!validateEmail(tempLogin.login_email)) {
+      newErrors.login_email = t(
+        "pages.Step6CompanyLoginAccounts.errors.emailInvalid"
       );
     }
     setErrors(newErrors);
@@ -38,90 +49,95 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
 
   const handleAddLogin = () => {
     if (validate()) {
-      formik.setFieldValue("login_accounts", tempLogin); // ✅ يخزن حساب واحد بس
+      formik.setFieldValue("login_accounts", tempLogin);
       setTempLogin({
         login_name: "",
         login_phone: "",
+        login_email: "",
         authorizationFile: null,
       });
+      setShowLoginForm(false); // ✅ يخفي الفورم بعد إضافة الحساب
+
       setErrors({});
-      setShowLoginForm(false); // ✅ يقفل الفورم بعد الإضافة
     }
   };
 
   const removeLogin = () => {
-    formik.setFieldValue("login_accounts", {}); // ✅ يمسح الحساب
-    setShowLoginForm(false); // يرجع يقدر يضيف تاني
+    formik.setFieldValue("login_accounts", {});
+    setShowLoginForm(true); // ✅ يعيد إظهار الفورم بعد الحذف
   };
-
-  console.log(formik.values.login_accounts);
 
   return (
     <div className="mt-4">
-      {/* الزرار يظهر فقط لو مفيش حساب مضاف */}
-      {Object.keys(formik.values.login_accounts).length === 0 &&
-        !showLoginForm && (
-          <button
-            type="button"
-            className="mb-4 flex items-center gap-1 text-primary cursor-pointer"
-            onClick={() => setShowLoginForm(true)}
-          >
-            <FaCirclePlus className="text-2xl" />
-            {t("pages.Step6CompanyLoginAccounts.addButton")}
-          </button>
+      {/* الفورم دايمًا مفتوحة */}
+      {showLoginForm &&
+        Object.keys(formik.values.login_accounts).length === 0 && (
+          <div className="mb-6 baseWhiteContainer">
+            <p className="text-primary text-lg font-bold mb-4">
+              {t("pages.Step6CompanyLoginAccounts.formTitle")}
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <MainInput
+                label={t("pages.Step6CompanyLoginAccounts.nameLabel")}
+                value={tempLogin.login_name}
+                onChange={(e) =>
+                  setTempLogin({ ...tempLogin, login_name: e.target.value })
+                }
+                error={errors.login_name}
+                icon={<FaUser />}
+                placeholder={t("pages.Step6CompanyLoginAccounts.nameLabel")}
+              />
+
+              <PhoneField
+                label={t("pages.Step6CompanyLoginAccounts.phoneLabel")}
+                value={tempLogin.login_phone}
+                onChange={(val) =>
+                  setTempLogin({ ...tempLogin, login_phone: val })
+                }
+                combineValue
+                error={errors.login_phone}
+              />
+
+              <MainInput
+                label={t("pages.Step6CompanyLoginAccounts.emailLabel")}
+                value={tempLogin.login_email}
+                onChange={(e) =>
+                  setTempLogin({ ...tempLogin, login_email: e.target.value })
+                }
+                error={errors.login_email}
+                icon={<CiMail />}
+                placeholder={t("pages.Step6CompanyLoginAccounts.emailLabel")}
+                type="email"
+              />
+
+              {/* 
+          <div className="md:col-span-2">
+            <FileInput
+              label={t(
+                "pages.Step6CompanyLoginAccounts.authorizationFileLabel"
+              )}
+              value={tempLogin.authorizationFile}
+              onChange={(file) =>
+                setTempLogin({ ...tempLogin, authorizationFile: file })
+              }
+              error={errors.authorizationFile}
+            />
+          </div> 
+          */}
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddLogin}
+              className="px-4 py-2 bg-primary text-white rounded-lg mt-4 hover:brightness-90 cursor-pointer"
+            >
+              {t("pages.Step6CompanyLoginAccounts.addAccountButton")}
+            </button>
+          </div>
         )}
 
-      {showLoginForm && (
-        <div className="mb-6 baseWhiteContainer">
-          <p className="text-primary text-lg font-bold mb-4">
-            {t("pages.Step6CompanyLoginAccounts.formTitle")}
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <MainInput
-              label={t("pages.Step6CompanyLoginAccounts.nameLabel")}
-              value={tempLogin.login_name}
-              onChange={(e) =>
-                setTempLogin({ ...tempLogin, login_name: e.target.value })
-              }
-              error={errors.login_name}
-            />
-
-            <PhoneField
-              label={t("pages.Step6CompanyLoginAccounts.phoneLabel")}
-              value={tempLogin.login_phone}
-              onChange={(val) =>
-                setTempLogin({ ...tempLogin, login_phone: val })
-              }
-              combineValue
-              error={errors.login_phone}
-            />
-
-            <div className="md:col-span-2">
-              <FileInput
-                label={t(
-                  "pages.Step6CompanyLoginAccounts.authorizationFileLabel"
-                )}
-                value={tempLogin.authorizationFile}
-                onChange={(file) =>
-                  setTempLogin({ ...tempLogin, authorizationFile: file })
-                }
-                error={errors.authorizationFile}
-              />
-            </div>
-          </div>
-
-          <button
-            type="button"
-            onClick={handleAddLogin}
-            className="px-4 py-2 bg-primary text-white rounded-lg mt-4 hover:brightness-90 cursor-pointer"
-          >
-            {t("pages.Step6CompanyLoginAccounts.addAccountButton")}
-          </button>
-        </div>
-      )}
-
-      {/* عرض الحساب الوحيد */}
+      {/* عرض الحساب */}
       {Object.keys(formik.values.login_accounts).length > 0 && (
         <div className="mt-4">
           <p className="font-bold mb-2">
@@ -233,6 +249,8 @@ const FileInput = ({ label, value, onChange, error }) => {
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import { PiWarningCircleBold } from "react-icons/pi";
+import { FaUser } from "react-icons/fa";
+import { CiMail } from "react-icons/ci";
 
 const PhoneField = ({ label, value, onChange, error, disabled = false }) => {
   return (

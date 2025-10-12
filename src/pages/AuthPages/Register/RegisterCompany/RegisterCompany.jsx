@@ -26,6 +26,7 @@ import BackStepBtn from "../../../../components/form/BackStepBtn";
 import { useTranslation } from "react-i18next";
 import { IoIosArrowDown } from "react-icons/io";
 import { getSamplesLinks } from "../../../../services/staticDataService";
+import Step2CompanyUpdate from "./steps/Step2CompanyUpdate";
 
 const FILE_SUPPORTED_FORMATS = [
   "image/jpeg",
@@ -35,7 +36,7 @@ const FILE_SUPPORTED_FORMATS = [
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(6);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const { t } = useTranslation();
@@ -181,7 +182,15 @@ const RegisterCompany = () => {
             }),
         otherwise: (schema) => schema.notRequired(),
       }),
-      managementCommissioners: partnerYup,
+      companyManagers: Yup.array().of(
+        Yup.object().shape({
+          member_name: Yup.string().required("اسم العضو مطلوب"),
+          position: Yup.string().required("الصفة مطلوبة"),
+          representing_entity: Yup.string().required("الجهة مطلوبة"),
+          election_date: Yup.date().required("تاريخ الانتخاب مطلوب"),
+          appointment_date: Yup.date().required("تاريخ التعيين مطلوب"),
+        }).required("يجب إضافة عضو واحد على الأقل")
+      ),
     }),
 
     // ✅ Step 4 بعد حذف isValid
@@ -328,18 +337,15 @@ const RegisterCompany = () => {
         },
       ],
       company_commissioner_file: null,
-      managementCommissioners: {
-        full_name: "",
-        nationality: "",
-        national_passport_number: "",
-        address: "",
-        type: "",
-        top_commissioner: "",
-        commissioner_permissions: "",
-        phone: "",
-        email: "",
-        delegation_permissions: "",
-      },
+      companyManagers: [
+        {
+          member_name: "",
+          position: "",
+          representing_entity: "",
+          election_date: "",
+          appointment_date: "",
+        },
+      ],
       bank_id: "",
       iban: "",
       swift_code: "",
@@ -406,7 +412,12 @@ const RegisterCompany = () => {
         return <Step1Company formik={formik} getError={getError} />;
       case 2:
         return (
-          <Step2Company
+          // <Step2Company
+          //   formik={formik}
+          //   getError={getError}
+          //   commissionerExcelLink={commissionerExcelLink}
+          // />
+          <Step2CompanyUpdate
             formik={formik}
             getError={getError}
             commissionerExcelLink={commissionerExcelLink}
