@@ -667,6 +667,8 @@
       "delegationText": {
         "label": "Delegation text as it appears in the commercial register"
       },
+      "managerTitle": "Management",
+
       "commissionerTitle": "Commissioner Data",
       "chooseCommissioners_type": "Choose Commissioners Input Method",
       "commissioners_type": {
@@ -1220,6 +1222,12 @@
 
     "home": {
       "title": "My Damanas",
+
+            "allRunningStatuses": "Running Statuses",
+      "allFinancialStatuses": "Financial Statuses",
+
+
+
       "subtitle": "Here you can find all your Damanas with their full details.",
       "sellDamanas": "Sell Damanas",
       "buyDamanas": "Purchase Damanas",

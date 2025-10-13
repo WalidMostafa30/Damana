@@ -96,7 +96,11 @@ const HeaderActions = ({ setOpenNav }) => {
           name={profile?.name}
           size="md"
         />
-        <p className="text-lg hidden lg:block">{profile?.name}</p>
+
+        <p className="text-lg hidden lg:block">{profile?.name}
+<small className="block text-xs text-ellipsis overflow-hidden max-w-[130px]  whitespace-nowrap ">{profile?.slug ?? ''}</small>
+
+        </p>
         <IoIosArrowDown className="text-2xl hidden lg:block" />
         <AnimatePresence>
           {openProfileMenu && (

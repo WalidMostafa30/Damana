@@ -49,18 +49,25 @@ const NavBar = ({ openNav, setOpenNav }) => {
 
 
       {
-       ( profile
-        && profile?.account_type =='individual' )||
-        (
+        ((profile && profile?.account_type == 'individual')
+          ||
 
-           profile
-        && 
-        profile?.account_type =='company' &&
-        profile?.user_company_id&&
-        profile?.company_permissions?.includes("damana.create")
-        )
-        
-       &&
+          (
+
+            profile
+            &&
+
+            (
+              profile?.account_type == 'company' &&
+              profile?.user_company_id &&
+              profile?.company_permissions?.includes("damana.create"))
+
+          ))
+
+
+
+
+        &&
         <NavLink
           onClick={() => setOpenNav(false)}
           to="/add-damana"
@@ -69,7 +76,6 @@ const NavBar = ({ openNav, setOpenNav }) => {
           {t("components.layout.navbar.startDamana")}
         </NavLink>
       }
-
 
 
 

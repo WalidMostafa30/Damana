@@ -292,7 +292,7 @@ const UserManagement = () => {
                         <td className="px-6 py-4">{user.name}</td>
                         <td className="px-6 py-4">{user.email}</td>
                         <td className="px-6 py-4">
-                          {user.country_code.startsWith("+")
+                          {user?.country_code?.startsWith("+")
                             ? user.country_code
                             : `+${user.country_code}`}
                           {user.mobile}

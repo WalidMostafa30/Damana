@@ -664,6 +664,7 @@
       "delegationText": {
         "label": "نص التفويض كما هو في السجل التجاري"
       },
+      "managerTitle": "الاداره",
       "commissionerTitle": "بيانات المفوض",
       "chooseCommissioners_type": "اختر طريقة إدخال المفوضين",
       "commissioners_type": {
@@ -1218,6 +1219,10 @@
 
     "home": {
       "title": "ضماناتى",
+      "allRunningStatuses": "الحاله التشغيليه",
+      "allFinancialStatuses": "الحاله الماليه",
+
+
       "subtitle": "هنا تجد جميع الضمانات الخاصة بك مع كافة بياناتها.",
       "sellDamanas": "ضمانات البيع",
       "buyDamanas": "ضمانات الشراء",

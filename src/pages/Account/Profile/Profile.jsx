@@ -34,6 +34,7 @@ const Profile = () => {
           <div>
             <h3 className="text-lg lg:text-2xl font-bold text-primary mb-1">
               {profile?.name || ""}
+              <small className="block text-xs text-ellipsis overflow-hidden max-w-full  whitespace-nowrap ">{profile?.slug ?? ''}</small>
             </h3>
             <p>{profile?.full_mobile}</p>
           </div>

@@ -65,7 +65,7 @@ const Home = () => {
 
   // ✅ فلترة الحالة التشغيلية
   const filer_running_statuses = [
-    { value: "", label: t("pages.home.all") },
+    // { value: "", label: t("pages.home.all") },
     ...(appConfig?.filer_running_statuses
       ? Object.entries(appConfig.filer_running_statuses).map(
           ([key, value]) => ({
@@ -78,7 +78,7 @@ const Home = () => {
 
   // ✅ فلترة الحالة المالية
   const filer_financial_statuses = [
-    { value: "", label: t("pages.home.all") },
+    // { value: "", label: t("pages.home.all") },
     ...(appConfig?.filer_financial_statuses
       ? Object.entries(appConfig.filer_financial_statuses).map(
           ([key, value]) => ({

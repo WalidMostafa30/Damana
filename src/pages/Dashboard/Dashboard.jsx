@@ -21,6 +21,9 @@ const Dashboard = () => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const { profile } = useSelector((state) => state.profile);
+
+
   const [filters, setFilters] = useState({
     status: "all",
     company: "all",
@@ -214,7 +217,7 @@ const Dashboard = () => {
           )}
 
           {/* فلتر الشركة */}
-          {has("show_group_data") && (
+          {profile?.show_group_data && (
             <select
               className="filterBtn"
               value={filters.company}

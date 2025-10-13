@@ -36,7 +36,7 @@ const FILE_SUPPORTED_FORMATS = [
 ];
 
 const RegisterCompany = () => {
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
   const [openModal, setOpenModal] = useState(false);
   const { t } = useTranslation();

@@ -16,12 +16,10 @@ const Step6CompanyLoginAccounts = ({ formik }) => {
     authorizationFile: null,
   });
   const [errors, setErrors] = useState({});
-
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
-
   const validate = () => {
     let newErrors = {};
     if (!tempLogin.login_name.trim()) {
