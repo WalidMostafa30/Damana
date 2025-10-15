@@ -73,6 +73,19 @@ html {
       margin-inline-start: 1rem;
     }
   }
+
+
+  p{
+    
+    text-align: center;
+    padding: 5px 15px ;
+    font-weight: normal;
+    font-size: 15px;
+
+  }
+
+
+
 }
 
 @layer {
@@ -118,6 +131,17 @@ html {
       &:hover {
         @apply bg-error-200 border-error-200 text-white;
       }
+    }
+
+
+
+    &.small2{
+    @apply w-full  text-base font-normal p-2 lg:p-2 
+    }
+
+
+    &.small{
+    @apply w-full  text-sm font-normal p-2 lg:p-1 
     }
   }
 

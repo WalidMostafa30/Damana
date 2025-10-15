@@ -18,12 +18,12 @@ const TransactionsByTypeCard = ({ data = {} }) => {
   const theData = [
     {
       name: t("pages.transactionsType.buy"),
-      value: Number(data?.buyerTransAvg).toFixed(2),
+      value: Number(data?.buyerTrans).toFixed(2),
       color: "#0e7ac0",
     },
     {
       name: t("pages.transactionsType.sell"),
-      value: Number(data?.salleTransAvg).toFixed(2),
+      value: Number(data?.salleTrans).toFixed(2),
       color: "#15b097",
     },
   ];

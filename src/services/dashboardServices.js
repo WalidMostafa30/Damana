@@ -10,6 +10,16 @@ export const getFinancialDashboard = async (payload) => {
   return data?.data || {};
 };
 
+
+export const getRevenueTrendCardDashboard = async (payload) => {
+  const { data } = await api.get("/company/financial-RevenueTrendCard", {
+    params: payload,
+  });
+  return data?.data || {};
+};
+
+
+
 export const getRunningDashboardTable = async ({
   page = 1,
   type = "sell",

@@ -12,7 +12,7 @@ const FormBtn = ({
       type={type}
       onClick={onClick}
       disabled={isDisabled}
-      className={`mainBtn ${variant === "light" ? "light" : ""} ${
+      className={`mainBtn   ${variant === "light" ? "light" : ""} ${
         loading ? "!cursor-wait contrast-50" : ""
       }`}
     >

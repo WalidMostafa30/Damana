@@ -14,12 +14,20 @@ const FinancialDashboard = ({
   isLoading,
   isError,
   error,
-  filters,
+ 
 }) => {
   const { t } = useTranslation();
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
 
+    const [filters, setFilters] = useState({
+    status: "all",
+    company: "all",
+    dateRange: null,
+  });
+
+
+  
   const {
     data,
     isLoading: isLoadingTable,
@@ -60,84 +68,11 @@ const FinancialDashboard = ({
     );
 
   const transactionsData = [
-    {
-      title: t("pages.financial_dashboard.transactions.buyTitle"),
-      amount: dashboardData2?.buyCard?.all_vehicle_price || 0,
-      percentage: dashboardData2?.buyCard?.all_vehicle_price_percent || 0,
-      typeColor: "#0e7ac0",
-      bars: [
-        {
-          name: t("pages.financial_dashboard.transactions.progress"),
-          value: Number(dashboardData2?.buyCard?.progress_vehicle_price) || 0,
-          fill: "#00b3b9",
-        },
-        {
-          name: t("pages.financial_dashboard.transactions.hold"),
-          value: Number(dashboardData2?.buyCard?.hold_vehicle_price) || 0,
-          fill: "#eda145",
-        },
-        {
-          name: t("pages.financial_dashboard.transactions.late"),
-          value: Number(dashboardData2?.buyCard?.late_vehicle_price) || 0,
-          fill: "#fc2127",
-        },
-        {
-          name: t("pages.financial_dashboard.transactions.released"),
-          value: Number(dashboardData2?.buyCard?.released_vehicle_price) || 0,
-          fill: "#0e7ac0",
-        },
-      ],
-      stats: [
-        {
-          label: t("pages.financial_dashboard.transactions.totalProgress"),
-          value: `${dashboardData2?.buyCard?.progress_vehicle_price} ${t(
-            "pages.financial_dashboard.transactions.currency"
-          )}`,
-          progress:
-            (Number(dashboardData2?.buyCard?.progress_vehicle_price) /
-              Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
-            100,
-          color: "#0e7ac0",
-        },
-        {
-          label: t("pages.financial_dashboard.transactions.totalLate"),
-          value: `${dashboardData2?.buyCard?.late_vehicle_price} ${t(
-            "pages.financial_dashboard.transactions.currency"
-          )}`,
-          progress:
-            (Number(dashboardData2?.buyCard?.late_vehicle_price) /
-              Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
-            100,
-          color: "#fc2127",
-        },
-        {
-          label: t("pages.financial_dashboard.transactions.totalHold"),
-          value: `${dashboardData2?.buyCard?.hold_vehicle_price} ${t(
-            "pages.financial_dashboard.transactions.currency"
-          )}`,
-          progress:
-            (Number(dashboardData2?.buyCard?.hold_vehicle_price) /
-              Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
-            100,
-          color: "#eda145",
-        },
-        {
-          label: t("pages.financial_dashboard.transactions.totalReleased"),
-          value: `${dashboardData2?.buyCard?.released_vehicle_price} ${t(
-            "pages.financial_dashboard.transactions.currency"
-          )}`,
-          progress:
-            (Number(dashboardData2?.buyCard?.released_vehicle_price) /
-              Number(dashboardData2?.buyCard?.all_vehicle_price || 1)) *
-            100,
-          color: "#00b3b9",
-        },
-      ],
-    },
-    {
+      {
+        data:dashboardData2?.selleCard ?? null , 
       title: t("pages.financial_dashboard.transactions.sellTitle"),
-      amount: dashboardData2?.selleCard?.all_vehicle_price || 0,
-      percentage: dashboardData2?.selleCard?.all_vehicle_price_percent || 0,
+      amount: dashboardData2?.selleCard?.allAllPriceType || 0,
+      percentage: dashboardData2?.selleCard?.allAllPriceTypePercent || 0,
       typeColor: "#00b3b9",
       bars: [
         {
@@ -163,25 +98,25 @@ const FinancialDashboard = ({
       ],
       stats: [
         {
-          label: t("pages.financial_dashboard.transactions.totalProgress"),
+          label: t("pages.financial_dashboard.transactions.totalProgress")   ,
           value: `${dashboardData2?.selleCard?.progress_vehicle_price} ${t(
             "pages.financial_dashboard.transactions.currency"
           )}`,
           progress:
-            (Number(dashboardData2?.selleCard?.progress_vehicle_price) /
-              Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
-            100,
+            (Number( dashboardData2?.selleCard?.progress_vehicle_pricePercent)) ,
           color: "#0e7ac0",
         },
+
+
+
+
         {
-          label: t("pages.financial_dashboard.transactions.totalLate"),
+          label: t("pages.financial_dashboard.transactions.totalLate") ,
           value: `${dashboardData2?.selleCard?.late_vehicle_price} ${t(
             "pages.financial_dashboard.transactions.currency"
           )}`,
           progress:
-            (Number(dashboardData2?.selleCard?.late_vehicle_price) /
-              Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
-            100,
+            (Number( dashboardData2?.selleCard?.late_vehicle_pricePercent)),
           color: "#fc2127",
         },
         {
@@ -190,9 +125,7 @@ const FinancialDashboard = ({
             "pages.financial_dashboard.transactions.currency"
           )}`,
           progress:
-            (Number(dashboardData2?.selleCard?.hold_vehicle_price) /
-              Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
-            100,
+            (Number(dashboardData2?.selleCard?.hold_vehicle_pricePercent)) ,
           color: "#eda145",
         },
         {
@@ -201,13 +134,78 @@ const FinancialDashboard = ({
             "pages.financial_dashboard.transactions.currency"
           )}`,
           progress:
-            (Number(dashboardData2?.selleCard?.released_vehicle_price) /
-              Number(dashboardData2?.selleCard?.all_vehicle_price || 1)) *
-            100,
+            (Number(dashboardData2?.selleCard?.released_vehicle_pricePercent))  ,
           color: "#00b3b9",
         },
       ],
     },
+    {
+        data:dashboardData2?.buyCard ?? null , 
+      title: t("pages.financial_dashboard.transactions.buyTitle"),
+      amount: dashboardData2?.buyCard?.allAllPriceType || 0,
+      percentage: dashboardData2?.buyCard?.allAllPriceTypePercent || 0,
+      typeColor: "#0e7ac0",
+      bars: [
+        {
+          name: t("pages.financial_dashboard.transactions.progress"),
+          value: Number(dashboardData2?.buyCard?.progress_vehicle_price) || 0,
+          fill: "#00b3b9",
+        },
+        {
+          name: t("pages.financial_dashboard.transactions.hold"),
+          value: Number(dashboardData2?.buyCard?.hold_vehicle_price) || 0,
+          fill: "#eda145",
+        },
+        {
+          name: t("pages.financial_dashboard.transactions.late"),
+          value: Number(dashboardData2?.buyCard?.late_vehicle_price) || 0,
+          fill: "#fc2127",
+        },
+        {
+          name: t("pages.financial_dashboard.transactions.released"),
+          value: Number(dashboardData2?.buyCard?.released_vehicle_price) || 0,
+          fill: "#0e7ac0",
+        },
+      ],
+      stats: [
+        {
+          label: t("pages.financial_dashboard.transactions.totalProgress") ,
+          value: `${dashboardData2?.buyCard?.progress_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
+          progress:
+           (Number( dashboardData2?.buyCard?.progress_vehicle_pricePercent)) ,
+          color: "#0e7ac0",
+        },
+        {
+          label: t("pages.financial_dashboard.transactions.totalLate"),
+          value: `${dashboardData2?.buyCard?.late_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
+          progress:(Number( dashboardData2?.buyCard?.late_vehicle_pricePercent)),
+          color: "#fc2127",
+        },
+        {
+          label: t("pages.financial_dashboard.transactions.totalHold"),
+          value: `${dashboardData2?.buyCard?.hold_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
+          progress:
+            (Number(dashboardData2?.buyCard?.hold_vehicle_pricePercent) ),
+          color: "#eda145",
+        },
+        {
+          label: t("pages.financial_dashboard.transactions.totalPaid"),
+          value: `${dashboardData2?.buyCard?.released_vehicle_price} ${t(
+            "pages.financial_dashboard.transactions.currency"
+          )}`,
+          progress:
+            (Number(dashboardData2?.buyCard?.released_vehicle_pricePercent) ),
+          color: "#00b3b9",
+        },
+      ],
+    },
+  
   ];
 
   const tableData = {
@@ -259,7 +257,7 @@ const FinancialDashboard = ({
       <div className="grid grid-cols-1 gap-4 lg:gap-8">
         <RevenueTrendCard
           title={t("pages.financial_dashboard.cards.revenueTrend")}
-          data={dashboardData2?.RevenueTrendCard}
+        
         />
         {/* <CommissionCard
           title={t("pages.financial_dashboard.cards.commission")}
@@ -274,6 +272,8 @@ const FinancialDashboard = ({
         tableType={tableType}
         setTableType={setTableType}
         setPage={setPage}
+        filters={filters}
+        setFilters={setFilters}
       />
     </>
   );

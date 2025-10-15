@@ -3,6 +3,7 @@ import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 import { useTranslation } from "react-i18next";
 
 const SalesPurchaseTransactionsCard = ({
+  data,
   title,
   amount,
   percentage,
@@ -60,6 +61,9 @@ const SalesPurchaseTransactionsCard = ({
 
         {/* Value */}
         <h2 className="text-2xl font-bold">{amount} JOD</h2>
+        {/* <h2 className="text-2xl font-bold">{data.allAllPrice} JOD</h2> */}
+        {/* <h2 className="text-2xl font-bold">{data.allAllPriceType} JOD</h2> */}
+        
         <p className="text-gray-400">{t("pages.salesPurchase.totalCount")}</p>
         <p className="font-semibold text-secondary">{percentage}%</p>
 

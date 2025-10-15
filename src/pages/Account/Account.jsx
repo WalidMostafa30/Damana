@@ -47,18 +47,22 @@ const Account = () => {
               </NavLink>
             )}
 
+ 
+            
+           
 
-            {profile?.account_type !== "company" &&
-              (
-                <>
-
-                  {!hasAndUser("damana.cancel") ? null : (
-                    <NavLink to="/profile/remove-damana" className="profileLink">
-                      {t("pages.account.account.nav.remove_damana")}
-                    </NavLink>
-                  )}
-                </>
-              )}
+            {
+            profile?.account_type !== "company" || hasAndUser("damana.cancel")
+            &&
+            (
+              <NavLink to="/profile/remove-damana" className="profileLink">
+                {t("pages.account.account.nav.remove_damana")}
+              </NavLink>
+            )
+          
+          }
+              
+           
 
 
 

@@ -61,6 +61,23 @@ export const fetchDamanat = async ({ pageParam = 1, queryKey }) => {
   };
 };
 
+
+export const cancellableDamanat = async ({ pageParam = 1}) => {
+  const { data } = await api.get("/vehicle-transfers/list", {
+    params: {
+      status: "cancellable",
+      page: pageParam,
+    },
+  });
+  return {
+    data: data?.data || [],
+    nextPage: pageParam + 1,
+    hasMore: (data?.data?.length || 0) > 0,
+  };
+};
+
+
+
 export const cancelDamana = async (payload) => {
   const { data } = await api.post(`/vehicle-transfers/cancel_by_list`, payload);
   return data?.data;

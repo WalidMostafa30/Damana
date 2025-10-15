@@ -52,7 +52,7 @@ const ActionModal = ({
       <div className="flex flex-col lg:flex-row flex-wrap gap-2 lg:gap-4">
         {primaryBtn?.text && (
           <button
-            className="mainBtn flex-1"
+            className="mainBtn small2 flex-1"
             onClick={primaryBtn?.action}
             disabled={!primaryBtn?.action}
           >
@@ -62,7 +62,7 @@ const ActionModal = ({
 
         {dangerBtn?.text && (
           <button
-            className="mainBtn danger flex-1"
+            className="mainBtn small2 danger flex-1"
             onClick={dangerBtn?.action}
             disabled={!dangerBtn?.action}
           >
@@ -72,7 +72,7 @@ const ActionModal = ({
 
         {lightBtn?.text && (
           <button
-            className="mainBtn light flex-1"
+            className="mainBtn small2 light flex-1"
             onClick={lightBtn?.action}
             disabled={!lightBtn?.action}
           >

@@ -29,13 +29,13 @@ const DatePickerModal = ({
 
         <div className="grid grid-cols-2 gap-2 mt-4">
           {/* زرار تأكيد */}
-          <button className="mainBtn flex-1" onClick={onConfirm}>
+          <button className="mainBtn small  flex-1 " onClick={onConfirm}>
             {confirmLabel}
           </button>
 
           {/* زرار مسح الفلتر */}
           <button
-            className="mainBtn light flex-1"
+            className="mainBtn small  light flex-1"
             onClick={onClear}
           >
             {clearLabel}
@@ -43,7 +43,7 @@ const DatePickerModal = ({
 
           {/* زرار رجوع للقيم الافتراضية */}
           <button
-            className="mainBtn light flex-1"
+            className="mainBtn small  light flex-1"
             onClick={onReset}
           >
             {resetLabel}
@@ -51,7 +51,7 @@ const DatePickerModal = ({
 
           {/* زرار إغلاق */}
           <button
-            className="mainBtn danger flex-1"
+            className="mainBtn small  danger flex-1"
             onClick={onClose}
           >
             ✖ 

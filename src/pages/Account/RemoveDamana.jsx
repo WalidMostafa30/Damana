@@ -4,7 +4,7 @@ import { useTranslation } from "react-i18next";
 import StepProgress from "../../components/common/StepProgress/StepProgress";
 import MainInput from "../../components/form/MainInput/MainInput";
 import { IoWarningOutline } from "react-icons/io5";
-import { cancelDamana, fetchDamanat } from "../../services/damanaServices";
+import { cancelDamana, cancellableDamanat } from "../../services/damanaServices";
 import LoadingSection from "../../components/Loading/LoadingSection";
 import ActionModal from "../../components/modals/ActionModal";
 import DamanaList from "../../components/common/DamanaList";
@@ -39,9 +39,8 @@ const RemoveDamana = () => {
 
   const { data, fetchNextPage, hasNextPage, isError, error, isLoading } =
     useInfiniteQuery({
-      queryKey: ["damanat", null, "cancellable"],
-      queryFn: ({ pageParam = 1, queryKey }) =>
-        fetchDamanat({ pageParam, queryKey }),
+      queryFn: ({ pageParam = 1 }) =>
+        cancellableDamanat({ pageParam }),
       getNextPageParam: (lastPage) =>
         lastPage.hasMore ? lastPage.nextPage : undefined,
     });
@@ -52,7 +51,7 @@ const RemoveDamana = () => {
     onError: (error) =>
       setErrorMsg(
         error?.response?.data?.error_msg ||
-          t("pages.account.remove_damana.errors.cancel")
+        t("pages.account.remove_damana.errors.cancel")
       ),
   });
 
@@ -158,9 +157,8 @@ const RemoveDamana = () => {
             </button>
             <button
               onClick={handleConfirmCancel}
-              className={`mainBtn danger min-w-[250px] ${
-                cancelDamanaMutation.isPending && "cursor-wait contrast-50"
-              }`}
+              className={`mainBtn danger min-w-[250px] ${cancelDamanaMutation.isPending && "cursor-wait contrast-50"
+                }`}
               disabled={cancelDamanaMutation.isPending}
             >
               {cancelDamanaMutation.isPending

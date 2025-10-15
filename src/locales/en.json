@@ -492,9 +492,9 @@
     },
 
     "registerCompany": {
-      "pageTitle": "Welcome to Damana!",
+      "pageTitle": "Welcome to eDamana!",
       "breadcrumbs": {
-        "home": "Damana",
+        "home": "eDamana",
         "companyRegistration": "Company Registration Request"
       },
       "steps": [
@@ -1069,8 +1069,12 @@
 
     "dashboard": {
       "pageTitle": "Main Dashboard",
-      "subtitle": "Operational and financial dashboard for the group of companies",
+      "subtitle": "Operational and financial dashboard",
       "status": "Status",
+           "weekly": "weekly",
+      "monthly": "monthly",
+      "yearly": "yearly",
+
       "status_all": "All",
       "status_active": "Active",
       "status_inactive": "Inactive",
@@ -1101,7 +1105,8 @@
         "totalProgress": "Total Value of In-Progress Transactions",
         "totalLate": "Total Late Amounts",
         "totalHold": "Total On-Hold Amounts",
-        "totalReleased": "Total Released Amounts",
+        "totalReleased": "Total Released Amounts", 
+        "totalPaid": "Total Paid Amounts", 
         "currency": "JOD"
       },
       "table": {
@@ -1223,8 +1228,8 @@
     "home": {
       "title": "My Damanas",
 
-            "allRunningStatuses": "Running Statuses",
-      "allFinancialStatuses": "Financial Statuses",
+    "allRunningStatuses": "Operational Statuses",
+    "allFinancialStatuses": "Financial Statuses",
 
 
 
@@ -1236,7 +1241,7 @@
       "confirm": "Confirm",
       "clear": "Clear",
       "reset": "Reset",
-      "welcomeTitle": "Welcome to Dhamana!",
+      "welcomeTitle": "Welcome to eDamana!",
       "welcomeSubtitle": "You can start a new Damana by clicking the button below",
       "newRequest": "New Damana Request",
       "completeRegisterSubtitle": "Complete your registration to start creating Damanas and enjoy all the features",

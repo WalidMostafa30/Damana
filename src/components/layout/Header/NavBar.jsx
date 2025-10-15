@@ -47,7 +47,6 @@ const NavBar = ({ openNav, setOpenNav }) => {
 
 
 
-
       {
         ((profile && profile?.account_type == 'individual')
           ||
@@ -59,8 +58,16 @@ const NavBar = ({ openNav, setOpenNav }) => {
 
             (
               profile?.account_type == 'company' &&
-              profile?.user_company_id &&
-              profile?.company_permissions?.includes("damana.create"))
+              profile?.company_id &&
+             (
+
+ profile?.company_permissions?.includes("damana.create") ||
+  profile?.company_permissions?.includes("full")
+
+             )
+            
+            
+            )
 
           ))
 

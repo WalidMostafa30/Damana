@@ -73,7 +73,7 @@ const CancellationsCard = ({ data = {} }) => {
               cx="50%"
               cy="50%"
               labelLine={false}
-              label={renderCustomizedLabel}
+              // label={renderCustomizedLabel}
               outerRadius={100}
               dataKey="value"
             >

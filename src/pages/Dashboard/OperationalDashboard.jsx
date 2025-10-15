@@ -16,11 +16,17 @@ const OperationalDashboard = ({
   isLoading,
   isError,
   error,
-  filters,
 }) => {
   const { t } = useTranslation();
+
+
   const [tableType, setTableType] = useState("sell");
   const [page, setPage] = useState(1);
+  const [filters, setFilters] = useState({
+    status: "all",
+    company: "all",
+    dateRange: null,
+  });
 
   const {
     data,
@@ -103,7 +109,6 @@ const OperationalDashboard = ({
   };
 
   if (isLoading) return <LoadingSection />;
-
   if (isError)
     return (
       <div className="text-center">
@@ -125,6 +130,7 @@ const OperationalDashboard = ({
         <CancellationsCard data={dashboardData1} />
       </div>
 
+
       <DashboardTable
         data={tableData}
         isLoading={isLoadingTable}
@@ -132,7 +138,12 @@ const OperationalDashboard = ({
         tableType={tableType}
         setTableType={setTableType}
         setPage={setPage}
+        filters={filters}
+        setFilters={setFilters}
       />
+
+
+
     </>
   );
 };
